@@ -1,11 +1,23 @@
-Package: Validate
+Package: ValiDatHOT
 Type: Package
-Title: What the Package Does (Title Case)
+Title: ValiDatHOT - Package to Validate Holdout Tasks in Conjoint Analysis & MaxDiff
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(
+    person("Joshua", "Schramm", email = "test@123.com", role = "cre"),
+    person("Felix Josua", "Lang", email = "test@1235.com", role = "aut"),
+    person("Marcel", "Lichters", email = "test@123.com", role = "aut"))
+Description: ValiDatHOT is a package that validates Holdout tasks (HOTs) in (adaptive) Conjoint analysis as well as MaxDiff. You define the Holdout task and afterward, choose different validation metrics. ValiDatHOT is a user-friendly tool to help you test the predictive validity of your data.
+BugReports: https://github.com/JoshSchramm94/ValiDatHOT/issues
+License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.2.3
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    stats (>= 4.2.2),
+    dplyr (>= 1.1.0),
+    magrittr (>= 2.0.3)
+Depends:
+  	R (>= 3.5.0)
