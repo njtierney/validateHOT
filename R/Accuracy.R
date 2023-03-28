@@ -1,6 +1,6 @@
 #' Accuracy
 #'
-#' @description Accuracy is defined as $\frac{Number of correct predicted participants}{Total number of predictions}$
+#' @description Accuracy is defined as Number of correct predicted participants divided by the Total number of predictions
 #'
 #' @param data data frame including Holdout Options and actual \code{"choice"} and \code{"Group"} if optional argument is defined
 #' @param id column index

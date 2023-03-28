@@ -23,5 +23,5 @@ Accuracy(data, id, Group = NULL, opts, choice, None)
 test
 }
 \description{
-Accuracy is defined as $\frac{Number of correct predicted participants}{Total number of predictions}$
+Accuracy is defined as Number of correct predicted participants divided by the Total number of predictions
 }

@@ -42,7 +42,7 @@
 #'
 #' @docType data
 #' @keywords datasets
-#' @name ACBC_prep
-#' @usage data(ACBC_prep)
+#' @name ACBC
+#' @usage data(ACBC)
 #' @format A data frame with 80 rows and 34 variables
-"ACBC_prep"
+"ACBC"
