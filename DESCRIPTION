@@ -8,7 +8,7 @@ Authors@R: c(
     person("Marcel", "Lichters", email = "test@123.com", role = "aut"))
 Description: ValiDatHOT is a package that validates Holdout tasks (HOTs) in (adaptive) Conjoint analysis as well as MaxDiff. You define the Holdout task and afterward, choose different validation metrics. ValiDatHOT is a user-friendly tool to help you test the predictive validity of your data.
 BugReports: https://github.com/JoshSchramm94/ValiDatHOT/issues
-License: GPL (>= 3) + file LICENSE
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3

@@ -18,8 +18,7 @@
 #'
 
 Reach <- function(data, id, Group = NULL, None, method, bundles) {
-
-  if (method != "threshold" & method != "First Choice"){
+  if (method != "threshold" & method != "First Choice") {
     stop("Error: ", method, " is not valid. Please specify whether to use 'threshold' or 'First Choice'")
   }
 
@@ -50,8 +49,7 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
         }
       }
 
-      base::print(base::mean(base::ifelse(base::rowSums(WS_new[,c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
-
+      base::print(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
     }
 
     if (!(base::is.null(Group))) {
@@ -79,14 +77,11 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
         }
       }
 
-      WS_new$reach <- ifelse(rowSums(WS_new[,c(3:ncol(WS_new))]) > 0, 1, 0)
+      WS_new$reach <- ifelse(rowSums(WS_new[, c(3:ncol(WS_new))]) > 0, 1, 0)
 
       return(WS_new %>%
-               dplyr::group_by(Group) %>%
-               dplyr::summarise(Reach = base::mean(reach) * 100))
-
-
-
+        dplyr::group_by(Group) %>%
+        dplyr::summarise(Reach = base::mean(reach) * 100))
     }
   }
 
@@ -115,7 +110,7 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
         }
       }
 
-      base::print(base::mean(base::ifelse(base::rowSums(WS_new[,c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
+      base::print(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
     }
 
     if (!(base::is.null(Group))) {
@@ -145,12 +140,11 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
 
 
 
-      WS_new$reach <- base::ifelse(base::rowSums(WS_new[,c(3:base::ncol(WS_new))]) > 0, 1, 0)
+      WS_new$reach <- base::ifelse(base::rowSums(WS_new[, c(3:base::ncol(WS_new))]) > 0, 1, 0)
 
       return(WS_new %>%
-               dplyr::group_by(Group) %>%
-               dplyr::summarise(Reach = base::mean(reach) * 100))
+        dplyr::group_by(Group) %>%
+        dplyr::summarise(Reach = base::mean(reach) * 100))
     }
   }
 }
-

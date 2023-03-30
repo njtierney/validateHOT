@@ -17,8 +17,7 @@
 #' @export
 
 
-MedAE <- function(data, id, Group = NULL, opts, choice){
-
+MedAE <- function(data, id, Group = NULL, opts, choice) {
   WS <- data[, c(id, Group, choice, opts)]
 
   Count <- NULL
@@ -89,54 +88,53 @@ MedAE <- function(data, id, Group = NULL, opts, choice){
       dplyr::mutate(Share = Count / base::sum(Count) * 100) %>%
       base::as.data.frame()
 
-    Predicted <- base::data.frame(base::cbind(c(1:base::length(3:(base::ncol(HOT) - 1))),
-                                              c(base::unname(base::colMeans(HOT[, c(3:(base::ncol(HOT) - 1))])))))
+    Predicted <- base::data.frame(base::cbind(
+      c(1:base::length(3:(base::ncol(HOT) - 1))),
+      c(base::unname(base::colMeans(HOT[, c(3:(base::ncol(HOT) - 1))])))
+    ))
 
     base::colnames(Predicted) <- c("Options", "Pred")
 
-    MedAE <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x=T)
+    MedAE <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
-    MedAE <- base::merge(x = MedAE, y = Predicted, by = "Options", all.x=T)
+    MedAE <- base::merge(x = MedAE, y = Predicted, by = "Options", all.x = T)
 
     base::print(stats::median(base::abs(MedAE$Share - MedAE$Pred)))
-
-
   }
 
-  if (!(base::is.null(Group))){
-
+  if (!(base::is.null(Group))) {
     Options <- c()
 
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Option_", k)
       Options <- c(Options, name)
     }
 
     newNames <- c()
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Opt_", k)
       newNames <- c(newNames, name)
     }
 
     Perc <- c()
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Perc_", k)
       Perc <- c(Perc, name)
     }
 
     base::colnames(WS) <- c("id", "Group", "choice", Options)
 
-    for (i in 1:base::length(newNames)){
-      WS[ , base::ncol(WS) + 1] <- 0
+    for (i in 1:base::length(newNames)) {
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- newNames[i]
     }
 
-    for (i in 4:(base::ncol(WS) - base::length(opts))){
-      WS[,(base::length(opts) + i)] <- base::exp(WS[i])
+    for (i in 4:(base::ncol(WS) - base::length(opts))) {
+      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
     }
 
-    for (i in 1:base::length(Perc)){
-      WS[ , base::ncol(WS) + 1] <- 0
+    for (i in 1:base::length(Perc)) {
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- Perc[i]
     }
 
@@ -149,7 +147,7 @@ MedAE <- function(data, id, Group = NULL, opts, choice){
 
     HOT$pred <- 0
 
-    for (i in 1:base::nrow(HOT)){
+    for (i in 1:base::nrow(HOT)) {
       for (k in 4:(base::ncol(HOT) - 1)) {
         if (HOT[i, k] == base::max(HOT[i, 4:(base::ncol(HOT) - 1)])) {
           HOT$pred[i] <- k - 3
@@ -158,9 +156,9 @@ MedAE <- function(data, id, Group = NULL, opts, choice){
     }
 
 
-    MedAE <- base::data.frame(Group=base::character(base::length(base::unique(HOT$Group)) + 1),MedAE=base::numeric(base::length(base::unique(HOT$Group)) + 1))
+    MedAE <- base::data.frame(Group = base::character(base::length(base::unique(HOT$Group)) + 1), MedAE = base::numeric(base::length(base::unique(HOT$Group)) + 1))
 
-    for (p in 1:base::length(base::unique(HOT$Group))){
+    for (p in 1:base::length(base::unique(HOT$Group))) {
       if (p == 1) {
         Helper <- base::as.data.frame(base::matrix(nrow = base::length(4:(base::ncol(HOT) - 1)), ncol = 1))
 
@@ -176,14 +174,16 @@ MedAE <- function(data, id, Group = NULL, opts, choice){
           base::as.data.frame()
 
 
-        Predicted <- base::data.frame(base::cbind(c(1:base::length(4:(base::ncol(HOT) - 1))),
-                                                  c(base::unname(base::colMeans(HOT[, c(4:(base::ncol(HOT) - 1))])))))
+        Predicted <- base::data.frame(base::cbind(
+          c(1:base::length(4:(base::ncol(HOT) - 1))),
+          c(base::unname(base::colMeans(HOT[, c(4:(base::ncol(HOT) - 1))])))
+        ))
 
         base::colnames(Predicted) <- c("Options", "Pred")
 
-        DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x=T)
+        DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
-        DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x=T)
+        DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
 
 
         MedAE[p, p] <- "All"
@@ -191,7 +191,6 @@ MedAE <- function(data, id, Group = NULL, opts, choice){
         MedAE[p, (p + 1)] <- stats::median(base::abs(DataFrame$Share - DataFrame$Pred))
 
         base::rm(Helper, Actual, Predicted, DataFrame)
-
       }
 
       Group <- base::subset(HOT, base::as.character(Group) == base::unique(base::as.character(HOT$Group))[p])
@@ -210,14 +209,16 @@ MedAE <- function(data, id, Group = NULL, opts, choice){
         dplyr::mutate(Share = Count / base::sum(Count) * 100) %>%
         base::as.data.frame()
 
-      Predicted <- base::data.frame(base::cbind(c(1:base::length(4:(base::ncol(Group) - 1))),
-                                                c(base::unname(base::colMeans(Group[, c(4:(base::ncol(Group) - 1))])))))
+      Predicted <- base::data.frame(base::cbind(
+        c(1:base::length(4:(base::ncol(Group) - 1))),
+        c(base::unname(base::colMeans(Group[, c(4:(base::ncol(Group) - 1))])))
+      ))
 
       base::colnames(Predicted) <- c("Options", "Pred")
 
-      DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x=T)
+      DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
-      DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x=T)
+      DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
 
       MedAE[(p + 1), 1] <- base::unique(base::as.character(HOT$Group))[p]
 
@@ -225,7 +226,7 @@ MedAE <- function(data, id, Group = NULL, opts, choice){
 
       base::rm(Helper, Actual, Predicted, DataFrame)
 
-      if (p == base::max(base::length(base::unique(HOT$Group)))){
+      if (p == base::max(base::length(base::unique(HOT$Group)))) {
         return(MedAE)
       }
     }

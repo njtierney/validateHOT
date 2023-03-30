@@ -17,8 +17,7 @@
 #' @export
 #'
 freqAssort <- function(data, id, Group = NULL, None, method = c("threshold" | "First Choice"), bundles) {
-
-  if (method != "threshold" & method != "First Choice"){
+  if (method != "threshold" & method != "First Choice") {
     stop("Error: ", method, " is not valid. Please specify whether to use 'threshold' or 'First Choice'")
   }
 
@@ -49,8 +48,7 @@ freqAssort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
         }
       }
 
-      base::print(base::mean(base::rowSums(WS_new[,c(2:base::ncol(WS_new))])))
-
+      base::print(base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
     }
 
     if (!(base::is.null(Group))) {
@@ -78,14 +76,11 @@ freqAssort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
         }
       }
 
-      WS_new$freq <- base::rowSums(WS_new[,c(3:base::ncol(WS_new))])
+      WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
 
       return(WS_new %>%
-               dplyr::group_by(Group) %>%
-               dplyr::summarise(Frequency = base::mean(freq)))
-
-
-
+        dplyr::group_by(Group) %>%
+        dplyr::summarise(Frequency = base::mean(freq)))
     }
   }
 
@@ -114,7 +109,7 @@ freqAssort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
         }
       }
 
-      base::print(base::mean(base::rowSums(WS_new[,c(2:base::ncol(WS_new))])))
+      base::print(base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
     }
 
     if (!(base::is.null(Group))) {
@@ -144,11 +139,11 @@ freqAssort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
 
 
 
-      WS_new$freq <- base::rowSums(WS_new[,c(3:base::ncol(WS_new))])
+      WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
 
       return(WS_new %>%
-               dplyr::group_by(Group) %>%
-               dplyr::summarise(Frequency = base::mean(freq)))
+        dplyr::group_by(Group) %>%
+        dplyr::summarise(Frequency = base::mean(freq)))
     }
   }
 }

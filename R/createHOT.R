@@ -15,22 +15,28 @@
 #' @param price_low_po column index of lower price
 #' @param price_high_po column index of upper price
 #' @param varskeep variables that should be kept in the data frame, use column index
+#' @param choice actual choice in the Holdout task
 #'
 #' @return a data frame
 #' @importFrom stats approx
 #'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff")
+#'
+#'
+#'
 #' @export
-createUtil <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC" | "MaxDiff"), price = NULL, price_low = NULL, price_high = NULL, price_low_po = NULL,
-                       price_high_po = NULL, varskeep = NULL) {
+createHOT <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC" | "MaxDiff"), price = NULL, price_low = NULL, price_high = NULL, price_low_po = NULL,
+                       price_high_po = NULL, varskeep = NULL, choice) {
   if (!(base::is.numeric(id)) | (!(base::is.numeric(None)) & !(base::is.null(None))) | !(base::is.numeric(prod)) |
     (!(base::is.numeric(price_low)) & !(base::is.null(price_low))) |
     (!(base::is.numeric(price_high)) & !(base::is.null(price_high))) | (!(base::is.numeric(price_low_po)) & !(base::is.null(price_low_po))) |
     (!(base::is.numeric(price_high_po)) & !(base::is.null(price_high_po))) | (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
     stop("Error: Please insert column index. Needs to be numeric!")
-  }
-
-  if (method == "ACBC" & (base::is.null(price)) | (price != "linear" & price != "piecewise")) {
-    stop("Error: Please set price either to 'linear' or 'piecewise'!")
   }
 
 
@@ -123,6 +129,10 @@ createUtil <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC"
         df <- base::merge(x = df, y = add, by = "ID")
       }
 
+      final_choice <- c[, c(id, choice)]
+      base::colnames(final_choice) <- c("ID", "choice")
+      df <- base::merge(x = df, y = final_choice, by = "ID")
+
       .GlobalEnv$HOT <- df
     }
 
@@ -183,6 +193,10 @@ createUtil <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC"
         df <- base::merge(x = df, y = add, by = "ID")
       }
 
+      final_choice <- c[, c(id, choice)]
+      base::colnames(final_choice) <- c("ID", "choice")
+      df <- base::merge(x = df, y = final_choice, by = "ID")
+
       .GlobalEnv$HOT <- df
     }
   }
@@ -234,6 +248,10 @@ createUtil <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC"
       base::colnames(add)[1] <- "ID"
       df <- base::merge(x = df, y = add, by = "ID")
     }
+
+    final_choice <- c[, c(id, choice)]
+    base::colnames(final_choice) <- c("ID", "choice")
+    df <- base::merge(x = df, y = final_choice, by = "ID")
 
     .GlobalEnv$HOT <- df
   }
@@ -296,6 +314,10 @@ createUtil <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC"
         df <- base::merge(x = df, y = add, by = "ID")
       }
 
+      final_choice <- c[, c(id, choice)]
+      base::colnames(final_choice) <- c("ID", "choice")
+      df <- base::merge(x = df, y = final_choice, by = "ID")
+
       .GlobalEnv$HOT <- df
     }
 
@@ -356,6 +378,10 @@ createUtil <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC"
         base::colnames(add)[1] <- "ID"
         df <- base::merge(x = df, y = add, by = "ID")
       }
+
+      final_choice <- c[, c(id, choice)]
+      base::colnames(final_choice) <- c("ID", "choice")
+      df <- base::merge(x = df, y = final_choice, by = "ID")
 
       .GlobalEnv$HOT <- df
     }

@@ -16,46 +16,44 @@
 #' @export
 
 
-Recall <- function(data, id, Group = NULL, opts, choice, None){
-
+Recall <- function(data, id, Group = NULL, opts, choice, None) {
   WS <- data[, c(id, Group, choice, opts)]
 
   buy <- pred_buy <- NULL
 
-  if (base::is.null(Group)){
-
+  if (base::is.null(Group)) {
     Options <- c()
 
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Option_", k)
       Options <- c(Options, name)
     }
 
     newNames <- c()
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Opt_", k)
       newNames <- c(newNames, name)
     }
 
     Perc <- c()
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Perc_", k)
       Perc <- c(Perc, name)
     }
 
     base::colnames(WS) <- c("id", "choice", Options)
 
-    for (i in 1:base::length(newNames)){
-      WS[ , base::ncol(WS) + 1] <- 0
+    for (i in 1:base::length(newNames)) {
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- newNames[i]
     }
 
-    for (i in 3:(base::ncol(WS) - base::length(opts))){
-      WS[,(base::length(opts) + i)] <- base::exp(WS[i])
+    for (i in 3:(base::ncol(WS) - base::length(opts))) {
+      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
     }
 
-    for (i in 1:base::length(Perc)){
-      WS[ , base::ncol(WS) + 1] <- 0
+    for (i in 1:base::length(Perc)) {
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- Perc[i]
     }
 
@@ -68,7 +66,7 @@ Recall <- function(data, id, Group = NULL, opts, choice, None){
 
     HOT$pred <- 0
 
-    for (i in 1:base::nrow(HOT)){
+    for (i in 1:base::nrow(HOT)) {
       for (k in 3:(base::ncol(HOT) - 1)) {
         if (HOT[i, k] == base::max(HOT[i, 3:(base::ncol(HOT) - 1)])) {
           HOT$pred[i] <- k - 2
@@ -76,49 +74,48 @@ Recall <- function(data, id, Group = NULL, opts, choice, None){
       }
     }
 
-    HOT$buy <- base::ifelse(HOT$choice != base::match(None,opts), 1, 2)
-    HOT$pred_buy <- base::ifelse(HOT$pred != base::match(None,opts), 1, 2)
+    HOT$buy <- base::ifelse(HOT$choice != base::match(None, opts), 1, 2)
+    HOT$pred_buy <- base::ifelse(HOT$pred != base::match(None, opts), 1, 2)
 
     return(HOT %>%
-             dplyr::summarise(
-               Recall = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))), digits = 2)))
-
+      dplyr::summarise(
+        Recall = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))), digits = 2)
+      ))
   }
 
-  if (!(base::is.null(Group))){
-
+  if (!(base::is.null(Group))) {
     Options <- c()
 
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Option_", k)
       Options <- c(Options, name)
     }
 
     newNames <- c()
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Opt_", k)
       newNames <- c(newNames, name)
     }
 
     Perc <- c()
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Perc_", k)
       Perc <- c(Perc, name)
     }
 
     base::colnames(WS) <- c("id", "Group", "choice", Options)
 
-    for (i in 1:base::length(newNames)){
-      WS[ , base::ncol(WS) + 1] <- 0
+    for (i in 1:base::length(newNames)) {
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- newNames[i]
     }
 
-    for (i in 4:(base::ncol(WS) - base::length(opts))){
-      WS[,(base::length(opts) + i)] <- base::exp(WS[i])
+    for (i in 4:(base::ncol(WS) - base::length(opts))) {
+      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
     }
 
-    for (i in 1:base::length(Perc)){
-      WS[ , base::ncol(WS) + 1] <- 0
+    for (i in 1:base::length(Perc)) {
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- Perc[i]
     }
 
@@ -131,7 +128,7 @@ Recall <- function(data, id, Group = NULL, opts, choice, None){
 
     HOT$pred <- 0
 
-    for (i in 1:base::nrow(HOT)){
+    for (i in 1:base::nrow(HOT)) {
       for (k in 4:(base::ncol(HOT) - 1)) {
         if (HOT[i, k] == base::max(HOT[i, 4:(base::ncol(HOT) - 1)])) {
           HOT$pred[i] <- k - 3
@@ -139,12 +136,13 @@ Recall <- function(data, id, Group = NULL, opts, choice, None){
       }
     }
 
-    HOT$buy <- base::ifelse(HOT$choice != base::match(None,opts), 1, 2)
-    HOT$pred_buy <- base::ifelse(HOT$pred != base::match(None,opts), 1, 2)
+    HOT$buy <- base::ifelse(HOT$choice != base::match(None, opts), 1, 2)
+    HOT$pred_buy <- base::ifelse(HOT$pred != base::match(None, opts), 1, 2)
 
     return(HOT %>%
-             dplyr::group_by(Group) %>%
-             dplyr::summarise(
-               Recall = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))), digits = 2)))
+      dplyr::group_by(Group) %>%
+      dplyr::summarise(
+        Recall = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))), digits = 2)
+      ))
   }
 }

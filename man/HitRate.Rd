@@ -23,3 +23,13 @@ xyz
 \description{
 Function to measure the hit rate of a holdout task
 }
+\examples{
+library(ValiDatHOT)
+data(MaxDiff)
+createHOT(data = MaxDiff, None = 19, id = 1,
+          prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+          choice = 20, method = "MaxDiff")
+HitRate(data = HOT, id = 1, opt = c(2:9), ch = 10)
+
+
+}

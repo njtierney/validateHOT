@@ -12,48 +12,46 @@
 #' @importFrom magrittr "%>%"
 #'
 #' @export
-KL <- function(data, id, Group = NULL, opts, choice){
-
+KL <- function(data, id, Group = NULL, opts, choice) {
   WS <- data[, c(id, Group, choice, opts)]
 
   Count <- NULL
 
   pred <- NULL
 
-  if (base::is.null(Group)){
-
+  if (base::is.null(Group)) {
     Options <- c()
 
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Option_", k)
       Options <- c(Options, name)
     }
 
     newNames <- c()
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Opt_", k)
       newNames <- c(newNames, name)
     }
 
     Perc <- c()
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Perc_", k)
       Perc <- c(Perc, name)
     }
 
     base::colnames(WS) <- c("id", "choice", Options)
 
-    for (i in 1:base::length(newNames)){
-      WS[ , base::ncol(WS) + 1] <- 0
+    for (i in 1:base::length(newNames)) {
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- newNames[i]
     }
 
-    for (i in 3:(base::ncol(WS) - base::length(opts))){
-      WS[,(base::length(opts) + i)] <- base::exp(WS[i])
+    for (i in 3:(base::ncol(WS) - base::length(opts))) {
+      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
     }
 
-    for (i in 1:base::length(Perc)){
-      WS[ , base::ncol(WS) + 1] <- 0
+    for (i in 1:base::length(Perc)) {
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- Perc[i]
     }
 
@@ -66,7 +64,7 @@ KL <- function(data, id, Group = NULL, opts, choice){
 
     HOT$pred <- 0
 
-    for (i in 1:base::nrow(HOT)){
+    for (i in 1:base::nrow(HOT)) {
       for (k in 3:(base::ncol(HOT) - 1)) {
         if (HOT[i, k] == base::max(HOT[i, 3:(base::ncol(HOT) - 1)])) {
           HOT$pred[i] <- k - 2
@@ -95,53 +93,51 @@ KL <- function(data, id, Group = NULL, opts, choice){
       base::as.data.frame()
 
 
-    KL <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x=T)
+    KL <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
-    KL <- base::merge(x = KL, y = Predicted[,c("pred", "Predicted")], by.x = "Options", by.y = "pred",  all.x=T)
+    KL <- base::merge(x = KL, y = Predicted[, c("pred", "Predicted")], by.x = "Options", by.y = "pred", all.x = T)
 
     i <- 1:base::length(Helper$Options)
 
-    base::sum(KL[i, 2] * base::log2(KL[i, 2]/KL[i, 3]))
+    base::sum(KL[i, 2] * base::log2(KL[i, 2] / KL[i, 3]))
 
-    base::cat("Observed | Predicted: ", (base::sum(KL[i, 2] * base::log2(KL[i, 2]/KL[i, 3]))/100), "\n")
-    base::cat("Predicted | Observed: ", (base::sum(KL[i, 3] * base::log2(KL[i, 3]/KL[i, 2]))/100))
-
+    base::cat("Observed | Predicted: ", (base::sum(KL[i, 2] * base::log2(KL[i, 2] / KL[i, 3])) / 100), "\n")
+    base::cat("Predicted | Observed: ", (base::sum(KL[i, 3] * base::log2(KL[i, 3] / KL[i, 2])) / 100))
   }
 
-  if (!(base::is.null(Group))){
-
+  if (!(base::is.null(Group))) {
     Options <- c()
 
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Option_", k)
       Options <- c(Options, name)
     }
 
     newNames <- c()
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Opt_", k)
       newNames <- c(newNames, name)
     }
 
     Perc <- c()
-    for (k in 1:base::length(opts)){
+    for (k in 1:base::length(opts)) {
       name <- base::paste0("Perc_", k)
       Perc <- c(Perc, name)
     }
 
     base::colnames(WS) <- c("id", "Group", "choice", Options)
 
-    for (i in 1:base::length(newNames)){
-      WS[ , base::ncol(WS) + 1] <- 0
+    for (i in 1:base::length(newNames)) {
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- newNames[i]
     }
 
-    for (i in 4:(base::ncol(WS) - base::length(opts))){
-      WS[,(base::length(opts) + i)] <- base::exp(WS[i])
+    for (i in 4:(base::ncol(WS) - base::length(opts))) {
+      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
     }
 
-    for (i in 1:base::length(Perc)){
-      WS[ , base::ncol(WS) + 1] <- 0
+    for (i in 1:base::length(Perc)) {
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- Perc[i]
     }
 
@@ -154,7 +150,7 @@ KL <- function(data, id, Group = NULL, opts, choice){
 
     HOT$pred <- 0
 
-    for (i in 1:base::nrow(HOT)){
+    for (i in 1:base::nrow(HOT)) {
       for (k in 4:(base::ncol(HOT) - 1)) {
         if (HOT[i, k] == base::max(HOT[i, 4:(base::ncol(HOT) - 1)])) {
           HOT$pred[i] <- k - 3
@@ -162,9 +158,9 @@ KL <- function(data, id, Group = NULL, opts, choice){
       }
     }
 
-    KL <- base::data.frame(Group=base::character(base::length(base::unique(HOT$Group)) + 1),KL_P_O=base::numeric(base::length(base::unique(HOT$Group)) + 1), KL_O_P=base::numeric(base::length(base::unique(HOT$Group)) + 1))
+    KL <- base::data.frame(Group = base::character(base::length(base::unique(HOT$Group)) + 1), KL_P_O = base::numeric(base::length(base::unique(HOT$Group)) + 1), KL_O_P = base::numeric(base::length(base::unique(HOT$Group)) + 1))
 
-    for (p in 1:base::length(base::unique(HOT$Group))){
+    for (p in 1:base::length(base::unique(HOT$Group))) {
       if (p == 1) {
         Helper <- base::as.data.frame(base::matrix(nrow = base::length(4:(base::ncol(HOT) - 1)), ncol = 1))
 
@@ -186,19 +182,18 @@ KL <- function(data, id, Group = NULL, opts, choice){
           dplyr::mutate(Predicted = Count / base::sum(Count) * 100) %>%
           base::as.data.frame()
 
-        DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x=T)
+        DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
-        DataFrame <- base::merge(x = DataFrame, y = Predicted[,c("pred", "Predicted")], by.x = "Options", by.y = "pred",  all.x=T)
+        DataFrame <- base::merge(x = DataFrame, y = Predicted[, c("pred", "Predicted")], by.x = "Options", by.y = "pred", all.x = T)
 
         i <- 1:base::length(Helper$Options)
 
         KL[p, p] <- "All"
 
-        KL[p, (p + 1)] <- base::sum(DataFrame[i, 2] * base::log2(DataFrame[i, 2]/DataFrame[i, 3]))
-        KL[p, (p + 2)] <- base::sum(DataFrame[i, 3] * base::log2(DataFrame[i, 3]/DataFrame[i, 2]))
+        KL[p, (p + 1)] <- base::sum(DataFrame[i, 2] * base::log2(DataFrame[i, 2] / DataFrame[i, 3]))
+        KL[p, (p + 2)] <- base::sum(DataFrame[i, 3] * base::log2(DataFrame[i, 3] / DataFrame[i, 2]))
 
         base::rm(Helper, Actual, Predicted, DataFrame)
-
       }
 
       Group <- base::subset(HOT, base::as.character(Group) == base::unique(base::as.character(HOT$Group))[p])
@@ -224,27 +219,23 @@ KL <- function(data, id, Group = NULL, opts, choice){
         dplyr::mutate(Predicted = Count / base::sum(Count) * 100) %>%
         base::as.data.frame()
 
-      DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x=T)
+      DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
-      DataFrame <- base::merge(x = DataFrame, y = Predicted[,c("pred", "Predicted")], by.x = "Options", by.y = "pred",  all.x=T)
+      DataFrame <- base::merge(x = DataFrame, y = Predicted[, c("pred", "Predicted")], by.x = "Options", by.y = "pred", all.x = T)
 
       i <- 1:base::length(Helper$Options)
 
       KL[(p + 1), 1] <- base::unique(base::as.character(HOT$Group))[p]
 
-      KL[(p + 1), 2] <- base::sum(DataFrame[i, 2] * base::log2(DataFrame[i, 2]/DataFrame[i, 3]))
-      KL[(p + 1), 3] <- base::sum(DataFrame[i, 3] * base::log2(DataFrame[i, 3]/DataFrame[i, 2]))
+      KL[(p + 1), 2] <- base::sum(DataFrame[i, 2] * base::log2(DataFrame[i, 2] / DataFrame[i, 3]))
+      KL[(p + 1), 3] <- base::sum(DataFrame[i, 3] * base::log2(DataFrame[i, 3] / DataFrame[i, 2]))
 
       base::rm(Helper, Actual, Predicted, DataFrame)
 
-      if (p == base::max(base::length(base::unique(HOT$Group)))){
-        KL[,c(2,3)] <- KL[,c(2,3)]/100
+      if (p == base::max(base::length(base::unique(HOT$Group)))) {
+        KL[, c(2, 3)] <- KL[, c(2, 3)] / 100
         return(KL)
       }
-
     }
-
-
   }
-
 }
