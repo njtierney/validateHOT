@@ -11,6 +11,23 @@
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff")
+#' RMSE(data = HOT, id = 1, opts = c(2:9), choice = 10)
+#'
+#'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff", varskeep = 21)
+#' RMSE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+#'
 #' @export
 
 RMSE <- function(data, id, Group = NULL, opts, choice) {
@@ -95,7 +112,9 @@ RMSE <- function(data, id, Group = NULL, opts, choice) {
 
     RMSE <- base::merge(x = RMSE, y = Predicted, by = "Options", all.x = T)
 
-    base::print(base::sqrt((base::sum((base::abs(RMSE$Share - RMSE$Pred))^2) / base::length(opts))))
+    RMSE[base::is.na(RMSE)] <- 0
+
+	base::print(base::sqrt((base::sum((base::abs(RMSE$Share - RMSE$Pred))^2) / base::length(opts))))
   }
 
   if (!(base::is.null(Group))) {
@@ -135,7 +154,7 @@ RMSE <- function(data, id, Group = NULL, opts, choice) {
     }
 
     for (i in (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 4)])) * 100
+      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)])) * 100
     }
 
 
@@ -180,7 +199,9 @@ RMSE <- function(data, id, Group = NULL, opts, choice) {
 
         DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
 
-        RMSE[p, p] <- "All"
+        DataFrame[base::is.na(DataFrame)] <- 0
+
+		RMSE[p, p] <- "All"
 
         RMSE[p, (p + 1)] <- base::sqrt((base::sum((base::abs(DataFrame$Share - DataFrame$Pred))^2) / base::length(opts)))
 
@@ -214,7 +235,9 @@ RMSE <- function(data, id, Group = NULL, opts, choice) {
 
       DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
 
-      RMSE[(p + 1), 1] <- base::unique(base::as.character(HOT$Group))[p]
+      DataFrame[base::is.na(DataFrame)] <- 0
+
+	  RMSE[(p + 1), 1] <- base::unique(base::as.character(HOT$Group))[p]
 
       RMSE[(p + 1), 2] <- base::sqrt((base::sum((base::abs(DataFrame$Share - DataFrame$Pred))^2) / base::length(opts)))
 

@@ -23,3 +23,20 @@ xyz
 \description{
 Function to measure the Median absolute error of a holdout task
 }
+\examples{
+library(ValiDatHOT)
+data(MaxDiff)
+createHOT(data = MaxDiff, None = 19, id = 1,
+          prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+          choice = 20, method = "MaxDiff")
+MedAE(data = HOT, id = 1, opts = c(2:9), choice = 10)
+
+
+library(ValiDatHOT)
+data(MaxDiff)
+createHOT(data = MaxDiff, None = 19, id = 1,
+          prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+          choice = 20, method = "MaxDiff", varskeep = 21)
+MedAE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+
+}

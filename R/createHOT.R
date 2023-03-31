@@ -39,6 +39,10 @@ createHOT <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC" 
     stop("Error: Please insert column index. Needs to be numeric!")
   }
 
+  if ((method != "ACBC") & (method != "CBC") & (method != "MaxDiff")){
+    stop("Error: Please choose one of the supported methods: MaxDiff, ACBC, CBC")
+  }
+
 
   if (method == "ACBC") {
     if ((price == "linear" | price == "piecewise") & (base::is.null(price_high) | base::is.null(price_high_po) | base::is.null(price_low) | base::is.null(price_low_po))) {

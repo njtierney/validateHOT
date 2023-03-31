@@ -10,6 +10,22 @@
 #' @return xyz
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff")
+#' MHP(data = HOT, id = 1, opts = c(2:9), choice = 10)
+#'
+#'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff", varskeep = 21)
+#' MHP(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 #'
 #' @export
 MHP <- function(data, id, Group = NULL, opts, choice) {
@@ -113,7 +129,7 @@ MHP <- function(data, id, Group = NULL, opts, choice) {
     }
 
     for (i in (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 4)])) * 100
+      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)])) * 100
     }
 
 

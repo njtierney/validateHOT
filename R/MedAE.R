@@ -14,6 +14,23 @@
 #' @importFrom magrittr "%>%"
 #' @importFrom stats median
 #'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff")
+#' MedAE(data = HOT, id = 1, opts = c(2:9), choice = 10)
+#'
+#'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff", varskeep = 21)
+#' MedAE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+#'
 #' @export
 
 
@@ -99,6 +116,8 @@ MedAE <- function(data, id, Group = NULL, opts, choice) {
 
     MedAE <- base::merge(x = MedAE, y = Predicted, by = "Options", all.x = T)
 
+	 MedAE[base::is.na(MedAE)] <- 0
+
     base::print(stats::median(base::abs(MedAE$Share - MedAE$Pred)))
   }
 
@@ -139,7 +158,7 @@ MedAE <- function(data, id, Group = NULL, opts, choice) {
     }
 
     for (i in (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 4)])) * 100
+      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)])) * 100
     }
 
 
@@ -185,6 +204,7 @@ MedAE <- function(data, id, Group = NULL, opts, choice) {
 
         DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
 
+		DataFrame[base::is.na(DataFrame)] <- 0
 
         MedAE[p, p] <- "All"
 
@@ -220,7 +240,9 @@ MedAE <- function(data, id, Group = NULL, opts, choice) {
 
       DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
 
-      MedAE[(p + 1), 1] <- base::unique(base::as.character(HOT$Group))[p]
+      DataFrame[base::is.na(DataFrame)] <- 0
+
+	  MedAE[(p + 1), 1] <- base::unique(base::as.character(HOT$Group))[p]
 
       MedAE[(p + 1), 2] <- stats::median(base::abs(DataFrame$Share - DataFrame$Pred))
 

@@ -11,6 +11,23 @@
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff")
+#' MAE(data = HOT, id = 1, opts = c(2:9), choice = 10)
+#'
+#'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff", varskeep = 21)
+#' MAE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+#'
 #' @export
 
 MAE <- function(data, id, Group = NULL, opts, choice) {
@@ -95,6 +112,8 @@ MAE <- function(data, id, Group = NULL, opts, choice) {
 
     MAE <- base::merge(x = MAE, y = Predicted, by = "Options", all.x = T)
 
+    MAE[base::is.na(MAE)] <- 0
+
     base::print(base::sum(base::abs(MAE$Share - MAE$Pred)) / base::length(opts))
   }
 
@@ -135,7 +154,7 @@ MAE <- function(data, id, Group = NULL, opts, choice) {
     }
 
     for (i in (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 4)])) * 100
+      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)])) * 100
     }
 
 
@@ -179,6 +198,8 @@ MAE <- function(data, id, Group = NULL, opts, choice) {
 
         DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
 
+        DataFrame[base::is.na(DataFrame)] <- 0
+
         MAE[p, p] <- "All"
 
         MAE[p, (p + 1)] <- base::sum(base::abs(DataFrame$Share - DataFrame$Pred)) / base::length(opts)
@@ -212,6 +233,8 @@ MAE <- function(data, id, Group = NULL, opts, choice) {
       DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
       DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
+
+      DataFrame[base::is.na(DataFrame)] <- 0
 
       MAE[(p + 1), 1] <- base::unique(base::as.character(HOT$Group))[p]
 

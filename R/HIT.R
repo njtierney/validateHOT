@@ -12,12 +12,21 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff")
-#' HitRate(data = HOT, id = 1, opt = c(2:9), ch = 10)
+#' HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)
 #'
+#'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff", varskeep = 21)
+#' HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 #'
 #' @return xyz
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
+#' @importFrom labelled is.labelled val_labels
 #'
 #' @export
 HitRate <- function(data, id, Group = NULL, opts, choice) {
@@ -79,16 +88,15 @@ HitRate <- function(data, id, Group = NULL, opts, choice) {
     }
 
 
-    HR <- base::as.data.frame(rbind(base::sum(base::as.integer(HOT$choice == HOT$pred)), (base::sum(base::as.integer(HOT$choice == HOT$pred)) / base::nrow(HOT) * 100)))
+    HR <- base::as.data.frame(rbind((1 / length(opts) * 100),
+                                    base::sum(base::as.integer(HOT$choice == HOT$pred)),
+                                    (base::sum(base::as.integer(HOT$choice == HOT$pred)) / base::nrow(HOT) * 100)))
 
-    base::row.names(HR) <- c("no.", "%")
+    base::row.names(HR) <- c("chance", "no.", "%")
     base::colnames(HR) <- "HitRate"
 
     return(HR)
 
-    #base::print(base::sum(base::as.integer(HOT$choice == HOT$pred)))
-
-    #base::print(base::sum(base::as.integer(HOT$choice == HOT$pred)) / base::nrow(HOT))
 
     base::rm(HOT)
   }
@@ -132,7 +140,7 @@ HitRate <- function(data, id, Group = NULL, opts, choice) {
     }
 
     for (i in (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 4)])) * 100
+      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)])) * 100
     }
 
 
@@ -148,10 +156,86 @@ HitRate <- function(data, id, Group = NULL, opts, choice) {
       }
     }
 
-    return(HOT %>%
+
+
+    HR <- base::rbind(HOT %>%
+             dplyr::summarise(Group = "All",
+               no. = base::sum(base::as.integer(choice == pred)),
+                              perc. = base::mean(base::as.integer(choice == pred) * 100)) %>%
+               base::as.data.frame(),
+             HOT %>%
       dplyr::group_by(Group) %>%
-      dplyr::summarise(hit = base::mean(base::as.integer(choice == pred))) %>%
+      dplyr::summarise(no. = base::sum(base::as.integer(choice == pred)),
+                       perc. = base::mean(base::as.integer(choice == pred) * 100)) %>%
       base::as.data.frame())
+
+    # fixing grouping variable
+
+    lab <- c()
+
+    if (base::is.numeric(WS$Group)){
+      lab <- "All"
+      for (i in 1:base::length(base::unique(WS$Group))){
+
+        lab_num <- base::sort(base::unique(WS$Group))
+
+        lab <- c(lab, lab_num[i])
+
+      }
+    }
+
+    if (base::is.character(WS$Group)){
+      lab <- "All"
+      for (i in 1:base::length(base::unique(WS$Group))){
+
+        lab_char <- base::sort(base::unique(WS$Group))
+
+        lab <- c(lab, lab_char[i])
+
+      }
+    }
+
+    if (base::is.factor(WS$Group)){
+      lab <- "All"
+      for (i in 1:base::length(base::unique(WS$Group))){
+
+        lab_char <- base::sort(base::unique(WS$Group))
+
+        lab <- c(lab, lab_char[i])
+
+      }
+    }
+
+    if (base::is.factor(WS$Group)){
+      lab <- "All"
+      for (i in 1:base::length(base::unique(WS$Group))){
+
+        lab_fac <- base::sort(base::unique(WS$Group))
+
+        lab <- c(lab, base::levels(lab_fac)[i])
+
+      }
+    }
+
+    if (labelled::is.labelled(WS$Group)){
+      lab <- "All"
+      for (i in 1:base::length(base::unique(WS$Group))){
+
+        lab_lab <- base::sort(base::unique(WS$Group))
+
+        lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
+
+      }
+    }
+
+
+
+
+    HR$Group <- lab
+
+    cat("Chance level: ", (1 / base::length(opts) * 100), "%\n\n", sep = "")
+
+    return(HR)
 
     base::rm(HOT)
   }
