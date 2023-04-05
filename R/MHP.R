@@ -27,6 +27,7 @@
 #'           choice = 20, method = "MaxDiff", varskeep = 21)
 #' MHP(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 #'
+#'
 #' @export
 MHP <- function(data, id, Group = NULL, opts, choice) {
   WS <- data[, c(id, Group, choice, opts)]
@@ -150,10 +151,71 @@ MHP <- function(data, id, Group = NULL, opts, choice) {
       HOT$MHP[i] <- HOT[i, (HOT$choice[i] + 3)]
     }
 
+    MHP <- base::rbind(HOT %>%
+                        dplyr::summarise(Group = "All",
+                                         MeanHitProb = base::mean(MHP)) %>%
+                        base::as.data.frame(),
+                      HOT %>%
+                        dplyr::group_by(Group) %>%
+                        dplyr::summarise(MeanHitProb = base::mean(MHP)) %>%
+                        base::as.data.frame())
 
-    return(HOT %>%
-      dplyr::group_by(Group) %>%
-      dplyr::summarise(MeanHitProb = base::mean(MHP)) %>%
-      base::as.data.frame())
+    # fixing grouping variable
+
+    lab <- c()
+
+    if (base::is.numeric(WS$Group)){
+      lab <- "All"
+      for (i in 1:base::length(base::unique(WS$Group))){
+
+        lab_num <- base::sort(base::unique(WS$Group))
+
+        lab <- c(lab, lab_num[i])
+
+      }
+    }
+
+    if (base::is.character(WS$Group)){
+      lab <- "All"
+      for (i in 1:base::length(base::unique(WS$Group))){
+
+        lab_char <- base::sort(base::unique(WS$Group))
+
+        lab <- c(lab, lab_char[i])
+
+      }
+    }
+
+
+    if (base::is.factor(WS$Group)){
+      lab <- "All"
+      for (i in 1:base::length(base::unique(WS$Group))){
+
+        lab_fac <- base::sort(base::unique(WS$Group))
+
+        lab <- c(lab, base::levels(lab_fac)[i])
+
+      }
+    }
+
+    if (labelled::is.labelled(WS$Group)){
+      lab <- "All"
+      for (i in 1:base::length(base::unique(WS$Group))){
+
+        lab_lab <- base::sort(base::unique(WS$Group))
+
+        lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
+
+      }
+    }
+
+
+
+
+    MHP$Group <- lab
+
+    return(MHP)
+
+
   }
 }

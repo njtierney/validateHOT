@@ -13,6 +13,24 @@
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom stats qt sd
+#' @importFrom labelled is.labelled val_labels
+#'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff")
+#' ShareofPref(data = HOT, id = 1, opts = c(2:9), choice = 10)
+#'
+#'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff", varskeep = 21)
+#' ShareofPref(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 #'
 #' @export
 
@@ -160,8 +178,105 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
       }
     }
 
+    lab <- c()
+
     for (t in 1:base::length(base::unique(HOT$Group))) {
-      Sub <- base::subset(HOT, base::as.character(Group) == base::unique(base::as.character(HOT$Group))[t])
+
+      if (t == 1){
+        MW <- unname(colMeans(HOT[, c(4:(base::ncol(HOT) - 1))]))
+
+        MarketShare_ALL <- base::data.frame(base::matrix(nrow = base::length(Options), ncol = 4))
+
+        MarketShare_ALL[base::is.na(MarketShare_ALL)] <- 0
+
+        base::colnames(MarketShare_ALL) <- c("Options", "Mean", "Lower CI", "Upper CI")
+
+        MarketShare_ALL[, 1] <- Options
+
+        MarketShare_ALL[, 2] <- MW
+
+        for (all in 1:base::nrow(MarketShare_ALL)) {
+          m <- MarketShare_ALL[all, 2]
+          s <- stats::sd(HOT[, (all + 2)])
+          n <- base::nrow(HOT)
+
+          margin <- stats::qt(0.975, df = n - 1) * s / sqrt(n)
+
+          MarketShare_ALL[all, 3] <- m - margin
+
+          MarketShare_ALL[all, 4] <- m + margin
+        }
+
+        cat("\nShare of Preferences for All:\n", sep = "")
+
+        print(MarketShare_ALL)
+      }
+
+
+      if (base::is.numeric(WS$Group)){
+
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_num <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_num[i])
+
+        }
+
+        Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
+      }
+
+      if (base::is.character(WS$Group)){
+
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_char <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_char[i])
+
+        }
+
+        Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
+      }
+
+      if (base::is.character(WS$Group)){
+
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_char <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_char[i])
+
+        }
+
+        Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
+      }
+
+      if (base::is.factor(WS$Group)){
+
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_fac <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::levels(lab_fac)[i])
+
+        }
+
+        Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
+      }
+
+      if (labelled::is.labelled(WS$Group)){
+
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_lab <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
+
+        }
+
+        Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
+      }
 
       MW <- unname(colMeans(Sub[, c(4:(base::ncol(Sub) - 1))]))
 
@@ -192,7 +307,7 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
 
         MarketShare[l, 4] <- m + margin
       }
-      cat("\nShare of Preferences ", base::unique(base::as.character(HOT$Group))[t], ":\n", sep = "")
+      cat("\nShare of Preferences for Group ", lab[t], ":\n", sep = "")
 
 
       print(MarketShare)

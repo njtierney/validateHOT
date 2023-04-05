@@ -18,7 +18,7 @@ MedAE(data, id, Group = NULL, opts, choice)
 \item{choice}{column index of the actual choice}
 }
 \value{
-xyz
+a data frame
 }
 \description{
 Function to measure the Median absolute error of a holdout task

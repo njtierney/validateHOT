@@ -7,9 +7,10 @@
 #' @param opts column indexes of the options included in the holdout task
 #' @param choice column index of the actual choice
 #'
-#' @return xyz
+#' @return a data frame
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
+#' @importFrom labelled is.labelled val_labels
 #'
 #' @examples
 #' library(ValiDatHOT)
@@ -118,6 +119,7 @@ MAE <- function(data, id, Group = NULL, opts, choice) {
   }
 
   if (!(base::is.null(Group))) {
+
     Options <- c()
 
     for (k in 1:base::length(opts)) {
@@ -207,7 +209,70 @@ MAE <- function(data, id, Group = NULL, opts, choice) {
         base::rm(Helper, Actual, Predicted, DataFrame)
       }
 
-      Group <- base::subset(HOT, base::as.character(Group) == base::unique(base::as.character(HOT$Group))[p])
+      if (base::is.numeric(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_num <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_num[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (base::is.character(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_char <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_char[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (base::is.character(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_char <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_char[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (base::is.factor(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_fac <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::levels(lab_fac)[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (labelled::is.labelled(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_lab <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
 
       Helper <- base::as.data.frame(base::matrix(nrow = base::length(4:(base::ncol(Group) - 1)), ncol = 1))
 
@@ -236,7 +301,7 @@ MAE <- function(data, id, Group = NULL, opts, choice) {
 
       DataFrame[base::is.na(DataFrame)] <- 0
 
-      MAE[(p + 1), 1] <- base::unique(base::as.character(HOT$Group))[p]
+      MAE[(p + 1), 1] <- lab[(p + 1)]
 
       MAE[(p + 1), 2] <- base::sum(base::abs(DataFrame$Share - DataFrame$Pred)) / base::length(opts)
 

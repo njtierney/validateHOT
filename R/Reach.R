@@ -12,8 +12,27 @@
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
+#' @importFrom labelled is.labelled val_labels
 #'
-#' @return xyz
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff")
+#' Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")
+#' Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")
+#'
+#' @examples
+#' library(ValiDatHOT)
+#' data(MaxDiff)
+#' createHOT(data = MaxDiff, None = 19, id = 1,
+#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+#'           choice = 20, method = "MaxDiff", varskeep = 21)
+#' Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold", Group = 10)
+#' Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice", Group = 10)
+#'
+#' @return a data frame
 #' @export
 #'
 
@@ -79,9 +98,69 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
 
       WS_new$reach <- ifelse(rowSums(WS_new[, c(3:ncol(WS_new))]) > 0, 1, 0)
 
-      return(WS_new %>%
-        dplyr::group_by(Group) %>%
-        dplyr::summarise(Reach = base::mean(reach) * 100))
+      Reach <- base::rbind(WS_new %>%
+                                 dplyr::summarise(Group = "All",
+                                                  Reach = base::mean(reach) * 100) %>%
+                                 base::as.data.frame(),
+                               WS_new %>%
+                                 dplyr::group_by(Group) %>%
+                                 dplyr::summarise(
+                                   Reach = base::mean(reach) * 100
+                                 ) %>%
+                                 base::as.data.frame())
+
+      # fixing grouping variable
+
+      lab <- c()
+
+      if (base::is.numeric(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_num <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_num[i])
+
+        }
+      }
+
+      if (base::is.character(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_char <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_char[i])
+
+        }
+      }
+
+
+      if (base::is.factor(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_fac <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::levels(lab_fac)[i])
+
+        }
+      }
+
+      if (labelled::is.labelled(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_lab <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
+
+        }
+      }
+
+      Reach$Group <- lab
+
+      return(Reach)
     }
   }
 
@@ -142,9 +221,70 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
 
       WS_new$reach <- base::ifelse(base::rowSums(WS_new[, c(3:base::ncol(WS_new))]) > 0, 1, 0)
 
-      return(WS_new %>%
-        dplyr::group_by(Group) %>%
-        dplyr::summarise(Reach = base::mean(reach) * 100))
+      Reach <- base::rbind(WS_new %>%
+                             dplyr::summarise(Group = "All",
+                                              Reach = base::mean(reach) * 100) %>%
+                             base::as.data.frame(),
+                           WS_new %>%
+                             dplyr::group_by(Group) %>%
+                             dplyr::summarise(
+                               Reach = base::mean(reach) * 100
+                             ) %>%
+                             base::as.data.frame())
+
+      # fixing grouping variable
+
+      lab <- c()
+
+      if (base::is.numeric(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_num <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_num[i])
+
+        }
+      }
+
+      if (base::is.character(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_char <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_char[i])
+
+        }
+      }
+
+
+      if (base::is.factor(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_fac <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::levels(lab_fac)[i])
+
+        }
+      }
+
+      if (labelled::is.labelled(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_lab <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
+
+        }
+      }
+
+      Reach$Group <- lab
+
+      return(Reach)
+
     }
   }
 }

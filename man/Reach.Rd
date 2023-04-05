@@ -20,8 +20,26 @@ Reach(data, id, Group = NULL, None, method, bundles)
 \item{bundles}{column indexes of the bundles included that should be included in the assortment}
 }
 \value{
-xyz
+a data frame
 }
 \description{
 test
+}
+\examples{
+library(ValiDatHOT)
+data(MaxDiff)
+createHOT(data = MaxDiff, None = 19, id = 1,
+          prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+          choice = 20, method = "MaxDiff")
+Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")
+Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")
+
+library(ValiDatHOT)
+data(MaxDiff)
+createHOT(data = MaxDiff, None = 19, id = 1,
+          prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+          choice = 20, method = "MaxDiff", varskeep = 21)
+Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold", Group = 10)
+Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice", Group = 10)
+
 }

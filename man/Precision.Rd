@@ -20,8 +20,26 @@ Precision(data, id, Group = NULL, opts, choice, None)
 \item{None}{column index}
 }
 \value{
-test
+a data frame
 }
 \description{
 test
+}
+\examples{
+library(ValiDatHOT)
+data(MaxDiff)
+createHOT(data = MaxDiff, None = 19, id = 1,
+          prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+          choice = 20, method = "MaxDiff")
+Precision(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
+
+
+library(ValiDatHOT)
+data(MaxDiff)
+createHOT(data = MaxDiff, None = 19, id = 1,
+          prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
+          choice = 20, method = "MaxDiff", varskeep = 21)
+Precision(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+
+
 }

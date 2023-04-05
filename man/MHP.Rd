@@ -39,4 +39,5 @@ createHOT(data = MaxDiff, None = 19, id = 1,
           choice = 20, method = "MaxDiff", varskeep = 21)
 MHP(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
+
 }

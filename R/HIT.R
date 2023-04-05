@@ -195,16 +195,6 @@ HitRate <- function(data, id, Group = NULL, opts, choice) {
       }
     }
 
-    if (base::is.factor(WS$Group)){
-      lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))){
-
-        lab_char <- base::sort(base::unique(WS$Group))
-
-        lab <- c(lab, lab_char[i])
-
-      }
-    }
 
     if (base::is.factor(WS$Group)){
       lab <- "All"

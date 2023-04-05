@@ -208,7 +208,70 @@ RMSE <- function(data, id, Group = NULL, opts, choice) {
         base::rm(Helper, Actual, Predicted, DataFrame)
       }
 
-      Group <- base::subset(HOT, base::as.character(Group) == base::unique(base::as.character(HOT$Group))[p])
+      if (base::is.numeric(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_num <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_num[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (base::is.character(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_char <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_char[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (base::is.character(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_char <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_char[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (base::is.factor(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_fac <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::levels(lab_fac)[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (labelled::is.labelled(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_lab <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
 
       Helper <- base::as.data.frame(base::matrix(nrow = base::length(4:(base::ncol(Group) - 1)), ncol = 1))
 
@@ -237,7 +300,7 @@ RMSE <- function(data, id, Group = NULL, opts, choice) {
 
       DataFrame[base::is.na(DataFrame)] <- 0
 
-	  RMSE[(p + 1), 1] <- base::unique(base::as.character(HOT$Group))[p]
+	    RMSE[(p + 1), 1] <- lab[(p + 1)]
 
       RMSE[(p + 1), 2] <- base::sqrt((base::sum((base::abs(DataFrame$Share - DataFrame$Pred))^2) / base::length(opts)))
 
