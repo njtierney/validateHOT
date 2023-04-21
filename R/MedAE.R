@@ -36,6 +36,11 @@
 
 
 MedAE <- function(data, id, Group = NULL, opts, choice) {
+
+  if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
+    base::stop("Error: Choice must be numeric!")
+  }
+
   WS <- data[, c(id, Group, choice, opts)]
 
   Count <- NULL
@@ -117,9 +122,12 @@ MedAE <- function(data, id, Group = NULL, opts, choice) {
 
     MedAE <- base::merge(x = MedAE, y = Predicted, by = "Options", all.x = T)
 
-	 MedAE[base::is.na(MedAE)] <- 0
+	  MedAE[base::is.na(MedAE)] <- 0
 
-    base::print(stats::median(base::abs(MedAE$Share - MedAE$Pred)))
+	  MedAEErr <- base::as.data.frame(stats::median(base::abs(MedAE$Share - MedAE$Pred)))
+
+	  colnames(MedAEErr) <- "MedAE"
+	  return(MedAEErr)
   }
 
   if (!(base::is.null(Group))) {

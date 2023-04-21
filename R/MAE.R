@@ -32,6 +32,11 @@
 #' @export
 
 MAE <- function(data, id, Group = NULL, opts, choice) {
+
+  if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
+    base::stop("Error: Choice must be numeric!")
+  }
+
   WS <- data[, c(id, Group, choice, opts)]
 
   Count <- NULL
@@ -115,7 +120,10 @@ MAE <- function(data, id, Group = NULL, opts, choice) {
 
     MAE[base::is.na(MAE)] <- 0
 
-    base::print(base::sum(base::abs(MAE$Share - MAE$Pred)) / base::length(opts))
+    MeanAbsErr <- base::as.data.frame(base::sum(base::abs(MAE$Share - MAE$Pred)) / base::length(opts))
+
+    colnames(MeanAbsErr) <- "MAE"
+    return(MeanAbsErr)
   }
 
   if (!(base::is.null(Group))) {

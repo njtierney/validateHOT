@@ -37,6 +37,11 @@
 
 
 F1 <- function(data, id, Group = NULL, opts, choice, None) {
+
+  if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
+    base::stop("Error: Choice must be numeric!")
+  }
+
   WS <- data[, c(id, Group, choice, opts)]
 
   buy <- NULL

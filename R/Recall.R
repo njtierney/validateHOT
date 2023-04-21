@@ -38,6 +38,11 @@
 
 
 Recall <- function(data, id, Group = NULL, opts, choice, None) {
+
+  if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
+    base::stop("Error: Choice must be numeric!")
+  }
+
   WS <- data[, c(id, Group, choice, opts)]
 
   buy <- pred_buy <- NULL
@@ -225,11 +230,5 @@ Recall <- function(data, id, Group = NULL, opts, choice, None) {
 
     return(Recall)
 
-
-    return(HOT %>%
-      dplyr::group_by(Group) %>%
-      dplyr::summarise(
-        Recall = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))), digits = 2)
-      ))
   }
 }

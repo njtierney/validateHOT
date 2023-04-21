@@ -31,6 +31,11 @@
 #' @export
 
 RMSE <- function(data, id, Group = NULL, opts, choice) {
+
+  if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
+    base::stop("Error: Choice must be numeric!")
+  }
+
   WS <- data[, c(id, Group, choice, opts)]
 
   Count <- NULL
@@ -114,7 +119,11 @@ RMSE <- function(data, id, Group = NULL, opts, choice) {
 
     RMSE[base::is.na(RMSE)] <- 0
 
-	base::print(base::sqrt((base::sum((base::abs(RMSE$Share - RMSE$Pred))^2) / base::length(opts))))
+    RMSEErr <- base::as.data.frame(base::sqrt((base::sum((base::abs(RMSE$Share - RMSE$Pred))^2) / base::length(opts))))
+
+    colnames(RMSEErr) <- "RMSE"
+    return(RMSEErr)
+
   }
 
   if (!(base::is.null(Group))) {

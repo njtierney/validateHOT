@@ -24,7 +24,7 @@
 #' HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 #'
 #' @return xyz
-#' @importFrom dplyr group_by summarise
+#' @importFrom dplyr group_by summarise mutate
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
 #'
@@ -97,11 +97,14 @@ HitRate <- function(data, id, Group = NULL, opts, choice) {
 
     return(HR)
 
-
-    base::rm(HOT)
   }
 
   if (!(base::is.null(Group))) {
+
+    if (!base::is.integer(WS[[3]]) & !base::is.numeric(WS[[3]])){
+      base::stop("Error: Choice needs to be numeric!")
+    }
+
     pred <- NULL
 
     Options <- c()
@@ -162,11 +165,13 @@ HitRate <- function(data, id, Group = NULL, opts, choice) {
              dplyr::summarise(Group = "All",
                no. = base::sum(base::as.integer(choice == pred)),
                               perc. = base::mean(base::as.integer(choice == pred) * 100)) %>%
+               dplyr::mutate(chance = (1 / base::length(opts) * 100)) %>%
                base::as.data.frame(),
              HOT %>%
       dplyr::group_by(Group) %>%
       dplyr::summarise(no. = base::sum(base::as.integer(choice == pred)),
                        perc. = base::mean(base::as.integer(choice == pred) * 100)) %>%
+      dplyr::mutate(chance = (1 / base::length(opts) * 100)) %>%
       base::as.data.frame())
 
     # fixing grouping variable
@@ -219,14 +224,9 @@ HitRate <- function(data, id, Group = NULL, opts, choice) {
     }
 
 
-
-
     HR$Group <- lab
-
-    cat("Chance level: ", (1 / base::length(opts) * 100), "%\n\n", sep = "")
 
     return(HR)
 
-    base::rm(HOT)
   }
 }

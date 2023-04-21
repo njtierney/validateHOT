@@ -22,7 +22,7 @@
 #'   \item Option_14. part-worth utility of MaxDiff object # 14
 #'   \item Option_15. part-worth utility of MaxDiff object # 15
 #'   \item Option_16. part-worth utility of MaxDiff object # 16
-#'   \item none. part-worth utilitiy of none parameter
+#'   \item none. part-worth utility of none parameter
 #'   \item HOT. actual choice in the Holdout task
 #'   \item Group. Grouping variable
 #' }
