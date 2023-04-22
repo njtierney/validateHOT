@@ -31,7 +31,7 @@
 #' @export
 HitRate <- function(data, id, Group = NULL, opts, choice) {
 
-  if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
+  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
     base::stop("Error: Choice must be numeric!")
   }
 
@@ -105,10 +105,6 @@ HitRate <- function(data, id, Group = NULL, opts, choice) {
   }
 
   if (!(base::is.null(Group))) {
-
-    if (!base::is.integer(WS[[3]]) & !base::is.numeric(WS[[3]])){
-      base::stop("Error: Choice needs to be numeric!")
-    }
 
     pred <- NULL
 

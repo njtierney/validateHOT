@@ -36,6 +36,13 @@ test_that("Wrong format Choice", {
   expect_error(F1(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
 })
 
+test_that("Wrong format None", {
+  HOT2 <- HOT
+  base::colnames(HOT2)[9] <- "None"
+  HOT2$None <- as.character(HOT2$None)
+  expect_error(F1(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
+})
+
 test_that("Wrong format Option", {
   names <- base::colnames(HOT)[2:9]
 
@@ -108,6 +115,13 @@ test_that("Test plausability of results", {
 test_that("Wrong format Choice", {
   HOT2 <- HOT
   HOT2$choice <- as.character(HOT2$choice)
+  expect_error(F1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
+})
+
+test_that("Wrong format None", {
+  HOT2 <- HOT
+  base::colnames(HOT2)[9] <- "None"
+  HOT2$None <- as.character(HOT2$None)
   expect_error(F1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 
@@ -217,9 +231,4 @@ test_that("Right labels of 'Group' variable", {
 
 })
 
-test_that("Missings", {
-  HOT2 <- HOT
-  HOT2[1, 5] <- NA
-  expect_error(F1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
-})
 
