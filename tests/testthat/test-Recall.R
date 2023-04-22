@@ -50,6 +50,10 @@ test_that("Missings", {
   expect_error(Recall(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
 })
 
+test_that("No missings in output", {
+  expect_false(base::anyNA(Recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
+})
+
 test_that("Recall() also working with data.frame not created with createHOT()", {
   newHOT <- base::data.frame(
     ID = c(1:10),
@@ -58,11 +62,13 @@ test_that("Recall() also working with data.frame not created with createHOT()", 
     Option_3 = stats::runif(10, min = -5, max = 5),
     Option_4 = stats::runif(10, min = -5, max = 5),
     Option_5 = stats::runif(10, min = -5, max = 5),
-    Choice = base::sample(c(1:4), 10, replace = T)
+    Choice = base::sample(c(1:5), 10, replace = T)
   )
 
   expect_equal(base::nrow(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
   expect_equal(base::ncol(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
+
+  expect_false(base::anyNA(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)))
 })
 
 ####################### Test with Grouping variable ########################################
@@ -117,6 +123,10 @@ test_that("Missings", {
   expect_error(Recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 
+test_that("No missings in output", {
+  expect_false(base::anyNA(Recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
+})
+
 
 test_that("Recall() also working with data.frame not created with createHOT()", {
   newHOT <- data.frame(
@@ -126,12 +136,14 @@ test_that("Recall() also working with data.frame not created with createHOT()", 
     Option_3 = stats::runif(10, min = -5, max = 5),
     Option_4 = stats::runif(10, min = -5, max = 5),
     Option_5 = stats::runif(10, min = -5, max = 5),
-    Choice = base::sample(c(1:4), 10, replace = T),
+    Choice = base::sample(c(1:5), 10, replace = T),
     Group = base::sample(c(1,2), 10, replace = T)
   )
 
   expect_equal(nrow(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), (length(unique(newHOT$Group)) + 1))
   expect_equal(ncol(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), 2)
+
+  expect_false(base::anyNA(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)))
 })
 
 
@@ -189,19 +201,10 @@ test_that("Right labels of 'Group' variable", {
 
   Results <- Recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
-
   expect_true(Results$Group[1] == "All")
   expect_true(Results$Group[2] == lev[1])
   expect_true(Results$Group[3] == lev[2])
   expect_true(Results$Group[4] == lev[3])
 
-
-
-})
-
-test_that("Missings", {
-  HOT2 <- HOT
-  HOT2[1, 5] <- NA
-  expect_error(Recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 

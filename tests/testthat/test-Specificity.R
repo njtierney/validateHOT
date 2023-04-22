@@ -50,19 +50,28 @@ test_that("Missings", {
   expect_error(Specificity(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
 })
 
+test_that("No missings in output", {
+  expect_false(base::anyNA(Specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
+})
+
 test_that("Specificity() also working with data.frame not created with createHOT()", {
+
+  base::set.seed(2023)
+
   newHOT <- base::data.frame(
-    ID = c(1:10),
-    Option_1 = stats::runif(10, min = -5, max = 5),
-    Option_2 = stats::runif(10, min = -5, max = 5),
-    Option_3 = stats::runif(10, min = -5, max = 5),
-    Option_4 = stats::runif(10, min = -5, max = 5),
-    Option_5 = stats::runif(10, min = -5, max = 5),
-    Choice = base::sample(c(1:4), 10, replace = T)
+    ID = c(1:100),
+    Option_1 = stats::runif(100, min = -5, max = 5),
+    Option_2 = stats::runif(100, min = -5, max = 5),
+    Option_3 = stats::runif(100, min = -5, max = 5),
+    Option_4 = stats::runif(100, min = -5, max = 5),
+    Option_5 = stats::runif(100, min = -5, max = 5),
+    Choice = base::sample(c(1:5), 100, replace = T)
   )
 
   expect_equal(base::nrow(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
   expect_equal(base::ncol(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
+
+  expect_false(base::anyNA(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)))
 })
 
 ####################### Test with Grouping variable ########################################
@@ -117,21 +126,31 @@ test_that("Missings", {
   expect_error(Specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 
+test_that("No missings in output", {
+  expect_false(base::anyNA(Specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
+})
+
+
 
 test_that("Specificity() also working with data.frame not created with createHOT()", {
+
+  base::set.seed(2023)
+
   newHOT <- data.frame(
-    ID = c(1:10),
-    Option_1 = stats::runif(10, min = -5, max = 5),
-    Option_2 = stats::runif(10, min = -5, max = 5),
-    Option_3 = stats::runif(10, min = -5, max = 5),
-    Option_4 = stats::runif(10, min = -5, max = 5),
-    Option_5 = stats::runif(10, min = -5, max = 5),
-    Choice = base::sample(c(1:4), 10, replace = T),
-    Group = base::sample(c(1,2), 10, replace = T)
+    ID = c(1:100),
+    Option_1 = stats::runif(100, min = -5, max = 5),
+    Option_2 = stats::runif(100, min = -5, max = 5),
+    Option_3 = stats::runif(100, min = -5, max = 5),
+    Option_4 = stats::runif(100, min = -5, max = 5),
+    Option_5 = stats::runif(100, min = -5, max = 5),
+    Choice = base::sample(c(1:5), 100, replace = T),
+    Group = base::sample(c(1,2), 100, replace = T)
   )
 
   expect_equal(nrow(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), (length(unique(newHOT$Group)) + 1))
   expect_equal(ncol(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), 2)
+
+  expect_false(base::anyNA(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)))
 })
 
 
@@ -195,13 +214,6 @@ test_that("Right labels of 'Group' variable", {
   expect_true(Results$Group[3] == lev[2])
   expect_true(Results$Group[4] == lev[3])
 
-
-
 })
 
-test_that("Missings", {
-  HOT2 <- HOT
-  HOT2[1, 5] <- NA
-  expect_error(Specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
-})
 

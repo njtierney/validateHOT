@@ -47,20 +47,24 @@ test_that("Hit Rate % correct", {
 test_that("Wrong format Choice", {
   HOT2 <- HOT
   HOT2$choice <- as.character(HOT2$choice)
-  expect_error(HitRate(data = HO2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("Wrong format Option", {
   HOT2 <- HOT
   HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(HitRate(data = HO2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(HitRate(data = HO2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+})
+
+test_that("No missings in output", {
+  expect_false(base::anyNA(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 
@@ -77,6 +81,8 @@ test_that("HitRate() also working with data.frame not created with createHOT()",
   expect_equal(nrow(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 3)
   expect_equal(ncol(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
   expect_equal(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6)[1, 1], (1 / (length(newHOT) - 2) * 100))
+
+  expect_false(base::anyNA(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
 })
 
 
@@ -146,6 +152,11 @@ test_that("Missings", {
   expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
+test_that("No missings in output", {
+  expect_false(base::anyNA(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
+})
+
+
 
 test_that("HitRate() also working with data.frame not created with createHOT()", {
   newHOT <- data.frame(
@@ -160,6 +171,8 @@ test_that("HitRate() also working with data.frame not created with createHOT()",
 
   expect_equal(nrow(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), (length(unique(newHOT$Group)) + 1))
   expect_equal(ncol(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), 4)
+
+  expect_false(base::anyNA(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)))
 })
 
 
@@ -226,9 +239,5 @@ test_that("Right labels of 'Group' variable", {
 
 })
 
-test_that("Missings", {
-  HOT2 <- HOT
-  HOT2[1, 5] <- NA
-  expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
-})
+
 

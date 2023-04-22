@@ -6,6 +6,7 @@
 #' @param Group optional grouping variable to get hit rate by group
 #' @param opts column indexes of the options included in the holdout task
 #' @param choice column index of the actual choice
+#' @param epsilon noise that should be added to 0 values, per default set to 1e-05
 #'
 #' @return xyz
 #' @importFrom dplyr group_by summarise
@@ -31,7 +32,11 @@
 #'
 #' @export
 
-KL <- function(data, id, Group = NULL, opts, choice) {
+KL <- function(data, id, Group = NULL, opts, choice, epsilon=NULL) {
+
+  if (base::is.null(epsilon)){
+    epsilon = .00001
+  }
 
   if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
     base::stop("Error: Choice must be numeric!")
@@ -106,14 +111,14 @@ KL <- function(data, id, Group = NULL, opts, choice) {
       dplyr::group_by(choice) %>%
       dplyr::summarise(Count = dplyr::n()) %>%
       dplyr::ungroup() %>%
-      dplyr::mutate(Share = Count / base::sum(Count) * 100) %>%
+      dplyr::mutate(Share = Count / base::sum(Count)) %>%
       base::as.data.frame()
 
     Predicted <- HOT %>%
       dplyr::group_by(pred) %>%
       dplyr::summarise(Count = dplyr::n()) %>%
       dplyr::ungroup() %>%
-      dplyr::mutate(Predicted = Count / base::sum(Count) * 100) %>%
+      dplyr::mutate(Predicted = Count / base::sum(Count)) %>%
       base::as.data.frame()
 
 
@@ -121,12 +126,17 @@ KL <- function(data, id, Group = NULL, opts, choice) {
 
     KL <- base::merge(x = KL, y = Predicted[, c("pred", "Predicted")], by.x = "Options", by.y = "pred", all.x = T)
 
+    KL[base::is.na(KL)] <- epsilon
+
     i <- 1:base::length(Helper$Options)
 
     base::sum(KL[i, 2] * base::log2(KL[i, 2] / KL[i, 3]))
 
-    base::cat("Observed | Predicted: ", (base::sum(KL[i, 2] * base::log2(KL[i, 2] / KL[i, 3])) / 100), "\n")
-    base::cat("Predicted | Observed: ", (base::sum(KL[i, 3] * base::log2(KL[i, 3] / KL[i, 2])) / 100))
+    Res <- base::as.data.frame(base::cbind(base::sum(KL[i, 2] * base::log2(KL[i, 2] / KL[i, 3])), base::sum(KL[i, 3] * base::log2(KL[i, 3] / KL[i, 2]))))
+
+    colnames(Res) <- c("KL_O_P", "KL_P_O")
+
+    return(Res)
   }
 
   if (!(base::is.null(Group))) {
@@ -182,7 +192,7 @@ KL <- function(data, id, Group = NULL, opts, choice) {
       }
     }
 
-    KL <- base::data.frame(Group = base::character(base::length(base::unique(HOT$Group)) + 1), KL_P_O = base::numeric(base::length(base::unique(HOT$Group)) + 1), KL_O_P = base::numeric(base::length(base::unique(HOT$Group)) + 1))
+    KL <- base::data.frame(Group = base::character(base::length(base::unique(HOT$Group)) + 1), KL_O_P = base::numeric(base::length(base::unique(HOT$Group)) + 1), KL_P_O = base::numeric(base::length(base::unique(HOT$Group)) + 1))
 
     for (p in 1:base::length(base::unique(HOT$Group))) {
       if (p == 1) {
@@ -196,14 +206,14 @@ KL <- function(data, id, Group = NULL, opts, choice) {
           dplyr::group_by(choice) %>%
           dplyr::summarise(Count = dplyr::n()) %>%
           dplyr::ungroup() %>%
-          dplyr::mutate(Share = Count / sum(Count) * 100) %>%
+          dplyr::mutate(Share = Count / sum(Count)) %>%
           base::as.data.frame()
 
         Predicted <- HOT %>%
           dplyr::group_by(pred) %>%
           dplyr::summarise(Count = dplyr::n()) %>%
           dplyr::ungroup() %>%
-          dplyr::mutate(Predicted = Count / base::sum(Count) * 100) %>%
+          dplyr::mutate(Predicted = Count / base::sum(Count)) %>%
           base::as.data.frame()
 
         DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
@@ -220,7 +230,70 @@ KL <- function(data, id, Group = NULL, opts, choice) {
         base::rm(Helper, Actual, Predicted, DataFrame)
       }
 
-      Group <- base::subset(HOT, base::as.character(Group) == base::unique(base::as.character(HOT$Group))[p])
+      if (base::is.numeric(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_num <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_num[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (base::is.character(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_char <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_char[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (base::is.character(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_char <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, lab_char[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (base::is.factor(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_fac <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::levels(lab_fac)[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
+
+      if (labelled::is.labelled(WS$Group)){
+        lab <- "All"
+        for (i in 1:base::length(base::unique(WS$Group))){
+
+          lab_lab <- base::sort(base::unique(WS$Group))
+
+          lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
+
+        }
+
+        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+      }
 
       Helper <- base::as.data.frame(base::matrix(nrow = base::length(4:(base::ncol(Group) - 1)), ncol = 1))
 
@@ -228,28 +301,29 @@ KL <- function(data, id, Group = NULL, opts, choice) {
 
       Helper$Options <- c(1:base::length(4:(base::ncol(HOT) - 1)))
 
-
       Actual <- Group %>%
         dplyr::group_by(choice) %>%
         dplyr::summarise(Count = dplyr::n()) %>%
         dplyr::ungroup() %>%
-        dplyr::mutate(Share = Count / base::sum(Count) * 100) %>%
+        dplyr::mutate(Share = Count / base::sum(Count)) %>%
         base::as.data.frame()
 
       Predicted <- Group %>%
         dplyr::group_by(pred) %>%
         dplyr::summarise(Count = dplyr::n()) %>%
         dplyr::ungroup() %>%
-        dplyr::mutate(Predicted = Count / base::sum(Count) * 100) %>%
+        dplyr::mutate(Predicted = Count / base::sum(Count)) %>%
         base::as.data.frame()
 
       DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
       DataFrame <- base::merge(x = DataFrame, y = Predicted[, c("pred", "Predicted")], by.x = "Options", by.y = "pred", all.x = T)
 
+      DataFrame[base::is.na(DataFrame)] <- epsilon
+
       i <- 1:base::length(Helper$Options)
 
-      KL[(p + 1), 1] <- base::unique(base::as.character(HOT$Group))[p]
+      KL[(p + 1), 1] <- lab[(p + 1)]
 
       KL[(p + 1), 2] <- base::sum(DataFrame[i, 2] * base::log2(DataFrame[i, 2] / DataFrame[i, 3]))
       KL[(p + 1), 3] <- base::sum(DataFrame[i, 3] * base::log2(DataFrame[i, 3] / DataFrame[i, 2]))
@@ -257,7 +331,6 @@ KL <- function(data, id, Group = NULL, opts, choice) {
       base::rm(Helper, Actual, Predicted, DataFrame)
 
       if (p == base::max(base::length(base::unique(HOT$Group)))) {
-        KL[, c(2, 3)] <- KL[, c(2, 3)] / 100
         return(KL)
       }
     }

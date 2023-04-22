@@ -4,7 +4,7 @@
 \alias{KL}
 \title{Kullback-Leibler Divergence}
 \usage{
-KL(data, id, Group = NULL, opts, choice)
+KL(data, id, Group = NULL, opts, choice, epsilon = NULL)
 }
 \arguments{
 \item{data}{a data frame}
@@ -16,6 +16,8 @@ KL(data, id, Group = NULL, opts, choice)
 \item{opts}{column indexes of the options included in the holdout task}
 
 \item{choice}{column index of the actual choice}
+
+\item{epsilon}{noise that should be added to 0 values, per default set to 1e-05}
 }
 \value{
 xyz

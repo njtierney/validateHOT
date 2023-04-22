@@ -48,7 +48,11 @@ test_that("Test plausability of results", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(MAE(data = HO2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(MAE(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+})
+
+test_that("No missings in output", {
+  expect_false(base::anyNA(MAE(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 
@@ -64,6 +68,8 @@ test_that("MAE() also working with data.frame not created with createHOT()", {
 
   expect_equal(nrow(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
   expect_equal(ncol(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
+
+  expect_false(base::anyNA(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
 })
 
 
@@ -116,6 +122,10 @@ test_that("Missings", {
   expect_error(MAE(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
+test_that("No missings in output", {
+  expect_false(base::anyNA(MAE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
+})
+
 
 test_that("MAE() also working with data.frame not created with createHOT()", {
   newHOT <- data.frame(
@@ -130,6 +140,8 @@ test_that("MAE() also working with data.frame not created with createHOT()", {
 
   expect_equal(nrow(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), (length(unique(newHOT$Group)) + 1))
   expect_equal(ncol(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), 2)
+
+  expect_false(base::anyNA(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)))
 })
 
 
@@ -196,9 +208,4 @@ test_that("Right labels of 'Group' variable", {
 
 })
 
-test_that("Missings", {
-  HOT2 <- HOT
-  HOT2[1, 5] <- NA
-  expect_error(MAE(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
-})
 

@@ -29,13 +29,13 @@ test_that("Count of correct predicted people", {
 test_that("Wrong format Choice", {
   HOT2 <- HOT
   HOT2$choice <- as.character(HOT2$choice)
-  expect_error(MHP(data = HO2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("Wrong format Option", {
   HOT2 <- HOT
   HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(MHP(data = HO2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("Test plausability of results", {
@@ -48,7 +48,11 @@ test_that("Test plausability of results", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(MHP(data = HO2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+})
+
+test_that("No missings in output", {
+  expect_false(base::anyNA(MHP(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 
@@ -64,6 +68,8 @@ test_that("MHP() also working with data.frame not created with createHOT()", {
 
   expect_equal(nrow(MHP(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
   expect_equal(ncol(MHP(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
+
+  expect_false(base::anyNA(MHP(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
 })
 
 
@@ -114,6 +120,10 @@ test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
   expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+})
+
+test_that("No missings in output", {
+  expect_false(base::anyNA(MHP(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
 })
 
 
