@@ -35,9 +35,9 @@ test_that("Count of correct predicted people", {
 })
 
 test_that("Test plausability of results", {
-  expect_true(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] <= 100)
+  expect_true(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] <= 100 & HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] >= 0)
   expect_true(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 1] <= nrow(HOT))
-  expect_true(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1] <= 100)
+  expect_true(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1] <= 100 & HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1] >= 0)
 })
 
 test_that("Hit Rate % correct", {

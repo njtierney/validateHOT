@@ -30,6 +30,11 @@
 #'
 #' @export
 MHP <- function(data, id, Group = NULL, opts, choice) {
+
+  if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
+    base::stop("Error: Choice must be numeric!")
+  }
+
   WS <- data[, c(id, Group, choice, opts)]
 
   if (base::is.null(Group)) {
@@ -90,7 +95,11 @@ MHP <- function(data, id, Group = NULL, opts, choice) {
       HOT$MHP[i] <- HOT[i, (HOT$choice[i] + 2)]
     }
 
-    base::print(base::mean(HOT$MHP))
+    MeanHIT <- base::as.data.frame(base::mean(HOT$MHP))
+
+    colnames(MeanHIT) <- "MeanHitProb"
+    return(MeanHIT)
+
   }
 
   if (!(base::is.null(Group))) {
