@@ -34,11 +34,22 @@
 #'
 #' @return a data frame
 #' @export
-#'
 
 Reach <- function(data, id, Group = NULL, None, method, bundles) {
   if (method != "threshold" & method != "First Choice") {
     stop("Error: ", method, " is not valid. Please specify whether to use 'threshold' or 'First Choice'")
+  }
+
+  varCheck <- c(bundles, None)
+
+  for (i in 1:base::length(varCheck)){
+    if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])){
+      stop("Error ": colnames(data[varCheck[i]]), " needs to be numeric!")
+    }
+
+    if (base::anyNA(data[varCheck[i]])){
+      stop("Error ": colnames(data[[varCheck[i]]]), " has missing values!")
+    }
   }
 
   reach <- NULL
@@ -68,7 +79,12 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
         }
       }
 
-      base::print(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
+      Reach <- base::as.data.frame(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
+
+      colnames(Reach) <- "Reach"
+
+      return(Reach)
+
     }
 
     if (!(base::is.null(Group))) {
@@ -113,7 +129,7 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
 
       lab <- c()
 
-      if (base::is.numeric(WS$Group)){
+      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
         lab <- "All"
         for (i in 1:base::length(base::unique(WS$Group))){
 
@@ -189,7 +205,11 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
         }
       }
 
-      base::print(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
+      Reach <- base::as.data.frame(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
+
+      colnames(Reach) <- "Reach"
+
+      return(Reach)
     }
 
     if (!(base::is.null(Group))) {
@@ -236,7 +256,7 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
 
       lab <- c()
 
-      if (base::is.numeric(WS$Group)){
+      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
         lab <- "All"
         for (i in 1:base::length(base::unique(WS$Group))){
 

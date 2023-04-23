@@ -32,7 +32,7 @@
 
 RMSE <- function(data, id, Group = NULL, opts, choice) {
 
-  if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
+  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
     base::stop("Error: Choice must be numeric!")
   }
 
@@ -230,7 +230,7 @@ RMSE <- function(data, id, Group = NULL, opts, choice) {
         Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
       }
 
-      if (base::is.character(WS$Group)){
+      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
         lab <- "All"
         for (i in 1:base::length(base::unique(WS$Group))){
 

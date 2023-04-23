@@ -76,15 +76,15 @@ test_that("freqAssort() also working with data.frame not created with createHOT(
     Choice = base::sample(c(1:5), 10, replace = T)
   )
 
-  expect_equal(base::nrow(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, method = "threshold")), 1)
-  expect_equal(base::ncol(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, method = "threshold")), 1)
+  expect_equal(base::nrow(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "threshold")), 1)
+  expect_equal(base::ncol(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "threshold")), 1)
 
-  expect_false(base::anyNA(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, method = "threshold")))
+  expect_false(base::anyNA(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "threshold")))
 
-  expect_equal(base::nrow(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, method = "First Choice")), 1)
-  expect_equal(base::ncol(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, method = "First Choice")), 1)
+  expect_equal(base::nrow(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "First Choice")), 1)
+  expect_equal(base::ncol(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "First Choice")), 1)
 
-  expect_false(base::anyNA(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, method = "First Choice")))
+  expect_false(base::anyNA(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "First Choice")))
 
 
   })
@@ -165,15 +165,15 @@ test_that("freqAssort() also working with data.frame not created with createHOT(
     Group = base::sample(c(1,2), 10, replace = T)
   )
 
-  expect_equal(base::nrow(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, Group = 8, method = "threshold")), (length(unique(newHOT$Group)) + 1))
-  expect_equal(base::ncol(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, Group = 8, method = "threshold")), 2)
+  expect_equal(base::nrow(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "threshold")), (length(unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "threshold")), 2)
 
-  expect_false(base::anyNA(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, Group = 8, method = "threshold")))
+  expect_false(base::anyNA(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "threshold")))
 
-  expect_equal(base::nrow(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, Group = 8, method = "First Choice")), (length(unique(newHOT$Group)) + 1))
-  expect_equal(base::ncol(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, Group = 8, method = "First Choice")), 2)
+  expect_equal(base::nrow(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "First Choice")), (length(unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "First Choice")), 2)
 
-  expect_false(base::anyNA(freqAssort(data = newHOT, id = 1, bundles = c(2,3,7), None = 6, Group = 8, method = "First Choice")))
+  expect_false(base::anyNA(freqAssort(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "First Choice")))
 
 
 })

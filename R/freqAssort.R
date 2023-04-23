@@ -128,7 +128,7 @@ freqAssort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
 
       lab <- c()
 
-      if (base::is.numeric(WS$Group)){
+      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
         lab <- "All"
         for (i in 1:base::length(base::unique(WS$Group))){
 
@@ -256,7 +256,7 @@ freqAssort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
 
       lab <- c()
 
-      if (base::is.numeric(WS$Group)){
+      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
         lab <- "All"
         for (i in 1:base::length(base::unique(WS$Group))){
 

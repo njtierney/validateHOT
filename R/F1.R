@@ -185,7 +185,7 @@ F1 <- function(data, id, Group = NULL, opts, choice, None) {
 
     lab <- c()
 
-    if (base::is.numeric(WS$Group)){
+    if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
       lab <- "All"
       for (i in 1:base::length(base::unique(WS$Group))){
 

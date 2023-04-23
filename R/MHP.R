@@ -31,7 +31,7 @@
 #' @export
 MHP <- function(data, id, Group = NULL, opts, choice) {
 
-  if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
+  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
     base::stop("Error: Choice must be numeric!")
   }
 
@@ -173,7 +173,7 @@ MHP <- function(data, id, Group = NULL, opts, choice) {
 
     lab <- c()
 
-    if (base::is.numeric(WS$Group)){
+    if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
       lab <- "All"
       for (i in 1:base::length(base::unique(WS$Group))){
 

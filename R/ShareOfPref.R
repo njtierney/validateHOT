@@ -36,8 +36,20 @@
 
 ShareofPref <- function(data, id, Group = NULL, opts, choice) {
 
-  if (!base::is.integer(data[[choice]]) | !base::is.numeric(data[[choice]])){
+  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
     base::stop("Error: Choice must be numeric!")
+  }
+
+  varCheck <- c(opts)
+
+  for (i in 1:base::length(varCheck)){
+    if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])){
+      stop("Error ": colnames(data[varCheck[i]]), " needs to be numeric!")
+    }
+
+    if (base::anyNA(data[varCheck[i]])){
+      stop("Error ": colnames(data[[varCheck[i]]]), " has missing values!")
+    }
   }
 
   WS <- data[, c(id, Group, choice, opts)]
@@ -185,6 +197,8 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
 
     lab <- c()
 
+    output <- base::list()
+
     for (t in 1:base::length(base::unique(HOT$Group))) {
 
       if (t == 1){
@@ -202,7 +216,7 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
 
         for (all in 1:base::nrow(MarketShare_ALL)) {
           m <- MarketShare_ALL[all, 2]
-          s <- stats::sd(HOT[, (all + 2)])
+          s <- stats::sd(HOT[, (all + 3)])
           n <- base::nrow(HOT)
 
           margin <- stats::qt(0.975, df = n - 1) * s / sqrt(n)
@@ -212,13 +226,12 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
           MarketShare_ALL[all, 4] <- m + margin
         }
 
-        cat("\nShare of Preferences for All:\n", sep = "")
+        output[[t]] <- MarketShare_ALL
 
-        print(MarketShare_ALL)
       }
 
 
-      if (base::is.numeric(WS$Group)){
+      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
 
         for (i in 1:base::length(base::unique(WS$Group))){
 
@@ -244,18 +257,6 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
         Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
       }
 
-      if (base::is.character(WS$Group)){
-
-        for (i in 1:base::length(base::unique(WS$Group))){
-
-          lab_char <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, lab_char[i])
-
-        }
-
-        Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
-      }
 
       if (base::is.factor(WS$Group)){
 
@@ -312,10 +313,15 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
 
         MarketShare[l, 4] <- m + margin
       }
-      cat("\nShare of Preferences for Group ", lab[t], ":\n", sep = "")
 
+      output[[(t + 1)]] <- MarketShare
 
-      print(MarketShare)
+      if (t == base::length(base::unique(HOT$Group))){
+
+          names(output) <- c("All", lab[1:base::length(unique(HOT$Group))])
+          return(output)
+      }
+
     }
   }
 }
