@@ -21,7 +21,7 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff")
-#' Precision(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
+#' precision(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
 #'
 #'
 #' @examples
@@ -30,16 +30,20 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff", varskeep = 21)
-#' Precision(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+#' precision(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 #'
 #'
 #' @export
 
 
-Precision <- function(data, id, Group = NULL, opts, choice, None) {
+precision <- function(data, id, Group = NULL, opts, choice, None) {
 
   if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
     base::stop("Error: Choice must be numeric!")
+  }
+
+  if (!base::is.null(Group) & base::anyNA(data[Group])){
+    base::warning("Warning: Grouping variable contains NAs.")
   }
 
   WS <- data[, c(id, Group, choice, opts)]
@@ -106,7 +110,7 @@ Precision <- function(data, id, Group = NULL, opts, choice, None) {
 
     return(HOT %>%
       dplyr::summarise(
-        Precision = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 2 & pred_buy == 1))), digits = 2)
+        precision = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 2 & pred_buy == 1))), digits = 2)
       ))
   }
 
@@ -168,12 +172,12 @@ Precision <- function(data, id, Group = NULL, opts, choice, None) {
 
     Precision <- base::rbind(HOT %>%
                               dplyr::summarise(Group = "All",
-                                               Precision = round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 2 & pred_buy == 1))), digits = 2)) %>%
+                                               precision = round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 2 & pred_buy == 1))), digits = 2)) %>%
                               base::as.data.frame(),
                             HOT %>%
                               dplyr::group_by(Group) %>%
                               dplyr::summarise(
-                                Precision = round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 2 & pred_buy == 1))), digits = 2)
+                                precision = round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 2 & pred_buy == 1))), digits = 2)
                               ) %>%
                               base::as.data.frame())
 

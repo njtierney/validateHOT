@@ -17,7 +17,7 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff")
-#' RMSE(data = HOT, id = 1, opts = c(2:9), choice = 10)
+#' rmse(data = HOT, id = 1, opts = c(2:9), choice = 10)
 #'
 #'
 #' @examples
@@ -26,14 +26,18 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff", varskeep = 21)
-#' RMSE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+#' rmse(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 #'
 #' @export
 
-RMSE <- function(data, id, Group = NULL, opts, choice) {
+rmse <- function(data, id, Group = NULL, opts, choice) {
 
   if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
     base::stop("Error: Choice must be numeric!")
+  }
+
+  if (!base::is.null(Group) & base::anyNA(data[Group])){
+    base::warning("Warning: Grouping variable contains NAs.")
   }
 
   WS <- data[, c(id, Group, choice, opts)]
@@ -121,7 +125,7 @@ RMSE <- function(data, id, Group = NULL, opts, choice) {
 
     RMSEErr <- base::as.data.frame(base::sqrt((base::sum((base::abs(RMSE$Share - RMSE$Pred))^2) / base::length(opts))))
 
-    colnames(RMSEErr) <- "RMSE"
+    colnames(RMSEErr) <- "rmse"
     return(RMSEErr)
 
   }
@@ -179,7 +183,7 @@ RMSE <- function(data, id, Group = NULL, opts, choice) {
       }
     }
 
-    RMSE <- base::data.frame(Group = base::character(base::length(base::unique(HOT$Group)) + 1), RMSE = base::numeric(base::length(base::unique(HOT$Group)) + 1))
+    RMSE <- base::data.frame(Group = base::character(base::length(base::unique(HOT$Group)) + 1), rmse = base::numeric(base::length(base::unique(HOT$Group)) + 1))
 
     for (p in 1:base::length(base::unique(HOT$Group))) {
       if (p == 1) {

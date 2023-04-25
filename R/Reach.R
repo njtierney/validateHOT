@@ -20,8 +20,8 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff")
-#' Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")
-#' Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")
+#' reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")
+#' reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")
 #'
 #' @examples
 #' library(ValiDatHOT)
@@ -29,13 +29,13 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff", varskeep = 21)
-#' Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold", Group = 10)
-#' Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice", Group = 10)
+#' reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold", Group = 10)
+#' reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice", Group = 10)
 #'
 #' @return a data frame
 #' @export
 
-Reach <- function(data, id, Group = NULL, None, method, bundles) {
+reach <- function(data, id, Group = NULL, None, method, bundles) {
   if (method != "threshold" & method != "First Choice") {
     stop("Error: ", method, " is not valid. Please specify whether to use 'threshold' or 'First Choice'")
   }
@@ -50,6 +50,10 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
     if (base::anyNA(data[varCheck[i]])){
       stop("Error ": colnames(data[[varCheck[i]]]), " has missing values!")
     }
+  }
+
+  if (!base::is.null(Group) & base::anyNA(data[Group])){
+    base::warning("Warning: Grouping variable contains NAs.")
   }
 
   reach <- NULL
@@ -81,7 +85,7 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
 
       Reach <- base::as.data.frame(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
 
-      colnames(Reach) <- "Reach"
+      colnames(Reach) <- "reach"
 
       return(Reach)
 
@@ -116,12 +120,12 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
 
       Reach <- base::rbind(WS_new %>%
                                  dplyr::summarise(Group = "All",
-                                                  Reach = base::mean(reach) * 100) %>%
+                                                  reach = base::mean(reach) * 100) %>%
                                  base::as.data.frame(),
                                WS_new %>%
                                  dplyr::group_by(Group) %>%
                                  dplyr::summarise(
-                                   Reach = base::mean(reach) * 100
+                                   reach = base::mean(reach) * 100
                                  ) %>%
                                  base::as.data.frame())
 
@@ -207,7 +211,7 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
 
       Reach <- base::as.data.frame(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
 
-      colnames(Reach) <- "Reach"
+      colnames(Reach) <- "reach"
 
       return(Reach)
     }
@@ -243,12 +247,12 @@ Reach <- function(data, id, Group = NULL, None, method, bundles) {
 
       Reach <- base::rbind(WS_new %>%
                              dplyr::summarise(Group = "All",
-                                              Reach = base::mean(reach) * 100) %>%
+                                              reach = base::mean(reach) * 100) %>%
                              base::as.data.frame(),
                            WS_new %>%
                              dplyr::group_by(Group) %>%
                              dplyr::summarise(
-                               Reach = base::mean(reach) * 100
+                               reach = base::mean(reach) * 100
                              ) %>%
                              base::as.data.frame())
 

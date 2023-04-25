@@ -9,31 +9,31 @@ createHOT(
 )
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(Specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
+  expect_true(base::is.data.frame(specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(Specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
-  expect_equal(ncol(Specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
+  expect_equal(base::nrow(specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
+  expect_equal(base::ncol(specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(Specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), "Specificity")
+  expect_equal(base::colnames(specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), "specificity")
 })
 
 
 test_that("Test plausability of results", {
-  expect_true(Specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1] <= 100)
+  expect_true(specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1] <= 100)
 })
 
 test_that("Make sure test data is correct", {
-  expect_equal(Specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1], 32)
+  expect_equal(specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1], 32)
 })
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(Specificity(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(specificity(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
 })
 
 test_that("Wrong format Option", {
@@ -47,14 +47,14 @@ test_that("Wrong format Option", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(Specificity(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
+  expect_error(specificity(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(Specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
+  expect_false(base::anyNA(specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
 })
 
-test_that("Specificity() also working with data.frame not created with createHOT()", {
+test_that("specificity() also working with data.frame not created with createHOT()", {
 
   base::set.seed(2023)
 
@@ -68,10 +68,10 @@ test_that("Specificity() also working with data.frame not created with createHOT
     Choice = base::sample(c(1:5), 100, replace = T)
   )
 
-  expect_equal(base::nrow(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
-  expect_equal(base::ncol(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
+  expect_equal(base::nrow(specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
+  expect_equal(base::ncol(specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
 
-  expect_false(base::anyNA(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)))
+  expect_false(base::anyNA(specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)))
 })
 
 ####################### Test with Grouping variable ########################################
@@ -81,24 +81,24 @@ createHOT(data = MaxDiff, None = 19, id = 1,
           choice = 20, method = "MaxDiff", varskeep = 21)
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(Specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
+  expect_true(base::is.data.frame(specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(Specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), (length(unique(HOT$Group)) + 1))
-  expect_equal(ncol(Specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), 2)
+  expect_equal(base::nrow(specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), (base::length(base::unique(HOT$Group)) + 1))
+  expect_equal(base::ncol(specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), 2)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(Specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), c("Group", "Specificity"))
+  expect_equal(base::colnames(specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), c("Group", "specificity"))
 })
 
 
 test_that("Test plausability of results", {
 
-  Results <- Specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
-  for (i in 1:nrow(Results)){
+  for (i in 1:base::nrow(Results)){
     expect_true(Results[i, 2] <= 100)
   }
 })
@@ -107,8 +107,8 @@ test_that("Test plausability of results", {
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(Specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 
 test_that("Wrong format Option", {
@@ -123,20 +123,20 @@ test_that("Wrong format Option", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(Specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
+  expect_error(specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(Specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
+  expect_false(base::anyNA(specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
 })
 
 
 
-test_that("Specificity() also working with data.frame not created with createHOT()", {
+test_that("specificity() also working with data.frame not created with createHOT()", {
 
   base::set.seed(2023)
 
-  newHOT <- data.frame(
+  newHOT <- base::data.frame(
     ID = c(1:100),
     Option_1 = stats::runif(100, min = -5, max = 5),
     Option_2 = stats::runif(100, min = -5, max = 5),
@@ -147,10 +147,10 @@ test_that("Specificity() also working with data.frame not created with createHOT
     Group = base::sample(c(1,2), 100, replace = T)
   )
 
-  expect_equal(nrow(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), (length(unique(newHOT$Group)) + 1))
-  expect_equal(ncol(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), 2)
+  expect_equal(base::nrow(specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), (base::length(base::unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), 2)
 
-  expect_false(base::anyNA(Specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)))
+  expect_false(base::anyNA(specificity(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)))
 })
 
 
@@ -168,7 +168,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::levels(HOT2$Group))
 
-  Results <- Specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
 
   expect_true(Results$Group[1] == "All")
@@ -189,7 +189,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::names(labelled::val_labels(HOT2$Group)))
 
-  Results <- Specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
 
   expect_true(Results$Group[1] == "All")
@@ -202,11 +202,11 @@ test_that("Right labels of 'Group' variable", {
   HOT2 <- HOT
 
   ## change 'Group' to character
-  HOT2$Group <- as.character(HOT2$Group)
+  HOT2$Group <- base::as.character(HOT2$Group)
 
   lev <- c(base::sort(base::unique(HOT2$Group)))
 
-  Results <- Specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
 
   expect_true(Results$Group[1] == "All")

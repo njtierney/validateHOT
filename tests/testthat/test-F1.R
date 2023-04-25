@@ -9,38 +9,38 @@ createHOT(
 )
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(F1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
+  expect_true(base::is.data.frame(f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(F1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
-  expect_equal(ncol(F1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
+  expect_equal(base::nrow(f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
+  expect_equal(base::ncol(f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(F1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), "F1")
+  expect_equal(base::colnames(f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), "f1")
 })
 
 
 test_that("Test plausability of results", {
-  expect_true(F1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1] <= 100)
+  expect_true(f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1] <= 100)
 })
 
 test_that("Make sure test data is correct", {
-  expect_equal(F1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1], 79.61)
+  expect_equal(f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1], 79.61)
 })
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(F1(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(f1(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
 })
 
 test_that("Wrong format None", {
   HOT2 <- HOT
   base::colnames(HOT2)[9] <- "None"
-  HOT2$None <- as.character(HOT2$None)
-  expect_error(F1(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
+  HOT2$None <- base::as.character(HOT2$None)
+  expect_error(f1(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
 })
 
 test_that("Wrong format Option", {
@@ -54,14 +54,14 @@ test_that("Wrong format Option", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(F1(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
+  expect_error(f1(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(F1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
+  expect_false(base::anyNA(f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
 })
 
-test_that("F1() also working with data.frame not created with createHOT()", {
+test_that("f1() also working with data.frame not created with createHOT()", {
 
   base::set.seed(2023)
 
@@ -75,10 +75,10 @@ test_that("F1() also working with data.frame not created with createHOT()", {
     Choice = base::sample(c(1:5), 10, replace = T)
   )
 
-  expect_equal(base::nrow(F1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
-  expect_equal(base::ncol(F1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
+  expect_equal(base::nrow(f1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
+  expect_equal(base::ncol(f1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
 
-  expect_false(base::anyNA(F1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)))
+  expect_false(base::anyNA(f1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)))
   })
 
 ####################### Test with Grouping variable ########################################
@@ -88,24 +88,24 @@ createHOT(data = MaxDiff, None = 19, id = 1,
           choice = 20, method = "MaxDiff", varskeep = 21)
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(F1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
+  expect_true(base::is.data.frame(f1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(F1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), (length(unique(HOT$Group)) + 1))
-  expect_equal(ncol(F1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), 2)
+  expect_equal(base::nrow(f1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), (base::length(base::unique(HOT$Group)) + 1))
+  expect_equal(base::ncol(f1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), 2)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(F1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), c("Group", "F1"))
+  expect_equal(base::colnames(f1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), c("Group", "f1"))
 })
 
 
 test_that("Test plausability of results", {
 
-  Results <- F1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- f1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
-  for (i in 1:nrow(Results)){
+  for (i in 1:base::nrow(Results)){
     expect_true(Results[i, 2] <= 100)
   }
 })
@@ -114,15 +114,15 @@ test_that("Test plausability of results", {
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(F1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(f1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 
 test_that("Wrong format None", {
   HOT2 <- HOT
   base::colnames(HOT2)[9] <- "None"
-  HOT2$None <- as.character(HOT2$None)
-  expect_error(F1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
+  HOT2$None <- base::as.character(HOT2$None)
+  expect_error(f1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 
 test_that("Wrong format Option", {
@@ -137,19 +137,19 @@ test_that("Wrong format Option", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(F1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
+  expect_error(f1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(F1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
+  expect_false(base::anyNA(f1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
 })
 
 
-test_that("F1() also working with data.frame not created with createHOT()", {
+test_that("f1() also working with data.frame not created with createHOT()", {
 
   base::set.seed(2023)
 
-  newHOT <- data.frame(
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -160,10 +160,10 @@ test_that("F1() also working with data.frame not created with createHOT()", {
     Group = base::sample(c(1,2), 10, replace = T)
   )
 
-  expect_equal(nrow(F1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), (length(unique(newHOT$Group)) + 1))
-  expect_equal(ncol(F1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), 2)
+  expect_equal(base::nrow(f1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), (base::length(base::unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(f1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), 2)
 
-  expect_false(base::anyNA(F1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)))
+  expect_false(base::anyNA(f1(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)))
 })
 
 
@@ -181,7 +181,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::levels(HOT2$Group))
 
-  Results <- F1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- f1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
 
   expect_true(Results$Group[1] == "All")
@@ -202,7 +202,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::names(labelled::val_labels(HOT2$Group)))
 
-  Results <- F1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- f1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
 
   expect_true(Results$Group[1] == "All")
@@ -215,11 +215,11 @@ test_that("Right labels of 'Group' variable", {
   HOT2 <- HOT
 
   ## change 'Group' to character
-  HOT2$Group <- as.character(HOT2$Group)
+  HOT2$Group <- base::as.character(HOT2$Group)
 
   lev <- c(base::sort(base::unique(HOT2$Group)))
 
-  Results <- F1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- f1(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
 
   expect_true(Results$Group[1] == "All")

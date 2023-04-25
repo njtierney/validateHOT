@@ -1,13 +1,13 @@
-#' F1- Score
+#' F1-Score
 #'
-#' @description test
+#' @description F1-Score is defined as (2 * precision * recall)
 #'
-#' @param data data frame including Holdout Options and actual \code{"choice"} and \code{"Group"} if optional argument is defined
-#' @param id column index
-#' @param Group optional grouping variable to get accuracy by group
-#' @param opts column indexes of the options included in the holdout task
+#' @param data data frame including alternatives in the validation task and actual \code{"choice"}. \code{"None"} alternative needs to be included.
+#' @param id column index of \code{"id"}
+#' @param Group optional grouping variable to get F1-score by group
+#' @param opts column indexes of the alternatives included in the validation task
 #' @param choice column index of the actual choice
-#' @param None column index
+#' @param None column index of None alternative
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
@@ -21,7 +21,7 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff")
-#' F1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
+#' f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
 #'
 #'
 #' @examples
@@ -30,13 +30,13 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff", varskeep = 21)
-#' F1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+#' f1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 #'
 #'
 #' @export
 
 
-F1 <- function(data, id, Group = NULL, opts, choice, None) {
+f1 <- function(data, id, Group = NULL, opts, choice, None) {
 
   if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
     base::stop("Error: Choice must be numeric!")
@@ -44,6 +44,10 @@ F1 <- function(data, id, Group = NULL, opts, choice, None) {
 
   if (!base::is.integer(data[[None]]) & !base::is.numeric(data[[None]])){
     base::stop("Error: None must be numeric!")
+  }
+
+  if (!base::is.null(Group) & base::anyNA(data[Group])){
+    base::warning("Warning: Grouping variable contains NAs.")
   }
 
   WS <- data[, c(id, Group, choice, opts)]
@@ -111,7 +115,7 @@ F1 <- function(data, id, Group = NULL, opts, choice, None) {
 
     return(HOT %>%
       dplyr::summarise(
-        F1 = base::round(100 * ((2 * (base::sum(buy == 1 & pred_buy == 1))) / (((2 * (base::sum(buy == 1 & pred_buy == 1))) + base::sum(buy == 2 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2)))), digits = 2)
+        f1 = base::round(100 * ((2 * (base::sum(buy == 1 & pred_buy == 1))) / (((2 * (base::sum(buy == 1 & pred_buy == 1))) + base::sum(buy == 2 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2)))), digits = 2)
       ))
   }
 
@@ -171,14 +175,14 @@ F1 <- function(data, id, Group = NULL, opts, choice, None) {
     HOT$buy <- base::ifelse(HOT$choice != base::match(None, opts), 1, 2)
     HOT$pred_buy <- base::ifelse(HOT$pred != base::match(None, opts), 1, 2)
 
-    F1 <- base::rbind(HOT %>%
+    f1 <- base::rbind(HOT %>%
                               dplyr::summarise(Group = "All",
-                                               F1 = base::round(100 * ((2 * (base::sum(buy == 1 & pred_buy == 1))) / (((2 * (base::sum(buy == 1 & pred_buy == 1))) + base::sum(buy == 2 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2)))), digits = 2)) %>%
+                                               f1 = base::round(100 * ((2 * (base::sum(buy == 1 & pred_buy == 1))) / (((2 * (base::sum(buy == 1 & pred_buy == 1))) + base::sum(buy == 2 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2)))), digits = 2)) %>%
                               base::as.data.frame(),
                             HOT %>%
                               dplyr::group_by(Group) %>%
                               dplyr::summarise(
-                                F1 = base::round(100 * ((2 * (base::sum(buy == 1 & pred_buy == 1))) / (((2 * (base::sum(buy == 1 & pred_buy == 1))) + base::sum(buy == 2 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2)))), digits = 2)) %>%
+                                f1 = base::round(100 * ((2 * (base::sum(buy == 1 & pred_buy == 1))) / (((2 * (base::sum(buy == 1 & pred_buy == 1))) + base::sum(buy == 2 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2)))), digits = 2)) %>%
                               base::as.data.frame())
 
     # fixing grouping variable
@@ -230,9 +234,9 @@ F1 <- function(data, id, Group = NULL, opts, choice, None) {
       }
     }
 
-    F1$Group <- lab
+    f1$Group <- lab
 
-    return(F1)
+    return(f1)
 
   }
 }

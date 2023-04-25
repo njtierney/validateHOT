@@ -8,68 +8,67 @@ createHOT(
   prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
   choice = 20, method = "MaxDiff"
 )
-HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)))
+  expect_true(base::is.data.frame(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)), 3)
-  expect_equal(ncol(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
+  expect_equal(base::nrow(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)), 3)
+  expect_equal(base::ncol(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
 })
 
 test_that("Labeling correct", {
-  expect_equal(row.names(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)), c("chance", "no.", "%"))
-  expect_equal(colnames(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)), "HitRate")
+  expect_equal(base::row.names(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)), c("chance", "no.", "%"))
+  expect_equal(base::colnames(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)), "hitrate")
 })
 
 
 
 test_that("Chance Level correct", {
-  expect_equal(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], (1 / 8 * 100))
+  expect_equal(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], (1 / 8 * 100))
 })
 
 test_that("Count of correct predicted people", {
-  expect_equal(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 1], 39)
+  expect_equal(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 1], 39)
 })
 
 test_that("Test plausability of results", {
-  expect_true(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] <= 100 & HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] >= 0)
-  expect_true(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 1] <= nrow(HOT))
-  expect_true(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1] <= 100 & HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1] >= 0)
+  expect_true(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] <= 100 & hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] >= 0)
+  expect_true(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 1] <= base::nrow(HOT))
+  expect_true(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1] <= 100 & hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1] >= 0)
 })
 
 test_that("Hit Rate % correct", {
-  expect_equal(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1], (HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 1] / nrow(HOT) * 100))
+  expect_equal(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1], (hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 1] / base::nrow(HOT) * 100))
 })
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(hitrate(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("Wrong format Option", {
   HOT2 <- HOT
-  HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+  HOT2$Option_2 <- base::as.character(HOT2$Option_2)
+  expect_error(hitrate(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(hitrate(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)))
+  expect_false(base::anyNA(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 
-test_that("HitRate() also working with data.frame not created with createHOT()", {
-  newHOT <- data.frame(
+test_that("hitrate() also working with data.frame not created with createHOT()", {
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -78,11 +77,11 @@ test_that("HitRate() also working with data.frame not created with createHOT()",
     Choice = base::sample(c(1:4), 10, replace = T)
   )
 
-  expect_equal(nrow(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 3)
-  expect_equal(ncol(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
-  expect_equal(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6)[1, 1], (1 / (length(newHOT) - 2) * 100))
+  expect_equal(base::nrow(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 3)
+  expect_equal(base::ncol(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
+  expect_equal(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6)[1, 1], (1 / (base::length(newHOT) - 2) * 100))
 
-  expect_false(base::anyNA(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
+  expect_false(base::anyNA(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
 })
 
 
@@ -97,33 +96,33 @@ createHOT(data = MaxDiff, None = 19, id = 1,
            choice = 20, method = "MaxDiff", varskeep = 21)
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
+  expect_true(base::is.data.frame(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), (length(unique(HOT$Group)) + 1))
-  expect_equal(ncol(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), 4)
+  expect_equal(base::nrow(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), (base::length(base::unique(HOT$Group)) + 1))
+  expect_equal(base::ncol(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), 4)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), c("Group", "no.", "perc.", "chance"))
+  expect_equal(base::colnames(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), c("Group", "no.", "perc.", "chance"))
 })
 
 
 test_that("Chance Level correct", {
-  expect_equal(mean(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)$chance), (1 / 8 * 100))
+  expect_equal(base::mean(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)$chance), (1 / 8 * 100))
 })
 
 test_that("Count of correct predicted people", {
-  expect_equal(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)[1, 2], 39)
+  expect_equal(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)[1, 2], 39)
 })
 
 test_that("Test plausability of results", {
 
-  Results <- HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
   for (i in 1:nrow(Results)){
-    expect_true(Results[i, 2] <= nrow(HOT))
+    expect_true(Results[i, 2] <= base::nrow(HOT))
 
     expect_true(Results[i, 3] <= 100)
 
@@ -135,31 +134,31 @@ test_that("Test plausability of results", {
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(hitrate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 test_that("Wrong format Option", {
   HOT2 <- HOT
-  HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  HOT2$Option_2 <- base::as.character(HOT2$Option_2)
+  expect_error(hitrate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  expect_error(hitrate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
+  expect_false(base::anyNA(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
 })
 
 
 
-test_that("HitRate() also working with data.frame not created with createHOT()", {
-  newHOT <- data.frame(
+test_that("hitrate() also working with data.frame not created with createHOT()", {
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -169,10 +168,10 @@ test_that("HitRate() also working with data.frame not created with createHOT()",
     Group = base::sample(c(1,2), 10, replace = T)
   )
 
-  expect_equal(nrow(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), (length(unique(newHOT$Group)) + 1))
-  expect_equal(ncol(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), 4)
+  expect_equal(base::nrow(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), (base::length(base::unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), 4)
 
-  expect_false(base::anyNA(HitRate(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)))
+  expect_false(base::anyNA(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)))
 })
 
 
@@ -190,7 +189,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::levels(HOT2$Group))
 
-  Results <- HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- hitrate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")
@@ -211,7 +210,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::names(labelled::val_labels(HOT2$Group)))
 
-  Results <- HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- hitrate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")
@@ -224,11 +223,11 @@ test_that("Right labels of 'Group' variable", {
   HOT2 <- HOT
 
   ## change 'Group' to character
-  HOT2$Group <- as.character(HOT2$Group)
+  HOT2$Group <- base::as.character(HOT2$Group)
 
   lev <- c(base::sort(base::unique(HOT2$Group)))
 
-  Results <- HitRate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- hitrate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")

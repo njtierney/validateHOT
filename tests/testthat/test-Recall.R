@@ -9,31 +9,31 @@ createHOT(
 )
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(Recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
+  expect_true(base::is.data.frame(recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(Recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
-  expect_equal(ncol(Recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
+  expect_equal(base::nrow(recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
+  expect_equal(base::ncol(recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), 1)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(Recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), "Recall")
+  expect_equal(base::colnames(recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)), "recall")
 })
 
 
 test_that("Test plausability of results", {
-  expect_true(Recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1] <= 100)
+  expect_true(recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1] <= 100)
 })
 
 test_that("Make sure test data is correct", {
-  expect_equal(Recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1], 91.11)
+  expect_equal(recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1], 91.11)
 })
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(Recall(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(recall(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
 })
 
 test_that("Wrong format Option", {
@@ -47,14 +47,14 @@ test_that("Wrong format Option", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(Recall(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
+  expect_error(recall(data = HOT2, id = 1, opts = c(2:9), choice = 10, None = 9))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(Recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
+  expect_false(base::anyNA(recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)))
 })
 
-test_that("Recall() also working with data.frame not created with createHOT()", {
+test_that("recall() also working with data.frame not created with createHOT()", {
   newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
@@ -65,10 +65,10 @@ test_that("Recall() also working with data.frame not created with createHOT()", 
     Choice = base::sample(c(1:5), 10, replace = T)
   )
 
-  expect_equal(base::nrow(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
-  expect_equal(base::ncol(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
+  expect_equal(base::nrow(recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
+  expect_equal(base::ncol(recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)), 1)
 
-  expect_false(base::anyNA(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)))
+  expect_false(base::anyNA(recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6)))
 })
 
 ####################### Test with Grouping variable ########################################
@@ -78,24 +78,24 @@ createHOT(data = MaxDiff, None = 19, id = 1,
           choice = 20, method = "MaxDiff", varskeep = 21)
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(Recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
+  expect_true(base::is.data.frame(recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(Recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), (length(unique(HOT$Group)) + 1))
-  expect_equal(ncol(Recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), 2)
+  expect_equal(base::nrow(recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), (base::length(base::unique(HOT$Group)) + 1))
+  expect_equal(base::ncol(recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), 2)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(Recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), c("Group", "Recall"))
+  expect_equal(base::colnames(recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), c("Group", "recall"))
 })
 
 
 test_that("Test plausability of results", {
 
-  Results <- Recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
-  for (i in 1:nrow(Results)){
+  for (i in 1:base::nrow(Results)){
     expect_true(Results[i, 2] <= 100)
   }
 })
@@ -104,8 +104,8 @@ test_that("Test plausability of results", {
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(Recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 
 test_that("Wrong format Option", {
@@ -120,16 +120,16 @@ test_that("Wrong format Option", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(Recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
+  expect_error(recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(Recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
+  expect_false(base::anyNA(recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
 })
 
 
-test_that("Recall() also working with data.frame not created with createHOT()", {
-  newHOT <- data.frame(
+test_that("recall() also working with data.frame not created with createHOT()", {
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -140,10 +140,10 @@ test_that("Recall() also working with data.frame not created with createHOT()", 
     Group = base::sample(c(1,2), 10, replace = T)
   )
 
-  expect_equal(nrow(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), (length(unique(newHOT$Group)) + 1))
-  expect_equal(ncol(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), 2)
+  expect_equal(base::nrow(recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), (base::length(base::unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)), 2)
 
-  expect_false(base::anyNA(Recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)))
+  expect_false(base::anyNA(recall(data = newHOT, id = 1, opts = c(2:6), choice = 7, None = 6, Group = 8)))
 })
 
 
@@ -161,7 +161,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::levels(HOT2$Group))
 
-  Results <- Recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
 
   expect_true(Results$Group[1] == "All")
@@ -182,7 +182,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::names(labelled::val_labels(HOT2$Group)))
 
-  Results <- Recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
 
   expect_true(Results$Group[1] == "All")
@@ -195,11 +195,11 @@ test_that("Right labels of 'Group' variable", {
   HOT2 <- HOT
 
   ## change 'Group' to character
-  HOT2$Group <- as.character(HOT2$Group)
+  HOT2$Group <- base::as.character(HOT2$Group)
 
   lev <- c(base::sort(base::unique(HOT2$Group)))
 
-  Results <- Recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+  Results <- recall(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
   expect_true(Results$Group[1] == "All")
   expect_true(Results$Group[2] == lev[1])

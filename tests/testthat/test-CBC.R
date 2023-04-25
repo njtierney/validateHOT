@@ -1,16 +1,19 @@
+library(ValiDatHOT)
+data(CBC)
+
 test_that("Structure of DF", {
-  expect_equal(nrow(CBC), 79)
-  expect_equal(ncol(CBC), 23)
+  expect_equal(base::nrow(CBC), 79)
+  expect_equal(base::ncol(CBC), 23)
 })
 
 test_that("Variables numeric",{
-  names <- colnames(CBC)[-(which(colnames(CBC)=="Group"))]
-  for (i in 1:length(names)){
-    expect_true(!is.character(CBC[names[i]]))
+  names <- base::colnames(CBC)[-(base::which(base::colnames(CBC)=="Group"))]
+  for (i in 1:base::length(names)){
+    expect_true(!base::is.character(CBC[names[i]]))
   }
 })
 
 test_that("No missings",{
-  expect_false(anyNA(CBC))
+  expect_false(base::anyNA(CBC))
 })
 

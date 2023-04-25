@@ -10,37 +10,37 @@ createHOT(
 )
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(MAE(data = HOT, id = 1, opts = c(2:9), choice = 10)))
+  expect_true(base::is.data.frame(mae(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(MAE(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
-  expect_equal(ncol(MAE(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
+  expect_equal(base::nrow(mae(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
+  expect_equal(base::ncol(mae(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(MAE(data = HOT, id = 1, opts = c(2:9), choice = 10)), "MAE")
+  expect_equal(base::colnames(mae(data = HOT, id = 1, opts = c(2:9), choice = 10)), "MAE")
 })
 
 test_that("Count of correct predicted people", {
-  expect_equal(base::round(MAE(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], digits = 3), 4.933)
+  expect_equal(base::round(mae(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], digits = 3), 4.933)
 })
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(MAE(data = HO2, id = 1, opts = c(2:9), choice = 10))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(mae(data = HO2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("Wrong format Option", {
   HOT2 <- HOT
-  HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(MAE(data = HO2, id = 1, opts = c(2:9), choice = 10))
+  HOT2$Option_2 <- base::as.character(HOT2$Option_2)
+  expect_error(mae(data = HO2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("Test plausability of results", {
 
-  expect_true(MAE(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] >= 0)
+  expect_true(mae(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] >= 0)
 
 })
 
@@ -48,16 +48,16 @@ test_that("Test plausability of results", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(MAE(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(mae(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(MAE(data = HOT, id = 1, opts = c(2:9), choice = 10)))
+  expect_false(base::anyNA(mae(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 
-test_that("MAE() also working with data.frame not created with createHOT()", {
-  newHOT <- data.frame(
+test_that("mae() also working with data.frame not created with createHOT()", {
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -66,10 +66,10 @@ test_that("MAE() also working with data.frame not created with createHOT()", {
     Choice = base::sample(c(1:4), 10, replace = T)
   )
 
-  expect_equal(nrow(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
-  expect_equal(ncol(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
+  expect_equal(base::nrow(mae(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
+  expect_equal(base::ncol(mae(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
 
-  expect_false(base::anyNA(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
+  expect_false(base::anyNA(mae(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
 })
 
 
@@ -80,21 +80,21 @@ createHOT(data = MaxDiff, None = 19, id = 1,
           choice = 20, method = "MaxDiff", varskeep = 21)
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(MAE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
+  expect_true(base::is.data.frame(mae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(MAE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), (length(unique(HOT$Group)) + 1))
-  expect_equal(ncol(MAE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), 2)
+  expect_equal(base::nrow(mae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), (base::length(base::unique(HOT$Group)) + 1))
+  expect_equal(base::ncol(mae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), 2)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(MAE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), c("Group", "MAE"))
+  expect_equal(base::colnames(mae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), c("Group", "MAE"))
 })
 
 test_that("Test plausability of results", {
 
-  Results <- MAE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- mae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
   for (i in 1:nrow(Results)){
     expect_true(Results[i, 2] >= 0)
@@ -105,30 +105,30 @@ test_that("Test plausability of results", {
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(MAE(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(mae(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 test_that("Wrong format Option", {
   HOT2 <- HOT
-  HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(MAE(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  HOT2$Option_2 <- base::as.character(HOT2$Option_2)
+  expect_error(mae(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(MAE(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  expect_error(mae(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(MAE(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
+  expect_false(base::anyNA(mae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
 })
 
 
-test_that("MAE() also working with data.frame not created with createHOT()", {
-  newHOT <- data.frame(
+test_that("mae() also working with data.frame not created with createHOT()", {
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -138,10 +138,10 @@ test_that("MAE() also working with data.frame not created with createHOT()", {
     Group = base::sample(c(1,2), 10, replace = T)
   )
 
-  expect_equal(nrow(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), (length(unique(newHOT$Group)) + 1))
-  expect_equal(ncol(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), 2)
+  expect_equal(base::nrow(mae(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), (base::length(base::unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(mae(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), 2)
 
-  expect_false(base::anyNA(MAE(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)))
+  expect_false(base::anyNA(mae(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)))
 })
 
 
@@ -159,7 +159,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::levels(HOT2$Group))
 
-  Results <- MAE(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- mae(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")
@@ -180,7 +180,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::names(labelled::val_labels(HOT2$Group)))
 
-  Results <- MAE(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- mae(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")
@@ -193,11 +193,11 @@ test_that("Right labels of 'Group' variable", {
   HOT2 <- HOT
 
   ## change 'Group' to character
-  HOT2$Group <- as.character(HOT2$Group)
+  HOT2$Group <- base::as.character(HOT2$Group)
 
   lev <- c(base::sort(base::unique(HOT2$Group)))
 
-  Results <- MAE(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- mae(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")

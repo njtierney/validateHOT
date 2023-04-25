@@ -10,37 +10,37 @@ createHOT(
 )
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(MHP(data = HOT, id = 1, opts = c(2:9), choice = 10)))
+  expect_true(base::is.data.frame(mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(MHP(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
-  expect_equal(ncol(MHP(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
+  expect_equal(base::nrow(mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
+  expect_equal(base::ncol(mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(MHP(data = HOT, id = 1, opts = c(2:9), choice = 10)), "MeanHitProb")
+  expect_equal(base::colnames(mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)), "MeanHitProb")
 })
 
 test_that("Count of correct predicted people", {
-  expect_equal(base::round(MHP(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], digits = 3), 47.516)
+  expect_equal(base::round(mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], digits = 3), 47.516)
 })
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(mhp(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("Wrong format Option", {
   HOT2 <- HOT
-  HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+  HOT2$Option_2 <- base::as.character(HOT2$Option_2)
+  expect_error(mhp(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("Test plausability of results", {
 
-  expect_true(MHP(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] >= 0 & MHP(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] <= 100)
+  expect_true(mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] >= 0 & mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] <= 100)
 
 })
 
@@ -48,16 +48,16 @@ test_that("Test plausability of results", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(mhp(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(MHP(data = HOT, id = 1, opts = c(2:9), choice = 10)))
+  expect_false(base::anyNA(mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 
-test_that("MHP() also working with data.frame not created with createHOT()", {
-  newHOT <- data.frame(
+test_that("mhp() also working with data.frame not created with createHOT()", {
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -66,10 +66,10 @@ test_that("MHP() also working with data.frame not created with createHOT()", {
     Choice = base::sample(c(1:4), 10, replace = T)
   )
 
-  expect_equal(nrow(MHP(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
-  expect_equal(ncol(MHP(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
+  expect_equal(base::nrow(mhp(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
+  expect_equal(base::ncol(mhp(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
 
-  expect_false(base::anyNA(MHP(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
+  expect_false(base::anyNA(mhp(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
 })
 
 
@@ -80,23 +80,23 @@ createHOT(data = MaxDiff, None = 19, id = 1,
           choice = 20, method = "MaxDiff", varskeep = 21)
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(MHP(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
+  expect_true(base::is.data.frame(mhp(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(MHP(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), (length(unique(HOT$Group)) + 1))
-  expect_equal(ncol(MHP(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), 2)
+  expect_equal(base::nrow(mhp(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), (base::length(base::unique(HOT$Group)) + 1))
+  expect_equal(base::ncol(mhp(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), 2)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(MHP(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), c("Group", "MeanHitProb"))
+  expect_equal(base::colnames(mhp(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), c("Group", "MeanHitProb"))
 })
 
 test_that("Test plausability of results", {
 
-  Results <- MHP(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- mhp(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
-  for (i in 1:nrow(Results)){
+  for (i in 1:base::nrow(Results)){
     expect_true(Results[i, 2] >= 0)
   }
 })
@@ -105,30 +105,30 @@ test_that("Test plausability of results", {
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(mhp(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 test_that("Wrong format Option", {
   HOT2 <- HOT
-  HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  HOT2$Option_2 <- base::as.character(HOT2$Option_2)
+  expect_error(mhp(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  expect_error(mhp(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(MHP(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
+  expect_false(base::anyNA(mhp(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
 })
 
 
-test_that("MHP() also working with data.frame not created with createHOT()", {
-  newHOT <- data.frame(
+test_that("mhp() also working with data.frame not created with createHOT()", {
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -138,8 +138,8 @@ test_that("MHP() also working with data.frame not created with createHOT()", {
     Group = base::sample(c(1,2), 10, replace = T)
   )
 
-  expect_equal(nrow(MHP(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), (length(unique(newHOT$Group)) + 1))
-  expect_equal(ncol(MHP(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), 2)
+  expect_equal(base::nrow(mhp(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), (base::length(base::unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(mhp(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), 2)
 })
 
 
@@ -157,7 +157,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::levels(HOT2$Group))
 
-  Results <- MHP(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- mhp(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")
@@ -178,7 +178,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::names(labelled::val_labels(HOT2$Group)))
 
-  Results <- MHP(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- mhp(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")
@@ -191,11 +191,11 @@ test_that("Right labels of 'Group' variable", {
   HOT2 <- HOT
 
   ## change 'Group' to character
-  HOT2$Group <- as.character(HOT2$Group)
+  HOT2$Group <- base::as.character(HOT2$Group)
 
   lev <- c(base::sort(base::unique(HOT2$Group)))
 
-  Results <- MHP(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- mhp(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")
@@ -209,6 +209,6 @@ test_that("Right labels of 'Group' variable", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(MHP(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  expect_error(mhp(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 

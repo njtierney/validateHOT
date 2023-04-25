@@ -1,15 +1,14 @@
-#' Median Absolute Error
+#' Share of Preferences of Options included in HOT
 #'
 #' @description
-#' Function to measure the Median absolute error of a holdout task
+#' Function to measure the share of preferences of each option in the validation task
 #'
 #' @param data a data frame
 #' @param id column index of the \code{id} variable
 #' @param Group optional grouping variable to get hit rate by group
 #' @param opts column indexes of the options included in the holdout task
-#' @param choice column index of the actual choice
 #'
-#' @return xyz
+#' @return a data frame or list
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom stats qt sd
@@ -21,7 +20,7 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff")
-#' ShareofPref(data = HOT, id = 1, opts = c(2:9), choice = 10)
+#' shareofpref(data = HOT, id = 1, opts = c(2:9))
 #'
 #'
 #' @examples
@@ -30,15 +29,11 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff", varskeep = 21)
-#' ShareofPref(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+#' shareofpref(data = HOT, id = 1, opts = c(2:9), Group = 10)
 #'
 #' @export
 
-ShareofPref <- function(data, id, Group = NULL, opts, choice) {
-
-  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
-    base::stop("Error: Choice must be numeric!")
-  }
+shareofpref <- function(data, id, Group = NULL, opts) {
 
   varCheck <- c(opts)
 
@@ -52,7 +47,11 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
     }
   }
 
-  WS <- data[, c(id, Group, choice, opts)]
+  if (!base::is.null(Group) & base::anyNA(data[Group])){
+    base::warning("Warning: Grouping variable contains NAs.")
+  }
+
+  WS <- data[, c(id, Group, opts)]
 
   Count <- sd <- NULL
 
@@ -76,14 +75,14 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
       Perc <- c(Perc, name)
     }
 
-    base::colnames(WS) <- c("id", "choice", Options)
+    base::colnames(WS) <- c("id", Options)
 
     for (i in 1:base::length(newNames)) {
       WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- newNames[i]
     }
 
-    for (i in 3:(base::ncol(WS) - base::length(opts))) {
+    for (i in 2:(base::ncol(WS) - base::length(opts))) {
       WS[, (base::length(opts) + i)] <- base::exp(WS[i])
     }
 
@@ -92,29 +91,20 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
       base::colnames(WS)[base::ncol(WS)] <- Perc[i]
     }
 
-    for (i in (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)])) * 100
+    for (i in (base::length(opts) + 2):(base::length(opts) + base::length(opts) + 1)) {
+      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 2):(base::length(opts) + base::length(opts) + 1)])) * 100
     }
 
 
-    HOT <- WS[, c("id", "choice", Perc)]
+    HOT <- WS[, c("id", Perc)]
 
-    HOT$pred <- 0
 
-    for (i in 1:base::nrow(HOT)) {
-      for (k in 3:(base::ncol(HOT) - 1)) {
-        if (HOT[i, k] == base::max(HOT[i, 3:(base::ncol(HOT) - 1)])) {
-          HOT$pred[i] <- k - 2
-        }
-      }
-    }
-
-    MW <- unname(colMeans(HOT[, c(3:(base::ncol(HOT) - 1))]))
+    MW <- unname(colMeans(HOT[, c(2:(base::ncol(HOT)))]))
 
     Options <- c()
 
-    for (i in 3:(base::length(HOT) - 1)) {
-      Options <- c(Options, base::paste0("Option ", i - 2))
+    for (i in 2:(base::length(HOT))) {
+      Options <- c(Options, base::paste0("Option ", i - 1))
     }
 
     MarketShare <- base::data.frame(base::matrix(nrow = base::length(Options), ncol = 4))
@@ -129,7 +119,7 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
 
     for (i in 1:base::nrow(MarketShare)) {
       m <- MarketShare[i, 2]
-      s <- stats::sd(HOT[, (i + 2)])
+      s <- stats::sd(HOT[, (i + 1)])
       n <- base::nrow(HOT)
 
       margin <- stats::qt(0.975, df = n - 1) * s / sqrt(n)
@@ -162,14 +152,14 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
       Perc <- c(Perc, name)
     }
 
-    base::colnames(WS) <- c("id", "Group", "choice", Options)
+    base::colnames(WS) <- c("id", "Group", Options)
 
     for (i in 1:base::length(newNames)) {
       WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[base::ncol(WS)] <- newNames[i]
     }
 
-    for (i in 4:(base::ncol(WS) - base::length(opts))) {
+    for (i in 3:(base::ncol(WS) - base::length(opts))) {
       WS[, (base::length(opts) + i)] <- base::exp(WS[i])
     }
 
@@ -178,22 +168,12 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
       base::colnames(WS)[base::ncol(WS)] <- Perc[i]
     }
 
-    for (i in (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)])) * 100
+    for (i in (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)) {
+      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)])) * 100
     }
 
 
-    HOT <- WS[, c("id", "choice", "Group", Perc)]
-
-    HOT$pred <- 0
-
-    for (i in 1:base::nrow(HOT)) {
-      for (k in 4:(base::ncol(HOT) - 1)) {
-        if (HOT[i, k] == base::max(HOT[i, 4:(base::ncol(HOT) - 1)])) {
-          HOT$pred[i] <- k - 3
-        }
-      }
-    }
+    HOT <- WS[, c("id", "Group", Perc)]
 
     lab <- c()
 
@@ -202,7 +182,7 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
     for (t in 1:base::length(base::unique(HOT$Group))) {
 
       if (t == 1){
-        MW <- unname(colMeans(HOT[, c(4:(base::ncol(HOT) - 1))]))
+        MW <- unname(colMeans(HOT[, c(3:(base::ncol(HOT)))]))
 
         MarketShare_ALL <- base::data.frame(base::matrix(nrow = base::length(Options), ncol = 4))
 
@@ -216,7 +196,7 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
 
         for (all in 1:base::nrow(MarketShare_ALL)) {
           m <- MarketShare_ALL[all, 2]
-          s <- stats::sd(HOT[, (all + 3)])
+          s <- stats::sd(HOT[, (all + 2)])
           n <- base::nrow(HOT)
 
           margin <- stats::qt(0.975, df = n - 1) * s / sqrt(n)
@@ -284,12 +264,12 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
         Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
       }
 
-      MW <- unname(colMeans(Sub[, c(4:(base::ncol(Sub) - 1))]))
+      MW <- unname(colMeans(Sub[, c(3:(base::ncol(Sub)))]))
 
       Options <- c()
 
-      for (i in 4:(base::length(Sub) - 1)) {
-        Options <- c(Options, base::paste0("Option ", i - 3))
+      for (i in 3:(base::length(Sub))) {
+        Options <- c(Options, base::paste0("Option ", i - 2))
       }
 
       MarketShare <- base::data.frame(base::matrix(nrow = base::length(Options), ncol = 4))
@@ -304,7 +284,7 @@ ShareofPref <- function(data, id, Group = NULL, opts, choice) {
 
       for (l in 1:base::nrow(MarketShare)) {
         m <- MarketShare[l, 2]
-        s <- stats::sd(Sub[, (l + 3)])
+        s <- stats::sd(Sub[, (l + 2)])
         n <- base::nrow(Sub)
 
         margin <- stats::qt(0.975, df = n - 1) * s / sqrt(n)

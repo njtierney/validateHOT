@@ -1,14 +1,21 @@
-#' Average number of products bought from assortment
+#' Averaged number of times a person is reached by a specific assortment of bundles
 #'
 #' @description
-#' test
+#' Frequency function of TURF analysis to measure the average time a consumer
+#' is reached with a specific product bundle assortment. Can either be calculated
+#' using 'First Choice' or 'threshold' rule. See Details section for more
+#' information and specifying the data in the correct way.
 #'
-#' @param data data frame including Holdout Options and actual \code{"choice"} and \code{"Group"} if optional argument is defined
-#' @param id column index
-#' @param Group optional grouping variable to get accuracy by group
-#' @param None column index
-#' @param method which method should be used, can be either \code{"First choice"} (only the bundle with highest utility is marked as purchase option if its above \code{"None"} utility) or \code{"threshold"} (all bundles with utility above \code{"None"} utility are marked as purchase option)
-#' @param bundles column indexes of the bundles included that should be included in the assortment
+#' @param data data frame including alternatives in the validation task and actual \code{"choice"}. \code{"None"} alternative needs to be included.
+#' @param id column index of \code{"id"}
+#' @param Group optional grouping variable to get results by group
+#' @param None column index of None alternative
+#' @param method either "First Choice" or "threshold", please see Details
+#' @param bundles column indexes of the bundles that should be included in the assortment
+#'
+#' @details
+#' xyz. which method should be used, can be either \code{"First choice"} (only the bundle with highest utility is marked as purchase option if its above \code{"None"} utility) or \code{"threshold"} (all bundles with utility above \code{"None"} utility are marked as purchase option)
+#'
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
@@ -20,8 +27,8 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff")
-#' freqAssort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")
-#' freqAssort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")
+#' freqassort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")
+#' freqassort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")
 #'
 #' @examples
 #' library(ValiDatHOT)
@@ -29,13 +36,13 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff", varskeep = 21)
-#' freqAssort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold", Group = 10)
-#' freqAssort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice", Group = 10)
+#' freqassort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold", Group = 10)
+#' freqassort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice", Group = 10)
 #'
 #' @return a data frame
 #' @export
 #'
-freqAssort <- function(data, id, Group = NULL, None, method = c("threshold" | "First Choice"), bundles) {
+freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "First Choice"), bundles) {
   if (method != "threshold" & method != "First Choice") {
     stop("Error: ", method, " is not valid. Please specify whether to use 'threshold' or 'First Choice'")
   }
@@ -50,6 +57,10 @@ freqAssort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
     if (base::anyNA(data[varCheck[i]])){
       stop("Error ": colnames(data[[varCheck[i]]]), " has missing values!")
     }
+  }
+
+  if (!base::is.null(Group) & base::anyNA(data[Group])){
+    base::warning("Warning: Grouping variable contains NAs.")
   }
 
   freq <- NULL

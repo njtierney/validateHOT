@@ -1,13 +1,13 @@
-#' Accuracy
+#' accuracy
 #'
-#' @description Accuracy is defined as Number of correct predicted participants divided by the Total number of predictions
+#' @description accuracy is defined as number of correct predicted participants divided by the total number of predictions
 #'
-#' @param data data frame including Holdout Options and actual \code{"choice"} and \code{"Group"} if optional argument is defined
-#' @param id column index
+#' @param data data frame including alternatives in the validation task and actual \code{"choice"}. \code{"None"} alternative needs to be included.
+#' @param id column index of \code{"id"}
 #' @param Group optional grouping variable to get accuracy by group
-#' @param opts column indexes of the options included in the holdout task
+#' @param opts column indexes of the alternatives included in the validation task
 #' @param choice column index of the actual choice
-#' @param None column index
+#' @param None column index of None alternative
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
@@ -21,7 +21,7 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff")
-#' Accuracy(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
+#' accuracy(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
 #'
 #'
 #' @examples
@@ -30,12 +30,12 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff", varskeep = 21)
-#' Accuracy(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+#' accuracy(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 #'
 #'
 #' @export
 
-Accuracy <- function(data, id, Group = NULL, opts, choice, None) {
+accuracy <- function(data, id, Group = NULL, opts, choice, None) {
 
   if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
     base::stop("Error: Choice must be numeric!")
@@ -43,6 +43,10 @@ Accuracy <- function(data, id, Group = NULL, opts, choice, None) {
 
   if (!base::is.integer(data[[None]]) & !base::is.numeric(data[[None]])){
     base::stop("Error: None must be numeric!")
+  }
+
+  if (!base::is.null(Group) & base::anyNA(data[Group])){
+    base::warning("Warning: Grouping variable contains NAs.")
   }
 
   WS <- data[, c(id, Group, choice, opts)]
@@ -109,7 +113,7 @@ Accuracy <- function(data, id, Group = NULL, opts, choice, None) {
 
     return(HOT %>%
       dplyr::summarise(
-        Accuracy = base::round(100 * base::mean(buy == pred_buy), digits = 2)
+        accuracy = base::round(100 * base::mean(buy == pred_buy), digits = 2)
       ))
   }
 
@@ -169,14 +173,14 @@ Accuracy <- function(data, id, Group = NULL, opts, choice, None) {
     HOT$buy <- base::ifelse(HOT$choice != base::match(None, opts), 1, 2)
     HOT$pred_buy <- base::ifelse(HOT$pred != base::match(None, opts), 1, 2)
 
-    Accuracy <- base::rbind(HOT %>%
+    accuracy <- base::rbind(HOT %>%
                              dplyr::summarise(Group = "All",
-                                              Accuracy = base::round(100 * base::mean(buy == pred_buy), digits = 2)) %>%
+                                              accuracy = base::round(100 * base::mean(buy == pred_buy), digits = 2)) %>%
                            base::as.data.frame(),
                            HOT %>%
       dplyr::group_by(Group) %>%
       dplyr::summarise(
-        Accuracy = base::round(100 * base::mean(buy == pred_buy), digits = 2)
+        accuracy = base::round(100 * base::mean(buy == pred_buy), digits = 2)
       ) %>%
      base::as.data.frame())
 
@@ -229,8 +233,8 @@ Accuracy <- function(data, id, Group = NULL, opts, choice, None) {
       }
     }
 
-    Accuracy$Group <- lab
+    accuracy$Group <- lab
 
-    return(Accuracy)
+    return(accuracy)
   }
 }

@@ -9,40 +9,40 @@ createHOT(
 )
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")))
-  expect_true(is.data.frame(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")))
+  expect_true(base::is.data.frame(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")))
+  expect_true(base::is.data.frame(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")))
 })
 
 test_that("Right method", {
-  expect_error(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "test"))
+  expect_error(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "test"))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")), 1)
-  expect_equal(ncol(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")), 1)
+  expect_equal(base::nrow(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")), 1)
+  expect_equal(base::ncol(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")), 1)
 
-  expect_equal(nrow(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")), 1)
-  expect_equal(ncol(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")), 1)
+  expect_equal(base::nrow(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")), 1)
+  expect_equal(base::ncol(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")), 1)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")), "Reach")
-  expect_equal(colnames(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")), "Reach")
+  expect_equal(base::colnames(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")), "reach")
+  expect_equal(base::colnames(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")), "reach")
 })
 
 
 test_that("Test plausability of results", {
-  expect_true(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")[1, 1] <= 100)
-  expect_true(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")[1, 1] <= 100)
+  expect_true(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")[1, 1] <= 100)
+  expect_true(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")[1, 1] <= 100)
 })
 
 test_that("Independent of method, results should remain same", {
-  expect_true(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")[1, 1] == Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")[1, 1])
+  expect_true(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")[1, 1] == reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")[1, 1])
 })
 
 test_that("Make sure test data is correct", {
-  expect_equal(base::round(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")[1, 1], digits = 3), 70.000)
-  expect_equal(base::round(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")[1, 1], digits = 3), 70.000)
+  expect_equal(base::round(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")[1, 1], digits = 3), 70.000)
+  expect_equal(base::round(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")[1, 1], digits = 3), 70.000)
 })
 
 
@@ -57,16 +57,16 @@ test_that("Wrong format Option", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 2] <- NA
-  expect_error(Reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, method = "threshold"))
-  expect_error(Reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice"))
+  expect_error(reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, method = "threshold"))
+  expect_error(reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice"))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")))
-  expect_false(base::anyNA(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")))
+  expect_false(base::anyNA(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")))
+  expect_false(base::anyNA(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")))
 })
 
-test_that("Reach() also working with data.frame not created with createHOT()", {
+test_that("reach() also working with data.frame not created with createHOT()", {
 
   base::set.seed(2023)
 
@@ -80,15 +80,15 @@ test_that("Reach() also working with data.frame not created with createHOT()", {
     Choice = base::sample(c(1:5), 10, replace = T)
   )
 
-  expect_equal(base::nrow(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "threshold")), 1)
-  expect_equal(base::ncol(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "threshold")), 1)
+  expect_equal(base::nrow(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "threshold")), 1)
+  expect_equal(base::ncol(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "threshold")), 1)
 
-  expect_false(base::anyNA(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "threshold")))
+  expect_false(base::anyNA(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "threshold")))
 
-  expect_equal(base::nrow(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "First Choice")), 1)
-  expect_equal(base::ncol(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "First Choice")), 1)
+  expect_equal(base::nrow(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "First Choice")), 1)
+  expect_equal(base::ncol(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "First Choice")), 1)
 
-  expect_false(base::anyNA(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "First Choice")))
+  expect_false(base::anyNA(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, method = "First Choice")))
 
 
 })
@@ -100,35 +100,35 @@ createHOT(data = MaxDiff, None = 19, id = 1,
           choice = 20, method = "MaxDiff", varskeep = 21)
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")))
-  expect_true(is.data.frame(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")))
+  expect_true(base::is.data.frame(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")))
+  expect_true(base::is.data.frame(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")), (length(unique(HOT$Group)) + 1))
-  expect_equal(ncol(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")), 2)
+  expect_equal(base::nrow(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")), (base::length(base::unique(HOT$Group)) + 1))
+  expect_equal(base::ncol(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")), 2)
 
-  expect_equal(nrow(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")), (length(unique(HOT$Group)) + 1))
-  expect_equal(ncol(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")), 2)
+  expect_equal(base::nrow(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")), (base::length(base::unique(HOT$Group)) + 1))
+  expect_equal(base::ncol(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")), 2)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")), c("Group", "Reach"))
-  expect_equal(colnames(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")), c("Group", "Reach"))
+  expect_equal(base::colnames(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")), c("Group", "reach"))
+  expect_equal(base::colnames(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")), c("Group", "reach"))
 })
 
 
 test_that("Test plausability of results", {
 
-  Results <- Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")
+  Results <- reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")
 
-  for (i in 1:nrow(Results)){
+  for (i in 1:base::nrow(Results)){
     expect_true(Results[i, 2] <= 100)
   }
 
-  Results <- Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")
+  Results <- reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")
 
-  for (i in 1:nrow(Results)){
+  for (i in 1:base::nrow(Results)){
     expect_true(Results[i, 2] <= 100)
   }
 })
@@ -145,20 +145,20 @@ test_that("Wrong format Option", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 2] <- NA
-  expect_error(Reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold"))
-  expect_error(Reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice"))
+  expect_error(reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold"))
+  expect_error(reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice"))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")))
-  expect_false(base::anyNA(Reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")))
+  expect_false(base::anyNA(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")))
+  expect_false(base::anyNA(reach(data = HOT, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")))
 })
 
-test_that("Reach() also working with data.frame not created with createHOT()", {
+test_that("reach() also working with data.frame not created with createHOT()", {
 
   base::set.seed(2023)
 
-  newHOT <- data.frame(
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -169,15 +169,15 @@ test_that("Reach() also working with data.frame not created with createHOT()", {
     Group = base::sample(c(1,2), 10, replace = T)
   )
 
-  expect_equal(base::nrow(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "threshold")), (length(unique(newHOT$Group)) + 1))
-  expect_equal(base::ncol(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "threshold")), 2)
+  expect_equal(base::nrow(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "threshold")), (base::length(base::unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "threshold")), 2)
 
-  expect_false(base::anyNA(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "threshold")))
+  expect_false(base::anyNA(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "threshold")))
 
-  expect_equal(base::nrow(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "First Choice")), (length(unique(newHOT$Group)) + 1))
-  expect_equal(base::ncol(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "First Choice")), 2)
+  expect_equal(base::nrow(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "First Choice")), (base::length(base::unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "First Choice")), 2)
 
-  expect_false(base::anyNA(Reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "First Choice")))
+  expect_false(base::anyNA(reach(data = newHOT, id = 1, bundles = c(2,3,5), None = 6, Group = 8, method = "First Choice")))
 
 
 })
@@ -196,7 +196,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::levels(HOT2$Group))
 
-  Results <- Reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")
+  Results <- reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")
 
 
   expect_true(Results$Group[1] == "All")
@@ -204,7 +204,7 @@ test_that("Right labels of 'Group' variable", {
   expect_true(Results$Group[3] == lev[2])
   expect_true(Results$Group[4] == lev[3])
 
-  Results <- Reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")
+  Results <- reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")
 
 
   expect_true(Results$Group[1] == "All")
@@ -225,7 +225,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::names(labelled::val_labels(HOT2$Group)))
 
-  Results <- Reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")
+  Results <- reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")
 
 
   expect_true(Results$Group[1] == "All")
@@ -233,7 +233,7 @@ test_that("Right labels of 'Group' variable", {
   expect_true(Results$Group[3] == lev[2])
   expect_true(Results$Group[4] == lev[3])
 
-  Results <- Reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")
+  Results <- reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")
 
 
   expect_true(Results$Group[1] == "All")
@@ -246,11 +246,11 @@ test_that("Right labels of 'Group' variable", {
   HOT2 <- HOT
 
   ## change 'Group' to character
-  HOT2$Group <- as.character(HOT2$Group)
+  HOT2$Group <- base::as.character(HOT2$Group)
 
   lev <- c(base::sort(base::unique(HOT2$Group)))
 
-  Results <- Reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")
+  Results <- reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "threshold")
 
 
   expect_true(Results$Group[1] == "All")
@@ -258,7 +258,7 @@ test_that("Right labels of 'Group' variable", {
   expect_true(Results$Group[3] == lev[2])
   expect_true(Results$Group[4] == lev[3])
 
-  Results <- Reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")
+  Results <- reach(data = HOT2, id = 1, bundles = c(2,3,7), None = 9, Group = 10, method = "First Choice")
 
 
   expect_true(Results$Group[1] == "All")

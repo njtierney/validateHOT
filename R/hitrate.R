@@ -1,4 +1,4 @@
-#' Hit rate
+#' Hit Rate
 #'
 #' @description Function to measure the hit rate of a holdout task
 #' @param data a data frame
@@ -12,7 +12,7 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff")
-#' HitRate(data = HOT, id = 1, opts = c(2:9), choice = 10)
+#' hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)
 #'
 #'
 #' @examples
@@ -21,7 +21,7 @@
 #' createHOT(data = MaxDiff, None = 19, id = 1,
 #'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
 #'           choice = 20, method = "MaxDiff", varskeep = 21)
-#' HitRate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+#' hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 #'
 #' @return xyz
 #' @importFrom dplyr group_by summarise mutate
@@ -29,10 +29,14 @@
 #' @importFrom labelled is.labelled val_labels
 #'
 #' @export
-HitRate <- function(data, id, Group = NULL, opts, choice) {
+hitrate <- function(data, id, Group = NULL, opts, choice) {
 
   if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
     base::stop("Error: Choice must be numeric!")
+  }
+
+  if (!base::is.null(Group) & base::anyNA(data[Group])){
+    base::warning("Warning: Grouping variable contains NAs.")
   }
 
   WS <- data[, c(id, Group, choice, opts)]
@@ -98,7 +102,7 @@ HitRate <- function(data, id, Group = NULL, opts, choice) {
                                     (base::sum(base::as.integer(HOT$choice == HOT$pred)) / base::nrow(HOT) * 100)))
 
     base::row.names(HR) <- c("chance", "no.", "%")
-    base::colnames(HR) <- "HitRate"
+    base::colnames(HR) <- "hitrate"
 
     return(HR)
 

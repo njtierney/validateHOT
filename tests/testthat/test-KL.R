@@ -10,45 +10,45 @@ createHOT(
 )
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(KL(data = HOT, id = 1, opts = c(2:9), choice = 10)))
+  expect_true(base::is.data.frame(kl(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(nrow(KL(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
-  expect_equal(ncol(KL(data = HOT, id = 1, opts = c(2:9), choice = 10)), 2)
+  expect_equal(base::nrow(kl(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
+  expect_equal(base::ncol(kl(data = HOT, id = 1, opts = c(2:9), choice = 10)), 2)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(KL(data = HOT, id = 1, opts = c(2:9), choice = 10)), c("KL_O_P", "KL_P_O"))
+  expect_equal(base::colnames(kl(data = HOT, id = 1, opts = c(2:9), choice = 10)), c("KL_O_P", "KL_P_O"))
 })
 
 test_that("Count of correct predicted people", {
-  expect_equal(base::round(KL(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], digits = 3), 0.184)
-  expect_equal(base::round(KL(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 2], digits = 3), 0.173)
+  expect_equal(base::round(kl(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], digits = 3), 0.184)
+  expect_equal(base::round(kl(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 2], digits = 3), 0.173)
 })
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(KL(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(kl(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("Wrong format Option", {
   HOT2 <- HOT
-  HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(KL(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+  HOT2$Option_2 <- base::as.character(HOT2$Option_2)
+  expect_error(kl(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 test_that("Test plausability of results", {
 
-  expect_true(KL(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] >= 0)
-  expect_true(KL(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 2] >= 0)
+  expect_true(kl(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] >= 0)
+  expect_true(kl(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 2] >= 0)
 
 })
 
 test_that("Test missing symmetry between both", {
 
-  expect_false(KL(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] == KL(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 2])
+  expect_false(kl(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] == kl(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 2])
 
 })
 
@@ -56,17 +56,17 @@ test_that("Test missing symmetry between both", {
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(KL(data = HOT2, id = 1, opts = c(2:9), choice = 10))
+  expect_error(kl(data = HOT2, id = 1, opts = c(2:9), choice = 10))
 })
 
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(KL(data = HOT, id = 1, opts = c(2:9), choice = 10)))
+  expect_false(base::anyNA(kl(data = HOT, id = 1, opts = c(2:9), choice = 10)))
 })
 
 
-test_that("KL() also working with data.frame not created with createHOT()", {
-  newHOT <- data.frame(
+test_that("kl() also working with data.frame not created with createHOT()", {
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -75,10 +75,10 @@ test_that("KL() also working with data.frame not created with createHOT()", {
     Choice = base::sample(c(1:4), 10, replace = T)
   )
 
-  expect_equal(nrow(KL(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
-  expect_equal(ncol(KL(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 2)
+  expect_equal(base::nrow(kl(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
+  expect_equal(base::ncol(kl(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 2)
 
-  expect_false(base::anyNA(KL(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
+  expect_false(base::anyNA(kl(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
 })
 
 
@@ -89,21 +89,21 @@ createHOT(data = MaxDiff, None = 19, id = 1,
           choice = 20, method = "MaxDiff", varskeep = 21)
 
 test_that("Structure of Output", {
-  expect_true(is.data.frame(KL(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
+  expect_true(base::is.data.frame(kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
 })
 
 test_that("Structure of Output", {
-  expect_equal(base::nrow(KL(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), (length(unique(HOT$Group)) + 1))
-  expect_equal(base::ncol(KL(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), 3)
+  expect_equal(base::nrow(kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), (base::length(base::unique(HOT$Group)) + 1))
+  expect_equal(base::ncol(kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), 3)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(KL(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), c("Group", "KL_O_P", "KL_P_O"))
+  expect_equal(base::colnames(kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), c("Group", "KL_O_P", "KL_P_O"))
 })
 
 test_that("Test plausability of results", {
 
-  Results <- KL(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
   for (i in 1:nrow(Results)){
     expect_true(Results[i, 2] >= 0 & !(base::is.infinite(Results[i, 2])))
@@ -114,30 +114,30 @@ test_that("Test plausability of results", {
 
 test_that("Wrong format Choice", {
   HOT2 <- HOT
-  HOT2$choice <- as.character(HOT2$choice)
-  expect_error(KL(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  HOT2$choice <- base::as.character(HOT2$choice)
+  expect_error(kl(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 test_that("Wrong format Option", {
   HOT2 <- HOT
-  HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(KL(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  HOT2$Option_2 <- base::as.character(HOT2$Option_2)
+  expect_error(kl(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 
 test_that("Missings", {
   HOT2 <- HOT
   HOT2[1, 5] <- NA
-  expect_error(KL(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+  expect_error(kl(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
 
 test_that("No missings in output", {
-  expect_false(base::anyNA(KL(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
+  expect_false(base::anyNA(kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)))
 })
 
 
-test_that("KL() also working with data.frame not created with createHOT()", {
-  newHOT <- data.frame(
+test_that("kl() also working with data.frame not created with createHOT()", {
+  newHOT <- base::data.frame(
     ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
@@ -147,10 +147,10 @@ test_that("KL() also working with data.frame not created with createHOT()", {
     Group = base::sample(c(1,2), 10, replace = T)
   )
 
-  expect_equal(nrow(KL(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), (length(unique(newHOT$Group)) + 1))
-  expect_equal(ncol(KL(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), 3)
+  expect_equal(base::nrow(kl(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), (base::length(base::unique(newHOT$Group)) + 1))
+  expect_equal(base::ncol(kl(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)), 3)
 
-  expect_false(base::anyNA(KL(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)))
+  expect_false(base::anyNA(kl(data = newHOT, id = 1, opts = c(2:5), choice = 6, Group = 7)))
 })
 
 
@@ -168,7 +168,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::levels(HOT2$Group))
 
-  Results <- KL(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- kl(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")
@@ -189,7 +189,7 @@ test_that("Right labels of 'Group' variable", {
 
   lev <- c(base::names(labelled::val_labels(HOT2$Group)))
 
-  Results <- KL(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- kl(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")
@@ -202,11 +202,11 @@ test_that("Right labels of 'Group' variable", {
   HOT2 <- HOT
 
   ## change 'Group' to character
-  HOT2$Group <- as.character(HOT2$Group)
+  HOT2$Group <- base::as.character(HOT2$Group)
 
   lev <- c(base::sort(base::unique(HOT2$Group)))
 
-  Results <- KL(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
+  Results <- kl(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 
   expect_true(Results$Group[1] == "All")
