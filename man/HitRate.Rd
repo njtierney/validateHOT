@@ -13,15 +13,18 @@ hitrate(data, id, Group = NULL, opts, choice)
 
 \item{Group}{optional grouping variable to get hit rate by group}
 
-\item{opts}{column indexes of the options included in the holdout task}
+\item{opts}{column indexes of the options included in the validation task}
 
 \item{choice}{column index of the actual choice}
 }
 \value{
-xyz
+a data frame
 }
 \description{
-Function to measure the hit rate of a holdout task
+\code{hitrate} measures number of times a choice was correctly predicted in a validation task.
+}
+\details{
+Output contains the chance level (\eqn{1 / # of alternatives in validation task}), the number of correct predictions and the percentage of number of correct predictions.
 }
 \examples{
 library(ValiDatHOT)

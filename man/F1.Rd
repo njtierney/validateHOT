@@ -23,7 +23,10 @@ f1(data, id, Group = NULL, opts, choice, None)
 a data frame
 }
 \description{
-F1-Score is defined as (2 * precision * recall)
+Calculates the F1-Score calculated by the following formula \eqn{2 * precision * recall / (precision + recall)}
+}
+\details{
+To get the \code{"f1"} score of the validation task, you have to specify the \code{"None"} alternative in the script. The function will calculate \code{"f1"} based on whether or not, for example, a buy or a no-buy was correctly predicted.
 }
 \examples{
 library(ValiDatHOT)

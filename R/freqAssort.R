@@ -10,11 +10,14 @@
 #' @param id column index of \code{"id"}
 #' @param Group optional grouping variable to get results by group
 #' @param None column index of None alternative
-#' @param method either "First Choice" or "threshold", please see Details
+#' @param method either \code{"First choice"} or \code{"threshold"}, please see Details
 #' @param bundles column indexes of the bundles that should be included in the assortment
 #'
 #' @details
-#' xyz. which method should be used, can be either \code{"First choice"} (only the bundle with highest utility is marked as purchase option if its above \code{"None"} utility) or \code{"threshold"} (all bundles with utility above \code{"None"} utility are marked as purchase option)
+#' Please specify the method you are using. The method can be either set
+#' to \code{"First choice"} (only the bundle with highest utility is marked as purchase option if
+#' its above \code{"None"} utility) or \code{"threshold"}
+#' (all bundles with utility above \code{"None"} utility are marked as purchase option).
 #'
 #'
 #' @importFrom dplyr group_by summarise

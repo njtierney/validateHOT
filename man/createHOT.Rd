@@ -52,7 +52,7 @@ either to \code{"linear"} or \code{"piecewise"}}
 a data frame
 }
 \description{
-Function used to create utilities for a specific Holdout task.
+Function used to create utilities for validation task.
 }
 \examples{
 library(ValiDatHOT)

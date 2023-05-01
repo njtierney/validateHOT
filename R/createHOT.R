@@ -1,6 +1,6 @@
 #' @title  Preparing Holdout task and creating utilities
 #'
-#' @description Function used to create utilities for a specific Holdout task.
+#' @description Function used to create utilities for validation task.
 #'
 #' @param data a data frame
 #' @param id the column index of \code{id} in \code{data}

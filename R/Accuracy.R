@@ -1,4 +1,4 @@
-#' accuracy
+#' Accuracy
 #'
 #' @description accuracy is defined as number of correct predicted participants divided by the total number of predictions
 #'
@@ -8,6 +8,10 @@
 #' @param opts column indexes of the alternatives included in the validation task
 #' @param choice column index of the actual choice
 #' @param None column index of None alternative
+#'
+#' @details
+#' To get the \code{"accuracy"} of the validation task, you have to specify the \code{"None"} alternative in the script. The function will calculate the \code{"accuracy"} based on whether or not, for example, a buy or a no-buy was correctly predicted.
+#'
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"

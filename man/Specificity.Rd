@@ -13,7 +13,7 @@ specificity(data, id, Group = NULL, opts, choice, None)
 
 \item{Group}{optional grouping variable to get accuracy by group}
 
-\item{opts}{column indexes of the options included in the holdout task}
+\item{opts}{column indexes of the options included in the validation task}
 
 \item{choice}{column index of the actual choice}
 

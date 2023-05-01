@@ -20,10 +20,13 @@ kl(data, id, Group = NULL, opts, choice, epsilon = NULL)
 \item{epsilon}{noise that should be added to 0 values, per default set to 1e-05}
 }
 \value{
-xyz
+a data frame
 }
 \description{
-Function to measure the Kullback-Leibler Divergence of a holdout task
+Function to measure the Kullback-Leibler Divergence of a validation task
+}
+\details{
+Additional details...
 }
 \examples{
 library(ValiDatHOT)

@@ -1,6 +1,6 @@
 #' F1-Score
 #'
-#' @description F1-Score is defined as (2 * precision * recall)
+#' @description Calculates the F1-Score calculated by the following formula \eqn{2 * precision * recall / (precision + recall)}
 #'
 #' @param data data frame including alternatives in the validation task and actual \code{"choice"}. \code{"None"} alternative needs to be included.
 #' @param id column index of \code{"id"}
@@ -8,6 +8,8 @@
 #' @param opts column indexes of the alternatives included in the validation task
 #' @param choice column index of the actual choice
 #' @param None column index of None alternative
+#' @details
+#' To get the \code{"f1"} score of the validation task, you have to specify the \code{"None"} alternative in the script. The function will calculate \code{"f1"} based on whether or not, for example, a buy or a no-buy was correctly predicted.
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"

@@ -1,6 +1,6 @@
 #' Kullback-Leibler Divergence
 #'
-#' @description Function to measure the Kullback-Leibler Divergence of a holdout task
+#' @description Function to measure the Kullback-Leibler Divergence of a validation task
 #' @param data a data frame
 #' @param id column index of the \code{id} variable
 #' @param Group optional grouping variable to get hit rate by group
@@ -8,10 +8,14 @@
 #' @param choice column index of the actual choice
 #' @param epsilon noise that should be added to 0 values, per default set to 1e-05
 #'
-#' @return xyz
+#' @return a data frame
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
+#'
+#' @details
+#' Additional details...
+#'
 #'
 #' @examples
 #' library(ValiDatHOT)

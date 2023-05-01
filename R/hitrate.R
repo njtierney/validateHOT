@@ -1,11 +1,17 @@
 #' Hit Rate
 #'
-#' @description Function to measure the hit rate of a holdout task
+#' @description \code{hitrate} measures number of times a choice was correctly predicted in a validation task.
 #' @param data a data frame
 #' @param id column index of the \code{id} variable
 #' @param Group optional grouping variable to get hit rate by group
-#' @param opts column indexes of the options included in the holdout task
+#' @param opts column indexes of the options included in the validation task
 #' @param choice column index of the actual choice
+#'
+#' @details
+#' Output contains the chance level (\eqn{1 / # of alternatives in validation task}), the number of correct predictions and the percentage of number of correct predictions.
+#'
+#'
+#'
 #' @examples
 #' library(ValiDatHOT)
 #' data(MaxDiff)
@@ -23,12 +29,13 @@
 #'           choice = 20, method = "MaxDiff", varskeep = 21)
 #' hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 #'
-#' @return xyz
+#' @return a data frame
 #' @importFrom dplyr group_by summarise mutate
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
 #'
 #' @export
+
 hitrate <- function(data, id, Group = NULL, opts, choice) {
 
   if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){

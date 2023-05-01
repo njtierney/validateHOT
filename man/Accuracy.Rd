@@ -2,7 +2,7 @@
 % Please edit documentation in R/accuracy.R
 \name{accuracy}
 \alias{accuracy}
-\title{accuracy}
+\title{Accuracy}
 \usage{
 accuracy(data, id, Group = NULL, opts, choice, None)
 }
@@ -24,6 +24,9 @@ a data frame
 }
 \description{
 accuracy is defined as number of correct predicted participants divided by the total number of predictions
+}
+\details{
+To get the \code{"accuracy"} of the validation task, you have to specify the \code{"None"} alternative in the script. The function will calculate the \code{"accuracy"} based on whether or not, for example, a buy or a no-buy was correctly predicted.
 }
 \examples{
 library(ValiDatHOT)

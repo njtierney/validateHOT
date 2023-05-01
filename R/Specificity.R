@@ -5,7 +5,7 @@
 #' @param data data frame including Holdout Options and actual \code{"choice"} and \code{"Group"} if optional argument is defined
 #' @param id column index
 #' @param Group optional grouping variable to get accuracy by group
-#' @param opts column indexes of the options included in the holdout task
+#' @param opts column indexes of the options included in the validation task
 #' @param choice column index of the actual choice
 #' @param None column index
 #'
