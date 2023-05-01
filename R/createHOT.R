@@ -9,7 +9,7 @@
 #' @param x define the attribute levels of the products
 #' @param method specify the \code{method} your study; needs to be one of the following: MaxDiff, CBC, or ACBC
 #' @param price whether you use \code{"fixed"} price level or \code{"interpolate"} if you use \code{"method = 'ACBC'"}, if you use \code{"method = 'CBC'"} please set \code{"price"}
-#' either to \code{"linear"} or \code{"piecewise"}
+#' either to \code{"linear"} or \code{"interpolate"}
 #' @param price_low lower price border
 #' @param price_high upper price border
 #' @param price_low_po column index of lower price
@@ -45,13 +45,13 @@ createHOT <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC" 
 
 
   if (method == "ACBC") {
-    if ((price == "linear" | price == "piecewise") & (base::is.null(price_high) | base::is.null(price_high_po) | base::is.null(price_low) | base::is.null(price_low_po))) {
+    if ((price == "linear" | price == "interpolate") & (base::is.null(price_high) | base::is.null(price_high_po) | base::is.null(price_low) | base::is.null(price_low_po))) {
       stop("Error: Some variables are not defined!")
     }
     if (price == "linear" & (base::length(price_high) > 1 | base::length(price_high_po) > 1 | base::length(price_low_po) > 1 | base::length(price_low_po) > 1)) {
       stop("Error: Too many variables defined for price!")
     }
-    if (price == "piecewise" & (base::length(price_high) != prod | base::length(price_high_po) != prod | base::length(price_low_po) != prod | base::length(price_low_po) != prod)) {
+    if (price == "interpolate" & (base::length(price_high) != prod | base::length(price_high_po) != prod | base::length(price_low_po) != prod | base::length(price_low_po) != prod)) {
       stop("Error: Variables defined do not match number of products!")
     }
   }
@@ -326,7 +326,7 @@ createHOT <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC" 
     }
 
 
-    if (price == "piecewise") {
+    if (price == "interpolate") {
       c <- data
 
       if (!base::is.null(None)) {
