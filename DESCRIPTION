@@ -1,7 +1,7 @@
 Package: ValiDatHOT
 Type: Package
 Title: ValiDatHOT - Package to Validate Holdout Tasks in Conjoint Analysis & MaxDiff
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: c(
     person("Joshua", "Schramm", email = "test@123.com", role = "cre"),
     person("Felix Josua", "Lang", email = "test@1235.com", role = "aut"),
