@@ -6,14 +6,13 @@ test_that("Structure of DF", {
   expect_equal(base::ncol(MaxDiff), 21)
 })
 
-test_that("Variables numeric",{
-  names <- base::colnames(MaxDiff)[-(base::which(base::colnames(MaxDiff)=="Group"))]
-  for (i in 1:base::length(names)){
+test_that("Variables numeric", {
+  names <- base::colnames(MaxDiff)[-(base::which(base::colnames(MaxDiff) == "Group"))]
+  for (i in 1:base::length(names)) {
     expect_true(!base::is.character(MaxDiff[names[i]]))
   }
 })
 
-test_that("No missings",{
+test_that("No missings", {
   expect_false(base::anyNA(MaxDiff))
 })
-

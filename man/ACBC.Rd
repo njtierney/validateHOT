@@ -11,7 +11,7 @@ A data frame with 80 rows and 34 variables
 data(ACBC)
 }
 \description{
-A data set with raw scores export for an ACBC.
+A data set with raw scores export for an adaptive choice-based conjoint.
 }
 \details{
 \itemize{

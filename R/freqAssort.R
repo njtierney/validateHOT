@@ -27,20 +27,26 @@
 #' @examples
 #' library(ValiDatHOT)
 #' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19, id = 1,
-#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
-#'           choice = 20, method = "MaxDiff")
-#' freqassort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold")
-#' freqassort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice")
+#' createHOT(
+#'   data = MaxDiff, None = 19,
+#'   id = 1, prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   choice = 20, method = "MaxDiff"
+#' )
+#' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
+#' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")
 #'
 #' @examples
 #' library(ValiDatHOT)
 #' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19, id = 1,
-#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
-#'           choice = 20, method = "MaxDiff", varskeep = 21)
-#' freqassort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "threshold", Group = 10)
-#' freqassort(data = HOT, id = 1, bundles = c(2,3,7), None = 9, method = "First Choice", Group = 10)
+#' createHOT(
+#'   data = MaxDiff, None = 19,
+#'   id = 1, prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   choice = 20, method = "MaxDiff", varskeep = 21
+#' )
+#' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold", Group = 10)
+#' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10)
 #'
 #' @return a data frame
 #' @export
@@ -52,17 +58,17 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
 
   varCheck <- c(bundles, None)
 
-  for (i in 1:base::length(varCheck)){
-    if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])){
-      stop("Error ": colnames(data[varCheck[i]]), " needs to be numeric!")
+  for (i in 1:base::length(varCheck)) {
+    if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])) {
+      stop("Error ":colnames(data[varCheck[i]]), " needs to be numeric!")
     }
 
-    if (base::anyNA(data[varCheck[i]])){
-      stop("Error ": colnames(data[[varCheck[i]]]), " has missing values!")
+    if (base::anyNA(data[varCheck[i]])) {
+      stop("Error ":colnames(data[[varCheck[i]]]), " has missing values!")
     }
   }
 
-  if (!base::is.null(Group) & base::anyNA(data[Group])){
+  if (!base::is.null(Group) & base::anyNA(data[Group])) {
     base::warning("Warning: Grouping variable contains NAs.")
   }
 
@@ -127,70 +133,65 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
 
       WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
 
-      Frequency <- base::rbind(WS_new %>%
-                                dplyr::summarise(Group = "All",
-                                                 Frequency = base::mean(freq)) %>%
-                                base::as.data.frame(),
-                               WS_new %>%
-                                dplyr::group_by(Group) %>%
-                                dplyr::summarise(
-                                  Frequency = base::mean(freq)
-                                ) %>%
-                                base::as.data.frame())
+      Frequency <- base::rbind(
+        WS_new %>%
+          dplyr::summarise(
+            Group = "All",
+            Frequency = base::mean(freq)
+          ) %>%
+          base::as.data.frame(),
+        WS_new %>%
+          dplyr::group_by(Group) %>%
+          dplyr::summarise(
+            Frequency = base::mean(freq)
+          ) %>%
+          base::as.data.frame()
+      )
 
       # fixing grouping variable
 
       lab <- c()
 
-      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
+      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_num <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, lab_num[i])
-
         }
       }
 
-      if (base::is.character(WS$Group)){
+      if (base::is.character(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_char <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, lab_char[i])
-
         }
       }
 
 
-      if (base::is.factor(WS$Group)){
+      if (base::is.factor(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_fac <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, base::levels(lab_fac)[i])
-
         }
       }
 
-      if (labelled::is.labelled(WS$Group)){
+      if (labelled::is.labelled(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_lab <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-
         }
       }
 
       Frequency$Group <- lab
 
       return(Frequency)
-
     }
   }
 
@@ -255,70 +256,65 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
 
       WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
 
-      Frequency <- base::rbind(WS_new %>%
-                                 dplyr::summarise(Group = "All",
-                                                  Frequency = base::mean(freq)) %>%
-                                 base::as.data.frame(),
-                               WS_new %>%
-                                 dplyr::group_by(Group) %>%
-                                 dplyr::summarise(
-                                   Frequency = base::mean(freq)
-                                 ) %>%
-                                 base::as.data.frame())
+      Frequency <- base::rbind(
+        WS_new %>%
+          dplyr::summarise(
+            Group = "All",
+            Frequency = base::mean(freq)
+          ) %>%
+          base::as.data.frame(),
+        WS_new %>%
+          dplyr::group_by(Group) %>%
+          dplyr::summarise(
+            Frequency = base::mean(freq)
+          ) %>%
+          base::as.data.frame()
+      )
 
       # fixing grouping variable
 
       lab <- c()
 
-      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
+      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_num <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, lab_num[i])
-
         }
       }
 
-      if (base::is.character(WS$Group)){
+      if (base::is.character(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_char <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, lab_char[i])
-
         }
       }
 
 
-      if (base::is.factor(WS$Group)){
+      if (base::is.factor(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_fac <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, base::levels(lab_fac)[i])
-
         }
       }
 
-      if (labelled::is.labelled(WS$Group)){
+      if (labelled::is.labelled(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_lab <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-
         }
       }
 
       Frequency$Group <- lab
 
       return(Frequency)
-
     }
   }
 }

@@ -9,13 +9,12 @@ createHOT(
   id,
   None = NULL,
   prod,
-  x,
+  prod.levels,
+  interpolate.levels = NULL,
+  piece.p = NULL,
+  lin.p = NULL,
+  coding = NULL,
   method = c("ACBC" | "CBC" | "MaxDiff"),
-  price = NULL,
-  price_low = NULL,
-  price_high = NULL,
-  price_low_po = NULL,
-  price_high_po = NULL,
   varskeep = NULL,
   choice
 )
@@ -29,20 +28,17 @@ createHOT(
 
 \item{prod}{number of options in the Holdout task without the \code{None} option, must be numeric}
 
-\item{x}{define the attribute levels of the products}
+\item{prod.levels}{define the attribute levels of the products, must be a list}
+
+\item{interpolate.levels}{xyz}
+
+\item{piece.p}{xyz}
+
+\item{lin.p}{xyz}
+
+\item{coding}{xyz}
 
 \item{method}{specify the \code{method} your study; needs to be one of the following: MaxDiff, CBC, or ACBC}
-
-\item{price}{whether you use \code{"fixed"} price level or \code{"interpolate"} if you use \code{"method = 'ACBC'"}, if you use \code{"method = 'CBC'"} please set \code{"price"}
-either to \code{"linear"} or \code{"piecewise"}}
-
-\item{price_low}{lower price border}
-
-\item{price_high}{upper price border}
-
-\item{price_low_po}{column index of lower price}
-
-\item{price_high_po}{column index of upper price}
 
 \item{varskeep}{variables that should be kept in the data frame, use column index}
 
@@ -57,10 +53,11 @@ Function used to create utilities for validation task.
 \examples{
 library(ValiDatHOT)
 data(MaxDiff)
-createHOT(data = MaxDiff, None = 19, id = 1,
-          prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
-          choice = 20, method = "MaxDiff")
-
-
+createHOT(
+  data = MaxDiff, None = 19,
+  id = 1, prod = 7,
+  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+  choice = 20, method = "MaxDiff"
+)
 
 }

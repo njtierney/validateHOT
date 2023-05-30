@@ -6,14 +6,12 @@
 #' @param id the column index of \code{id} in \code{data}
 #' @param None the column index of \code{None} in \code{data}; if of \code{None} is not included, leave empty
 #' @param prod number of options in the Holdout task without the \code{None} option, must be numeric
-#' @param x define the attribute levels of the products
+#' @param prod.levels define the attribute levels of the products, must be a list
 #' @param method specify the \code{method} your study; needs to be one of the following: MaxDiff, CBC, or ACBC
-#' @param price whether you use \code{"fixed"} price level or \code{"interpolate"} if you use \code{"method = 'ACBC'"}, if you use \code{"method = 'CBC'"} please set \code{"price"}
-#' either to \code{"linear"} or \code{"interpolate"}
-#' @param price_low lower price border
-#' @param price_high upper price border
-#' @param price_low_po column index of lower price
-#' @param price_high_po column index of upper price
+#' @param interpolate.levels xyz
+#' @param piece.p xyz
+#' @param lin.p xyz
+#' @param coding xyz
 #' @param varskeep variables that should be kept in the data frame, use column index
 #' @param choice actual choice in the Holdout task
 #'
@@ -23,371 +21,203 @@
 #' @examples
 #' library(ValiDatHOT)
 #' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19, id = 1,
-#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
-#'           choice = 20, method = "MaxDiff")
-#'
-#'
+#' createHOT(
+#'   data = MaxDiff, None = 19,
+#'   id = 1, prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   choice = 20, method = "MaxDiff"
+#' )
 #'
 #' @export
-createHOT <- function(data, id, None = NULL, prod, x, method = c("ACBC" | "CBC" | "MaxDiff"), price = NULL, price_low = NULL, price_high = NULL, price_low_po = NULL,
-                       price_high_po = NULL, varskeep = NULL, choice) {
-  if (!(base::is.numeric(id)) | (!(base::is.numeric(None)) & !(base::is.null(None))) | !(base::is.numeric(prod)) |
-    (!(base::is.numeric(price_low)) & !(base::is.null(price_low))) |
-    (!(base::is.numeric(price_high)) & !(base::is.null(price_high))) | (!(base::is.numeric(price_low_po)) & !(base::is.null(price_low_po))) |
-    (!(base::is.numeric(price_high_po)) & !(base::is.null(price_high_po))) | (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
-    stop("Error: Please insert column index. Needs to be numeric!")
+createHOT <- function(data, id, None = NULL, prod,
+                      prod.levels, interpolate.levels = NULL,
+                      piece.p = NULL, lin.p = NULL, coding = NULL,
+                      method = c("ACBC" | "CBC" | "MaxDiff"),
+                      varskeep = NULL, choice) {
+  if (!(base::is.numeric(id)) |
+    (!(base::is.numeric(None)) & !(base::is.null(None))) |
+    !(base::is.numeric(prod)) |
+    (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
+    stop("Error: Please insert column index. Input needs to be numeric!")
   }
 
-  if ((method != "ACBC") & (method != "CBC") & (method != "MaxDiff")){
+  if (method == "MaxDiff" & !(base::is.null(coding))) {
+    stop("Error: coding is not not required for ", method, "!")
+  }
+
+  if (method == "MaxDiff" & !(base::is.null(interpolate.levels))) {
+    stop("Error: interpolate.levels is not not required for ", method, "!")
+  }
+
+  if (method == "MaxDiff" & !(base::is.null(piece.p))) {
+    stop("Error: piece.p is not not required for ", method, "!")
+  }
+
+  if (method == "MaxDiff" & !(base::is.null(lin.p))) {
+    stop("Error: lin.p is not not required for ", method, "!")
+  }
+
+  if (!(base::is.list(prod.levels))) {
+    stop("Error: prod.levels needs to be a list!")
+  }
+
+  if (!(base::is.null(prod.levels))) {
+    for (tt in 1:length(prod.levels)) {
+      lng <- base::length(prod.levels[[tt]])
+
+      for (lng_lev in 1:length(lng)) {
+        if (!(base::is.numeric(prod.levels[[tt]][lng_lev]))) {
+          stop("Error: prod.levels needs to be a list with only numeric input!")
+        }
+      }
+    }
+  }
+
+  if (!(base::is.list(interpolate.levels)) & !(base::is.null(interpolate.levels))) {
+    stop("Error: interpolate.levels needs to be a list!")
+  }
+
+  if (!(base::is.null(interpolate.levels))) {
+    for (tt in 1:length(interpolate.levels)) {
+      lng <- base::length(interpolate.levels[[tt]])
+
+      for (lng_lev in 1:length(lng)) {
+        if (!(base::is.numeric(interpolate.levels[[tt]][lng_lev]))) {
+          stop("Error: interpolate.levels needs to be a list with only numeric input!")
+        }
+      }
+    }
+  }
+
+  if ((method != "ACBC") & (method != "CBC") & (method != "MaxDiff")) {
     stop("Error: Please choose one of the supported methods: MaxDiff, ACBC, CBC")
   }
 
-
-  if (method == "ACBC") {
-    if ((price == "linear" | price == "interpolate") & (base::is.null(price_high) | base::is.null(price_high_po) | base::is.null(price_low) | base::is.null(price_low_po))) {
-      stop("Error: Some variables are not defined!")
-    }
-    if (price == "linear" & (base::length(price_high) > 1 | base::length(price_high_po) > 1 | base::length(price_low_po) > 1 | base::length(price_low_po) > 1)) {
-      stop("Error: Too many variables defined for price!")
-    }
-    if (price == "interpolate" & (base::length(price_high) != prod | base::length(price_high_po) != prod | base::length(price_low_po) != prod | base::length(price_low_po) != prod)) {
-      stop("Error: Variables defined do not match number of products!")
-    }
-  }
-
-  if (method == "CBC" & base::is.null(price)) {
-    stop("Error: Please specify whether price is fixed parameter or should be interpolated!")
-  }
-
-  if (method == "CBC" & !(base::is.null(price))) {
-    if (price != "fixed" & price != "interpolate") {
-      stop("Error: Please specify whether price is fixed parameter or should be interpolated!")
-    }
-  }
-
-  if (method == "MaxDiff") {
-    if (!(base::is.null(price_low)) | !(base::is.null(price_high)) | !(base::is.null(price_low_po)) | !(base::is.null(price_high_po))) {
-      stop("Error: Does not need to specify those for ", method, "!")
-    }
-  }
-
-  if (method == "MaxDiff") {
-    if (!(base::is.null(price))) {
-      stop("Error: Does not need to specify price type for ", method, "!")
-    }
-  }
-
-
-
-  if (base::length(x) != prod) {
+  if (base::length(prod.levels) != prod) {
     stop("Error: Number of products and defined products do not match!")
   }
 
-  if (method == "CBC") {
-    if (is.null(price)) {
-      c <- data
 
-      if (!(base::is.null(None))) {
-        df <- base::data.frame(base::matrix(nrow = base::nrow(c), ncol = (prod + 1 + 1)))
+  if (method == "ACBC" | method == "CBC") {
+    for (ll in 1:base::length(interpolate.levels)) {
+      if (base::length(coding) != base::length(interpolate.levels[[ll]])) {
+        stop("Error: length of coding and length of one of the alternatives is not equal!")
       }
-
-      if (base::is.null(None)) {
-        df <- base::data.frame(base::matrix(nrow = base::nrow(c), ncol = (prod + 1)))
-      }
-
-      names <- c("ID")
-
-      for (q in 1:prod) {
-        Prod <- base::paste0("bundle_", q)
-        names <- c(names, Prod)
-      }
-
-      if (!(base::is.null(None))) {
-        names <- c(names, "None")
-      }
-
-      colnames(df) <- names
-
-      base::rm(names)
-
-      df[, 1] <- c[, id]
-
-      df[base::is.na(df)] <- 0
-
-      for (row in 1:base::nrow(df)) {
-        for (q in 1:prod) {
-          for (pq in 1:base::length(x[[q]])) {
-            df[row, (q + 1)] <- df[row, (q + 1)] + c[row, x[[q]][pq]]
-          }
-        }
-      }
-
-      if (!(base::is.null(None))) {
-        df[, base::ncol(df)] <- c[, None]
-      }
-
-      if (!(base::is.null(varskeep))) {
-        add <- c[, c(id, varskeep)]
-        base::colnames(add)[1] <- "ID"
-        df <- base::merge(x = df, y = add, by = "ID")
-      }
-
-      final_choice <- c[, c(id, choice)]
-      base::colnames(final_choice) <- c("ID", "choice")
-      df <- base::merge(x = df, y = final_choice, by = "ID")
-
-      .GlobalEnv$HOT <- df
     }
+  }
 
-    if (!(base::is.null(price))) {
-      c <- data
+  if ((method == "ACBC" | method == "CBC") & base::any(coding != 0 & coding != 1 & coding != 2)) {
+    stop("Error: Please only use 0 (part-worth), 1 (linear), 2 (piecewise)!")
+  }
 
-      if (!(base::is.null(None))) {
-        df <- base::data.frame(base::matrix(nrow = base::nrow(c), ncol = (prod + 1 + 1)))
-      }
-
-      if (base::is.null(None)) {
-        df <- base::data.frame(base::matrix(nrow = base::nrow(c), ncol = (prod + 1)))
-      }
-
-      names <- c("ID")
-
-      for (q in 1:prod) {
-        Prod <- base::paste0("bundle_", q)
-        names <- c(names, Prod)
-      }
-
-      if (!is.null(None)) {
-        names <- c(names, "None")
-      }
-
-      base::colnames(df) <- names
-
-      base::rm(names)
-
-      df[, 1] <- c[, id]
-
-      df[base::is.na(df)] <- 0
-
-      for (row in 1:base::nrow(df)) {
-        for (q in 1:prod) {
-          for (pq in 1:(base::length(x[[q]]) - 1)) {
-            df[row, (q + 1)] <- df[row, (q + 1)] + c[row, x[[q]][pq]]
-
-            if (pq == (base::length(x[[q]]) - 1)) {
-              price <- base::as.numeric(stats::approx(
-                x = c(price_low, price_high),
-                y = c(c[row, price_low_po], c[row, price_high_po]), xout = x[[q]][(pq + 1)]
-              )[2])
-
-              df[row, (q + 1)] <- df[row, (q + 1)] + price
-            }
-          }
-        }
-      }
-
-      if (!(base::is.null(None))) {
-        df[, base::ncol(df)] <- c[, None]
-      }
-
-      if (!(base::is.null(varskeep))) {
-        add <- c[, c(id, varskeep)]
-        base::colnames(add)[1] <- "ID"
-        df <- base::merge(x = df, y = add, by = "ID")
-      }
-
-      final_choice <- c[, c(id, choice)]
-      base::colnames(final_choice) <- c("ID", "choice")
-      df <- base::merge(x = df, y = final_choice, by = "ID")
-
-      .GlobalEnv$HOT <- df
-    }
+  if (!(base::is.null(lin.p)) & !(base::is.vector(lin.p))) {
+    stop("Error: lin.p needs to be a vector")
   }
 
   if (method == "MaxDiff") {
-    c <- data
+    coding <- c(base::rep(0, base::length(prod)))
+  }
 
-    if (!(base::is.null(None))) {
-      df <- base::data.frame(base::matrix(nrow = base::nrow(c), ncol = (prod + 1 + 1)))
-    }
+  Input <- data
 
-    if (base::is.null(None)) {
-      df <- base::data.frame(base::matrix(nrow = base::nrow(c), ncol = (prod + 1)))
-    }
+  if (!(base::is.null(None))) {
+    df <- base::data.frame(base::matrix(nrow = base::nrow(Input), ncol = (prod + 1 + 1)))
+  }
 
-    names <- c("ID")
+  if (base::is.null(None)) {
+    df <- base::data.frame(base::matrix(nrow = base::nrow(Input), ncol = (prod + 1)))
+  }
 
+  names <- c("ID")
+
+  for (q in 1:prod) {
+    Prod <- base::paste0("Option_", q)
+    names <- c(names, Prod)
+  }
+
+  if (!(base::is.null(None))) {
+    names <- c(names, "None")
+  }
+
+  colnames(df) <- names
+
+  base::rm(names)
+
+  df[, 1] <- Input[, id]
+
+  df[base::is.na(df)] <- 0
+
+
+
+
+  for (row in 1:base::nrow(df)) {
     for (q in 1:prod) {
-      Prod <- base::paste0("Option_", q)
-      names <- c(names, Prod)
-    }
+      helper <- 1
+      linear_pos <- 1
+      for (pq in 1:base::length(prod.levels[[q]])) {
+        if (coding[pq] == 0) {
+          df[row, (q + 1)] <- df[row, (q + 1)] + Input[row, prod.levels[[q]][pq]]
+        }
+        if (coding[pq] == 1) {
+          inter.levels <- interpolate.levels[[helper]]
 
-    if (!(base::is.null(None))) {
-      names <- c(names, "None")
-    }
+          pos <- lin.p[linear_pos]
 
-    base::colnames(df) <- names
+          lin.levels_eff <- c(scale(inter.levels, center = T, scale = F))
 
-    base::rm(names)
+          lin.low <- lin.levels_eff[1] * Input[row, pos]
+          lin.up <- lin.levels_eff[length(lin.levels_eff)] * Input[row, pos]
 
-    df[, 1] <- c[, id]
+          util <- base::as.numeric(stats::approx(
+            x = c(inter.levels[1], inter.levels[length(inter.levels)]),
+            y = c(lin.low, lin.up),
+            xout = prod.levels[[q]][(pq)]
+          )[2])
 
-    df[base::is.na(df)] <- 0
+          df[row, (q + 1)] <- df[row, (q + 1)] + util
 
-    for (row in 1:base::nrow(df)) {
-      for (q in 1:prod) {
-        for (pq in 1:base::length(x[[q]])) {
-          df[row, (q + 1)] <- c[row, x[[q]]]
+          helper <- helper + 1
+          linear_pos <- linear_pos + 1
+        }
+
+        if (coding[pq] == 2) {
+          inter.levels <- interpolate.levels[[helper]]
+
+          pos.l <- piece.p[[q]][1]
+          pos.u <- piece.p[[q]][2]
+
+          interprice <- prod.levels[[q]][(pq)]
+
+          lower_b <- max(inter.levels[inter.levels < interprice])
+          upper_b <- min(inter.levels[inter.levels >= interprice])
+
+          util <- base::as.numeric(stats::approx(
+            x = c(lower_b, upper_b),
+            y = c(Input[row, pos.l], Input[row, pos.u]),
+            xout = interprice
+          )[2])
+
+          df[row, (q + 1)] <- df[row, (q + 1)] + util
+
+          helper <- helper + 1
         }
       }
     }
-
-    if (!base::is.null(None)) {
-      df[, ncol(df)] <- c[, None]
-    }
-
-    if (!(base::is.null(varskeep))) {
-      add <- c[, c(id, varskeep)]
-      base::colnames(add)[1] <- "ID"
-      df <- base::merge(x = df, y = add, by = "ID")
-    }
-
-    final_choice <- c[, c(id, choice)]
-    base::colnames(final_choice) <- c("ID", "choice")
-    df <- base::merge(x = df, y = final_choice, by = "ID")
-
-    .GlobalEnv$HOT <- df
   }
 
-  if (method == "ACBC") {
-    if (price == "linear") {
-      c <- data
-
-      if (!base::is.null(None)) {
-        df <- base::data.frame(base::matrix(nrow = base::nrow(c), ncol = (prod + 1 + 1)))
-      }
-
-      if (base::is.null(None)) {
-        df <- base::data.frame(matrix(nrow = base::nrow(c), ncol = (prod + 1)))
-      }
-
-      names <- c("ID")
-
-      for (q in 1:prod) {
-        Prod <- base::paste0("bundle_", q)
-        names <- c(names, Prod)
-      }
-
-      if (!is.null(None)) {
-        names <- c(names, "None")
-      }
-
-      base::colnames(df) <- names
-
-      base::rm(names)
-
-      df[, 1] <- c[, id]
-
-      df[base::is.na(df)] <- 0
-
-      for (row in 1:base::nrow(df)) {
-        for (q in 1:prod) {
-          for (pq in 1:(base::length(x[[q]]) - 1)) {
-            df[row, (q + 1)] <- df[row, (q + 1)] + c[row, x[[q]][pq]]
-
-            if (pq == (base::length(x[[q]]) - 1)) {
-              price <- base::as.numeric(stats::approx(
-                x = c(price_low, price_high),
-                y = c(c[row, price_low_po], c[row, price_high_po]), xout = x[[q]][(pq + 1)]
-              )[2])
-
-              df[row, (q + 1)] <- df[row, (q + 1)] + price
-            }
-          }
-        }
-      }
-
-      if (!base::is.null(None)) {
-        df[, ncol(df)] <- c[, None]
-      }
-
-      if (!(base::is.null(varskeep))) {
-        add <- c[, c(id, varskeep)]
-        base::colnames(add)[1] <- "ID"
-        df <- base::merge(x = df, y = add, by = "ID")
-      }
-
-      final_choice <- c[, c(id, choice)]
-      base::colnames(final_choice) <- c("ID", "choice")
-      df <- base::merge(x = df, y = final_choice, by = "ID")
-
-      .GlobalEnv$HOT <- df
-    }
-
-
-    if (price == "interpolate") {
-      c <- data
-
-      if (!base::is.null(None)) {
-        df <- base::data.frame(base::matrix(nrow = base::nrow(c), ncol = (prod + 1 + 1)))
-      }
-
-      if (base::is.null(None)) {
-        df <- base::data.frame(matrix(nrow = base::nrow(c), ncol = (prod + 1)))
-      }
-
-      names <- c("ID")
-
-      for (q in 1:prod) {
-        Prod <- base::paste0("bundle_", q)
-        names <- c(names, Prod)
-      }
-
-      if (!is.null(None)) {
-        names <- c(names, "None")
-      }
-
-      base::colnames(df) <- names
-
-      base::rm(names)
-
-      df[, 1] <- c[, id]
-
-      df[base::is.na(df)] <- 0
-
-      for (row in 1:base::nrow(df)) {
-        for (q in 1:prod) {
-          for (pq in 1:(base::length(x[[q]]) - 1)) {
-            df[row, (q + 1)] <- df[row, (q + 1)] + c[row, x[[q]][pq]]
-
-            if (pq == (base::length(x[[q]]) - 1)) {
-              price <- base::as.numeric(stats::approx(
-                x = c(price_low[q], price_high[q]),
-                y = c(c[row, price_low_po[q]], c[row, price_high_po[q]]), xout = x[[q]][(pq + 1)]
-              )[2])
-
-              df[row, (q + 1)] <- df[row, (q + 1)] + price
-            }
-          }
-        }
-      }
-
-      if (!base::is.null(None)) {
-        df[, ncol(df)] <- c[, None]
-      }
-
-      if (!(base::is.null(varskeep))) {
-        add <- c[, c(id, varskeep)]
-        base::colnames(add)[1] <- "ID"
-        df <- base::merge(x = df, y = add, by = "ID")
-      }
-
-      final_choice <- c[, c(id, choice)]
-      base::colnames(final_choice) <- c("ID", "choice")
-      df <- base::merge(x = df, y = final_choice, by = "ID")
-
-      .GlobalEnv$HOT <- df
-    }
+  if (!(base::is.null(None))) {
+    df[, base::ncol(df)] <- Input[, None]
   }
+
+  if (!(base::is.null(varskeep))) {
+    add <- Input[, c(id, varskeep)]
+    base::colnames(add)[1] <- "ID"
+    df <- base::merge(x = df, y = add, by = "ID")
+  }
+
+  final_choice <- Input[, c(id, choice)]
+  base::colnames(final_choice) <- c("ID", "choice")
+  df <- base::merge(x = df, y = final_choice, by = "ID")
+
+  .GlobalEnv$HOT <- df
 }

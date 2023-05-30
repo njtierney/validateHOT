@@ -6,14 +6,13 @@ test_that("Structure of DF", {
   expect_equal(base::ncol(CBC), 23)
 })
 
-test_that("Variables numeric",{
-  names <- base::colnames(CBC)[-(base::which(base::colnames(CBC)=="Group"))]
-  for (i in 1:base::length(names)){
+test_that("Variables numeric", {
+  names <- base::colnames(CBC)[-(base::which(base::colnames(CBC) == "Group"))]
+  for (i in 1:base::length(names)) {
     expect_true(!base::is.character(CBC[names[i]]))
   }
 })
 
-test_that("No missings",{
+test_that("No missings", {
   expect_false(base::anyNA(CBC))
 })
-

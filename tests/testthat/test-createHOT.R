@@ -1,3 +1,6 @@
+library(ValiDatHOT)
+data("MaxDiff")
+
 test_that("Checking whether non-numeric content gives error", {
   expect_error(createUtil(is.character(id) | is.character(None) | is.character(None)))
 })

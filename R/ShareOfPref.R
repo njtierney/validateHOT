@@ -17,37 +17,39 @@
 #' @examples
 #' library(ValiDatHOT)
 #' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19, id = 1,
-#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
-#'           choice = 20, method = "MaxDiff")
+#' createHOT(data = MaxDiff, None = 19,
+#'          id = 1, prod = 7,
+#'          prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'          choice = 20, method = "MaxDiff"
+#' )
 #' shareofpref(data = HOT, id = 1, opts = c(2:9))
-#'
 #'
 #' @examples
 #' library(ValiDatHOT)
 #' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19, id = 1,
-#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
-#'           choice = 20, method = "MaxDiff", varskeep = 21)
+#' createHOT(data = MaxDiff, None = 19,
+#'          id = 1, prod = 7,
+#'          prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'          choice = 20, method = "MaxDiff", varskeep = 21
+#' )
 #' shareofpref(data = HOT, id = 1, opts = c(2:9), Group = 10)
 #'
 #' @export
 
 shareofpref <- function(data, id, Group = NULL, opts) {
-
   varCheck <- c(opts)
 
-  for (i in 1:base::length(varCheck)){
-    if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])){
-      stop("Error ": colnames(data[varCheck[i]]), " needs to be numeric!")
+  for (i in 1:base::length(varCheck)) {
+    if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])) {
+      stop("Error ":colnames(data[varCheck[i]]), " needs to be numeric!")
     }
 
-    if (base::anyNA(data[varCheck[i]])){
-      stop("Error ": colnames(data[[varCheck[i]]]), " has missing values!")
+    if (base::anyNA(data[varCheck[i]])) {
+      stop("Error ":colnames(data[[varCheck[i]]]), " has missing values!")
     }
   }
 
-  if (!base::is.null(Group) & base::anyNA(data[Group])){
+  if (!base::is.null(Group) & base::anyNA(data[Group])) {
     base::warning("Warning: Grouping variable contains NAs.")
   }
 
@@ -180,8 +182,7 @@ shareofpref <- function(data, id, Group = NULL, opts) {
     output <- base::list()
 
     for (t in 1:base::length(base::unique(HOT$Group))) {
-
-      if (t == 1){
+      if (t == 1) {
         MW <- unname(colMeans(HOT[, c(3:(base::ncol(HOT)))]))
 
         MarketShare_ALL <- base::data.frame(base::matrix(nrow = base::length(Options), ncol = 4))
@@ -207,58 +208,45 @@ shareofpref <- function(data, id, Group = NULL, opts) {
         }
 
         output[[t]] <- MarketShare_ALL
-
       }
 
 
-      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
-
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_num <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, lab_num[i])
-
         }
 
         Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
       }
 
-      if (base::is.character(WS$Group)){
-
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+      if (base::is.character(WS$Group)) {
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_char <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, lab_char[i])
-
         }
 
         Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
       }
 
 
-      if (base::is.factor(WS$Group)){
-
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+      if (base::is.factor(WS$Group)) {
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_fac <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, base::levels(lab_fac)[i])
-
         }
 
         Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
       }
 
-      if (labelled::is.labelled(WS$Group)){
-
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+      if (labelled::is.labelled(WS$Group)) {
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_lab <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-
         }
 
         Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
@@ -296,12 +284,10 @@ shareofpref <- function(data, id, Group = NULL, opts) {
 
       output[[(t + 1)]] <- MarketShare
 
-      if (t == base::length(base::unique(HOT$Group))){
-
-          names(output) <- c("All", lab[1:base::length(unique(HOT$Group))])
-          return(output)
+      if (t == base::length(base::unique(HOT$Group))) {
+        names(output) <- c("All", lab[1:base::length(unique(HOT$Group))])
+        return(output)
       }
-
     }
   }
 }

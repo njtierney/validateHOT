@@ -15,18 +15,23 @@
 #' @examples
 #' library(ValiDatHOT)
 #' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19, id = 1,
-#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
-#'           choice = 20, method = "MaxDiff")
+#' createHOT(
+#'   data = MaxDiff, None = 19,
+#'   id = 1, prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   choice = 20, method = "MaxDiff"
+#' )
 #' hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)
-#'
 #'
 #' @examples
 #' library(ValiDatHOT)
 #' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19, id = 1,
-#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
-#'           choice = 20, method = "MaxDiff", varskeep = 21)
+#' createHOT(
+#'   data = MaxDiff, None = 19,
+#'   id = 1, prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   choice = 20, method = "MaxDiff", varskeep = 21
+#' )
 #' hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 #'
 #' @return a data frame
@@ -37,12 +42,11 @@
 #' @export
 
 hitrate <- function(data, id, Group = NULL, opts, choice) {
-
-  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
+  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])) {
     base::stop("Error: Choice must be numeric!")
   }
 
-  if (!base::is.null(Group) & base::anyNA(data[Group])){
+  if (!base::is.null(Group) & base::anyNA(data[Group])) {
     base::warning("Warning: Grouping variable contains NAs.")
   }
 
@@ -104,19 +108,19 @@ hitrate <- function(data, id, Group = NULL, opts, choice) {
     }
 
 
-    HR <- base::as.data.frame(rbind((1 / length(opts) * 100),
-                                    base::sum(base::as.integer(HOT$choice == HOT$pred)),
-                                    (base::sum(base::as.integer(HOT$choice == HOT$pred)) / base::nrow(HOT) * 100)))
+    HR <- base::as.data.frame(rbind(
+      (1 / length(opts) * 100),
+      base::sum(base::as.integer(HOT$choice == HOT$pred)),
+      (base::sum(base::as.integer(HOT$choice == HOT$pred)) / base::nrow(HOT) * 100)
+    ))
 
     base::row.names(HR) <- c("chance", "no.", "%")
     base::colnames(HR) <- "hitrate"
 
     return(HR)
-
   }
 
   if (!(base::is.null(Group))) {
-
     pred <- NULL
 
     Options <- c()
@@ -173,65 +177,63 @@ hitrate <- function(data, id, Group = NULL, opts, choice) {
 
 
 
-    HR <- base::rbind(HOT %>%
-             dplyr::summarise(Group = "All",
-               no. = base::sum(base::as.integer(choice == pred)),
-                              perc. = base::mean(base::as.integer(choice == pred) * 100)) %>%
-               dplyr::mutate(chance = (1 / base::length(opts) * 100)) %>%
-               base::as.data.frame(),
-             HOT %>%
-      dplyr::group_by(Group) %>%
-      dplyr::summarise(no. = base::sum(base::as.integer(choice == pred)),
-                       perc. = base::mean(base::as.integer(choice == pred) * 100)) %>%
-      dplyr::mutate(chance = (1 / base::length(opts) * 100)) %>%
-      base::as.data.frame())
+    HR <- base::rbind(
+      HOT %>%
+        dplyr::summarise(
+          Group = "All",
+          no. = base::sum(base::as.integer(choice == pred)),
+          perc. = base::mean(base::as.integer(choice == pred) * 100)
+        ) %>%
+        dplyr::mutate(chance = (1 / base::length(opts) * 100)) %>%
+        base::as.data.frame(),
+      HOT %>%
+        dplyr::group_by(Group) %>%
+        dplyr::summarise(
+          no. = base::sum(base::as.integer(choice == pred)),
+          perc. = base::mean(base::as.integer(choice == pred) * 100)
+        ) %>%
+        dplyr::mutate(chance = (1 / base::length(opts) * 100)) %>%
+        base::as.data.frame()
+    )
 
     # fixing grouping variable
 
     lab <- c()
 
-    if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
+    if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
       lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))){
-
+      for (i in 1:base::length(base::unique(WS$Group))) {
         lab_num <- base::sort(base::unique(WS$Group))
 
         lab <- c(lab, lab_num[i])
-
       }
     }
 
-    if (base::is.character(WS$Group)){
+    if (base::is.character(WS$Group)) {
       lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))){
-
+      for (i in 1:base::length(base::unique(WS$Group))) {
         lab_char <- base::sort(base::unique(WS$Group))
 
         lab <- c(lab, lab_char[i])
-
       }
     }
 
 
-    if (base::is.factor(WS$Group)){
+    if (base::is.factor(WS$Group)) {
       lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))){
-
+      for (i in 1:base::length(base::unique(WS$Group))) {
         lab_fac <- base::sort(base::unique(WS$Group))
 
         lab <- c(lab, base::levels(lab_fac)[i])
-
       }
     }
 
-    if (labelled::is.labelled(WS$Group)){
+    if (labelled::is.labelled(WS$Group)) {
       lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))){
-
+      for (i in 1:base::length(base::unique(WS$Group))) {
         lab_lab <- base::sort(base::unique(WS$Group))
 
         lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-
       }
     }
 
@@ -239,6 +241,5 @@ hitrate <- function(data, id, Group = NULL, opts, choice) {
     HR$Group <- lab
 
     return(HR)
-
   }
 }

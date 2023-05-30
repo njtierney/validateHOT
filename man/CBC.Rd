@@ -11,7 +11,7 @@ A data frame with 79 rows and 23 variables
 data(CBC)
 }
 \description{
-A data set with raw scores export for an CBC, assuming part-worth coding for price (if included).
+A data set with raw scores export for an CBC, assuming part-wo coding for price (if included).
 }
 \details{
 \itemize{

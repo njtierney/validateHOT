@@ -18,32 +18,32 @@
 #' @examples
 #' library(ValiDatHOT)
 #' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19, id = 1,
-#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
-#'           choice = 20, method = "MaxDiff")
+#' createHOT(data = MaxDiff, None = 19,
+#'          id = 1, prod = 7,
+#'          prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'          choice = 20, method = "MaxDiff"
+#' )
 #' recall(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
-#'
 #'
 #' @examples
 #' library(ValiDatHOT)
 #' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19, id = 1,
-#'           prod = 7, x = list(3, 10, 11, 15, 16, 17, 18),
-#'           choice = 20, method = "MaxDiff", varskeep = 21)
+#' createHOT(data = MaxDiff, None = 19,
+#'          id = 1, prod = 7,
+#'          prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'          choice = 20, method = "MaxDiff", varskeep = 21
+#' )
 #' recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
-#'
-#'
 #'
 #' @export
 
 
 recall <- function(data, id, Group = NULL, opts, choice, None) {
-
-  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
+  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])) {
     base::stop("Error: Choice must be numeric!")
   }
 
-  if (!base::is.null(Group) & base::anyNA(data[Group])){
+  if (!base::is.null(Group) & base::anyNA(data[Group])) {
     base::warning("Warning: Grouping variable contains NAs.")
   }
 
@@ -170,69 +170,64 @@ recall <- function(data, id, Group = NULL, opts, choice, None) {
     HOT$pred_buy <- base::ifelse(HOT$pred != base::match(None, opts), 1, 2)
 
 
-    Recall <- base::rbind(HOT %>%
-                              dplyr::summarise(Group = "All",
-                                               recall = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))), digits = 2)) %>%
-                              base::as.data.frame(),
-                            HOT %>%
-                              dplyr::group_by(Group) %>%
-                              dplyr::summarise(
-                                recall = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))), digits = 2)
-                              ) %>%
-                              base::as.data.frame())
+    Recall <- base::rbind(
+      HOT %>%
+        dplyr::summarise(
+          Group = "All",
+          recall = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))), digits = 2)
+        ) %>%
+        base::as.data.frame(),
+      HOT %>%
+        dplyr::group_by(Group) %>%
+        dplyr::summarise(
+          recall = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))), digits = 2)
+        ) %>%
+        base::as.data.frame()
+    )
 
     # fixing grouping variable
 
     lab <- c()
 
-    if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
+    if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
       lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))){
-
+      for (i in 1:base::length(base::unique(WS$Group))) {
         lab_num <- base::sort(base::unique(WS$Group))
 
         lab <- c(lab, lab_num[i])
-
       }
     }
 
-    if (base::is.character(WS$Group)){
+    if (base::is.character(WS$Group)) {
       lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))){
-
+      for (i in 1:base::length(base::unique(WS$Group))) {
         lab_char <- base::sort(base::unique(WS$Group))
 
         lab <- c(lab, lab_char[i])
-
       }
     }
 
 
-    if (base::is.factor(WS$Group)){
+    if (base::is.factor(WS$Group)) {
       lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))){
-
+      for (i in 1:base::length(base::unique(WS$Group))) {
         lab_fac <- base::sort(base::unique(WS$Group))
 
         lab <- c(lab, base::levels(lab_fac)[i])
-
       }
     }
 
-    if (labelled::is.labelled(WS$Group)){
+    if (labelled::is.labelled(WS$Group)) {
       lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))){
-
+      for (i in 1:base::length(base::unique(WS$Group))) {
         lab_lab <- base::sort(base::unique(WS$Group))
 
         lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-
       }
     }
 
     Recall$Group <- lab
 
     return(Recall)
-
   }
 }
