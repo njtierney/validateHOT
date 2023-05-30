@@ -1,6 +1,6 @@
 #' F1-Score
 #'
-#' @description Calculates the F1-Score calculated by the following formula \eqn{2 * precision * recall / (precision + recall)}
+#' @description Calculates the F1-Score.  F1-Score is calculated by the following formula \eqn{2 * precision * recall / (precision + recall)}
 #'
 #' @param data data frame including alternatives in the validation task and actual \code{"choice"}. \code{"None"} alternative needs to be included.
 #' @param id column index of \code{"id"}

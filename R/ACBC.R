@@ -1,6 +1,6 @@
 #' ACBC example dataset
 #'
-#' A data set with raw scores export for an ACBC.
+#' A data set with raw scores export for an adaptive choice-based conjoint.
 #'
 #'
 #' \itemize{
