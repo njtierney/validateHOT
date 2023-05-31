@@ -94,6 +94,12 @@ test_that("Structure of Output", {
   expect_true(base::is.data.frame(accuracy(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)))
 })
 
+test_that("Expect warning if Grouping variable has NAs", {
+  HOT2 <- HOT
+  HOT2$Group[c(10, 20, 30)] <- NA
+  expect_warning(accuracy(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
+})
+
 test_that("Structure of Output", {
   expect_equal(base::nrow(accuracy(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), (length(unique(HOT$Group)) + 1))
   expect_equal(base::ncol(accuracy(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), 2)

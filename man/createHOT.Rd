@@ -28,15 +28,15 @@ createHOT(
 
 \item{prod}{number of options in the Holdout task without the \code{None} option, must be numeric}
 
-\item{prod.levels}{define the attribute levels of the products, must be a list}
+\item{prod.levels}{a list to define the attribute levels of the options (\code{prod})}
 
-\item{interpolate.levels}{xyz}
+\item{interpolate.levels}{a list of the levels of the variables that should be interpolated. These needs to be the same as provided to Sawtooth Software. Please make sure to provide the whole list. Only needs to be specified for the variables that are coded as 1 (linear) or 2 (piecewise)}
 
-\item{piece.p}{xyz}
+\item{piece.p}{a list of the column indexes of the lower level and the upper level that should be used for interpolating}
 
-\item{lin.p}{xyz}
+\item{lin.p}{vector of the column indexes of the linear variables}
 
-\item{coding}{xyz}
+\item{coding}{vector of the coding of each attribute, 0 = part-worth coding, 1 = linear coding, 2 = piecewise coding; please make sure to code linear price of ACBC as piecewise since you have two values to interpolate}
 
 \item{method}{specify the \code{method} your study; needs to be one of the following: MaxDiff, CBC, or ACBC}
 

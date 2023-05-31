@@ -92,6 +92,13 @@ test_that("Structure of Output", {
   expect_equal(base::ncol(specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), 2)
 })
 
+test_that("Expect warning if Grouping variable has NAs", {
+  HOT2 <- HOT
+  HOT2$Group[c(10, 20, 30)] <- NA
+  expect_warning(specificity(data = HOT2, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9))
+})
+
+
 test_that("Labeling correct", {
   expect_equal(base::colnames(specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)), c("Group", "specificity"))
 })

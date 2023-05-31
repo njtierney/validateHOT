@@ -93,6 +93,13 @@ test_that("Structure of Output", {
   expect_true(base::is.list(shareofpref(data = HOT, id = 1, opts = c(2:9), Group = 10)))
 })
 
+
+test_that("Expect warning if Grouping variable has NAs", {
+  HOT2 <- HOT
+  HOT2$Group[c(10, 20, 30)] <- NA
+  expect_warning(shareofpref(data = HOT2, id = 1, Group = 10, opts = c(2:9)))
+})
+
 test_that("Structure of Output", {
   expect_equal(base::length(shareofpref(data = HOT, id = 1, opts = c(2:9), Group = 10)), (base::length(base::unique(HOT$Group)) + 1))
 })

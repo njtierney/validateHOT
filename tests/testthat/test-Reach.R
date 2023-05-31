@@ -118,6 +118,13 @@ test_that("Labeling correct", {
   expect_equal(base::colnames(reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice")), c("Group", "reach"))
 })
 
+test_that("Expect warning if Grouping variable has NAs", {
+  HOT2 <- HOT
+  HOT2$Group[c(10, 20, 30)] <- NA
+  expect_warning(reach(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold"))
+  expect_warning(reach(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice"))
+})
+
 
 test_that("Test plausability of results", {
   Results <- reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold")

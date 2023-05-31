@@ -7,7 +7,7 @@
 mhp(data, id, Group = NULL, opts, choice)
 }
 \arguments{
-\item{data}{a data frame}
+\item{data}{data frame}
 
 \item{id}{column index of the \code{id} variable}
 

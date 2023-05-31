@@ -6,12 +6,12 @@
 #' @param id the column index of \code{id} in \code{data}
 #' @param None the column index of \code{None} in \code{data}; if of \code{None} is not included, leave empty
 #' @param prod number of options in the Holdout task without the \code{None} option, must be numeric
-#' @param prod.levels define the attribute levels of the products, must be a list
+#' @param prod.levels a list to define the attribute levels of the options (\code{prod})
 #' @param method specify the \code{method} your study; needs to be one of the following: MaxDiff, CBC, or ACBC
-#' @param interpolate.levels xyz
-#' @param piece.p xyz
-#' @param lin.p xyz
-#' @param coding xyz
+#' @param interpolate.levels a list of the levels of the variables that should be interpolated. These needs to be the same as provided to Sawtooth Software. Please make sure to provide the whole list. Only needs to be specified for the variables that are coded as 1 (linear) or 2 (piecewise)
+#' @param piece.p a list of the column indexes of the lower level and the upper level that should be used for interpolating
+#' @param lin.p vector of the column indexes of the linear variables
+#' @param coding vector of the coding of each attribute, 0 = part-worth coding, 1 = linear coding, 2 = piecewise coding; please make sure to code linear price of ACBC as piecewise since you have two values to interpolate
 #' @param varskeep variables that should be kept in the data frame, use column index
 #' @param choice actual choice in the Holdout task
 #'
@@ -116,6 +116,14 @@ createHOT <- function(data, id, None = NULL, prod,
 
   if (method == "MaxDiff") {
     coding <- c(base::rep(0, base::length(prod)))
+  }
+
+  if (base::sum(base::sum(coding == 1)) != base::sum(base::length(lin.p))){
+    stop("Error: Variables that should be linear coded and lin.p do not match")
+  }
+
+  if (base::sum(base::sum(coding == 2)) != base::sum(base::length(piece.p))){
+    stop("Error: Variables that should be linear coded and piece.p do not match")
   }
 
   Input <- data

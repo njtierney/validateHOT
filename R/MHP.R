@@ -1,7 +1,7 @@
 #' MHP
 #'
 #' @description Function to measure the mean hit probability of a holdout task
-#' @param data a data frame
+#' @param data data frame
 #' @param id column index of the \code{id} variable
 #' @param Group optional grouping variable to get hit rate by group
 #' @param opts column indexes of the options included in the holdout task

@@ -108,6 +108,12 @@ test_that("Structure of Output", {
   expect_equal(base::ncol(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), 4)
 })
 
+test_that("Expect warning if Grouping variable has NAs", {
+  HOT2 <- HOT
+  HOT2$Group[c(10, 20, 30)] <- NA
+  expect_warning(hitrate(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+})
+
 test_that("Labeling correct", {
   expect_equal(base::colnames(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)), c("Group", "no.", "perc.", "chance"))
 })
