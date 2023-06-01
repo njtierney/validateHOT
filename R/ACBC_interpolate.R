@@ -1,6 +1,6 @@
-#' ACBC example dataset
+#' ACBC example dataset with linear and piecewise coded variables
 #'
-#' A data set with raw scores export for an adaptive choice-based conjoint.
+#' A data set with raw scores export for an adaptive choice-based conjoint including a linear-coded and piecewise-coded variable.
 #'
 #'
 #' \itemize{
@@ -12,10 +12,7 @@
 #'   \item Att1_Lev3. part-worth utility of Level 3 of Attribute 1
 #'   \item Att1_Lev4. part-worth utility of Level 4 of Attribute 1
 #'   \item Att1_Lev5. part-worth utility of Level 5 of Attribute 1
-#'   \item Att2_Lev1. part-worth utility of Level 1 of Attribute 2
-#'   \item Att2_Lev2. part-worth utility of Level 2 of Attribute 2
-#'   \item Att2_Lev3. part-worth utility of Level 3 of Attribute 2
-#'   \item Att2_Lev4. part-worth utility of Level 4 of Attribute 2
+#'   \item Att2_Lin. linear coefficient for linear-coded Attribute 2
 #'   \item Att3_Lev1. part-worth utility of Level 1 of Attribute 3
 #'   \item Att3_Lev2. part-worth utility of Level 2 of Attribute 3
 #'   \item Att3_Lev3. part-worth utility of Level 3 of Attribute 3
@@ -36,10 +33,17 @@
 #'   \item Att7_Lev3. part-worth utility of Level 3 of Attribute 7
 #'   \item Att7_Lev4. part-worth utility of Level 4 of Attribute 7
 #'   \item Att7_Lev5. part-worth utility of Level 5 of Attribute 7
+#'   \item Att7_Lev4. part-worth utility of Level 6 of Attribute 7
+#'   \item Att7_Lev5. part-worth utility of Level 7 of Attribute 7
 #'   \item Att8_Lev1. part-worth utility of Level 1 of Attribute 8
 #'   \item Att8_Lev2. part-worth utility of Level 2 of Attribute 8
-#'   \item price_2.093. linear coding for price at $2.093 (lower bound)
-#'   \item price_27.287. linear coding for price at $27.287 (upper bound)
+#'   \item Price_2. piecewise coding for price at $2
+#'   \item Price_5. piecewise coding for price at $5
+#'   \item Price_10. piecewise coding for price at $10
+#'   \item Price_15. piecewise coding for price at $15
+#'   \item Price_20. piecewise coding for price at $20
+#'   \item Price_25. piecewise coding for price at $25
+#'   \item Price_27. piecewise coding for price at $27
 #'   \item none. part-worth utility of none parameter
 #'   \item HOT. actual choice in the Holdout task
 #'   \item Group. Grouping variable
@@ -47,7 +51,7 @@
 #'
 #' @docType data
 #' @keywords datasets
-#' @name ACBC
-#' @usage data(ACBC)
-#' @format A data frame with 95 rows and 39 variables
-"ACBC"
+#' @name ACBC_interpolate
+#' @usage data(ACBC_interpolate)
+#' @format A data frame with 95 rows and 41 variables
+"ACBC_interpolate"

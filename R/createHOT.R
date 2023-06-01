@@ -20,12 +20,47 @@
 #'
 #' @examples
 #' library(ValiDatHOT)
+#'
+#' # MaxDiff example
 #' data(MaxDiff)
 #' createHOT(
 #'   data = MaxDiff, None = 19,
 #'   id = 1, prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   choice = 20, method = "MaxDiff"
+#' )
+#'
+#' # CBC example
+#' data(CBC)
+#' createHOT(
+#'   data = CBC, None = 21,
+#'   id = 1, prod = 3,
+#'   prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
+#'   choice = 20, method = "CBC", coding = c(0, 0, 0)
+#' )
+#'
+#' # CBC example with linear coding
+#' data(CBC_lin)
+#' createHOT(
+#'   data = CBC, None = 21,
+#'   id = 1, prod = 3,
+#'   prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
+#'   choice = 20, method = "CBC", coding = coding = c(0, 0, 0)
+#' )
+#' # ACBC example with linear price
+#' data(ACBC)
+#' prod1 <- c(5, 11, 15, 17, 21, 25, 32, 34, 15.99)
+#' prod2 <- c(6, 9, 15, 17, 23, 27, 31, 34, 12.99)
+#' prod3 <- c(8, 12, 16, 19, 23, 24, 28, 34, 12.99)
+#' prod4 <- c(7, 12, 14, 18, 22, 24, 28, 33, 9.99)
+#' prod5 <- c(4, 10, 13, 17, 23, 27, 28, 34, 7.99)
+#' prod6 <- c(5, 9, 14, 17, 23, 27, 29, 33, 9.99)
+#' createHOT(
+#'   data = ACBC, None = 37,
+#'   id = 1, prod = 6,
+#'   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
+#'   choice = 38, method = "ACBC", coding = coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
+#'   piece.p = list(c(35,36)), interpolate.levels = c(2.093, 27.287)
 #' )
 #'
 #' @export
@@ -89,7 +124,7 @@ createHOT <- function(data, id, None = NULL, prod,
     }
   }
 
-  if ((method != "ACBC") & (method != "CBC") & (method != "MaxDiff")) {
+  if ((method != "ACBC") & (method != "CBC") & (method != "MaxDiff") | base::is.null(method)) {
     stop("Error: Please choose one of the supported methods: MaxDiff, ACBC, CBC")
   }
 
@@ -98,13 +133,6 @@ createHOT <- function(data, id, None = NULL, prod,
   }
 
 
-  if (method == "ACBC" | method == "CBC") {
-    for (ll in 1:base::length(interpolate.levels)) {
-      if (base::length(coding) != base::length(interpolate.levels[[ll]])) {
-        stop("Error: length of coding and length of one of the alternatives is not equal!")
-      }
-    }
-  }
 
   if ((method == "ACBC" | method == "CBC") & base::any(coding != 0 & coding != 1 & coding != 2)) {
     stop("Error: Please only use 0 (part-worth), 1 (linear), 2 (piecewise)!")
@@ -118,12 +146,12 @@ createHOT <- function(data, id, None = NULL, prod,
     coding <- c(base::rep(0, base::length(prod)))
   }
 
-  if (base::sum(base::sum(coding == 1)) != base::sum(base::length(lin.p))){
-    stop("Error: Variables that should be linear coded and lin.p do not match")
+  if (base::any(coding == 1) & base::is.null(lin.p)){
+    stop("Error: Please specify lin.p!")
   }
 
-  if (base::sum(base::sum(coding == 2)) != base::sum(base::length(piece.p))){
-    stop("Error: Variables that should be linear coded and piece.p do not match")
+  if (base::any(coding == 2) & base::is.null(piece.p)){
+    stop("Error: Please specify piece.p!")
   }
 
   Input <- data

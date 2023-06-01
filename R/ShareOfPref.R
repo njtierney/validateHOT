@@ -11,7 +11,7 @@
 #' @return a data frame or list
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
-#' @importFrom stats qt sd
+#' @importFrom stats sd
 #' @importFrom labelled is.labelled val_labels
 #'
 #' @examples
@@ -124,7 +124,7 @@ shareofpref <- function(data, id, Group = NULL, opts) {
       s <- stats::sd(HOT[, (i + 1)])
       n <- base::nrow(HOT)
 
-      margin <- stats::qt(0.975, df = n - 1) * s / sqrt(n)
+      margin <- 1.96 * (s / base::sqrt(n))
 
       MarketShare[i, 3] <- m - margin
 
@@ -200,7 +200,7 @@ shareofpref <- function(data, id, Group = NULL, opts) {
           s <- stats::sd(HOT[, (all + 2)])
           n <- base::nrow(HOT)
 
-          margin <- stats::qt(0.975, df = n - 1) * s / sqrt(n)
+          margin <- 1.96 * (s / base::sqrt(n))
 
           MarketShare_ALL[all, 3] <- m - margin
 
@@ -275,7 +275,7 @@ shareofpref <- function(data, id, Group = NULL, opts) {
         s <- stats::sd(Sub[, (l + 2)])
         n <- base::nrow(Sub)
 
-        margin <- stats::qt(0.975, df = n - 1) * s / sqrt(n)
+        margin <- 1.96 * (s / base::sqrt(n))
 
         MarketShare[l, 3] <- m - margin
 

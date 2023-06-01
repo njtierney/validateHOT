@@ -19,11 +19,6 @@ test_that("Structure of Output", {
   expect_equal(base::ncol(medae(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
 })
 
-test_that("Expect warning if Grouping variable has NAs", {
-  HOT2 <- HOT
-  HOT2$Group[c(10, 20, 30)] <- NA
-  expect_warning(medae(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
-})
 
 test_that("Labeling correct", {
   expect_equal(base::colnames(medae(data = HOT, id = 1, opts = c(2:9), choice = 10)), "MedAE")
@@ -108,6 +103,11 @@ test_that("Test plausability of results", {
   }
 })
 
+test_that("Expect warning if Grouping variable has NAs", {
+  HOT2 <- HOT
+  HOT2$Group[c(10, 20, 30)] <- NA
+  expect_warning(medae(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
+})
 
 
 test_that("Wrong format Choice", {

@@ -41,8 +41,8 @@ test_that("Test plausability of results", {
 
 test_that("Make sure test data is correct", {
   expect_equal(base::round(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 2], digits = 3), 18.268)
-  expect_equal(base::round(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 3], digits = 3), 10.045)
-  expect_equal(base::round(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 4], digits = 3), 26.491)
+  expect_equal(base::round(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 3], digits = 3), 10.189)
+  expect_equal(base::round(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 4], digits = 3), 26.346)
 })
 
 

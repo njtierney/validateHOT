@@ -2,8 +2,8 @@ library(ValiDatHOT)
 data(ACBC)
 
 test_that("Structure of DF", {
-  expect_equal(base::nrow(ACBC), 80)
-  expect_equal(base::ncol(ACBC), 34)
+  expect_equal(base::nrow(ACBC), 95)
+  expect_equal(base::ncol(ACBC), 39)
 })
 
 test_that("Variables numeric", {
