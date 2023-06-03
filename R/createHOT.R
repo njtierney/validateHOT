@@ -43,7 +43,7 @@
 #'   prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
 #'   coding = c(0, 0, 0),
 #'   method = "CBC",
-#'   choice = 20
+#'   choice = 22
 #' )
 #'
 #' # CBC example with linear coding
@@ -78,7 +78,7 @@
 #'   prod = 6,
 #'   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
 #'   interpolate.levels = list(c(2.093, 27.287)),
-#'   piece.p = list(c(35,36)),
+#'   piece.p = list(c(35, 36), c(35, 36), c(35, 36), c(35, 36), c(35, 36), c(35, 36)),
 #'   coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
 #'   method = "ACBC",
 #'   choice = 38
@@ -99,15 +99,12 @@
 #'   prod = 6,
 #'   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
 #'   interpolate.levels = list(c(3, 5, 8, 10), c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)),
-#'   piece.p = list(c(36,37), c(35, 36), c(35, 36), c(33,34), c(33, 34), c(33, 34)),
+#'   piece.p = list(c(36, 37), c(35, 36), c(35, 36), c(33, 34), c(33, 34), c(33, 34)),
 #'   lin.p = 9,
 #'   coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
 #'   method = "ACBC",
 #'   choice = 40
-#'   )
-#'
-#'
-#'
+#' )
 #'
 #' @export
 createHOT <- function(data, id, None = NULL, prod,
@@ -121,6 +118,24 @@ createHOT <- function(data, id, None = NULL, prod,
     (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
     stop("Error: Please insert column index. Input needs to be numeric!")
   }
+
+  if (!(base::is.null(coding))) {
+    for (i in 1:length(coding)) {
+      if (!(base::is.numeric(coding[i]))) {
+        stop("Error: Coding only can have numeric input!")
+      }
+    }
+  }
+
+  if (base::missing(method)) {
+    stop("Error: method is not defined!")
+  }
+
+
+  if ((method != "ACBC") & (method != "CBC") & (method != "MaxDiff")) {
+    stop("Error: Please choose one of the supported methods: MaxDiff, ACBC, CBC!")
+  }
+
 
   if (method == "MaxDiff" & !(base::is.null(coding))) {
     stop("Error: coding is not not required for ", method, "!")
@@ -138,6 +153,31 @@ createHOT <- function(data, id, None = NULL, prod,
     stop("Error: lin.p is not not required for ", method, "!")
   }
 
+
+  if ((method == "ACBC" | method == "CBC") & base::any(coding != 0 & coding != 1 & coding != 2)) {
+    stop("Error: Please only use 0 (part-worth), 1 (linear), 2 (piecewise)!")
+  }
+
+  if (method == "CBC" & base::any(coding == 2)) {
+    stop("Error: Piecewise coding not possible for ", method)
+  }
+
+  if (method == "CBC" & !(base::any(coding == 1)) & !(base::is.null(lin.p))) {
+    stop("Error: lin.p specified but no 1 in coding!")
+  }
+
+  if (method == "ACBC" & !(base::any(coding == 1)) & !(base::is.null(lin.p))) {
+    stop("Error: lin.p specified but no 1 in coding!")
+  }
+
+  if (method == "ACBC" & !(base::any(coding == 1)) & !(base::is.null(lin.p))) {
+    stop("Error: lin.p specified but no 1 in coding!")
+  }
+
+  if (method == "ACBC" & !(base::any(coding == 2)) & !(base::is.null(piece.p))) {
+    stop("Error: piece.p specified but no 2 in coding!")
+  }
+
   if (!(base::is.list(prod.levels))) {
     stop("Error: prod.levels needs to be a list!")
   }
@@ -145,8 +185,30 @@ createHOT <- function(data, id, None = NULL, prod,
   if (!(base::is.null(prod.levels))) {
     for (tt in 1:length(prod.levels)) {
       lng <- base::length(prod.levels[[tt]])
+      if (lng == 1) {
+        var <- prod.levels[[tt]]
+        if (!(base::is.numeric(data[[var]]))) {
+          stop("Error: Variables included in prod.levels need to be numeric!")
+        }
+      }
 
-      for (lng_lev in 1:length(lng)) {
+      if (lng > 1) {
+        for (lng_lev in 1:lng) {
+          var <- prod.levels[[tt]][lng_lev]
+          if (!(base::is.numeric(data[[var]]))) {
+            stop("Error: Variables included in prod.levels need to be numeric!")
+          }
+        }
+      }
+    }
+  }
+
+
+  if (!(base::is.null(prod.levels))) {
+    for (tt in 1:length(prod.levels)) {
+      lng <- base::length(prod.levels[[tt]])
+
+      for (lng_lev in 1:lng) {
         if (!(base::is.numeric(prod.levels[[tt]][lng_lev]))) {
           stop("Error: prod.levels needs to be a list with only numeric input!")
         }
@@ -162,7 +224,7 @@ createHOT <- function(data, id, None = NULL, prod,
     for (tt in 1:length(interpolate.levels)) {
       lng <- base::length(interpolate.levels[[tt]])
 
-      for (lng_lev in 1:length(lng)) {
+      for (lng_lev in 1:lng) {
         if (!(base::is.numeric(interpolate.levels[[tt]][lng_lev]))) {
           stop("Error: interpolate.levels needs to be a list with only numeric input!")
         }
@@ -170,35 +232,72 @@ createHOT <- function(data, id, None = NULL, prod,
     }
   }
 
-  if ((method != "ACBC") & (method != "CBC") & (method != "MaxDiff") | base::is.null(method)) {
-    stop("Error: Please choose one of the supported methods: MaxDiff, ACBC, CBC")
-  }
+
+
 
   if (base::length(prod.levels) != prod) {
     stop("Error: Number of products and defined products do not match!")
   }
 
 
+  if (!(base::is.null(lin.p)) & !(base::is.vector(lin.p))) {
+    stop("Error: lin.p needs to be a vector!")
+  }
 
-  if ((method == "ACBC" | method == "CBC") & base::any(coding != 0 & coding != 1 & coding != 2)) {
-    stop("Error: Please only use 0 (part-worth), 1 (linear), 2 (piecewise)!")
+  if (!(base::is.null(lin.p))) {
+    for (ll in 1:base::length(lin.p)) {
+      if (!(base::is.numeric(lin.p[ll]))) {
+        stop("Error: lin.p needs to be a vector with only numeric values!")
+      }
+
+      if (!base::is.numeric(data[[lin.p[ll]]])) {
+        stop("Error: Variables included in lin.p needs to be numeric!")
+      }
+    }
   }
 
   if (!(base::is.null(lin.p)) & !(base::is.vector(lin.p))) {
     stop("Error: lin.p needs to be a vector")
   }
 
+  if (base::any(coding == 1) & base::is.null(lin.p)) {
+    stop("Error: Please specify lin.p!")
+  }
+
+  if (base::any(coding == 2) & base::is.null(piece.p)) {
+    stop("Error: Please specify piece.p!")
+  }
+
+  if (!(base::is.list(piece.p))) {
+    stop("Error: piece.p needs to be a list!")
+  }
+
+  if (!(base::is.null(piece.p))) {
+    for (tt in 1:length(piece.p)) {
+      lng <- base::length(piece.p[[tt]])
+      if (lng == 1) {
+        var <- piece.p[[tt]]
+        if (!(base::is.numeric(data[[var]]))) {
+          stop("Error: Variables included in piece.p need to be numeric!")
+        }
+      }
+
+      if (lng > 1) {
+        for (lng_lev in 1:lng) {
+          var <- piece.p[[tt]][lng_lev]
+          if (!(base::is.numeric(data[[var]]))) {
+            stop("Error: Variables included in piece.p need to be numeric!")
+          }
+        }
+      }
+    }
+  }
+
   if (method == "MaxDiff") {
     coding <- c(base::rep(0, base::length(prod)))
   }
 
-  if (base::any(coding == 1) & base::is.null(lin.p)){
-    stop("Error: Please specify lin.p!")
-  }
-
-  if (base::any(coding == 2) & base::is.null(piece.p)){
-    stop("Error: Please specify piece.p!")
-  }
+  ######################################################
 
   Input <- data
 
@@ -244,7 +343,7 @@ createHOT <- function(data, id, None = NULL, prod,
           inter.levels <- interpolate.levels[[helper]]
 
           # error if xout is larger than maximum
-          if (prod.levels[[q]][(pq)] > max(inter.levels)){
+          if (prod.levels[[q]][(pq)] > max(inter.levels)) {
             stop("Error: Extrapolation not possible")
           }
 
@@ -276,7 +375,7 @@ createHOT <- function(data, id, None = NULL, prod,
           interprice <- prod.levels[[q]][(pq)]
 
           # error if xout is larger than maximum
-          if (interprice > max(inter.levels)){
+          if (interprice > max(inter.levels)) {
             stop("Error: Extrapolation not possible")
           }
 

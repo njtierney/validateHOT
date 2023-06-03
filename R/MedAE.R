@@ -17,35 +17,44 @@
 #'
 #' @examples
 #' library(ValiDatHOT)
-#' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19,
-#'          id = 1, prod = 7,
-#'          prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-#'          choice = 20, method = "MaxDiff"
+#' data("MaxDiff")
+#' createHOT(
+#'   data = MaxDiff,
+#'   id = 1,
+#'   None = 19,
+#'   prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   method = "MaxDiff",
+#'   choice = 20
 #' )
-#' medae(data = HOT, id = 1, opts = c(2:9), choice = 10)
 #'
+#' medae(data = HOT, id = 1, opts = c(2:9), choice = 10)
 #'
 #' @examples
 #' library(ValiDatHOT)
-#' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19,
-#'          id = 1, prod = 7,
-#'          prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-#'          choice = 20, method = "MaxDiff", varskeep = 21
+#' data("MaxDiff")
+#' createHOT(
+#'   data = MaxDiff,
+#'   id = 1,
+#'   None = 19,
+#'   prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   method = "MaxDiff",
+#'   varskeep = 21,
+#'   choice = 20
 #' )
+#'
 #' medae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 #'
 #' @export
 
 
 medae <- function(data, id, Group = NULL, opts, choice) {
-
-  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])){
+  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])) {
     base::stop("Error: Choice must be numeric!")
   }
 
-  if (!base::is.null(Group) & base::anyNA(data[Group])){
+  if (!base::is.null(Group) & base::anyNA(data[Group])) {
     base::warning("Warning: Grouping variable contains NAs.")
   }
 
@@ -130,12 +139,12 @@ medae <- function(data, id, Group = NULL, opts, choice) {
 
     MedAE <- base::merge(x = MedAE, y = Predicted, by = "Options", all.x = T)
 
-	  MedAE[base::is.na(MedAE)] <- 0
+    MedAE[base::is.na(MedAE)] <- 0
 
-	  MedAEErr <- base::as.data.frame(stats::median(base::abs(MedAE$Share - MedAE$Pred)))
+    MedAEErr <- base::as.data.frame(stats::median(base::abs(MedAE$Share - MedAE$Pred)))
 
-	  colnames(MedAEErr) <- "MedAE"
-	  return(MedAEErr)
+    colnames(MedAEErr) <- "MedAE"
+    return(MedAEErr)
   }
 
   if (!(base::is.null(Group))) {
@@ -221,7 +230,7 @@ medae <- function(data, id, Group = NULL, opts, choice) {
 
         DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
 
-		DataFrame[base::is.na(DataFrame)] <- 0
+        DataFrame[base::is.na(DataFrame)] <- 0
 
         MedAE[p, p] <- "All"
 
@@ -230,66 +239,56 @@ medae <- function(data, id, Group = NULL, opts, choice) {
         base::rm(Helper, Actual, Predicted, DataFrame)
       }
 
-      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)){
+      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_num <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, lab_num[i])
-
         }
 
         Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
       }
 
-      if (base::is.character(WS$Group)){
+      if (base::is.character(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_char <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, lab_char[i])
-
         }
 
         Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
       }
 
-      if (base::is.character(WS$Group)){
+      if (base::is.character(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_char <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, lab_char[i])
-
         }
 
         Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
       }
 
-      if (base::is.factor(WS$Group)){
+      if (base::is.factor(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_fac <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, base::levels(lab_fac)[i])
-
         }
 
         Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
       }
 
-      if (labelled::is.labelled(WS$Group)){
+      if (labelled::is.labelled(WS$Group)) {
         lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))){
-
+        for (i in 1:base::length(base::unique(WS$Group))) {
           lab_lab <- base::sort(base::unique(WS$Group))
 
           lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-
         }
 
         Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
@@ -322,7 +321,7 @@ medae <- function(data, id, Group = NULL, opts, choice) {
 
       DataFrame[base::is.na(DataFrame)] <- 0
 
-	    MedAE[(p + 1), 1] <- lab[(p + 1)]
+      MedAE[(p + 1), 1] <- lab[(p + 1)]
 
       MedAE[(p + 1), 2] <- stats::median(base::abs(DataFrame$Share - DataFrame$Pred))
 

@@ -16,23 +16,34 @@
 #'
 #' @examples
 #' library(ValiDatHOT)
-#' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19,
-#'          id = 1, prod = 7,
-#'          prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-#'          choice = 20, method = "MaxDiff"
+#' data("MaxDiff")
+#' createHOT(
+#'   data = MaxDiff,
+#'   id = 1,
+#'   None = 19,
+#'   prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   method = "MaxDiff",
+#'   choice = 20
 #' )
+#'
 #' reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
 #' reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")
 #'
 #' @examples
 #' library(ValiDatHOT)
-#' data(MaxDiff)
-#' createHOT(data = MaxDiff, None = 19,
-#'          id = 1, prod = 7,
-#'          prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-#'          choice = 20, method = "MaxDiff", varskeep = 21
+#' data("MaxDiff")
+#' createHOT(
+#'   data = MaxDiff,
+#'   id = 1,
+#'   None = 19,
+#'   prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   method = "MaxDiff",
+#'   varskeep = 21,
+#'   choice = 20
 #' )
+#'
 #' reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold", Group = 10)
 #' reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10)
 #'
@@ -48,11 +59,13 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
 
   for (i in 1:base::length(varCheck)) {
     if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])) {
-      stop("Error ":colnames(data[varCheck[i]]), " needs to be numeric!")
+      stop("Error: ", colnames(data[varCheck[i]]), " needs to be numeric!")
     }
+  }
 
+  for (i in 1:base::length(varCheck)) {
     if (base::anyNA(data[varCheck[i]])) {
-      stop("Error ":colnames(data[[varCheck[i]]]), " has missing values!")
+      stop("Error: ", colnames(data[[varCheck[i]]]), " has missing values!")
     }
   }
 

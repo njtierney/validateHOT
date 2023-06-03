@@ -9,6 +9,11 @@ createHOT(
   choice = 20, method = "MaxDiff"
 )
 
+test_that("Columns needs to be numeric", {
+  HOT2 <- HOT
+  HOT2$Option_2 <- as.character(HOT2$Option_2)
+  expect_error(shareofpref(data = HOT2, id = 1, opts = c(2:9)))
+})
 
 test_that("Structure of Output", {
   expect_true(base::is.data.frame(shareofpref(data = HOT, id = 1, opts = c(2:9))))

@@ -23,21 +23,32 @@ Function to measure the share of preferences of each option in the validation ta
 }
 \examples{
 library(ValiDatHOT)
-data(MaxDiff)
-createHOT(data = MaxDiff, None = 19,
-         id = 1, prod = 7,
-         prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-         choice = 20, method = "MaxDiff"
+data("MaxDiff")
+createHOT(
+  data = MaxDiff,
+  id = 1,
+  None = 19,
+  prod = 7,
+  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+  method = "MaxDiff",
+  choice = 20
 )
+
 shareofpref(data = HOT, id = 1, opts = c(2:9))
 
 library(ValiDatHOT)
-data(MaxDiff)
-createHOT(data = MaxDiff, None = 19,
-         id = 1, prod = 7,
-         prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-         choice = 20, method = "MaxDiff", varskeep = 21
+data("MaxDiff")
+createHOT(
+  data = MaxDiff,
+  id = 1,
+  None = 19,
+  prod = 7,
+  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+  method = "MaxDiff",
+  varskeep = 21,
+  choice = 20
 )
+
 shareofpref(data = HOT, id = 1, opts = c(2:9), Group = 10)
 
 }

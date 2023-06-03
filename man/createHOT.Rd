@@ -75,7 +75,7 @@ createHOT(
   prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
   coding = c(0, 0, 0),
   method = "CBC",
-  choice = 20
+  choice = 22
 )
 
 # CBC example with linear coding
@@ -109,8 +109,8 @@ createHOT(
   None = 37,
   prod = 6,
   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
-  interpolate.levels = c(2.093, 27.287),
-  piece.p = list(c(35,36)),
+  interpolate.levels = list(c(2.093, 27.287)),
+  piece.p = list(c(35, 36), c(35, 36), c(35, 36), c(35, 36), c(35, 36), c(35, 36)),
   coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
   method = "ACBC",
   choice = 38
@@ -131,14 +131,11 @@ createHOT(
   prod = 6,
   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
   interpolate.levels = list(c(3, 5, 8, 10), c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)),
-  piece.p = list(c(36,37), c(35, 36), c(35, 36), c(33,34), c(33, 34), c(33, 34)),
+  piece.p = list(c(36, 37), c(35, 36), c(35, 36), c(33, 34), c(33, 34), c(33, 34)),
   lin.p = 9,
   coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
   method = "ACBC",
   choice = 40
-  )
-
-
-
+)
 
 }

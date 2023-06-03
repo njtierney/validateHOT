@@ -9,6 +9,13 @@ createHOT(
   choice = 20, method = "MaxDiff"
 )
 
+test_that("Columns needs to be numeric", {
+  HOT2 <- HOT
+  HOT2$Option_2 <- as.character(HOT2$Option_2)
+  expect_error(freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold"))
+  expect_error(freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold"))
+})
+
 test_that("Structure of Output", {
   expect_true(base::is.data.frame(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")))
   expect_true(base::is.data.frame(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")))

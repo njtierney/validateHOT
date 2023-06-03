@@ -43,24 +43,33 @@ its above \code{"None"} utility) or \code{"threshold"}
 }
 \examples{
 library(ValiDatHOT)
-data(MaxDiff)
+data("MaxDiff")
 createHOT(
-  data = MaxDiff, None = 19,
-  id = 1, prod = 7,
+  data = MaxDiff,
+  id = 1,
+  None = 19,
+  prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-  choice = 20, method = "MaxDiff"
+  method = "MaxDiff",
+  choice = 20
 )
+
 freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
 freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")
 
 library(ValiDatHOT)
-data(MaxDiff)
+data("MaxDiff")
 createHOT(
-  data = MaxDiff, None = 19,
-  id = 1, prod = 7,
+  data = MaxDiff,
+  id = 1,
+  None = 19,
+  prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-  choice = 20, method = "MaxDiff", varskeep = 21
+  method = "MaxDiff",
+  varskeep = 21,
+  choice = 20
 )
+
 freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold", Group = 10)
 freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10)
 

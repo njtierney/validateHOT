@@ -30,23 +30,32 @@ Additional details...
 }
 \examples{
 library(ValiDatHOT)
-data(MaxDiff)
+data("MaxDiff")
 createHOT(
-  data = MaxDiff, None = 19,
-  id = 1, prod = 7,
+  data = MaxDiff,
+  id = 1,
+  None = 19,
+  prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-  choice = 20, method = "MaxDiff"
+  method = "MaxDiff",
+  choice = 20
 )
+
 kl(data = HOT, id = 1, opts = c(2:9), choice = 10)
 
 library(ValiDatHOT)
-data(MaxDiff)
+data("MaxDiff")
 createHOT(
-  data = MaxDiff, None = 19,
-  id = 1, prod = 7,
+  data = MaxDiff,
+  id = 1,
+  None = 19,
+  prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-  choice = 20, method = "MaxDiff", varskeep = 21
+  method = "MaxDiff",
+  varskeep = 21,
+  choice = 20
 )
+
 kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
 }
