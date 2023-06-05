@@ -15,7 +15,7 @@
 #' @importFrom labelled is.labelled val_labels
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
@@ -30,7 +30,7 @@
 #' shareofpref(data = HOT, id = 1, opts = c(2:9))
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,

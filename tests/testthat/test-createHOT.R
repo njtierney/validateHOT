@@ -1,4 +1,4 @@
-library(ValiDatHOT)
+library(validateHOT)
 data("MaxDiff")
 data("CBC")
 data("CBC_lin")

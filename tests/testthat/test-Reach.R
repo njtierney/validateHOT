@@ -1,4 +1,4 @@
-library(ValiDatHOT)
+library(validateHOT)
 data(MaxDiff)
 
 ####################### Test wo Grouping variable ########################################

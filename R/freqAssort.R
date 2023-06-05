@@ -25,7 +25,7 @@
 #' @importFrom labelled is.labelled val_labels
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
@@ -41,7 +41,7 @@
 #' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,

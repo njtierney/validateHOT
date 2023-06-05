@@ -1,4 +1,4 @@
-library(ValiDatHOT)
+library(validateHOT)
 data(ACBC)
 
 test_that("Structure of DF", {

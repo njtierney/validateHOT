@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(ValiDatHOT)
+library(validateHOT)
 
-test_check("ValiDatHOT")
+test_check("validateHOT")

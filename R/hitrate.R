@@ -13,7 +13,7 @@
 #'
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
@@ -28,7 +28,7 @@
 #' hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,

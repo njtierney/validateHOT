@@ -19,7 +19,7 @@
 #' @importFrom stats approx
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #'
 #' # MaxDiff example
 #' data("MaxDiff")

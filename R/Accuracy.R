@@ -20,7 +20,7 @@
 #' @return a data frame
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
@@ -35,7 +35,7 @@
 #' accuracy(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,

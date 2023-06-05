@@ -1,4 +1,4 @@
-library(ValiDatHOT)
+library(validateHOT)
 data(MaxDiff)
 
 test_that("Structure of DF", {

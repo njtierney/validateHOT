@@ -1,4 +1,4 @@
-library(ValiDatHOT)
+library(validateHOT)
 data(CBC_lin)
 
 test_that("Structure of DF", {

@@ -18,7 +18,7 @@
 #'
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
@@ -32,7 +32,7 @@
 #'
 #' kl(data = HOT, id = 1, opts = c(2:9), choice = 10)
 #'
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,

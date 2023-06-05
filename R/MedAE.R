@@ -16,7 +16,7 @@
 #' @importFrom labelled is.labelled val_labels
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
@@ -31,7 +31,7 @@
 #' medae(data = HOT, id = 1, opts = c(2:9), choice = 10)
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,

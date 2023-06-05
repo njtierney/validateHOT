@@ -11,7 +11,7 @@
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
@@ -26,7 +26,7 @@
 #' mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)
 #'
 #' @examples
-#' library(ValiDatHOT)
+#' library(validateHOT)
 #' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
