@@ -22,18 +22,15 @@ The goal of validateHOT is to validate the results of your validation task (also
 
 <ul>
 <li>
-`createHOT`: creates the validation/holdout task for you. For example, in a *CBC* the total utilities are calculated by the sum of each attribute level. You have to specify the attribute levels for each alternative in the validation/holdout task and it will calculate the total utility for each alternative in the validation/holdout task.
+<code>createHOT</code>: creates the validation/holdout task for you. For example, in a *CBC* the total utilities are calculated by the sum of each attribute level. You have to specify the attribute levels for each alternative in the validation/holdout task and it will calculate the total utility for each alternative in the validation/holdout task.
 </li>
 <li>
-`accuracy`: generates the number of correct predicted choice or no-choice divided by the total number of predictions. Only possible for a binary output, e.g., buy vs. no-buy correctly predicted.
+<code>accuracy</code>: generates the number of correct predicted choice or no-choice divided by the total number of predictions. Only possible for a binary output, e.g., buy vs. no-buy correctly predicted.
 </li>
 <li>
-`f1`: generates the F1-Score. F1-Score is calculated by the following formula $\frac{2 * precision * recall}{precision + recall}$. Only possible for a binary output, e.g., buy vs. no-buy correctly predicted.
+<code>f1</code>: generates the F1-Score. F1-Score is calculated by the following formula $\frac{2 * precision * recall}{precision + recall}$. Only possible for a binary output, e.g., buy vs. no-buy correctly predicted.
 </li>
-<li>
-`f1`: generates the F1-Score. F1-Score is calculated by the following formula $\frac{2 * precision * recall}{precision + recall}$. Only possible for a binary output, e.g., buy vs. no-buy correctly predicted.
-</li>
-
+</ul>
 
 ## Installation
 
