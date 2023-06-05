@@ -193,12 +193,8 @@ createHOT <- function(data, id, None = NULL, prod,
       }
 
       if (lng > 1) {
-
-
         for (lng_lev in 1:lng) {
-
-          if (coding[lng_lev] != 1 & coding[lng_lev] != 2){
-
+          if (coding[lng_lev] != 1 & coding[lng_lev] != 2) {
             var <- prod.levels[[tt]][lng_lev]
             if (!(base::is.numeric(data[[var]]))) {
               stop("Error: Variables included in prod.levels need to be numeric!")

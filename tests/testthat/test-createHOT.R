@@ -576,7 +576,6 @@ test_that("lin. p needs to be a vector with numeric input ", {
 })
 
 test_that("lin. p needs to be a vector with numeric variables ", {
-
   ACBC_interpolate2 <- ACBC_interpolate
   ACBC_interpolate2[[9]] <- as.character(ACBC_interpolate2[[9]])
 
@@ -604,7 +603,6 @@ test_that("lin. p needs to be a vector with numeric variables ", {
 
 
 test_that("lin. p needs to be specified ", {
-
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
@@ -742,7 +740,6 @@ test_that("ACBC - Number of products equals number of output starting with Optio
   )
 
   expect_true(base::length(base::colnames(HOT %>% dplyr::select(dplyr::starts_with("Option_")))) == prod)
-
 })
 
 test_that("First column id", {
@@ -792,7 +789,6 @@ test_that("Extrapolation not possible for piecewise ", {
     method = "ACBC",
     choice = 40
   ))
-
 })
 
 test_that("Extrapolation not possible for linear ", {
@@ -816,7 +812,6 @@ test_that("Extrapolation not possible for linear ", {
     method = "ACBC",
     choice = 40
   ))
-
 })
 
 test_that("if none specified also named in the output ", {
@@ -842,7 +837,6 @@ test_that("if none specified also named in the output ", {
   )
 
   expect_true(base::any(base::colnames(HOT) == "None"))
-
 })
 
 test_that("if none not specified also not named in the output ", {
@@ -867,11 +861,9 @@ test_that("if none not specified also not named in the output ", {
   )
 
   expect_false(base::any(base::colnames(HOT) == "None"))
-
 })
 
 test_that("varskeep counted corectly ", {
-
   varskeep <- 41
 
   expect_true(base::abs(ncol(createHOT(
@@ -910,8 +902,6 @@ test_that("varskeep counted corectly ", {
     coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
     method = "ACBC",
     varskeep = varskeep,
-    choice = 40))) == base::length(varskeep)
-  )
-
-
+    choice = 40
+  ))) == base::length(varskeep))
 })
