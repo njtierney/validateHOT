@@ -1,6 +1,6 @@
 #' ACBC example dataset with linear and piecewise coded variables
 #'
-#' A data set with raw scores export for an adaptive choice-based conjoint including a linear-coded and piecewise-coded variable.
+#' A data set with raw scores export for an adaptive choice-based conjoint including a linear-coded variable as well as price piecewise-coded.
 #'
 #'
 #' \itemize{

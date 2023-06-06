@@ -10,14 +10,24 @@
 #' @param None column index of None alternative
 #'
 #' @details
-#' To get the \code{"accuracy"} of the validation task, you have to specify the \code{"None"} alternative in the script. The function will calculate the \code{"accuracy"} based on whether or not, for example, a buy or a no-buy was correctly predicted.
+#' The current logic of \code{"accuracy"} is to provide whether a binary coded event is correctly predicted. To use the function a \code{"None"} alternative in the script.
+#' One potential usage is, for example, whether a buy or a no-buy condition was predicted correctly. For example, you have three alternatives plus a \code{"None"} alternative and you want to check whether a buy or no-buy was correclty predicted.
 #'
+#' \code{data} needs to be a data frame including the alternatives shown in the validation/holdout
+#' task. Can be created using the createHOT function.
+#'
+#' \code{id} needs to be the column index of the id (unique for each participant) in data frame.
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
 #'
 #' @return a data frame
+#'
+#' @family family name
+#'
+#' @seealso [createHOT()]
+#'
 #'
 #' @examples
 #' library(validateHOT)

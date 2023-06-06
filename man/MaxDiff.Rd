@@ -11,7 +11,7 @@ A data frame with 70 rows and 21 variables
 data(MaxDiff)
 }
 \description{
-A data set with raw scores export for a MaxDiff.
+A data set with raw scores export for a MaxDiff (Best-Worst Scaling case 1).
 }
 \details{
 \itemize{

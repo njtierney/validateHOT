@@ -1,6 +1,6 @@
 #' MaxDiff example dataset
 #'
-#' A data set with raw scores export for a MaxDiff.
+#' A data set with raw scores export for a MaxDiff (Best-Worst Scaling case 1).
 #'
 #'
 #' \itemize{

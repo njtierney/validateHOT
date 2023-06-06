@@ -50,6 +50,57 @@ a data frame
 \description{
 Function used to create utilities for validation task.
 }
+\details{
+In order to test validation metrics of a validation/holdout task, the task first needs to be created. This is done by the function \code{createHOT}.
+Make sure to upload the raw utilities of your study. Afterwards, the function will create the utilities based on the additive utility model (Rao, 2014, p. 82).
+
+\code{id} needs to be the column index of the id (unique for each participant) in data frame.
+
+\code{None} needs to be specified in case a \code{None} alternative is included in
+validation/holdout task, please specify this by specifying the \code{None} argument, otherwise leave it empty.
+
+
+\code{prod} should specify the total number of products included in your validation task (excluding the \code{None} option).
+
+\code{prod.levels} specifies the attribute levels for each alternative. Input for \code{prod.levels} needs to be a list. In case \code{method = "MaxDiff"}
+this will only be a list of the column indexes of the alternatives in the validation/holdout task. If \code{method = "CBC"} or
+\code{method = "ACBC"} use a vector to specify the attribute levels for each alternative.
+Again, the column index of the attribute level needs to be specified.
+In case values for one attribute are interpolated (assuming linear or
+piecewise coding), the value to be interpolated needs to be specified.
+However, \code{lin.p} and/or \code{piece.p}, \code{interpolate.levels}
+as well as \code{coding} needs to be specified.
+
+\code{interpolate.levels} needs to be specified in case interpolating is used (only if variables are coded as linear or piecewise).
+If scaled or centered values were used for HB estimation, these also needs to be inserted here.
+All values needs to be specified. For example if one linear coded attribute had 5 levels, all 5 levels needs to be reported.
+In case for linear coded price for \code{method = "ACBC"}, specify both lower bound and upper bound. For piecewise coding price specify
+each breakpoint. Input for \code{interpolate.levels} needs to be a list.
+
+\code{piece.p} needs to be specified in case a variable is coded as piecewise (see coding).
+Position of both lower and upper bound needs to be specified. In case interpolated value (see
+prod.levels) is equal to a lower or upper bound, this can be specified either as
+lower or upper bound. Input for \code{piece.p} needs to be a list.
+
+\code{lin.p} needs to be specified in case a variable is coded as linear (see coding).
+Since for linear coding (except for price in \code{method = "ACBC"}) only has one
+coefficient, the column index needs to be specified. Input for \code{piece.p} needs to be a vector.
+
+\code{coding} needs to be specified for if \code{method = "CBC"} or \code{method = "ACBC"}.
+0 needs to be used for parth-worth coding, 1 for linear coding, and 2 for piecewise coding.
+In case \code{method = "ACBC"} and linear price function is used, this variable needs to be coded
+as piecewise (2) in this case. In case \code{method} is set to \code{"MaxDiff"}
+\code{coding} needs to be empty. Input for \code{coding} needs to be a vector.
+
+\code{method} specifies the preference measurement method. Can be set to
+\code{"MaxDiff"}, \code{"CBC"}, or \code{"ACBC"}.
+
+\code{varskeep} needs to be specified in case other variables should be kept within the
+data frame (for example, a grouping variable). Input for \code{varskeep} needs to be a vector
+with the column index(es) of the variable(s) that should be kept.
+
+\code{choice} specifies the column index of the acutal choice in the validation/holdout task.
+}
 \examples{
 library(validateHOT)
 
@@ -138,4 +189,11 @@ createHOT(
   choice = 40
 )
 
+}
+\references{
+{
+
+Rao, V. R. (2014). \emph{Applied Conjoint Analysis}. Heidelberg: Springer Berlin. \verb{https://doi.org/10.1007/978-3-540-87753-0}
+
+}
 }
