@@ -33,6 +33,19 @@ One potential usage is, for example, whether a buy or a no-buy condition was pre
 task. Can be created using the createHOT function.
 
 \code{id} needs to be the column index of the id (unique for each participant) in data frame.
+
+\code{Group} optional Grouping variable, if results should be display by different conditions.
+Input of \code{Group} needs to be a column index.
+
+\code{opts} is needed to specify the different alternatives in the validation/holdout
+task (also includes the None option).
+Input of \code{opts} needs to be a vector with column index(es).
+
+\code{choice} specifies the column index of the actual choice.
+Input of opts \code{choice} needs to be the column index of actual choice.
+
+\code{None} specifies the column index of the \code{None} alternative in the
+validation/holdout task. Needs to be specified for \code{accuracy()}.
 }
 \examples{
 library(validateHOT)
@@ -66,6 +79,8 @@ accuracy(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
 }
 \seealso{
-[createHOT()]
+{
+\code{\link[=createHOT]{createHOT}}
+}
 }
 \concept{family name}
