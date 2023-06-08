@@ -7,17 +7,19 @@
 accuracy(data, id, Group = NULL, opts, choice, None)
 }
 \arguments{
-\item{data}{data frame including alternatives in the validation task and actual \code{"choice"}. \code{"None"} alternative needs to be included.}
+\item{data}{data frame with all relevant variables.}
 
-\item{id}{column index of \code{"id"}}
+\item{id}{vector of column index of unique identifier in \code{data}.}
 
-\item{Group}{optional grouping variable to get accuracy by group}
+\item{Group}{optional vector of column number to specify grouping variable
+to get accuracy by group}
 
-\item{opts}{column indexes of the alternatives included in the validation task}
+\item{opts}{vector of column indexes of the alternatives included in the
+validation/holdout task.}
 
-\item{choice}{column index of the actual choice}
+\item{choice}{vector of column index of the actual choice.}
 
-\item{None}{column index of None alternative}
+\item{None}{vector of column index of None alternative.}
 }
 \value{
 a data frame
@@ -26,13 +28,18 @@ a data frame
 accuracy is defined as number of correct predicted participants divided by the total number of predictions
 }
 \details{
-The current logic of \code{"accuracy"} is to provide whether a binary coded event is correctly predicted. To use the function a \code{"None"} alternative in the script.
-One potential usage is, for example, whether a buy or a no-buy condition was predicted correctly. For example, you have three alternatives plus a \code{"None"} alternative and you want to check whether a buy or no-buy was correclty predicted.
+The current logic of \code{"accuracy"} is to provide whether a binary coded event is correctly predicted.
+To use the function a \code{"None"} alternative needs to be in the script.
+One potential usage is, for example, whether a buy or a no-buy condition
+was predicted correctly. For example, you have three alternatives plus
+a \code{"None"} alternative and you want to check whether a buy or no-buy was
+correctly predicted.
 
-\code{data} needs to be a data frame including the alternatives shown in the validation/holdout
-task. Can be created using the createHOT function.
+\code{data} needs to be a data frame including the alternatives shown in
+the validation/holdout task. Can be created using the createHOT function.
 
-\code{id} needs to be the column index of the id (unique for each participant) in data frame.
+\code{id} needs to be the column index of the id (unique for each participant)
+in \code{data}.
 
 \code{Group} optional Grouping variable, if results should be display by different conditions.
 Input of \code{Group} needs to be a column index.
@@ -83,4 +90,3 @@ accuracy(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 \code{\link[=createHOT]{createHOT}}
 }
 }
-\concept{family name}

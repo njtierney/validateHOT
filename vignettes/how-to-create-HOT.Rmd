@@ -1,0 +1,19 @@
+---
+title: "01 - Creating validation task"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{01 - Creating validation task}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(validateHOT)
+```

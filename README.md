@@ -10,9 +10,109 @@ The goal of validateHOT is to validate the results of your validation
 task (also known as holdout task). A validation task is essential to
 make sure that your collected data of a *MaxDiff*, *CBC*, or *ACBC* are
 valid and can also predict outside task that were **not** included in
-estimating your utility scores. At the moment, validateHOT provides the
-following functions:
+estimating your utility scores. At the moment, <code>validateHOT</code>
+provides functions for 3 key areas:
 
+<ul>
+<li>
+validation metrics mainly reported in preference measurement studies
+</li>
+<li>
+metrics that are usually reported in machine learning (i.e., confusion
+matrix)
+</li>
+<li>
+simulation methods, for example, to determine optimal product
+combinations
+</li>
+</ul>
+
+For all 3 key areas, the <code>createHOT</code> function is essential.
+This function creates the total utilities for each alternative in the
+validation/holdout task and also in the simulation method, respectively.
+Rao (2014, 82) mentions the additive utility model stating that the
+total utility of a profile or conjoint model is the sum of its attribute
+levels. <code>createHOT</code> will do exactly this for you.
+
+### Classical validation metrics
+
+<ul>
+<li>
+<code>hitrate</code>:
+</li>
+<li>
+<code>mhp</code>:
+</li>
+<li>
+<code>kl</code>:
+</li>
+<li>
+<code>mae</code>:
+</li>
+<li>
+<code>medae</code>:
+</li>
+<li>
+<code>mhp</code>:
+</li>
+<li>
+<code>rmse</code>:
+</li>
+</ul>
+
+### Confusion Matrix
+
+<ul>
+<li>
+<code>accuracy</code>:
+</li>
+<li>
+<code>f1</code>:
+</li>
+<li>
+<code>precision</code>:
+</li>
+<li>
+<code>recall</code>:
+</li>
+<li>
+<code>specificity</code>:
+</li>
+</ul>
+
+### Simulation Methods
+
+<ul>
+<li>
+<code>freqassort</code>:
+</li>
+<li>
+<code>reach</code>:
+</li>
+<li>
+<code>shareofpref</code>:
+</li>
+</ul>
+
+### Data Frames provided by <code>validateHOT</code>
+
+<ul>
+<li>
+<code>ACBC_interpolate</code>:
+</li>
+<li>
+<code>ACBC</code>:
+</li>
+<li>
+<code>CBC_lin</code>:
+</li>
+<li>
+<code>CBC</code>:
+</li>
+<li>
+<code>MaxDiff</code>:
+</li>
+</ul>
 <ul>
 <li>
 <code>createHOT</code>: creates the validation/holdout task for you. For
@@ -46,13 +146,15 @@ devtools::install_github("JoshSchramm94/validateHOT")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+## References
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+<div id="refs" class="references csl-bib-body hanging-indent">
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
+<div id="ref-rao2014a" class="csl-entry">
+
+Rao, Vithala R. 2014. *Applied Conjoint Analysis*. Springer Berlin
+Heidelberg. <https://doi.org/10.1007/978-3-540-87753-0>.
+
+</div>
+
+</div>
