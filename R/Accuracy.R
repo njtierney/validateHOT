@@ -52,7 +52,7 @@
 #' @examples
 #' library(validateHOT)
 #' data("MaxDiff")
-#' createHOT(
+#' validateHOT::createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,

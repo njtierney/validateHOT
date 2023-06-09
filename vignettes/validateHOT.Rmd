@@ -1,8 +1,8 @@
 ---
-title: "01 - Creating validation task"
+title: "How to use validateHOT"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{01 - Creating validation task}
+  %\VignetteIndexEntry{validateHOT}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
