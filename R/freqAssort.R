@@ -9,9 +9,10 @@
 #' @param data data frame including alternatives in the validation task and actual \code{"choice"}. \code{"None"} alternative needs to be included.
 #' @param id column index of \code{"id"}
 #' @param Group optional grouping variable to get results by group
+#' @param bundles column indexes of the bundles that should be included in the assortment
 #' @param None column index of None alternative
 #' @param method either \code{"First choice"} or \code{"threshold"}, please see Details
-#' @param bundles column indexes of the bundles that should be included in the assortment
+
 #'
 #' @details
 #' Please specify the method you are using. The method can be either set

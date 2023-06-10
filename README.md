@@ -102,24 +102,35 @@ matrix (e.g., Burger (2018)). For all of the 5 provided functions, you
 currently have to have a **none** option in your data. We currently
 predict, e.g., whether a buy or no-buy was correctly predicted.
 Information could be used for overestimating and underestimating,
-respectively, of product purchases.
+respectively, of product purchases. In the following <code>TP</code>
+stands for true positives, <code>FP</code> for false positives,
+<code>TN</code> for true negatives, and <code>FN</code> for false
+negatives.
 
 <ul>
 <li>
-<code>accuracy</code>:
-$\frac{2 * precision * recall}{precision + recall}$
+<code>accuracy</code>: defined as $\frac{TP + TN}{TP + FP + TN + FN}$.
+If you specify an optional <code>Group</code> argument the output is
+split by groups.
 </li>
 <li>
-<code>f1</code>:
+<code>f1</code>: defined as
+$\frac{2 * precision * recall}{precision + recall}$ or stated
+differently by Burger (2018) $\frac{2TP}{2TP + FP + FN}$. If you specify
+an optional <code>Group</code> argument the output is split by groups.
 </li>
 <li>
-<code>precision</code>:
+<code>precision</code>: defined as $\frac{TP}{TP + FP}$. If you specify
+an optional <code>Group</code> argument the output is split by groups.
 </li>
 <li>
-<code>recall</code>:
+<code>recall</code>: defined as $\frac{TP}{TP + FN}$. If you specify an
+optional <code>Group</code> argument the output is split by groups.
 </li>
 <li>
-<code>specificity</code>:
+<code>specificity</code>: defined as $\frac{TN}{TN + FP}$. If you
+specify an optional <code>Group</code> argument the output is split by
+groups.
 </li>
 </ul>
 
@@ -190,27 +201,25 @@ other attributes are part-worth coded.
 study conducted in Sawtooth.
 </li>
 </ul>
-<ul>
-<li>
-<code>accuracy</code>: generates the number of correct predicted choice
-or no-choice divided by the total number of predictions. Only possible
-for a binary output, e.g., buy vs. no-buy correctly predicted.
-</li>
-<li>
-<code>f1</code>: generates the F1-Score. F1-Score is calculated by the
-following formula $\frac{2 * precision * recall}{precision + recall}$.
-Only possible for a binary output, e.g., buy vs. no-buy correctly
-predicted.
-</li>
-</ul>
 
 ## Why <code>validateHOT</code>
 
-comparison to Metrics
+We are teaching a preference measurement seminar for students. Often
+these students did not have experience with *R* before or only sparsely.
+We teach them to also validate their results and wanted to give them an
+easy way on how to do this in *R*. Of course, there are other great
+packages which are even faster in running (i.e., Hamner and Frasco
+(2018)), however, these packages need some more data wrangling in order
+to use the appropriate functions, which might be a burden or barrier for
+the one or the other.
 
-studi seminar für preference measurement techniques –\> often not
-getting in touch with *R* before, so wanted to make it easier for them.
-this
+Moreover, as Yang, Toubia, and Jong (2018) also report, often commercial
+studies do not use any validation task. Some market research companies
+(as far as we have realized) are not that familiar with *R* yet. Since
+these functions are not always implemented in other softwares, this
+might be one reason why they do not include one simply because they do
+not know how to use it correctly. Having a package to evaluate the
+validation/ holdout task can also be beneficial for those companies.
 
 ## Installation
 
@@ -223,6 +232,135 @@ devtools::install_github("JoshSchramm94/validateHOT")
 ```
 
 ## Example
+
+First, we load the package.
+
+``` r
+library("validateHOT")
+```
+
+### Example I - CBC
+
+Since *CBC’s* are most commonly used between *CBC*, *ACBC*, and
+*MaxDiff*, we will provide an example with a *CBC*. Let us begin with a
+*CBC* where all of the variables are coded as part-worth, so we need no
+interpolation. Let us load the <code>CBC</code> data frame for this
+example.
+
+``` r
+data("CBC")
+```
+
+The data frame has a total of 79 participants and 23 columns.
+
+Now imagine you included a validation/ holdout task with three
+alternatives as well as an no-buy option. We specify the
+<code>data</code> argument and the column index of <code>id</code>.
+Since we also have a *no-buy* alternative in our validation task, we
+next specify the <code>None</code> argument, otherwise we would have
+left it empty. Afterwards, we specify the number of products
+(<code>prod</code>) we include (excluding the *no-buy* alternative),
+which we define in the next step with the argument
+<code>prod.levels</code>. If we look back at the data frame, we can see
+that the first alternative in the holdout task <code>c(4, 9, 19)</code>
+is composed of the following attribute levels <code>Att1_Lev1</code>,
+<code>Att2_Lev1</code>, and <code>Att3_Lev5</code>.
+
+As mentioned above, all the attributes are part-worth coded, therefore,
+we set <code>coding = c(0, 0, 0)</code>. Finally, we specify the method
+of prefernce measurement technique, which is <code>method = “CBC”</code>
+in our case and the column index of the actual participant’s choice
+(<code>choice</code>). If you run the code, a data frame called
+<code>HOT</code> (short form of **H**old**o**ut **t**ask) will be
+returned to the global environment.
+
+> ❗ <code>validateHOT</code> is currently just taking indexes instead
+> of column names, please be aware of this. However, you can easily find
+> out the index by using the <code>names()</code> function or by using
+> <code>which()</code> and <code>colnames()</code>. For example, if you
+> want to find out the column index of <code>id</code>, we could also
+> use <code>which(colnames(CBC) == “ID”)</code>.
+
+``` r
+createHOT(
+  data = CBC,
+  id = 1,
+  None = 21,
+  prod = 3,
+  prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
+  coding = c(0, 0, 0),
+  method = "CBC",
+  choice = 22
+)
+```
+
+Let us take a glimpse at the output, which shows the total raw utilities
+for each of the function included in the validation/ holdout task.
+
+``` r
+head(HOT)
+#>   ID   Option_1   Option_2   Option_3       None choice
+#> 1  1 -0.2029166  0.5851903  1.3231991 -3.2921817      1
+#> 2  2 -0.1431625 -0.7186898 -1.7759660 -0.9123018      1
+#> 3  3 -0.5995552 -0.4783988 -2.2596407 -0.7447178      1
+#> 4  4 -1.3542603 -1.8028929 -0.9638149  2.5995588      4
+#> 5  5 -0.1875285 -0.6541611 -0.9273235 -2.8965076      2
+#> 6  6  1.1212906 -0.9250507 -1.3261888 -1.0404554      2
+```
+
+In the next step, we would like to see how well our model (from which we
+took the raw utilities) predict the choices in the validation/ holdout
+task. First, we will test the <code>hitrate()</code> function. We
+specify the <code>data</code>, the column index of <code>id</code>, the
+column index of the alternatives (<code>opts</code>; remember we have
+three alternatives + the *no-buy* alternative), and finally the column
+index of the choice. We can see that the hitrate of our example is
+48.101.
+
+``` r
+hitrate(data = HOT, id = 1, opts = c(2:5), choice = 6)
+#>         hitrate
+#> chance 25.00000
+#> no.    38.00000
+#> %      48.10127
+```
+
+Let us also check the magnitude of the mean absolute error by running
+the <code>mae()</code> function.
+
+``` r
+mae(data = HOT, id = 1, opts = c(2:5), choice = 6)
+#>        MAE
+#> 1 13.14269
+```
+
+To cover also one example on how to use the metrics of the confusion
+matrix, we could test whether our model overestimates the purchase
+behavior (our model predicts a *buy* although participant opts for a
+*no* buy) or underestimates it (i.e., model predicts *no-buy* but
+participant opts for a *buy*). We will test the accuracy of the model by
+running the <code>accuracy()</code> function.
+
+``` r
+accuracy(data = HOT, id = 1, opts = c(2:5), None = 5, choice = 6)
+#>   accuracy
+#> 1    93.67
+```
+
+Finally, let us test, how many participants would at least buy one of
+the three products, assuming that this is one potential assortment we
+would like to offer to our consumers. We will use the
+<code>reach()</code> function and use the threshold approach. To specify
+the bundles we are offering we use the <code>bundles</code> argument in
+our function.
+
+``` r
+reach(data = HOT, id = 1, bundles = c(2:4), None = 5, method = "threshold")
+#>      reach
+#> 1 88.60759
+```
+
+### Example II - CBC with linear coding
 
 ## References
 
@@ -249,6 +387,13 @@ Elicitation of Decision Rules.” *Journal of Marketing Research* 48 (1):
 Drost, Hajk-Georg. 2018. “Philentropy: Information Theory and Distance
 Quantification with r” 3: 765.
 <https://joss.theoj.org/papers/10.21105/joss.00765>.
+
+</div>
+
+<div id="ref-Metrics" class="csl-entry">
+
+Hamner, Ben, and Michael Frasco. 2018. “Metrics: Evaluation Metrics for
+Machine Learning.” <https://CRAN.R-project.org/package=Metrics>.
 
 </div>
 

@@ -5,10 +5,10 @@
 #'
 #' @param data data frame including Holdout Options and actual \code{"choice"} and \code{"Group"} if optional argument is defined
 #' @param id column index
+#' @param bundles column indexes of the bundles included that should be included in the assortment
 #' @param Group optional grouping variable to get accuracy by group
 #' @param None column index
 #' @param method which method should be used, can be either \code{"First choice"} (only the bundle with highest utility is marked as purchase option if its above \code{"None"} utility) or \code{"threshold"} (all bundles with utility above \code{"None"} utility are marked as purchase option)
-#' @param bundles column indexes of the bundles included that should be included in the assortment
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
