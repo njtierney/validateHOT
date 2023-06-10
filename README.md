@@ -21,8 +21,8 @@ Software’s](https://sawtoothsoftware.com/) *CBC* a fixed validation/
 holdout task is automatically implemented. If you conduct a *MaxDiff* or
 *ACBC* study these have to be programmed by yourself.
 
-👉🏾 <u>What you need to provide</u>: <br> After collecting your data, and
-running your initial *Hierarchical Bayes* models, you can turn to
+👉🏾 <u>**What you need to provide**</u>: <br> After collecting your data,
+and running your initial *Hierarchical Bayes* models, you can turn to
 <code>validateHOT</code> and test how good your model predicts choices
 in the validation/ holdout task. Herefore, you only have to insert your
 **raw** utility scores as well as the actual choice of your validation/
@@ -30,7 +30,7 @@ holdout task. You can use the <code>merge()</code> provided by
 <code>base</code> package (2023). Afterward, you can read in your data
 file and enjoy <code>validateHOT</code>.
 
-👈🏾 <u>What you get</u>:<br> At the moment, <code>validateHOT</code>
+👈🏾 <u>**What you get**</u>:<br> At the moment, <code>validateHOT</code>
 provides functions for 3 key areas:
 
 <ul>
@@ -66,14 +66,13 @@ percentage of how many choices were correctly predicted. If you specify
 an optional <code>Group</code> argument the output is split by groups.
 </li>
 <li>
-<code>kl</code>: Kullback-Leibler-Divergence ?????? (Ding et al. 2011).
-If you specify an optional <code>Group</code> argument the output is
-split by groups.
-</li>
-<li>
-<code>mhp</code>: averaged hit probability of participant’s actual
-choice in the validation/ holdout task. If you specify an optional
-<code>Group</code> argument the output is split by groups.
+<code>kl</code>: Kullback-Leibler-Divergence which measures the
+divergence between the actual choice distribution and the predicted
+choice distribution (Ding et al. 2011; HG 2018). Output provides both
+divergence between *predicted* from *observed* and *observed* from
+*predicted* due to the asymmetry of the Kullback-Leibler divergence. If
+you specify an optional <code>Group</code> argument the output is split
+by groups.
 </li>
 <li>
 <code>mae</code>: average absolute error, i.e., deviation between
@@ -86,10 +85,14 @@ influenced by the If you specify an optional <code>Group</code> argument
 the output is split by groups.
 </li>
 <li>
-<code>mhp</code>:
+<code>mhp</code>: averaged hit probability of participant’s actual
+choice in the validation/ holdout task. If you specify an optional
+<code>Group</code> argument the output is split by groups.
 </li>
 <li>
-<code>rmse</code>:
+<code>rmse</code>: provides the root-mean-squared error of deviation
+between predicted and stated choice share. If you specify an optional
+<code>Group</code> argument the output is split by groups.
 </li>
 </ul>
 
@@ -117,13 +120,37 @@ the output is split by groups.
 
 <ul>
 <li>
-<code>freqassort</code>:
+<code>freqassort</code>: Inspired by the former
+[*turfR*](https://github.com/cran/turfR) package,
+<code>freqassort</code> will give you the averaged frequency, how many
+products the participants will choose from your in the function
+determined potential assortment. For the <code>method</code> argument
+you can decide between <code>method = “threshold”</code> (if utility of
+product is larger than the utility of *none*, it is marked as potential
+purchase option) and <code>method = “First Choice”</code> (only product
+with highest utility is considered. If its utility is above the utility
+of *none*, it is marked as potential purchase option). If you specify an
+optional <code>Group</code> argument the output is split by groups.
 </li>
 <li>
-<code>reach</code>:
+<code>reach</code>: Inspired by the former
+[*turfR*](https://github.com/cran/turfR) package, <code>reach</code>
+will give you the averaged percentage of how many participants you can
+reach (buy *at least* one of the products) with your in the function
+determined potential assortment. or the <code>method</code> argument you
+can decide between <code>method = “threshold”</code> (if utility of
+product is larger than the utility of *none*, it is marked as potential
+purchase option) and <code>method = “First Choice”</code> (only product
+with highest utility is considered. If its utility is above the utility
+of *none*, it is marked as potential purchase option). If you specify an
+optional <code>Group</code> argument the output is split by groups.
 </li>
 <li>
-<code>shareofpref</code>:
+<code>shareofpref</code>: provides you the aggregated share of
+preference, including the lower and upper confidence interval, which is
+calculated according to the $mean +/- 1.96 x \frac{sd}{\sqrt(n)}$. If
+you specify an optional <code>Group</code> argument the output is split
+by groups and provided in a <code>list</code> element.
 </li>
 </ul>
 
@@ -131,29 +158,31 @@ the output is split by groups.
 
 <ul>
 <li>
-<code>ACBC_interpolate</code>:
+<code>ACBC</code>: Example data set with raw utilities of an *ACBC*
+study conducted in Sawtooth. Price was linear-coded while the other
+attributes were coded as part-worths.
 </li>
 <li>
-<code>ACBC</code>:
+<code>ACBC_interpolate</code>: Example data set with raw utilities of an
+*ACBC* study conducted in Sawtooth. Price was piecewise-coded, another
+attribute was linear-coded while the other attributes were coded as
+part-worths.
 </li>
 <li>
-<code>CBC_lin</code>:
+<code>CBC</code>: Example data set with raw utilities of an *CBC* study
+conducted in Sawtooth. All attributes were coded as part-worth.
 </li>
 <li>
-<code>CBC</code>:
+<code>CBC_lin</code>: Example data set with raw utilities of an *CBC*
+study conducted in Sawtooth. One attribute was linear coded while the
+other attributes are part-worth coded.
 </li>
 <li>
-<code>MaxDiff</code>:
+<code>MaxDiff</code>: Example data set with raw utilities of an
+*MaxDiff* study conducted in Sawtooth.
 </li>
 </ul>
 <ul>
-<li>
-<code>createHOT</code>: creates the validation/holdout task for you. For
-example, in a *CBC* the total utilities are calculated by the sum of
-each attribute level. You have to specify the attribute levels for each
-alternative in the validation/holdout task and it will calculate the
-total utility for each alternative in the validation/holdout task.
-</li>
 <li>
 <code>accuracy</code>: generates the number of correct predicted choice
 or no-choice divided by the total number of predictions. Only possible
@@ -197,6 +226,14 @@ Ding, Min, John R. Hauser, Songting Dong, Daria Dzyabura, Zhilin Yang,
 SU Chenting, and Steven P. Gaskin. 2011. “Unstructured Direct
 Elicitation of Decision Rules.” *Journal of Marketing Research* 48 (1):
 116–27. <https://doi.org/10.1509/jmkr.48.1.116>.
+
+</div>
+
+<div id="ref-philentropy" class="csl-entry">
+
+HG, Drost. 2018. “Philentropy: Information Theory and Distance
+Quantification with r” 3: 765.
+<https://joss.theoj.org/papers/10.21105/joss.00765>.
 
 </div>
 
