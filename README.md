@@ -8,24 +8,24 @@
 
 The goal of validateHOT is to validate the results of your validation
 task (also known as holdout task). A validation task is essential to
-make sure that your collected data of a *MaxDiff*, *CBC*, or *ACBC* are
-valid and can also predict outside task that were **not** included in
-estimating your utility scores. Although commercial studies often do not
-include a validation/holdout task (Yang, Toubia, and Jong 2018), it is
-highly recommended to do so (Orme 2015; Rao 2014). This validation/
-holdout task does not only help to check whether everything went right
-during data collection but also to determine your final model.
+make sure that your collected data of a MaxDiff, CBC, or ACBC are valid
+and can also predict outside task that were not included in estimating
+your utility scores. Although commercial studies often do not include a
+validation/holdout task (Yang, Toubia, and Jong 2018), it is highly
+recommended to do so (Orme 2015; Rao 2014). This validation/ holdout
+task does not only help to check whether everything went right during
+data collection but also to determine your final model.
 <code>validatHOT</code> provides some of the relevant metrics to test
 the performance of your data in predicting a holdout task. In [Sawtooth
-Software’s](https://sawtoothsoftware.com/) *CBC* a fixed validation/
-holdout task is automatically implemented. If you conduct a *MaxDiff* or
-*ACBC* study these have to be programmed by yourself.
+Software’s](https://sawtoothsoftware.com/) CBC a fixed validation/
+holdout task is automatically implemented. If you conduct a MaxDiff or
+ACBC study these have to be programmed by yourself.
 
 👉🏾 <u>**What you need to provide**</u>: <br> After collecting your data,
-and running your initial *Hierarchical Bayes* models, you can turn to
+and running your initial Hierarchical Bayes models, you can turn to
 <code>validateHOT</code> and test how good your model predicts choices
 in the validation/ holdout task. Herefore, you only have to insert your
-**raw** utility scores as well as the actual choice of your validation/
+raw utility scores as well as the actual choice of your validation/
 holdout task. You can use the <code>merge()</code> provided by
 <code>base</code> package (2023). Afterward, you can read in your data
 file and enjoy <code>validateHOT</code>.
@@ -58,21 +58,20 @@ levels. <code>createHOT</code> will do exactly this for you.
 
 <ul>
 <li>
-<code>hitrate</code>: creates the *Hit Rate* (correctly predicted
-choices) of your validation task. The output will contain the chance
-level in your validation task ($\frac{1}{alternatives}$) in percentage.
-The number of correctly predicted partcipants’ choices as well as the
+<code>hitrate</code>: creates the Hit Rate (correctly predicted choices)
+of your validation task. The output will contain the chance level in
+your validation task ($\frac{1}{alternatives}$) in percentage. The
+number of correctly predicted participants’ choices as well as the
 percentage of how many choices were correctly predicted. If you specify
 an optional <code>Group</code> argument the output is split by groups.
 </li>
 <li>
 <code>kl</code>: Kullback-Leibler-Divergence which measures the
 divergence between the actual choice distribution and the predicted
-choice distribution (Ding et al. 2011; HG 2018). Output provides both
-divergence between *predicted* from *observed* and *observed* from
-*predicted* due to the asymmetry of the Kullback-Leibler divergence. If
-you specify an optional <code>Group</code> argument the output is split
-by groups.
+choice distribution (Ding et al. 2011; Drost 2018). Output provides both
+divergence between predicted from observed and observed from predicted
+due to the asymmetry of the Kullback-Leibler divergence. If you specify
+an optional <code>Group</code> argument the output is split by groups.
 </li>
 <li>
 <code>mae</code>: average absolute error, i.e., deviation between
@@ -98,9 +97,17 @@ between predicted and stated choice share. If you specify an optional
 
 ### Confusion Matrix
 
+We also include metrics from machine learning, i.e., the confusion
+matrix (e.g., Burger (2018)). For all of the 5 provided functions, you
+currently have to have a **none** option in your data. We currently
+predict, e.g., whether a buy or no-buy was correctly predicted.
+Information could be used for overestimating and underestimating,
+respectively, of product purchases.
+
 <ul>
 <li>
 <code>accuracy</code>:
+$\frac{2 * precision * recall}{precision + recall}$
 </li>
 <li>
 <code>f1</code>:
@@ -121,36 +128,37 @@ between predicted and stated choice share. If you specify an optional
 <ul>
 <li>
 <code>freqassort</code>: Inspired by the former
-[*turfR*](https://github.com/cran/turfR) package,
-<code>freqassort</code> will give you the averaged frequency, how many
-products the participants will choose from your in the function
-determined potential assortment. For the <code>method</code> argument
-you can decide between <code>method = “threshold”</code> (if utility of
-product is larger than the utility of *none*, it is marked as potential
-purchase option) and <code>method = “First Choice”</code> (only product
-with highest utility is considered. If its utility is above the utility
-of *none*, it is marked as potential purchase option). If you specify an
-optional <code>Group</code> argument the output is split by groups.
+[turfR](https://github.com/cran/turfR) package, <code>freqassort</code>
+will give you the averaged frequency, how many products the participants
+will choose from your in the function determined potential assortment.
+For the <code>method</code> argument you can decide between <code>method
+= “threshold”</code> (if utility of product is larger than the utility
+of <code>None</code>, it is marked as potential purchase option) and
+<code>method = “First Choice”</code> (only product with highest utility
+is considered. If its utility is above the utility of <code>None</code>,
+it is marked as potential purchase option). If you specify an optional
+<code>Group</code> argument the output is split by groups.
 </li>
 <li>
 <code>reach</code>: Inspired by the former
-[*turfR*](https://github.com/cran/turfR) package, <code>reach</code>
-will give you the averaged percentage of how many participants you can
-reach (buy *at least* one of the products) with your in the function
-determined potential assortment. or the <code>method</code> argument you
-can decide between <code>method = “threshold”</code> (if utility of
-product is larger than the utility of *none*, it is marked as potential
+[turfR](https://github.com/cran/turfR) package, <code>reach</code> will
+give you the averaged percentage of how many participants you can reach
+(buy at least one of the products) with your in the function determined
+potential assortment. or the <code>method</code> argument you can decide
+between <code>method = “threshold”</code> (if utility of product is
+larger than the utility of <code>None</code>, it is marked as potential
 purchase option) and <code>method = “First Choice”</code> (only product
 with highest utility is considered. If its utility is above the utility
-of *none*, it is marked as potential purchase option). If you specify an
-optional <code>Group</code> argument the output is split by groups.
+of <code>None</code>, it is marked as potential purchase option). If you
+specify an optional <code>Group</code> argument the output is split by
+groups.
 </li>
 <li>
 <code>shareofpref</code>: provides you the aggregated share of
 preference, including the lower and upper confidence interval, which is
 calculated according to the $mean +/- 1.96 x \frac{sd}{\sqrt(n)}$. If
 you specify an optional <code>Group</code> argument the output is split
-by groups and provided in a <code>list</code> element.
+by groups and provided in a list element.
 </li>
 </ul>
 
@@ -158,28 +166,28 @@ by groups and provided in a <code>list</code> element.
 
 <ul>
 <li>
-<code>ACBC</code>: Example data set with raw utilities of an *ACBC*
-study conducted in Sawtooth. Price was linear-coded while the other
-attributes were coded as part-worths.
+<code>ACBC</code>: Example data set with raw utilities of an ACBC study
+conducted in Sawtooth. Price was linear-coded while the other attributes
+were coded as part-worths.
 </li>
 <li>
 <code>ACBC_interpolate</code>: Example data set with raw utilities of an
-*ACBC* study conducted in Sawtooth. Price was piecewise-coded, another
+ACBC study conducted in Sawtooth. Price was piecewise-coded, another
 attribute was linear-coded while the other attributes were coded as
 part-worths.
 </li>
 <li>
-<code>CBC</code>: Example data set with raw utilities of an *CBC* study
+<code>CBC</code>: Example data set with raw utilities of an CBC study
 conducted in Sawtooth. All attributes were coded as part-worth.
 </li>
 <li>
-<code>CBC_lin</code>: Example data set with raw utilities of an *CBC*
+<code>CBC_lin</code>: Example data set with raw utilities of an CBC
 study conducted in Sawtooth. One attribute was linear coded while the
 other attributes are part-worth coded.
 </li>
 <li>
-<code>MaxDiff</code>: Example data set with raw utilities of an
-*MaxDiff* study conducted in Sawtooth.
+<code>MaxDiff</code>: Example data set with raw utilities of an MaxDiff
+study conducted in Sawtooth.
 </li>
 </ul>
 <ul>
@@ -220,6 +228,13 @@ devtools::install_github("JoshSchramm94/validateHOT")
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
+<div id="ref-Burger2018" class="csl-entry">
+
+Burger, Scott V. 2018. *Introduction to Machine Learning with r:
+Rigorous Mathematical Analysis*. O’Reilly.
+
+</div>
+
 <div id="ref-ding2011" class="csl-entry">
 
 Ding, Min, John R. Hauser, Songting Dong, Daria Dzyabura, Zhilin Yang,
@@ -231,7 +246,7 @@ Elicitation of Decision Rules.” *Journal of Marketing Research* 48 (1):
 
 <div id="ref-philentropy" class="csl-entry">
 
-HG, Drost. 2018. “Philentropy: Information Theory and Distance
+Drost, Hajk-Georg. 2018. “Philentropy: Information Theory and Distance
 Quantification with r” 3: 765.
 <https://joss.theoj.org/papers/10.21105/joss.00765>.
 
