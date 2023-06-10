@@ -27,8 +27,8 @@ and running your initial Hierarchical Bayes models, you can turn to
 in the validation/ holdout task. Herefore, you only have to insert your
 raw utility scores as well as the actual choice of your validation/
 holdout task. You can use the <code>merge()</code> provided by
-<code>base</code> package (2023). Afterward, you can read in your data
-file and enjoy <code>validateHOT</code>.
+<code>base</code> package (R Core Team 2023). Afterward, you can read in
+your data file and enjoy <code>validateHOT</code>.
 
 👈🏾 <u>**What you get**</u>:<br> At the moment, <code>validateHOT</code>
 provides functions for 3 key areas:
@@ -277,7 +277,8 @@ returned to the global environment.
 > ❗ <code>validateHOT</code> is currently just taking indexes instead
 > of column names, please be aware of this. However, you can easily find
 > out the index by using the <code>names()</code> function or by using
-> <code>which()</code> and <code>colnames()</code>. For example, if you
+> <code>which()</code> and <code>colnames()</code>, both functions are
+> provided by the base package (R Core Team 2023). For example, if you
 > want to find out the column index of <code>id</code>, we could also
 > use <code>which(colnames(CBC) == “ID”)</code>.
 
@@ -361,6 +362,112 @@ reach(data = HOT, id = 1, bundles = c(2:4), None = 5, method = "threshold")
 ```
 
 ### Example II - CBC with linear coding
+
+In a second example, we again use a *CBC*, however, this time we show
+how to use <code>validateHOT</code> if one of the variables are linear
+coded. All other examples are provided in the Vignette.
+
+We are using the data frame <code>CBC_lin</code> which is also provided
+by the <code>validateHOT</code> package. We first load the data frame.
+
+``` r
+data("CBC_lin")
+```
+
+Next, we create the validation/ holdout task to evaluate it in the next
+step. We use a validation/ holdout task with three alternatives plus the
+*no-buy* option, just as we did in the previous example. The only
+difference to the previous example is that we coded the third attribute
+(<code>Att3_Lin</code>) as linear.
+
+Again, we first define <code>data</code>. The <code>id</code> is saved
+in the first column. The utilities for the <code>None</code> parameter
+are stored in the 15th column, and we again set <code>prod</code> to 3
+(**excluding** the *no-buy* alternative). Next, we define the
+<code>prod.levels</code> for each alternative. For example, we can see
+that the second see that the second alternative is composed of
+<code>Att1_Lev5</code>, <code>Att2_Lev4</code>, and <code>60</code>
+which is the value that should be interpolated. We can see that this
+value is the one that needs to be interpolated if we take a closer look
+at the <code>coding</code> argument. This tells us that the first two
+attributes (<code>Att1_Lev5</code>, <code>Att2_Lev4</code> in the case
+of alternative 2) are part-worth coded (<code>0</code>) while the third
+attribute is linear coded (<code>1</code>).
+
+To interpolate the value, we have to provide <code>validateHOT</code>
+the <code>interpolate.levels</code>. These **need** to be the same as
+provided to, e.g., Sawtooth as levels. Moreover, it is important that
+the value that should be interpolated needs to lie within the lower and
+upper bound of <code>interpolate.levels</code>. In our case, we had 7
+levels that range from 10 to 70. The value we want to interpolate for
+the second alternative is 40, which of course lies within 10 and 70.
+
+Next, we define the column index of the linear coded variable
+(<code>lin.p</code>) and specify the <code>coding</code> we talked about
+above. Again, we are running a *CBC* specified by the
+<code>method</code> argument. This time, we would like to keep some of
+the variables to the data frame, which we specify in
+<code>varskeep</code>. We only keep one further variable, however, you
+can specify as many as you want. This could be relevant if you would
+like to display results per group. Finally, we just tell
+<code>validateHOT</code> the column index of the final choice
+(<code>choice</code>) and we are good to go.
+
+``` r
+CBC <- createHOT(
+  data = CBC_lin,
+  id = 1,
+  None = 15,
+  prod = 3,
+  prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
+  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+  lin.p = 14,
+  coding = c(0, 0, 1),
+  method = "CBC",
+  varskeep = 17,
+  choice = 16
+)
+```
+
+The next steps are the same as above. However, let us take a look at
+some examples in which we display the results per group. Let us again
+begin with the <code>hitrate()</code> function. To do so, we specify the
+column index of the grouping variable in the <code>Group</code>
+argument.
+
+``` r
+hitrate(data = CBC, id = 1, opts = c(2:5), Group = 6, choice = 7)
+#>   Group no.    perc. chance
+#> 1   All  40 50.63291     25
+#> 2     1  13 59.09091     25
+#> 3     2  10 37.03704     25
+#> 4     3  17 56.66667     25
+```
+
+In this case, the Grouping variable is just an integer. However, the
+output is different if it is a factor or if it is labelled data. To
+proof this we just quickly change <code>Group</code> in a factor by
+using the <code>factor()</code> function provided by R Core Team (2023).
+
+``` r
+CBC$Group <- base::factor(CBC$Group,
+                          levels = c(1:3),
+                          labels = paste0("Group_", c(1:3)))
+```
+
+Afterward, we display the *mean hit probability* by running the
+<code>mhp()</code> function.
+
+``` r
+mhp(data = CBC, id = 1, opts = c(2:5), Group = 6, choice = 7)
+#>     Group MeanHitProb
+#> 1     All    43.07061
+#> 2 Group_1    41.66293
+#> 3 Group_2    38.95577
+#> 4 Group_3    47.80627
+```
+
+For more examples, please see the accompanied vignette.
 
 ## References
 
