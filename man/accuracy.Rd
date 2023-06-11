@@ -25,7 +25,10 @@ validation/holdout task.}
 a data frame
 }
 \description{
-accuracy is defined as number of correct predicted participants divided by the total number of predictions
+accuracy is defined as number of correct predicted participants divided by the total number of predictions.
+See, for example, Burger (2018): \eqn{\frac{TP + TN}{TP + FP + TN + FN}}, where TP
+are True Positivies, TN are True Negatives, FP are False Positives and FN are
+False Negatives.
 }
 \details{
 The current logic of \code{"accuracy"} is to provide whether a binary coded event is correctly predicted.
@@ -33,7 +36,8 @@ To use the function a \code{"None"} alternative needs to be in the script.
 One potential usage is, for example, whether a buy or a no-buy condition
 was predicted correctly. For example, you have three alternatives plus
 a \code{"None"} alternative and you want to check whether a buy or no-buy was
-correctly predicted.
+correctly predicted. This function can be helpful when you test whether or
+not your model significantly overestimates or underestimates, for example, a purchase likelihood.
 
 \code{data} needs to be a data frame including the alternatives shown in
 the validation/holdout task. Can be created using the createHOT function.
@@ -84,6 +88,13 @@ createHOT(
 
 accuracy(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
+}
+\references{
+{
+
+Burger, S. V. (2018). \emph{Introduction to Machine Learning with R: Rigorous Mathematical Analysis}. O'Reilly.
+
+}
 }
 \seealso{
 {

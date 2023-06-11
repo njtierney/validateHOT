@@ -1,6 +1,9 @@
 #' Accuracy
 #'
-#' @description accuracy is defined as number of correct predicted participants divided by the total number of predictions
+#' @description accuracy is defined as number of correct predicted participants divided by the total number of predictions.
+#' See, for example, Burger (2018): \eqn{\frac{TP + TN}{TP + FP + TN + FN}}, where TP
+#' are True Positivies, TN are True Negatives, FP are False Positives and FN are
+#' False Negatives.
 #'
 #' @param data data frame with all relevant variables.
 #' @param id vector of column index of unique identifier in \code{data}.
@@ -17,7 +20,8 @@
 #' One potential usage is, for example, whether a buy or a no-buy condition
 #' was predicted correctly. For example, you have three alternatives plus
 #' a \code{"None"} alternative and you want to check whether a buy or no-buy was
-#' correctly predicted.
+#' correctly predicted. This function can be helpful when you test whether or
+#' not your model significantly overestimates or underestimates, for example, a purchase likelihood.
 #'
 #' \code{data} needs to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the createHOT function.
@@ -48,6 +52,11 @@
 #' \code{\link[=createHOT]{createHOT}}
 #' }
 #'
+#' @references {
+#'
+#' Burger, S. V. (2018). \emph{Introduction to Machine Learning with R: Rigorous Mathematical Analysis}. O'Reilly.
+#'
+#' }
 #'
 #' @examples
 #' library(validateHOT)
