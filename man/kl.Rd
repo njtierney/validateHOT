@@ -7,17 +7,19 @@
 kl(data, id, Group = NULL, opts, choice, epsilon = NULL)
 }
 \arguments{
-\item{data}{a data frame}
+\item{data}{data frame with all relevant variables.}
 
-\item{id}{column index of the \code{id} variable}
+\item{id}{vector of column index of unique identifier in \code{data}.}
 
-\item{Group}{optional grouping variable to get hit rate by group}
+\item{Group}{optional vector of column number to specify grouping variable
+to get \code{"kl"} by group.}
 
-\item{opts}{column indexes of the options included in the holdout task}
+\item{opts}{vector of column indexes of the alternatives included in the
+validation/holdout task.}
 
-\item{choice}{column index of the actual choice}
+\item{choice}{vector of column index of the actual choice.}
 
-\item{epsilon}{noise that should be added to 0 values, per default set to 1e-05}
+\item{epsilon}{vector of noise that should be added to 0 values, per default set to 1e-05}
 }
 \value{
 a data frame
@@ -26,7 +28,33 @@ a data frame
 Function to measure the Kullback-Leibler Divergence of a validation task
 }
 \details{
-Additional details...
+Kullback-Leibler-Divergence which measures the divergence between the actual choice distribution and the predicted
+choice distribution (Ding et al., 2011; Drost, 2018). Currently only provides
+the deviation measured based on \eqn{log{_2}} algorithm.
+
+Due to the asymmetry of the Kullback-Leibler divergence, output provides both
+\code{"KL_O_P"} which is equivalent to (Observed || Predicted) and
+\code{"KL_P_O"} which is equivalent to (Predicted || Observed).
+
+\code{data} needs to be a data frame including the alternatives shown in
+the validation/holdout task. Can be created using the \code{createHOT()} function.
+
+\code{id} needs to be the column index of the id (unique for each participant)
+in \code{data}.
+
+\code{Group} optional Grouping variable, if results should be display by different conditions.
+Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+
+\code{opts} is needed to specify the different alternatives in the validation/holdout
+task (also includes the None option).
+Input of \code{opts} needs to be a vector with column index(es).
+
+\code{choice} specifies the column index of the actual choice.
+Input of opts \code{choice} needs to be the column index of actual choice.
+
+\code{epsilon} needs to be a numeric input in case of 0 in the numerator or denominator. 0
+then will be replaced by \code{epsilon}. Default value is \code{epsilon = .1e-5}, however, can
+be adopted.
 }
 \examples{
 library(validateHOT)
@@ -58,4 +86,15 @@ createHOT(
 
 kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 
+}
+\references{
+{
+
+Ding, Min, John R. Hauser, Songting Dong, Daria Dzyabura, Zhilin Yang, SU Chenting, and Steven P. Gaskin. (2011).
+Unstructured Direct Elicitation of Decision Rules. \emph{Journal of Marketing Research 48}(1): 116-27. \verb{https://doi.org/10.1509/jmkr.48.1.116}.
+
+Drost, Hajk-Georg. (2018). Philentropy: Information Theory and Distance Quantification with R. \emph{Journal of Open Source Software 3}(26), 765, \verb{https://joss.theoj.org/papers/10.21105/joss.00765}.
+
+
+}
 }

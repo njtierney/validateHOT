@@ -6,12 +6,13 @@
 #' using 'First Choice' or 'threshold' rule. See Details section for more
 #' information and specifying the data in the correct way.
 #'
-#' @param data data frame including alternatives in the validation task and actual \code{"choice"}. \code{"None"} alternative needs to be included.
-#' @param id column index of \code{"id"}
-#' @param Group optional grouping variable to get results by group
-#' @param bundles column indexes of the bundles that should be included in the assortment
-#' @param None column index of None alternative
-#' @param method either \code{"First choice"} or \code{"threshold"}, please see Details
+#' @param data data data frame with all relevant variables.
+#' @param id vector of column index of unique identifier in \code{data}.
+#' @param Group optional vector of column number to specify grouping variable
+#' to get \code{"accuracy"} by group.
+#' @param bundles vector of column indexes of the bundles that should be included in the assortment.
+#' @param None vector of column index of None alternative.
+#' @param method character variable that needs to be specified to either \code{"First choice"} or \code{"threshold"}, please see Details
 
 #'
 #' @details

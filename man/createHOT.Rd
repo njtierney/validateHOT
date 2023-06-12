@@ -20,9 +20,9 @@ createHOT(
 )
 }
 \arguments{
-\item{data}{a data frame}
+\item{data}{data frame with all relevant variables.}
 
-\item{id}{column index of \code{id} in \code{data}}
+\item{id}{ector of column index of unique identifier in \code{data}.}
 
 \item{None}{column index of \code{None} in \code{data}; if of \code{None} is not included, leave empty}
 

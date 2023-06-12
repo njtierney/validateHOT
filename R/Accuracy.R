@@ -9,7 +9,7 @@
 #' @param data data frame with all relevant variables.
 #' @param id vector of column index of unique identifier in \code{data}.
 #' @param Group optional vector of column number to specify grouping variable
-#' to get \code{"accuracy"} by group
+#' to get \code{"accuracy"} by group.
 #' @param opts vector of column indexes of the alternatives included in the
 #' validation/holdout task.
 #' @param choice vector of column index of the actual choice.

@@ -14,17 +14,18 @@ freqassort(
 )
 }
 \arguments{
-\item{data}{data frame including alternatives in the validation task and actual \code{"choice"}. \code{"None"} alternative needs to be included.}
+\item{data}{data data frame with all relevant variables.}
 
-\item{id}{column index of \code{"id"}}
+\item{id}{vector of column index of unique identifier in \code{data}.}
 
-\item{Group}{optional grouping variable to get results by group}
+\item{Group}{optional vector of column number to specify grouping variable
+to get \code{"accuracy"} by group.}
 
-\item{None}{column index of None alternative}
+\item{None}{vector of column index of None alternative.}
 
-\item{method}{either \code{"First choice"} or \code{"threshold"}, please see Details}
+\item{method}{character variable that needs to be specified to either \code{"First choice"} or \code{"threshold"}, please see Details}
 
-\item{bundles}{column indexes of the bundles that should be included in the assortment}
+\item{bundles}{vector of column indexes of the bundles that should be included in the assortment.}
 }
 \value{
 a data frame

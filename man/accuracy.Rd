@@ -12,7 +12,7 @@ accuracy(data, id, Group = NULL, opts, choice, None)
 \item{id}{vector of column index of unique identifier in \code{data}.}
 
 \item{Group}{optional vector of column number to specify grouping variable
-to get \code{"accuracy"} by group}
+to get \code{"accuracy"} by group.}
 
 \item{opts}{vector of column indexes of the alternatives included in the
 validation/holdout task.}

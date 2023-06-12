@@ -1,14 +1,39 @@
 #' Hit Rate
 #'
 #' @description \code{hitrate} measures number of times a choice was correctly predicted in a validation task.
-#' @param data a data frame
-#' @param id column index of the \code{id} variable
-#' @param Group optional grouping variable to get hit rate by group
-#' @param opts column indexes of the options included in the validation task
-#' @param choice column index of the actual choice
+#' @param data frame with all relevant variables.
+#' @param id vector of column index of unique identifier in \code{data}.
+#' @param Group optional vector of column number to specify grouping variable
+#' to get \code{"hitrate"} by group
+#' @param opts vector of column indexes of the alternatives included in the
+#' validation/holdout task.
+#' @param choice vector of column index of the actual choice.
 #'
 #' @details
-#' Output contains the chance level (\eqn{1 / # of alternatives in validation task}), the number of correct predictions and the percentage of number of correct predictions.
+#' \code{hitrate} measures number of times a participant's choice was correctly
+#' predicted by our model.
+#' Output contains the following 3 metrics:
+#' \itemize{
+#' \item \code{"chance"} chance level (\eqn{\frac{1}{number of alternatives}}) in percentage
+#' \item \code{"no."} absolute value of correctly predicted choices
+#' \item \code{"\%"} correctly predicted choices in percentage
+#' }
+#'
+#' \code{data} needs to be a data frame including the alternatives shown in
+#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#'
+#' \code{id} needs to be the column index of the id (unique for each participant)
+#' in \code{data}.
+#'
+#' \code{Group} optional Grouping variable, if results should be display by different conditions.
+#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+#'
+#' \code{opts} is needed to specify the different alternatives in the validation/holdout
+#' task (also includes the None option).
+#' Input of \code{opts} needs to be a vector with column index(es).
+#'
+#' \code{choice} specifies the column index of the actual choice.
+#' Input of opts \code{choice} needs to be the column index of actual choice.
 #'
 #'
 #'
