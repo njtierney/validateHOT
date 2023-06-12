@@ -22,9 +22,9 @@ createHOT(
 \arguments{
 \item{data}{a data frame}
 
-\item{id}{the column index of \code{id} in \code{data}}
+\item{id}{column index of \code{id} in \code{data}}
 
-\item{None}{the column index of \code{None} in \code{data}; if of \code{None} is not included, leave empty}
+\item{None}{column index of \code{None} in \code{data}; if of \code{None} is not included, leave empty}
 
 \item{prod}{number of options in the Holdout task without the \code{None} option, must be numeric}
 

@@ -3,8 +3,8 @@
 #' @description Function used to create utilities for validation task.
 #'
 #' @param data a data frame
-#' @param id the column index of \code{id} in \code{data}
-#' @param None the column index of \code{None} in \code{data}; if of \code{None} is not included, leave empty
+#' @param id column index of \code{id} in \code{data}
+#' @param None column index of \code{None} in \code{data}; if of \code{None} is not included, leave empty
 #' @param prod number of options in the Holdout task without the \code{None} option, must be numeric
 #' @param prod.levels a list to define the attribute levels of the options (\code{prod})
 #' @param interpolate.levels a list of the levels of the variables that should be interpolated. These needs to be the same as provided to Sawtooth Software. Please make sure to provide the whole list. Only needs to be specified for the variables that are coded as 1 (linear) or 2 (piecewise)

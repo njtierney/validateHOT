@@ -1,14 +1,15 @@
 #' Accuracy
 #'
-#' @description accuracy is defined as number of correct predicted participants divided by the total number of predictions.
-#' See, for example, Burger (2018): \eqn{\frac{TP + TN}{TP + FP + TN + FN}}, where TP
-#' are True Positivies, TN are True Negatives, FP are False Positives and FN are
+#' @description accuracy is one of the 5 metrics of the confusion matrix
+#' and is defined as number of correct predicted participants divided by the total number of predictions.
+#' See, for example, Burger (2018): \eqn{\frac{TP + TN}{TP + FP + TN + FN}}, where TP =
+#' True Positives, TN = True Negatives, FP = False Positives, and FN =
 #' False Negatives.
 #'
 #' @param data data frame with all relevant variables.
 #' @param id vector of column index of unique identifier in \code{data}.
 #' @param Group optional vector of column number to specify grouping variable
-#' to get accuracy by group
+#' to get \code{"accuracy"} by group
 #' @param opts vector of column indexes of the alternatives included in the
 #' validation/holdout task.
 #' @param choice vector of column index of the actual choice.
@@ -24,13 +25,13 @@
 #' not your model significantly overestimates or underestimates, for example, a purchase likelihood.
 #'
 #' \code{data} needs to be a data frame including the alternatives shown in
-#' the validation/holdout task. Can be created using the createHOT function.
+#' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
 #' \code{id} needs to be the column index of the id (unique for each participant)
 #' in \code{data}.
 #'
 #' \code{Group} optional Grouping variable, if results should be display by different conditions.
-#' Input of \code{Group} needs to be a column index.
+#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
 #' task (also includes the None option).
@@ -49,7 +50,10 @@
 #' @return a data frame
 #'
 #' @seealso {
-#' \code{\link[=createHOT]{createHOT}}
+#' \code{\link[=f1]{f1}}
+#' \code{\link[=precision]{precision}}
+#' \code{\link[=recall]{recall}}
+#' \code{\link[=specificity]{specificity}}
 #' }
 #'
 #' @references {

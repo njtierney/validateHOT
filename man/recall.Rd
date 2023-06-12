@@ -23,7 +23,37 @@ recall(data, id, Group = NULL, opts, choice, None)
 a data frame
 }
 \description{
-test
+recall is one of the 5 metrics of the confusion matrix
+and is defined as \eqn{\frac{TP}{TP + FN}}, where TP =
+True Positives, FN = False Negatives (see, e.g., Burger, 2018).
+}
+\details{
+The current logic of \code{"recall"} is to provide whether a binary coded event is correctly predicted.
+To use the function a \code{"None"} alternative needs to be in the script.
+One potential usage is, for example, whether a buy or a no-buy condition
+was predicted correctly. For example, you have three alternatives plus
+a \code{"None"} alternative and you want to check whether a buy or no-buy was
+correctly predicted. This function can be helpful when you test whether or
+not your model significantly overestimates or underestimates, for example, a purchase likelihood.
+
+\code{data} needs to be a data frame including the alternatives shown in
+the validation/holdout task. Can be created using the \code{createHOT()} function.
+
+\code{id} needs to be the column index of the id (unique for each participant)
+in \code{data}.
+
+\code{Group} optional Grouping variable, if results should be display by different conditions.
+Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+
+\code{opts} is needed to specify the different alternatives in the validation/holdout
+task (also includes the None option).
+Input of \code{opts} needs to be a vector with column index(es).
+
+\code{choice} specifies the column index of the actual choice.
+Input of opts \code{choice} needs to be the column index of actual choice.
+
+\code{None} specifies the column index of the \code{None} alternative in the
+validation/holdout task. Needs to be specified for \code{recall()}.
 }
 \examples{
 library(validateHOT)
@@ -55,4 +85,19 @@ createHOT(
 
 recall(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
 
+}
+\references{
+{
+
+Burger, S. V. (2018). \emph{Introduction to Machine Learning with R: Rigorous Mathematical Analysis}. O'Reilly.
+
+}
+}
+\seealso{
+{
+\code{\link[=accuracy]{accuracy}}
+\code{\link[=f1]{f1}}
+\code{\link[=precision]{precision}}
+\code{\link[=specificity]{specificity}}
+}
 }

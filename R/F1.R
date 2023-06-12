@@ -1,15 +1,47 @@
 #' F1-Score
 #'
-#' @description Calculates the F1-Score.  F1-Score is calculated by the following formula \eqn{2 * precision * recall / (precision + recall)}
+#' @description F1 is one of the 5 metrics of the confusion matrix
+#' and is defined as \eqn{\frac{2 * precision * recall}{precision + recall}} or stated
+#' differently by Burger (2018) \eqn{\frac{2TP}{2TP + FP + FN}}, where TP =
+#' True Positives, FP = False Positives, and FN = False Negatives.
 #'
-#' @param data data frame including alternatives in the validation task and actual \code{"choice"}. \code{"None"} alternative needs to be included.
-#' @param id column index of \code{"id"}
-#' @param Group optional grouping variable to get F1-score by group
-#' @param opts column indexes of the alternatives included in the validation task
-#' @param choice column index of the actual choice
-#' @param None column index of None alternative
+#' @param data data frame with all relevant variables.
+#' @param id vector of column index of unique identifier in \code{data}.
+#' @param Group optional vector of column number to specify grouping variable
+#' to get \code{"f1"} by group
+#' @param opts vector of column indexes of the alternatives included in the
+#' validation/holdout task.
+#' @param choice vector of column index of the actual choice.
+#' @param None vector of column index of None alternative.
+#'
 #' @details
-#' To get the \code{"f1"} score of the validation task, you have to specify the \code{"None"} alternative in the script. The function will calculate \code{"f1"} based on whether or not, for example, a buy or a no-buy was correctly predicted.
+#' The current logic of \code{"f1"} is to provide whether a binary coded event is correctly predicted.
+#' To use the function a \code{"None"} alternative needs to be in the script.
+#' One potential usage is, for example, whether a buy or a no-buy condition
+#' was predicted correctly. For example, you have three alternatives plus
+#' a \code{"None"} alternative and you want to check whether a buy or no-buy was
+#' correctly predicted. This function can be helpful when you test whether or
+#' not your model significantly overestimates or underestimates, for example, a purchase likelihood.
+#'
+#' \code{data} needs to be a data frame including the alternatives shown in
+#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#'
+#' \code{id} needs to be the column index of the id (unique for each participant)
+#' in \code{data}.
+#'
+#' \code{Group} optional Grouping variable, if results should be display by different conditions.
+#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+#'
+#' \code{opts} is needed to specify the different alternatives in the validation/holdout
+#' task (also includes the None option).
+#' Input of \code{opts} needs to be a vector with column index(es).
+#'
+#' \code{choice} specifies the column index of the actual choice.
+#' Input of opts \code{choice} needs to be the column index of actual choice.
+#'
+#' \code{None} specifies the column index of the \code{None} alternative in the
+#' validation/holdout task. Needs to be specified for \code{f1()}.
+#'
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
@@ -31,6 +63,21 @@
 #' )
 #'
 #' f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
+#'
+#' @seealso {
+#' \code{\link[=accuracy]{accuracy}}
+#' \code{\link[=precision]{precision}}
+#' \code{\link[=recall]{recall}}
+#' \code{\link[=specificity]{specificity}}
+#' }
+#'
+#'
+#' @references {
+#'
+#' Burger, S. V. (2018). \emph{Introduction to Machine Learning with R: Rigorous Mathematical Analysis}. O'Reilly.
+#'
+#' }
+#'
 #'
 #' @examples
 #' library(validateHOT)

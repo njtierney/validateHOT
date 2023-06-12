@@ -1,19 +1,66 @@
 #' Precision
 #'
-#' @description test
+#' @description precision is one of the 5 metrics of the confusion matrix
+#' and is defined as \eqn{\frac{TP}{TP + FP}}, where TP =
+#' True Positives, FP = False Positives (see, e.g., Burger, 2018).
 #'
-#' @param data data frame including Holdout Options and actual \code{"choice"} and \code{"Group"} if optional argument is defined
-#' @param id column index
-#' @param Group optional grouping variable to get accuracy by group
-#' @param opts column indexes of the options included in the holdout task
-#' @param choice column index of the actual choice
-#' @param None column index
+#' @param data data frame with all relevant variables.
+#' @param id vector of column index of unique identifier in \code{data}.
+#' @param Group optional vector of column number to specify grouping variable
+#' to get \code{"precision"} by group
+#' @param opts vector of column indexes of the alternatives included in the
+#' validation/holdout task.
+#' @param choice vector of column index of the actual choice.
+#' @param None vector of column index of None alternative.
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
 #'
+#' @details
+#' The current logic of \code{"precision"} is to provide whether a binary coded event is correctly predicted.
+#' To use the function a \code{"None"} alternative needs to be in the script.
+#' One potential usage is, for example, whether a buy or a no-buy condition
+#' was predicted correctly. For example, you have three alternatives plus
+#' a \code{"None"} alternative and you want to check whether a buy or no-buy was
+#' correctly predicted. This function can be helpful when you test whether or
+#' not your model significantly overestimates or underestimates, for example, a purchase likelihood.
+#'
+#' \code{data} needs to be a data frame including the alternatives shown in
+#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#'
+#' \code{id} needs to be the column index of the id (unique for each participant)
+#' in \code{data}.
+#'
+#' \code{Group} optional Grouping variable, if results should be display by different conditions.
+#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+#'
+#' \code{opts} is needed to specify the different alternatives in the validation/holdout
+#' task (also includes the None option).
+#' Input of \code{opts} needs to be a vector with column index(es).
+#'
+#' \code{choice} specifies the column index of the actual choice.
+#' Input of opts \code{choice} needs to be the column index of actual choice.
+#'
+#' \code{None} specifies the column index of the \code{None} alternative in the
+#' validation/holdout task. Needs to be specified for \code{precision()}.
+#'
+#'
+#'
 #' @return a data frame
+#'
+#' @seealso {
+#' \code{\link[=accuracy]{accuracy}}
+#' \code{\link[=f1]{f1}}
+#' \code{\link[=recall]{recall}}
+#' \code{\link[=specificity]{specificity}}
+#' }
+#'
+#' @references {
+#'
+#' Burger, S. V. (2018). \emph{Introduction to Machine Learning with R: Rigorous Mathematical Analysis}. O'Reilly.
+#'
+#' }
 #'
 #' @examples
 #' library(validateHOT)
