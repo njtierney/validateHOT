@@ -7,23 +7,27 @@
 reach(data, id, Group = NULL, None, method, bundles)
 }
 \arguments{
-\item{data}{data frame including Holdout Options and actual \code{"choice"} and \code{"Group"} if optional argument is defined}
+\item{data}{data data frame with all relevant variables.}
 
-\item{id}{column index}
+\item{id}{vector of column index of unique identifier in \code{data}.}
 
-\item{Group}{optional grouping variable to get accuracy by group}
+\item{Group}{optional vector of column number to specify grouping variable
+to get \code{"reach"} by group.}
 
-\item{None}{column index}
+\item{None}{vector of column index of None alternative.}
 
-\item{method}{which method should be used, can be either \code{"First choice"} (only the bundle with highest utility is marked as purchase option if its above \code{"None"} utility) or \code{"threshold"} (all bundles with utility above \code{"None"} utility are marked as purchase option)}
+\item{method}{character variable that needs to be specified to either \code{"First choice"} or \code{"threshold"}, please see Details.}
 
-\item{bundles}{column indexes of the bundles included that should be included in the assortment}
+\item{bundles}{vector of column indexes of the bundles that should be included in the assortment.}
 }
 \value{
 a data frame
 }
 \description{
-test
+Reach function of TURF analysis to measure the number of  the averaged percentage of how many participants you can reach
+(at least one of the products resemble a purchase option) is reached with a specific product bundle assortment. Can either be calculated
+using 'First Choice' or 'threshold' rule. See Details section for more
+information and specifying the data in the correct way.
 }
 \examples{
 library(validateHOT)

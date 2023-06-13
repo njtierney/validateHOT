@@ -1,18 +1,57 @@
 #' Percentage of participants that are reached by assortment
 #'
 #' @description
-#' test
+#' Reach function of TURF analysis to measure the number of  the averaged percentage of how many participants you can reach
+#' (at least one of the products resemble a purchase option) is reached with a specific product bundle assortment. Can either be calculated
+#' using 'First Choice' or 'threshold' rule. See Details section for more
+#' information and specifying the data in the correct way.
 #'
-#' @param data data frame including Holdout Options and actual \code{"choice"} and \code{"Group"} if optional argument is defined
-#' @param id column index
-#' @param bundles column indexes of the bundles included that should be included in the assortment
-#' @param Group optional grouping variable to get accuracy by group
-#' @param None column index
-#' @param method which method should be used, can be either \code{"First choice"} (only the bundle with highest utility is marked as purchase option if its above \code{"None"} utility) or \code{"threshold"} (all bundles with utility above \code{"None"} utility are marked as purchase option)
+#' @param data data data frame with all relevant variables.
+#' @param id vector of column index of unique identifier in \code{data}.
+#' @param Group optional vector of column number to specify grouping variable
+#' to get \code{"reach"} by group.
+#' @param bundles vector of column indexes of the bundles that should be included in the assortment.
+#' @param None vector of column index of None alternative.
+#' @param method character variable that needs to be specified to either \code{"First choice"} or \code{"threshold"}, please see Details.
 #'
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
+#'
+#' #' @details
+#' Reach measures the averaged percentage of how many participants you can reach (at least one of the products resemble a purchase option)
+#' product assortment you are testing. The current logic of \code{reach()}
+#' is that it needs to exceed a threshold. In the case of \code{reach()}
+#' this threshold is referred to the \code{None} argument in \code{data}.
+#'
+#' \code{reach()} currently provides two methods:
+#' \itemize{
+#' \item \code{"First Choice"}: Only the alternative with the highest utility is considered,
+#' if its utility is above the utility of \code{None}, it is marked as potential purchase option.
+#' \item \code{"threshold"}: All alternatives are considered. if utility of alternative is
+#' larger than the utility of \code{None}, it is marked as potential purchase option.
+#' }
+#'
+#'
+#' \code{data} needs to be a data frame including the alternatives shown in
+#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#'
+#' \code{id} needs to be the column index of the id (unique for each participant)
+#' in \code{data}.
+#'
+#' \code{Group} optional Grouping variable, if results should be display by different conditions.
+#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+#'
+#' \code{bundles} is needed to specify the different alternatives in the
+#' product assortment that should be considered.
+#' Input of \code{bundles} needs to be a vector with column index(es).
+#'
+#' \code{None} specifies the column index of the \code{None} alternative. Is used as
+#' threshold to determine whether alternative resembles a purchase option or not.
+#' Needs to be specified for \code{reach()}.
+#'
+#' \code{method} character variable whether \code{method = "First Choice"} or
+#' \code{method = "threshold"} should be applied to calculate \code{reach()}.
 #'
 #' @examples
 #' library(validateHOT)

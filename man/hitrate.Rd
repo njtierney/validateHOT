@@ -9,15 +9,15 @@ hitrate(data, id, Group = NULL, opts, choice)
 \arguments{
 \item{data}{frame with all relevant variables.}
 
+\item{id}{vector of column index of unique identifier in \code{data}.}
+
 \item{Group}{optional vector of column number to specify grouping variable
-to get \code{"hitrate"} by group}
+to get \code{"hitrate"} by group.}
 
 \item{opts}{vector of column indexes of the alternatives included in the
 validation/holdout task.}
 
 \item{choice}{vector of column index of the actual choice.}
-
-\item{vector}{of column index of unique identifier in \code{data}.}
 }
 \value{
 a data frame

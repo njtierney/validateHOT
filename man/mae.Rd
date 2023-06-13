@@ -9,19 +9,23 @@ mae(data, id, Group = NULL, opts, choice)
 \arguments{
 \item{data}{a data frame}
 
-\item{id}{column index of the \code{id} variable}
+\item{id}{vector of column index of unique identifier in \code{data}.}
 
-\item{Group}{optional grouping variable to get hit rate by group}
+\item{Group}{optional vector of column number to specify grouping variable
+to get \code{"mae"} by group.}
 
-\item{opts}{column indexes of the options included in the holdout task}
+\item{opts}{vector of column indexes of the alternatives included in the
+validation/holdout task.}
 
-\item{choice}{column index of the actual choice}
+\item{choice}{vector of column index of the actual choice.}
 }
 \value{
 a data frame
 }
 \description{
-Function to measure the mean absolute error of a holdout task
+Function to measure the mean absolute error of a validation/ holdout task.
+Calculates the averaged absolute error, i.e., deviation between predicted and
+stated share of alternatives in the validation/ holdout task.
 }
 \examples{
 library(validateHOT)

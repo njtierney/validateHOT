@@ -1,11 +1,17 @@
 #' Mean Absolute Error
 #'
-#' @description Function to measure the mean absolute error of a holdout task
+#' @description Function to measure the mean absolute error of a validation/ holdout task.
+#' Calculates the averaged absolute error, i.e., deviation between predicted and
+#' stated share of alternatives in the validation/ holdout task.
+#'
+#'
 #' @param data a data frame
-#' @param id column index of the \code{id} variable
-#' @param Group optional grouping variable to get hit rate by group
-#' @param opts column indexes of the options included in the holdout task
-#' @param choice column index of the actual choice
+#' @param id vector of column index of unique identifier in \code{data}.
+#' @param Group optional vector of column number to specify grouping variable
+#' to get \code{"mae"} by group.
+#' @param opts vector of column indexes of the alternatives included in the
+#' validation/holdout task.
+#' @param choice vector of column index of the actual choice.
 #'
 #' @return a data frame
 #' @importFrom dplyr group_by summarise

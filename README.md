@@ -156,15 +156,16 @@ the output is split by groups.
 <code>reach</code>: Inspired by the former
 <a href="https://github.com/cran/turfR" target="_blank">turfR</a>
 package, <code>reach</code> will give you the averaged percentage of how
-many participants you can reach (buy at least one of the products) with
-your in the function determined potential assortment. or the
-<code>method</code> argument you can decide between <code>method =
-“threshold”</code> (if utility of product is larger than the utility of
-<code>None</code>, it is marked as potential purchase option) and
-<code>method = “First Choice”</code> (only product with highest utility
-is considered. If its utility is above the utility of <code>None</code>,
-it is marked as potential purchase option). If you specify an optional
-<code>Group</code> argument the output is split by groups.
+many participants you can reach (at least one of the products resemble a
+purchase option) with your in the function determined potential
+assortment. or the <code>method</code> argument you can decide between
+<code>method = “threshold”</code> (if utility of product is larger than
+the utility of <code>None</code>, it is marked as potential purchase
+option) and <code>method = “First Choice”</code> (only product with
+highest utility is considered. If its utility is above the utility of
+<code>None</code>, it is marked as potential purchase option). If you
+specify an optional <code>Group</code> argument the output is split by
+groups.
 </li>
 <li>
 <code>shareofpref</code>: provides you the aggregated share of
