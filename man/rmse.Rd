@@ -9,19 +9,45 @@ rmse(data, id, Group = NULL, opts, choice)
 \arguments{
 \item{data}{a data frame}
 
-\item{id}{column index of the \code{id} variable}
+\item{id}{vector of column index of unique identifier in \code{data}.}
 
-\item{Group}{optional grouping variable to get hit rate by group}
+\item{Group}{optional vector of column number to specify grouping variable
+to get \code{"rmse"} by group.}
 
-\item{opts}{column indexes of the options included in the holdout task}
+\item{opts}{vector of column indexes of the alternatives included in the
+validation/ holdout task.}
 
-\item{choice}{column index of the actual choice}
+\item{choice}{vector of column index of the actual choice.}
 }
 \value{
-xyz
+a data frame
 }
 \description{
-Function to measure the mean absolute error of a holdout task
+Function to measure the root mean squared error
+ of a validation/ holdout task. Calculates the averaged
+ root mean squared error of the stated and predicted share of alternatives
+ in the validation/ holdout task.
+}
+\details{
+Root mean squared error (RMSE) calculates the root mean squared error when comparing
+the share of the actual choice in the holdout task and the predicted share.
+
+
+\code{data} needs to be a data frame including the alternatives shown in
+the validation/holdout task. Can be created using the \code{createHOT()} function.
+
+\code{id} needs to be the column index of the id (unique for each participant)
+in \code{data}.
+
+\code{Group} optional Grouping variable, if results should be display by different conditions.
+Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+
+\code{opts} is needed to specify the different alternatives in the validation/ holdout
+task (also includes the None option).
+Input of \code{opts} needs to be a vector with column index(es).
+
+\code{choice} specifies the column index of the actual choice.
+Input of opts \code{choice} needs to be the column index of actual choice.
 }
 \examples{
 library(validateHOT)

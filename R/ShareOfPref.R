@@ -4,15 +4,45 @@
 #' Function to measure the share of preferences of each option in the validation task
 #'
 #' @param data a data frame
-#' @param id column index of the \code{id} variable
-#' @param Group optional grouping variable to get hit rate by group
-#' @param opts column indexes of the options included in the holdout task
+#' @param id vector of column index of unique identifier in \code{data}.
+#' @param Group optional vector of column number to specify grouping variable
+#' to get \code{"shareofpref"} by group.
+#' @param opts vector of column indexes of the alternatives included in the
+#' validation/ holdout task.
 #'
-#' @return a data frame or list
+#' @return a data frame; a list if \code{Group} is specified
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom stats sd
 #' @importFrom labelled is.labelled val_labels
+#'
+#' @details
+#' Share of Preference provides the aggrgated share of each alternative in the
+#' validation/ holdout task as well as the lower and upper confidence interval
+#' of each alternative which is calculated according to the following formula
+#' \eqn{mean +/- 1.96 x \frac{sd}{\sqrt(n)}} (Orme, 2020, p. 94).
+#'
+#' \code{data} needs to be a data frame including the alternatives shown in
+#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#'
+#' \code{id} needs to be the column index of the id (unique for each participant)
+#' in \code{data}.
+#'
+#' \code{Group} optional Grouping variable, if results should be display by different conditions.
+#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+#'
+#' \code{opts} is needed to specify the different alternatives in the validation/ holdout
+#' task (also includes the None option).
+#' Input of \code{opts} needs to be a vector with column index(es).
+#'
+#'
+#' @references {
+#'
+#' Orme, B. K. (2020). \emph{Getting Started with Conjoint Analysis:
+#' Strategies for Product Design and Pricing Research}. 4th edition.
+#' Manhattan Beach, CA: Research Publishers LLC.
+#'
+#' }
 #'
 #' @examples
 #' library(validateHOT)

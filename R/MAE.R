@@ -10,13 +10,36 @@
 #' @param Group optional vector of column number to specify grouping variable
 #' to get \code{"mae"} by group.
 #' @param opts vector of column indexes of the alternatives included in the
-#' validation/holdout task.
+#' validation/ holdout task.
 #' @param choice vector of column index of the actual choice.
 #'
 #' @return a data frame
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
+#'
+#'
+#' @details
+#' Mean absolute error (MAE) calculates the deviation between predicted and
+#' stated (actual) choice share. It is an aggregated value across all alternatives
+#' in the validation/ holdout task.
+#'
+#' \code{data} needs to be a data frame including the alternatives shown in
+#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#'
+#' \code{id} needs to be the column index of the id (unique for each participant)
+#' in \code{data}.
+#'
+#' \code{Group} optional Grouping variable, if results should be display by different conditions.
+#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+#'
+#' \code{opts} is needed to specify the different alternatives in the validation/ holdout
+#' task (also includes the None option).
+#' Input of \code{opts} needs to be a vector with column index(es).
+#'
+#' \code{choice} specifies the column index of the actual choice.
+#' Input of opts \code{choice} needs to be the column index of actual choice.
+#'
 #'
 #' @examples
 #' library(validateHOT)

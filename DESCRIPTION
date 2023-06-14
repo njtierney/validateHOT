@@ -3,9 +3,16 @@ Type: Package
 Title: validateHOT - Package to Validate Holdout Tasks in Conjoint Analysis & MaxDiff
 Version: 1.0.0
 Authors@R: c(
-    person("Joshua", "Schramm", email = "test@123.com", role = "cre"),
-    person("Marcel", "Lichters", email = "test@123.com", role = "aut"))
-Description: validateHOT is a package that validates Holdout tasks (HOTs) in (adaptive) Conjoint analysis as well as MaxDiff. You define the Holdout task and afterward, choose different validation metrics. validateHOT is a user-friendly tool to help you test the predictive validity of your data.
+    person(given = "Joshua", 
+    family = "Schramm", 
+    email = "schramm94@gmail.com", 
+    role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0001-5602-4632")),
+    person(given = "Marcel", 
+    family = "Lichters", 
+    email = "test@123.com", 
+    role = "ctb"))
+Description: validateHOT is a package that validates validation/ holdout tasks (HOTs) in (adaptive) Conjoint analysis as well as MaxDiff. You define the Holdout task and afterward, choose different validation metrics. validateHOT is a user-friendly tool to help you test the predictive validity of your data.
 BugReports: https://github.com/JoshSchramm94/validateHOT/issues
 License: GPL (>= 3)
 Encoding: UTF-8

@@ -18,7 +18,7 @@
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
 #'
-#' #' @details
+#' @details
 #' Reach measures the averaged percentage of how many participants you can reach (at least one of the products resemble a purchase option)
 #' product assortment you are testing. The current logic of \code{reach()}
 #' is that it needs to exceed a threshold. In the case of \code{reach()}

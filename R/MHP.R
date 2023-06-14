@@ -1,15 +1,44 @@
 #' MHP
 #'
-#' @description Function to measure the mean hit probability of a holdout task
-#' @param data data frame
-#' @param id column index of the \code{id} variable
-#' @param Group optional grouping variable to get hit rate by group
-#' @param opts column indexes of the options included in the holdout task
-#' @param choice column index of the actual choice
+#' @description
+#' Function to measure the mean hit probability of a validation/
+#' holdout task. Calculates the hit/ choice probability of the actual choice
+#' in the validation/ holdout task.
 #'
-#' @return xyz
+#' @param data a data frame
+#' @param id vector of column index of unique identifier in \code{data}.
+#' @param Group optional vector of column number to specify grouping variable
+#' to get \code{"mhp"} by group.
+#' @param opts vector of column indexes of the alternatives included in the
+#' validation/ holdout task.
+#' @param choice vector of column index of the actual choice.
+#'
+#' @return a data frame
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
+#'
+#'
+#' @details
+#' Mean hit probability (MHP) measures the averaged hit probability of participants actual
+#' choices in the validation/ holdout task.
+#'
+#' \code{data} needs to be a data frame including the alternatives shown in
+#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#'
+#' \code{id} needs to be the column index of the id (unique for each participant)
+#' in \code{data}.
+#'
+#' \code{Group} optional Grouping variable, if results should be display by different conditions.
+#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+#'
+#' \code{opts} is needed to specify the different alternatives in the validation/ holdout
+#' task (also includes the None option).
+#' Input of \code{opts} needs to be a vector with column index(es).
+#'
+#' \code{choice} specifies the column index of the actual choice.
+#' Input of opts \code{choice} needs to be the column index of actual choice.
+#'
+#'
 #' @examples
 #' library(validateHOT)
 #' data("MaxDiff")
