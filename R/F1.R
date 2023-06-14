@@ -49,21 +49,6 @@
 #'
 #' @return a data frame
 #'
-#' @examples
-#' library(validateHOT)
-#' data("MaxDiff")
-#' createHOT(
-#'   data = MaxDiff,
-#'   id = 1,
-#'   None = 19,
-#'   prod = 7,
-#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-#'   method = "MaxDiff",
-#'   choice = 20
-#' )
-#'
-#' f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
-#'
 #' @seealso {
 #' \code{\link[=accuracy]{accuracy}}
 #' \code{\link[=precision]{precision}}
@@ -78,10 +63,22 @@
 #'
 #' }
 #'
+#' @examples
+#' library(validateHOT)
+#' createHOT(
+#'   data = MaxDiff,
+#'   id = 1,
+#'   None = 19,
+#'   prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   method = "MaxDiff",
+#'   choice = 20
+#' )
+#'
+#' f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
 #'
 #' @examples
 #' library(validateHOT)
-#' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
 #'   id = 1,

@@ -66,7 +66,6 @@ Needs to be specified for \code{reach()}.
 }
 \examples{
 library(validateHOT)
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,
@@ -81,7 +80,6 @@ reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
 reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")
 
 library(validateHOT)
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,

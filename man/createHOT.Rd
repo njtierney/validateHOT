@@ -105,7 +105,6 @@ with the column index(es) of the variable(s) that should be kept.
 library(validateHOT)
 
 # MaxDiff example
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,
@@ -117,7 +116,6 @@ createHOT(
 )
 
 # CBC example
-data("CBC")
 createHOT(
   data = CBC,
   id = 1,
@@ -130,7 +128,6 @@ createHOT(
 )
 
 # CBC example with linear coding
-data("CBC_lin")
 createHOT(
   data = CBC_lin,
   id = 1,
@@ -146,7 +143,6 @@ createHOT(
 )
 
 # ACBC example with linear price
-data("ACBC")
 prod1 <- c(5, 11, 15, 17, 21, 25, 32, 34, 15.99)
 prod2 <- c(6, 9, 15, 17, 23, 27, 31, 34, 12.99)
 prod3 <- c(8, 12, 16, 19, 23, 24, 28, 34, 12.99)
@@ -167,7 +163,6 @@ createHOT(
   choice = 38
 )
 
-data("ACBC_interpolate")
 prod1 <- c(5, 5, 12, 14, 18, 22, 29, 31, 15.99)
 prod2 <- c(6, 4, 12, 14, 20, 24, 28, 31, 12.99)
 prod3 <- c(8, 6, 13, 16, 20, 21, 25, 31, 12.99)

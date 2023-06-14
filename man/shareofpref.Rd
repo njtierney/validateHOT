@@ -44,7 +44,6 @@ Input of \code{opts} needs to be a vector with column index(es).
 }
 \examples{
 library(validateHOT)
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,
@@ -58,7 +57,6 @@ createHOT(
 shareofpref(data = HOT, id = 1, opts = c(2:9))
 
 library(validateHOT)
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,

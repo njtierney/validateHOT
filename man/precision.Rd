@@ -59,7 +59,6 @@ validation/holdout task. Needs to be specified for \code{precision()}.
 }
 \examples{
 library(validateHOT)
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,
@@ -73,7 +72,6 @@ createHOT(
 precision(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
 
 library(validateHOT)
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,

@@ -60,7 +60,6 @@ validation/holdout task. Needs to be specified for \code{f1()}.
 }
 \examples{
 library(validateHOT)
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,
@@ -74,7 +73,6 @@ createHOT(
 f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
 
 library(validateHOT)
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,

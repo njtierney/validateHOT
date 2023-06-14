@@ -69,7 +69,6 @@
 #'
 #' @examples
 #' library(validateHOT)
-#' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -84,7 +83,6 @@
 #'
 #' @examples
 #' library(validateHOT)
-#' data("MaxDiff")
 #' createHOT(
 #'   data = MaxDiff,
 #'   id = 1,

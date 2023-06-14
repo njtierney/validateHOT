@@ -49,7 +49,6 @@ Input of opts \code{choice} needs to be the column index of actual choice.
 }
 \examples{
 library(validateHOT)
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,
@@ -63,7 +62,6 @@ createHOT(
 mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)
 
 library(validateHOT)
-data("MaxDiff")
 createHOT(
   data = MaxDiff,
   id = 1,
