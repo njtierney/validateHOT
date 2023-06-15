@@ -2,7 +2,7 @@ library(validateHOT)
 data(MaxDiff)
 
 ####################### Test wo Grouping variable ########################################
-createHOT(
+HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
@@ -83,7 +83,7 @@ test_that("accuracy() also working with data.frame not created with createHOT()"
 
 ####################### Test with Grouping variable ########################################
 
-createHOT(
+HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),

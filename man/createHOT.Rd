@@ -102,8 +102,7 @@ with the column index(es) of the variable(s) that should be kept.
 \code{choice} specifies the column index of the acutal choice in the validation/holdout task.
 }
 \examples{
-library(validateHOT)
-
+\dontrun{
 # MaxDiff example
 createHOT(
   data = MaxDiff,
@@ -183,7 +182,7 @@ createHOT(
   method = "ACBC",
   choice = 40
 )
-
+}
 }
 \references{
 {

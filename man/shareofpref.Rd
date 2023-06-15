@@ -43,8 +43,8 @@ task (also includes the None option).
 Input of \code{opts} needs to be a vector with column index(es).
 }
 \examples{
-library(validateHOT)
-createHOT(
+\dontrun{
+HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   None = 19,
@@ -55,9 +55,10 @@ createHOT(
 )
 
 shareofpref(data = HOT, id = 1, opts = c(2:9))
+}
 
-library(validateHOT)
-createHOT(
+\dontrun{
+HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   None = 19,
@@ -69,6 +70,7 @@ createHOT(
 )
 
 shareofpref(data = HOT, id = 1, opts = c(2:9), Group = 10)
+}
 
 }
 \references{

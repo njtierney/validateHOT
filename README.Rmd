@@ -266,7 +266,7 @@ As mentioned above, all the attributes are part-worth coded, therefore, we set <
 > &#10071; <code>validateHOT</code> is currently just taking indexes instead of column names, please be aware of this. However, you can easily find out the index by using the <code>names()</code> function or by using <code>which()</code> and <code>colnames()</code>, both functions are provided by the base package (R Core Team, 2023). For example, if you want to find out the column index of <code>id</code>, we could also use <code>which(colnames(CBC) == "ID")</code>.
 
 ```{r}
-createHOT(
+HOT <- createHOT(
   data = CBC,
   id = 1,
   None = 21,
@@ -350,8 +350,9 @@ In this case, the Grouping variable is just an integer. However, the output is d
 
 ```{r}
 CBC$Group <- base::factor(CBC$Group,
-                          levels = c(1:3),
-                          labels = paste0("Group_", c(1:3)))
+  levels = c(1:3),
+  labels = paste0("Group_", c(1:3))
+)
 ```
 
 Afterward, we display the *mean hit probability* by running the <code>mhp()</code> function. 

@@ -1,9 +1,4 @@
 library(validateHOT)
-data("MaxDiff")
-data("CBC")
-data("CBC_lin")
-data("ACBC")
-data("ACBC_interpolate")
 
 test_that("wrong input", {
   expect_error(createHOT(
@@ -909,7 +904,6 @@ test_that("varskeep counted corectly ", {
 
 
 test_that("Make sure varskeep is working ", {
-
   expect_no_error(createHOT(
     data = MaxDiff,
     id = 1,
@@ -920,11 +914,9 @@ test_that("Make sure varskeep is working ", {
     choice = 20,
     varskeep = 21
   ))
-
 })
 
 test_that("Make sure varskeep is working ", {
-
   expect_no_error(createHOT(
     data = CBC,
     id = 1,
@@ -936,12 +928,10 @@ test_that("Make sure varskeep is working ", {
     choice = 22,
     varskeep = 23
   ))
-
 })
 
 
 test_that("Make sure varskeep is working ", {
-
   expect_no_error(createHOT(
     data = CBC_lin,
     id = 1,
@@ -955,12 +945,10 @@ test_that("Make sure varskeep is working ", {
     varskeep = 17,
     choice = 16
   ))
-
 })
 
 
 test_that("Make sure varskeep is working ", {
-
   prod1 <- c(5, 11, 15, 17, 21, 25, 32, 34, 15.99)
   prod2 <- c(6, 9, 15, 17, 23, 27, 31, 34, 12.99)
   prod3 <- c(8, 12, 16, 19, 23, 24, 28, 34, 12.99)
@@ -981,15 +969,11 @@ test_that("Make sure varskeep is working ", {
     choice = 38,
     varskeep = 39
   ))
-
-
-
 })
 
 
 
 test_that("Make sure varskeep is working ", {
-
   prod1 <- c(5, 5, 12, 14, 18, 22, 29, 31, 15.99)
   prod2 <- c(6, 4, 12, 14, 20, 24, 28, 31, 12.99)
   prod3 <- c(8, 6, 13, 16, 20, 21, 25, 31, 12.99)
@@ -1011,12 +995,5 @@ test_that("Make sure varskeep is working ", {
     choice = 40,
     varskeep = 41
   ))
-
-
-
 })
-
-
-
-
 

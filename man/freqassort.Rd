@@ -72,8 +72,8 @@ Needs to be specified for \code{freqassort()}.
 \code{method = "threshold"} should be applied to calculate \code{freqassort()}.
 }
 \examples{
-library(validateHOT)
-createHOT(
+\dontrun{
+HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   None = 19,
@@ -85,9 +85,10 @@ createHOT(
 
 freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
 freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")
+}
 
-library(validateHOT)
-createHOT(
+\dontrun{
+HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   None = 19,
@@ -100,5 +101,6 @@ createHOT(
 
 freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold", Group = 10)
 freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10)
+}
 
 }

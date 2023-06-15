@@ -56,8 +56,8 @@
 #'
 #'
 #' @examples
-#' library(validateHOT)
-#' createHOT(
+#' \dontrun{
+#' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,
@@ -68,9 +68,11 @@
 #' )
 #'
 #' kl(data = HOT, id = 1, opts = c(2:9), choice = 10)
+#' }
 #'
-#' library(validateHOT)
-#' createHOT(
+#' @examples
+#' \dontrun{
+#' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,
@@ -82,6 +84,7 @@
 #' )
 #'
 #' kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+#' }
 #'
 #' @export
 

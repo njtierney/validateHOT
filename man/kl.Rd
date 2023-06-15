@@ -57,8 +57,8 @@ then will be replaced by \code{epsilon}. Default value is \code{epsilon = .1e-5}
 be adopted.
 }
 \examples{
-library(validateHOT)
-createHOT(
+\dontrun{
+HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   None = 19,
@@ -69,9 +69,10 @@ createHOT(
 )
 
 kl(data = HOT, id = 1, opts = c(2:9), choice = 10)
+}
 
-library(validateHOT)
-createHOT(
+\dontrun{
+HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   None = 19,
@@ -83,6 +84,7 @@ createHOT(
 )
 
 kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+}
 
 }
 \references{

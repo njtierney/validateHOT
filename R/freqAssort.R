@@ -56,8 +56,8 @@
 #' @importFrom labelled is.labelled val_labels
 #'
 #' @examples
-#' library(validateHOT)
-#' createHOT(
+#' \dontrun{
+#' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,
@@ -69,10 +69,11 @@
 #'
 #' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
 #' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")
+#' }
 #'
 #' @examples
-#' library(validateHOT)
-#' createHOT(
+#' \dontrun{
+#' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,
@@ -85,6 +86,7 @@
 #'
 #' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold", Group = 10)
 #' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10)
+#' }
 #'
 #' @return a data frame
 #' @export

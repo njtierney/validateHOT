@@ -286,7 +286,7 @@ returned to the global environment.
 > use <code>which(colnames(CBC) == “ID”)</code>.
 
 ``` r
-createHOT(
+HOT <- createHOT(
   data = CBC,
   id = 1,
   None = 21,
@@ -454,8 +454,9 @@ using the <code>factor()</code> function provided by R Core Team (2023).
 
 ``` r
 CBC$Group <- base::factor(CBC$Group,
-                          levels = c(1:3),
-                          labels = paste0("Group_", c(1:3)))
+  levels = c(1:3),
+  labels = paste0("Group_", c(1:3))
+)
 ```
 
 Afterward, we display the *mean hit probability* by running the

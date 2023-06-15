@@ -76,8 +76,7 @@
 #' }
 #'
 #' @examples
-#' library(validateHOT)
-#'
+#' \dontrun{
 #' # MaxDiff example
 #' createHOT(
 #'   data = MaxDiff,
@@ -157,7 +156,7 @@
 #'   method = "ACBC",
 #'   choice = 40
 #' )
-#'
+#' }
 #' @export
 createHOT <- function(data, id, None = NULL, prod,
                       prod.levels, interpolate.levels = NULL,
@@ -467,5 +466,4 @@ createHOT <- function(data, id, None = NULL, prod,
   HOT <- df
 
   return(HOT)
-
 }

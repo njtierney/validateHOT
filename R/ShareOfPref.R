@@ -45,8 +45,8 @@
 #' }
 #'
 #' @examples
-#' library(validateHOT)
-#' createHOT(
+#' \dontrun{
+#' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,
@@ -57,10 +57,11 @@
 #' )
 #'
 #' shareofpref(data = HOT, id = 1, opts = c(2:9))
+#' }
 #'
 #' @examples
-#' library(validateHOT)
-#' createHOT(
+#' \dontrun{
+#' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,
@@ -72,6 +73,7 @@
 #' )
 #'
 #' shareofpref(data = HOT, id = 1, opts = c(2:9), Group = 10)
+#' }
 #'
 #' @export
 

@@ -1,8 +1,7 @@
 library(validateHOT)
-data(MaxDiff)
 
 ####################### Test wo Grouping variable ########################################
-createHOT(
+HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
@@ -96,7 +95,7 @@ test_that("freqassort() also working with data.frame not created with createHOT(
 
 ####################### Test with Grouping variable ########################################
 
-createHOT(
+HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
@@ -274,3 +273,4 @@ test_that("Right labels of 'Group' variable", {
   expect_true(Results$Group[3] == lev[2])
   expect_true(Results$Group[4] == lev[3])
 })
+

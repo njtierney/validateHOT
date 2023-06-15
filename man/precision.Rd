@@ -58,8 +58,8 @@ Input of opts \code{choice} needs to be the column index of actual choice.
 validation/holdout task. Needs to be specified for \code{precision()}.
 }
 \examples{
-library(validateHOT)
-createHOT(
+\dontrun{
+HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   None = 19,
@@ -70,9 +70,10 @@ createHOT(
 )
 
 precision(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
+}
 
-library(validateHOT)
-createHOT(
+\dontrun{
+HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   None = 19,
@@ -84,6 +85,7 @@ createHOT(
 )
 
 precision(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+}
 
 }
 \references{

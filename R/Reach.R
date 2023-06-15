@@ -54,8 +54,8 @@
 #' \code{method = "threshold"} should be applied to calculate \code{reach()}.
 #'
 #' @examples
-#' library(validateHOT)
-#' createHOT(
+#' \dontrun{
+#' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,
@@ -67,10 +67,11 @@
 #'
 #' reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
 #' reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")
+#' }
 #'
 #' @examples
-#' library(validateHOT)
-#' createHOT(
+#' \dontrun{
+#' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,
@@ -83,6 +84,7 @@
 #'
 #' reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold", Group = 10)
 #' reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10)
+#' }
 #'
 #' @return a data frame
 #' @export

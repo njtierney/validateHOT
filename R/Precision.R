@@ -63,8 +63,8 @@
 #' }
 #'
 #' @examples
-#' library(validateHOT)
-#' createHOT(
+#' \dontrun{
+#' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,
@@ -75,10 +75,11 @@
 #' )
 #'
 #' precision(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
+#' }
 #'
 #' @examples
-#' library(validateHOT)
-#' createHOT(
+#' \dontrun{
+#' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
 #'   None = 19,
@@ -90,6 +91,7 @@
 #' )
 #'
 #' precision(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+#' }
 #'
 #' @export
 
