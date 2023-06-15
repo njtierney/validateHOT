@@ -1,8 +1,10 @@
 ---
-title: "How to use validateHOT"
+title: "validateHOT: Validate Your Holdout Task &#127919;"
+author: "Joshua Schramm and Marcel Lichters"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{validateHOT}
+  %\VignetteIndexEntry{validateHOT: Validate Your Holdout Task &#127919;}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,6 +16,93 @@ knitr::opts_chunk$set(
 )
 ```
 
+<code>validateHOT</code> is a package to validate your validation/ holdout task and test whether your model is valid in terms of predicting outside choice sets.
+
+We created <code>validateHOT</code> to support students our practitioners who are less familiar with *R*. Moreover, we would also like to provide an easy and convenient way to validate a validation/ holdout task for all the [Sawtooth Software](https://sawtoothsoftware.com/) users, who would like to validate their validation/ holdout task in *R* for open-science purposes.
+
+In this vignette we would like to present to you ...
+
+-   ... how to create utility scores for a validation/ holdout task of a *CBC*, *ACBC*, or *MaxDiff* based on the **raw utilities** of a *Hierarchical* *Bayes* estimation which was run in *Sawtooth Software*
+-   ... measure validation metrics which are often reported for a validation/ holdout task in research papers
+    -   Hit rate (<code>hitrate</code>)
+    -   Kullback-Leibler-Divergence (<code>kl</code>)
+    -   Mean absolute error (<code>mae</code>)
+    -   Mean hit probability (<code>mhp</code>)
+    -   Median absolute error (<code>medae</code>)
+    -   Root-mean-squared error (<code>rmse</code>)
+-   ... measure metrics of the confusion matrix
+    -   <code>accuracy</code>
+    -   F1-score (<code>f1</code>)
+    -   <code>precision</code>
+    -   <code>recall</code>
+    -   <code>specificity</code>
+-   ... and how to use <code>validateHOT</code> for simulation purposes
+    -   Frequency of how many products are bought on average of a specified assortment (<code>freqassort</code>)
+    -   How many participants are reached with a specified assortment (buying at least one alternative of the assortment; <code>reach</code>)
+    -   calculating the share of preference of specified set (<code>shareofpref</code>)
+
+## Installation
+
+You can install `validateHOT` by using the `devtools` package (Wickham et al., 2022). 
+
+
+```{r}
+# install.packages("devtools")
+# devtools::install_github("JoshSchramm94/validateHOT")
+```
+
+Afterwards, we will load the package. 
+
 ```{r setup}
 library(validateHOT)
 ```
+
+## `createHOT`: creating validation/ holdout task in *R*
+
+At first, we have to create the validation/ holdout task, which means that we need to create the utilities for each alternative. This is quite easy for a *MaxDiff* (also known as Best-Worst Scaling case 1 or object-case), however, for a *CBC* or *ACBC*, we need to add the utilities of each attribute level and might even have to interpolate some values, if they are coded as *linear* or *piecewise*. 
+
+### MaxDiff
+
+We use the data set `MaxDiff` that comes with the package and store the utilities in the data set `HOT`. In this example, we assume that we have a validation task with 7 alternatives (`prod = 7`) plus a no-buy option (`None = 19`), so a total of 8 alternatives a participant can choose from in a validation/ holdout task in a *MaxDiff* study (`method = "MaxDiff"`). Furthermore, we specify the column index of both the `id` (unique identifier) and `choice` (the actual choice in the validation/ holdout task). To specify the 7 alternatives in the validation/ holdout task, we use `prod.levels` and specify their column indexes in a *list*. In case we wanted to keep further variables from our original data set, we could use the argument `varskeep` and specify their column index. 
+
+**Please you need to specify the column index and not the column names for `validateHOT`!**
+
+```{r, eval = F}
+createHOT(
+  data = MaxDiff,
+  id = 1,
+  None = 19,
+  prod = 7,
+  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+  method = "MaxDiff",
+  choice = 20
+)
+```
+
+### Choice-Based Conjoint
+
+#### Part-Worth utilities only
+
+In case, you conduct a *CBC* (`method = "CBC"`) and all attributes are coded as part-worth, the following example will help you to create the total utilities for your alternatives. We use the `CBC` data set, which comes with `validateHOT`. This example shows a *CBC* with 3 alternatives (`prod = 3`) plus the alternative not to choose any of those, whose utility is stored in column index 21 (`None = 21`). We again specify the column index of `id` and the actual choice, `choice`, in the validation/ holdout task. 
+
+When using *CBC* or *ACBC*, we need to specify the coding, where *0* stands for part-worth coding, *1* for linear coding, and *2* for piecewise coding. Since we only have part-worth coding we set `coding = c(0, 0, 0)`. 
+
+Finally, we specify the attribute levels for each alternative. For example, the first alternative is composed of the following column indexes `c(4, 9, 19)`, namely, `r colnames(CBC)[4]`, `r colnames(CBC)[9]`, and `r colnames(CBC)[19]`. The second is composed of the column indexes `c(8, 12, 17)`, namely, `r colnames(CBC)[8]`, `r colnames(CBC)[12]`, and `r colnames(CBC)[17]`; etc.
+
+```{r, eval = F}
+createHOT(
+  data = CBC,
+  id = 1,
+  None = 21,
+  prod = 3,
+  prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
+  coding = c(0, 0, 0),
+  method = "CBC",
+  choice = 22
+)
+```
+
+
+## References
+
+Wickham, H., Hester, J., Chang, W., & Bryan, J. (2022). *devtools: Tools to Make Developing R Packages Easier*. R package version 2.4.5, [https://CRAN.R-project.org/package=devtools](https://CRAN.R-project.org/package=devtools).
