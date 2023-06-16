@@ -168,7 +168,7 @@ medae <- function(data, id, Group = NULL, opts, choice) {
 
     MedAEErr <- base::as.data.frame(stats::median(base::abs(MedAE$Share - MedAE$Pred)))
 
-    colnames(MedAEErr) <- "MedAE"
+    base::colnames(MedAEErr) <- "MedAE"
     return(MedAEErr)
   }
 

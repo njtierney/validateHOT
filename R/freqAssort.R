@@ -93,20 +93,20 @@
 #'
 freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "First Choice"), bundles) {
   if (method != "threshold" & method != "First Choice") {
-    stop("Error: ", method, " is not valid. Please specify whether to use 'threshold' or 'First Choice'")
+    base::stop("Error: ", method, " is not valid. Please specify whether to use 'threshold' or 'First Choice'")
   }
 
   varCheck <- c(bundles, None)
 
   for (i in 1:base::length(varCheck)) {
     if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])) {
-      stop("Error: ", colnames(data[varCheck[i]]), " needs to be numeric!")
+      base::stop("Error: ", base::colnames(data[varCheck[i]]), " needs to be numeric!")
     }
   }
 
   for (i in 1:base::length(varCheck)) {
     if (base::anyNA(data[varCheck[i]])) {
-      stop("Error: ", colnames(data[[varCheck[i]]]), " has missing values!")
+      base::stop("Error: ", base::colnames(data[[varCheck[i]]]), " has missing values!")
     }
   }
 
@@ -143,7 +143,7 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
 
       Freq <- base::as.data.frame(base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
 
-      colnames(Freq) <- "Frequency"
+      base::colnames(Freq) <- "Frequency"
 
       return(Freq)
     }
@@ -264,7 +264,7 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
 
       Freq <- base::as.data.frame(base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
 
-      colnames(Freq) <- "Frequency"
+      base::colnames(Freq) <- "Frequency"
 
       return(Freq)
     }

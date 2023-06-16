@@ -233,13 +233,13 @@ precision <- function(data, id, Group = NULL, opts, choice, None) {
       HOT %>%
         dplyr::summarise(
           Group = "All",
-          precision = round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 2 & pred_buy == 1))), digits = 2)
+          precision = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 2 & pred_buy == 1))), digits = 2)
         ) %>%
         base::as.data.frame(),
       HOT %>%
         dplyr::group_by(Group) %>%
         dplyr::summarise(
-          precision = round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 2 & pred_buy == 1))), digits = 2)
+          precision = base::round(100 * (base::sum(buy == 1 & pred_buy == 1) / (base::sum(buy == 1 & pred_buy == 1) + base::sum(buy == 2 & pred_buy == 1))), digits = 2)
         ) %>%
         base::as.data.frame()
     )

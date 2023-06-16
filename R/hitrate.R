@@ -143,7 +143,7 @@ hitrate <- function(data, id, Group = NULL, opts, choice) {
 
 
     HR <- base::as.data.frame(rbind(
-      (1 / length(opts) * 100),
+      (1 / base::length(opts) * 100),
       base::sum(base::as.integer(HOT$choice == HOT$pred)),
       (base::sum(base::as.integer(HOT$choice == HOT$pred)) / base::nrow(HOT) * 100)
     ))

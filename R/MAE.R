@@ -167,7 +167,7 @@ mae <- function(data, id, Group = NULL, opts, choice) {
 
     MeanAbsErr <- base::as.data.frame(base::sum(base::abs(MAE$Share - MAE$Pred)) / base::length(opts))
 
-    colnames(MeanAbsErr) <- "MAE"
+    base::colnames(MeanAbsErr) <- "MAE"
     return(MeanAbsErr)
   }
 

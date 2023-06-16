@@ -142,7 +142,7 @@ mhp <- function(data, id, Group = NULL, opts, choice) {
 
     MeanHIT <- base::as.data.frame(base::mean(HOT$MHP))
 
-    colnames(MeanHIT) <- "MeanHitProb"
+    base::colnames(MeanHIT) <- "MeanHitProb"
     return(MeanHIT)
   }
 

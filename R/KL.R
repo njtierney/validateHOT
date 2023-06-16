@@ -193,7 +193,7 @@ kl <- function(data, id, Group = NULL, opts, choice, epsilon = NULL) {
 
     Res <- base::as.data.frame(base::cbind(base::sum(KL[i, 2] * base::log2(KL[i, 2] / KL[i, 3])), base::sum(KL[i, 3] * base::log2(KL[i, 3] / KL[i, 2]))))
 
-    colnames(Res) <- c("KL_O_P", "KL_P_O")
+    base::colnames(Res) <- c("KL_O_P", "KL_P_O")
 
     return(Res)
   }

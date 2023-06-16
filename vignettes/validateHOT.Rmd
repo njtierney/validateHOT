@@ -43,15 +43,14 @@ In this vignette we would like to present to you ...
 
 ## Installation
 
-You can install `validateHOT` by using the `devtools` package (Wickham et al., 2022). 
-
+You can install `validateHOT` by using the `devtools` package (Wickham et al., 2022).
 
 ```{r}
 # install.packages("devtools")
 # devtools::install_github("JoshSchramm94/validateHOT")
 ```
 
-Afterwards, we will load the package. 
+Afterwards, we will load the package.
 
 ```{r setup}
 library(validateHOT)
@@ -59,11 +58,11 @@ library(validateHOT)
 
 ## `createHOT`: creating validation/ holdout task in *R*
 
-At first, we have to create the validation/ holdout task, which means that we need to create the utilities for each alternative. This is quite easy for a *MaxDiff* (also known as Best-Worst Scaling case 1 or object-case), however, for a *CBC* or *ACBC*, we need to add the utilities of each attribute level and might even have to interpolate some values, if they are coded as *linear* or *piecewise*. 
+At first, we have to create the validation/ holdout task, which means that we need to create the utilities for each alternative. This is quite easy for a *MaxDiff* (also known as Best-Worst Scaling case 1 or object-case), however, for a *CBC* or *ACBC*, we need to add the utilities of each attribute level and might even have to interpolate some values, if they are coded as *linear* or *piecewise*.
 
 ### MaxDiff
 
-We use the data set `MaxDiff` that comes with the package and store the utilities in the data set `HOT`. In this example, we assume that we have a validation task with 7 alternatives (`prod = 7`) plus a no-buy option (`None = 19`), so a total of 8 alternatives a participant can choose from in a validation/ holdout task in a *MaxDiff* study (`method = "MaxDiff"`). Furthermore, we specify the column index of both the `id` (unique identifier) and `choice` (the actual choice in the validation/ holdout task). To specify the 7 alternatives in the validation/ holdout task, we use `prod.levels` and specify their column indexes in a *list*. In case we wanted to keep further variables from our original data set, we could use the argument `varskeep` and specify their column index. 
+We use the data set `MaxDiff` that comes with the package and store the utilities in the data set `HOT`. In this example, we assume that we have a validation task with 7 alternatives (`prod = 7`) plus a no-buy option (`None = 19`), so a total of 8 alternatives a participant can choose from in a validation/ holdout task in a *MaxDiff* study (`method = "MaxDiff"`). Furthermore, we specify the column index of both the `id` (unique identifier) and `choice` (the actual choice in the validation/ holdout task). To specify the 7 alternatives in the validation/ holdout task, we use `prod.levels` and specify their column indexes in a *list*. In case we wanted to keep further variables from our original data set, we could use the argument `varskeep` and specify their column index.
 
 **Please you need to specify the column index and not the column names for `validateHOT`!**
 
@@ -83,9 +82,9 @@ createHOT(
 
 #### Part-Worth utilities only
 
-In case, you conduct a *CBC* (`method = "CBC"`) and all attributes are coded as part-worth, the following example will help you to create the total utilities for your alternatives. We use the `CBC` data set, which comes with `validateHOT`. This example shows a *CBC* with 3 alternatives (`prod = 3`) plus the alternative not to choose any of those, whose utility is stored in column index 21 (`None = 21`). We again specify the column index of `id` and the actual choice, `choice`, in the validation/ holdout task. 
+In case, you conduct a *CBC* (`method = "CBC"`) and all attributes are coded as part-worth, the following example will help you to create the total utilities for your alternatives. We use the `CBC` data set, which comes with `validateHOT`. This example shows a *CBC* with 3 alternatives (`prod = 3`) plus the alternative not to choose any of those, whose utility is stored in column index 21 (`None = 21`). We again specify the column index of `id` and the actual choice, `choice`, in the validation/ holdout task.
 
-When using *CBC* or *ACBC*, we need to specify the coding, where *0* stands for part-worth coding, *1* for linear coding, and *2* for piecewise coding. Since we only have part-worth coding we set `coding = c(0, 0, 0)`. 
+When using *CBC* or *ACBC*, we need to specify the coding, where *0* stands for part-worth coding, *1* for linear coding, and *2* for piecewise coding. Since we only have part-worth coding we set `coding = c(0, 0, 0)`.
 
 Finally, we specify the attribute levels for each alternative. For example, the first alternative is composed of the following column indexes `c(4, 9, 19)`, namely, `r colnames(CBC)[4]`, `r colnames(CBC)[9]`, and `r colnames(CBC)[19]`. The second is composed of the column indexes `c(8, 12, 17)`, namely, `r colnames(CBC)[8]`, `r colnames(CBC)[12]`, and `r colnames(CBC)[17]`; etc.
 
@@ -102,7 +101,36 @@ createHOT(
 )
 ```
 
+#### Linear-coded attribute
+
+Now, let us imagine that instead of having all variables coded as part-worth, you also include 1 (or more) variables that are linear-coded. So, let us run again a *CBC* (`method = "CBC"`). All settings are the same as shown in the example above, however, this time we changed the coding to `coding = c(0, 0, 1)`, which tells us that the first two attributes are part-worth coded and the last variable is linear-coded. How will this impact the way we define our products? We can see that when we specify the third attribute for our three alternatives, we write down a value that this alternative should have for attribute 3. In this example, let us assume that the third attribute is weight. The first alternative in our validation/ holdout task is assumed to have a weight of 60 (`c(4, 9, 60)`), the second a weight of `40`, and the last alternative a weight of `45`.
+
+In order to interpolate these values from our attribute levels, we next have to define the values we used for the levels in the HB settings. Please be aware that in the case of Sawtooth Software they recommend to recode the values of linear attributes for converging purposes (see, e.g., Orme & Chrzan, 2017, p. 108).
+
+In order to let `validateHOT` interpolate the values for your validation/ holdout task, please make sure to insert the exact values you also specify for your *hierarchical Bayes* estimation in Sawtooth. You specify these values in `interpolate.levels` as a list. In the example of `CBC_lin`, there are 7 levels ranging from 10 to 70. Please make sure to include **all** levels of the linear-coded attribute. Next we have to specify the column index of the linear-coded attribute by specifying `lin.p`. Sawtooth Software just provides you one coefficient for your linear-coded values, therefore, we only have one column index.
+
+Finally, in our example, we would also like to keep some variables that should be attached to the data frame we are creating. We can specify the column index(es) of the variables we would like to keep in `varskeep`.
+
+> [**Important**]{.underline}: The value you would like to interpolate (in the example below 60, 40, and 45) need to be within the range you specify in `ìnterpolate.levels`. For example, instead of using `c(10, 20, 30, 40, 50, 60, 70)`, we could also use `c(1, 2, 3, 4, 5, 6, 7)` or even better if we zero-center it to `c(-3, -2, -1, 0, 1, 2, 3)`. In this case we would need to adapt the values to be interpolate as well, so in our case 60 becomes 2, 40 becomes 0, and 45 becomes 0.5.
+
+```{r}
+HOT <- createHOT(
+   data = CBC_lin,
+   id = 1,
+   None = 15,
+   prod = 3,
+   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
+   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+   lin.p = 14,
+   coding = c(0, 0, 1),
+   method = "CBC",
+   varskeep = 17,
+   choice = 16
+ )
+```
 
 ## References
 
-Wickham, H., Hester, J., Chang, W., & Bryan, J. (2022). *devtools: Tools to Make Developing R Packages Easier*. R package version 2.4.5, [https://CRAN.R-project.org/package=devtools](https://CRAN.R-project.org/package=devtools).
+Orme, B. K., & Chrzan, K. (2017). *Becoming an Expert in Conjoint Analysis. Choice Modelling for Pros*. Orem: Sawtooth Software.
+
+Wickham, H., Hester, J., Chang, W., & Bryan, J. (2022). *devtools: Tools to Make Developing R Packages Easier*. R package version 2.4.5, <https://CRAN.R-project.org/package=devtools>.

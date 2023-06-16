@@ -169,7 +169,7 @@ rmse <- function(data, id, Group = NULL, opts, choice) {
 
     RMSEErr <- base::as.data.frame(base::sqrt((base::sum((base::abs(RMSE$Share - RMSE$Pred))^2) / base::length(opts))))
 
-    colnames(RMSEErr) <- "rmse"
+    base::colnames(RMSEErr) <- "rmse"
     return(RMSEErr)
   }
 

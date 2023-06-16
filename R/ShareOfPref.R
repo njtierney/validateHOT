@@ -82,13 +82,13 @@ shareofpref <- function(data, id, Group = NULL, opts) {
 
   for (i in 1:base::length(varCheck)) {
     if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])) {
-      stop("Error: ", colnames(data[varCheck[i]]), " needs to be numeric!")
+      base::stop("Error: ", base::colnames(data[varCheck[i]]), " needs to be numeric!")
     }
   }
 
   for (i in 1:base::length(varCheck)) {
     if (base::anyNA(data[varCheck[i]])) {
-      stop("Error: ", colnames(data[[varCheck[i]]]), " has missing values!")
+      base::stop("Error: ", base::colnames(data[[varCheck[i]]]), " has missing values!")
     }
   }
 
@@ -144,7 +144,7 @@ shareofpref <- function(data, id, Group = NULL, opts) {
     HOT <- WS[, c("id", Perc)]
 
 
-    MW <- unname(colMeans(HOT[, c(2:(base::ncol(HOT)))]))
+    MW <- base::unname(base::colMeans(HOT[, c(2:(base::ncol(HOT)))]))
 
     Options <- c()
 
@@ -226,7 +226,7 @@ shareofpref <- function(data, id, Group = NULL, opts) {
 
     for (t in 1:base::length(base::unique(HOT$Group))) {
       if (t == 1) {
-        MW <- unname(colMeans(HOT[, c(3:(base::ncol(HOT)))]))
+        MW <- base::unname(base::colMeans(HOT[, c(3:(base::ncol(HOT)))]))
 
         MarketShare_ALL <- base::data.frame(base::matrix(nrow = base::length(Options), ncol = 4))
 
@@ -328,7 +328,7 @@ shareofpref <- function(data, id, Group = NULL, opts) {
       output[[(t + 1)]] <- MarketShare
 
       if (t == base::length(base::unique(HOT$Group))) {
-        names(output) <- c("All", lab[1:base::length(unique(HOT$Group))])
+        base::names(output) <- c("All", lab[1:base::length(base::unique(HOT$Group))])
         return(output)
       }
     }

@@ -135,7 +135,7 @@ accuracy <- function(data, id, Group = NULL, opts, choice, None) {
     base::colnames(WS) <- c("id", "choice", Options)
 
     for (i in 1:base::length(newNames)) {
-      WS[, ncol(WS) + 1] <- 0
+      WS[, base::ncol(WS) + 1] <- 0
       base::colnames(WS)[ncol(WS)] <- newNames[i]
     }
 
@@ -145,7 +145,7 @@ accuracy <- function(data, id, Group = NULL, opts, choice, None) {
 
     for (i in 1:base::length(Perc)) {
       WS[, base::ncol(WS) + 1] <- 0
-      colnames(WS)[base::ncol(WS)] <- Perc[i]
+      base::colnames(WS)[base::ncol(WS)] <- Perc[i]
     }
 
     for (i in (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)) {
