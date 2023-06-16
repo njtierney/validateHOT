@@ -115,19 +115,83 @@ Finally, in our example, we would also like to keep some variables that should b
 
 ```{r}
 HOT <- createHOT(
-   data = CBC_lin,
-   id = 1,
-   None = 15,
-   prod = 3,
-   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
-   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
-   lin.p = 14,
-   coding = c(0, 0, 1),
-   method = "CBC",
-   varskeep = 17,
-   choice = 16
- )
+  data = CBC_lin,
+  id = 1,
+  None = 15,
+  prod = 3,
+  prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
+  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+  lin.p = 14,
+  coding = c(0, 0, 1),
+  method = "CBC",
+  varskeep = 17,
+  choice = 16
+)
 ```
+
+### Adaptive Choice-Based Conjoint (ACBC)
+
+Finally, let us introduce you how to use `validateHOT` for an adaptive choice-based conjoint (ACBC). We also provide two examples, which are typical issues you might face.
+
+#### Linear-coded ACBC price
+
+In the first example, we would like to introduce you the example if you are using a linear-coded price for your ACBC. This price is not coded with 1 in `coding`, however, since it is a little bit different than normal linear-coded variables (e.g., you get 2 coefficients instead of just one), we approach this a little bit different. 
+
+For our example, we will use the `ACBC` data set, which is also provided by `validateHOT`. If you take a look at the data frame, you see that there are a total of 8 attributes, plus 2 price coefficients (`Price_2.093` as well as `Price_27.287`), and the `none` coefficient. Since all 8 attributes are part-worth coded, the setup is the same as for the CBC. 
+
+For our example, we use a validation/ holdout task with 6 alternatives plus a no-buy alternative. First, we define the 6 alternatives. We can see that for `prod1`, we again indicate the column index for the eight different attributes. Finally, the price (last element of the vector, e.g., for `prod1` this is `15.99`) is linear-coded. 
+
+After defining each alternative in the validation/ holdout task, let us look at the `createHOT` function. We specify our `data`, the column index of `id`, the column index of the no-buy alternative (`None`), the number of alternatives in the validation/ holdout task (`prod = 6`), the products, which we have defined before, the method (`ACBC`), and the column index of the actual choice (`choice`). We specify the coding (`c(0, 0, 0, 0, 0, 0, 0, 0, 2)`). Remember that in `validateHOT` we specify a linear-coded price in a ACBC as piecewise, which is why we set the last attribute to `2`. For `interpolate.levels`, we specify the lower bound of our price (`Price_2.093`) and the upper bound of price (`Price_27.287`). Finally, we specify `piece.p`, which is equivalent to `lin.p`, however, we specify the position of the lower and the upper bound of the value we would like to interpolate. Since we only have two values if we have a linear-coded price, i.e., the lower and the upper bound, we specify the position of them. Please be aware that you have to specify the position for each alternative in the holdout task, which is why you have to type specify the position `c(35, 36)` for each of the 6 alternatives. 
+
+```{r, eval = F}
+# define alternatives
+prod1 <- c(5, 11, 15, 17, 21, 25, 32, 34, 15.99)
+prod2 <- c(6, 9, 15, 17, 23, 27, 31, 34, 12.99)
+prod3 <- c(8, 12, 16, 19, 23, 24, 28, 34, 12.99)
+prod4 <- c(7, 12, 14, 18, 22, 24, 28, 33, 9.99)
+prod5 <- c(4, 10, 13, 17, 23, 27, 28, 34, 7.99)
+prod6 <- c(5, 9, 14, 17, 23, 27, 29, 33, 9.99)
+
+# calculate total utilities for validation/ holdout task
+HOT <- createHOT(
+  data = ACBC,
+  id = 1,
+  None = 37,
+  prod = 6,
+  prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
+  interpolate.levels = list(c(2.093, 27.287)),
+  piece.p = list(c(35, 36), c(35, 36), c(35, 36), c(35, 36), c(35, 36), c(35, 36)),
+  coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
+  method = "ACBC",
+  choice = 38
+)
+```
+
+#### Piecewise-coded ACBC
+
+```{r, eval = F}
+HOT <- createHOT(
+  data = ACBC_interpolate,
+  id = 1,
+  None = 39,
+  prod = 6,
+  prod.levels = list(
+    c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
+    c(6, 4, 12, 14, 20, 24, 28, 31, 12.99),
+    c(8, 6, 13, 16, 20, 21, 25, 31, 12.99),
+    c(7, 5, 11, 15, 19, 21, 25, 30, 9.99),
+    c(4, 9, 10, 14, 20, 24, 25, 31, 7.99),
+    c(5, 8, 11, 14, 20, 24, 26, 30, 9.99)
+  ),
+  interpolate.levels = list(c(3, 5, 8, 10), c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)),
+  piece.p = list(c(36, 37), c(35, 36), c(35, 36), c(33, 34), c(33, 34), c(33, 34)),
+  lin.p = 9,
+  coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
+  method = "ACBC",
+  choice = 40
+)
+```
+
 
 ## References
 
