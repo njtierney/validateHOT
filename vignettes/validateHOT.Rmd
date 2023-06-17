@@ -67,7 +67,7 @@ We use the data set `MaxDiff` that comes with the package and store the utilitie
 **Please you need to specify the column index and not the column names for `validateHOT`!**
 
 ```{r, eval = F}
-createHOT(
+HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   None = 19,
@@ -78,7 +78,7 @@ createHOT(
 )
 ```
 
-> In case you have a forced-choice validation/ holdout task, just do not specify the `None` argument. 
+> In case you have a forced-choice validation/ holdout task, just do not specify the `None` argument.
 
 ### Choice-Based Conjoint
 
@@ -137,13 +137,13 @@ Finally, let us introduce you how to use `validateHOT` for an adaptive choice-ba
 
 #### Linear-coded ACBC price
 
-In the first example, we would like to introduce you the example if you are using a linear-coded price for your ACBC. This price is not coded with 1 in `coding`, however, since it is a little bit different than normal linear-coded variables (e.g., you get 2 coefficients instead of just one), we approach this a little bit different. 
+In the first example, we would like to introduce you the example if you are using a linear-coded price for your ACBC. This price is not coded with 1 in `coding`, however, since it is a little bit different than normal linear-coded variables (e.g., you get 2 coefficients instead of just one), we approach this a little bit different.
 
-For our example, we will use the `ACBC` data set, which is also provided by `validateHOT`. If you take a look at the data frame, you see that there are a total of 8 attributes, plus 2 price coefficients (`Price_2.093` as well as `Price_27.287`), and the `none` coefficient. Since all 8 attributes are part-worth coded, the setup is the same as for the CBC. 
+For our example, we will use the `ACBC` data set, which is also provided by `validateHOT`. If you take a look at the data frame, you see that there are a total of 8 attributes, plus 2 price coefficients (`Price_2.093` as well as `Price_27.287`), and the `none` coefficient. Since all 8 attributes are part-worth coded, the setup is the same as for the CBC.
 
-For our example, we use a validation/ holdout task with 6 alternatives plus a no-buy alternative. First, we define the 6 alternatives. We can see that for `prod1`, we again indicate the column index for the eight different attributes. Finally, the price (last element of the vector, e.g., for `prod1` this is `15.99`) is linear-coded. 
+For our example, we use a validation/ holdout task with 6 alternatives plus a no-buy alternative. First, we define the 6 alternatives. We can see that for `prod1`, we again indicate the column index for the eight different attributes. Finally, the price (last element of the vector, e.g., for `prod1` this is `15.99`) is linear-coded.
 
-After defining each alternative in the validation/ holdout task, let us look at the `createHOT` function. We specify our `data`, the column index of `id`, the column index of the no-buy alternative (`None`), the number of alternatives in the validation/ holdout task (`prod = 6`), the products, which we have defined before, the method (`ACBC`), and the column index of the actual choice (`choice`). We specify the coding (`c(0, 0, 0, 0, 0, 0, 0, 0, 2)`). Remember that in `validateHOT` we specify a linear-coded price in a ACBC as piecewise, which is why we set the last attribute to `2`. For `interpolate.levels`, we specify the lower bound of our price (`Price_2.093`) and the upper bound of price (`Price_27.287`). Finally, we specify `piece.p`, which is equivalent to `lin.p`, however, we specify the position of the lower and the upper bound of the value we would like to interpolate. Since we only have two values if we have a linear-coded price, i.e., the lower and the upper bound, we specify the position of them. Please be aware that you have to specify the position for each alternative in the holdout task, which is why you have to type specify the position `c(35, 36)` for each of the 6 alternatives. 
+After defining each alternative in the validation/ holdout task, let us look at the `createHOT` function. We specify our `data`, the column index of `id`, the column index of the no-buy alternative (`None`), the number of alternatives in the validation/ holdout task (`prod = 6`), the products, which we have defined before, the method (`ACBC`), and the column index of the actual choice (`choice`). We specify the coding (`c(0, 0, 0, 0, 0, 0, 0, 0, 2)`). Remember that in `validateHOT` we specify a linear-coded price in a ACBC as piecewise, which is why we set the last attribute to `2`. For `interpolate.levels`, we specify the lower bound of our price (`Price_2.093`) and the upper bound of price (`Price_27.287`). Finally, we specify `piece.p`, which is equivalent to `lin.p`, however, we specify the position of the lower and the upper bound of the value we would like to interpolate. Since we only have two values if we have a linear-coded price, i.e., the lower and the upper bound, we specify the position of them. Please be aware that you have to specify the position for each alternative in the holdout task, which is why you have to type specify the position `c(35, 36)` for each of the 6 alternatives.
 
 ```{r, eval = F}
 # define alternatives
@@ -171,12 +171,11 @@ HOT <- createHOT(
 
 #### Piecewise-coded ACBC
 
-So far, we have only looked at examples where at maximum only one attribute was not part-worth coded. In the final example, we will have all three types of coding included. 
-Since piece-wise coding is only available for ACBC in Sawtooth Software, we will show another example with an ACBC. The data set is similar to the one from the previous example (6 alternatives plus a no-buy alternative). We will use the data frame `ACBC_interpolate`, which is also part of `validateHOT`. 
+So far, we have only looked at examples where at maximum only one attribute was not part-worth coded. In the final example, we will have all three types of coding included. Since piece-wise coding is only available for ACBC in Sawtooth Software, we will show another example with an ACBC. The data set is similar to the one from the previous example (6 alternatives plus a no-buy alternative). We will use the data frame `ACBC_interpolate`, which is also part of `validateHOT`.
 
-The `coding` specified below (`c(0, 1, 0, 0, 0, 0, 0, 0, 2)`) already tells us that attribute 2 is linear-coded, attribute 9 is piecewise coded, while the rest of the attributes are part-worth coded. For this example, we again specify the six alternatives in the `createHOT` function. 
+The `coding` specified below (`c(0, 1, 0, 0, 0, 0, 0, 0, 2)`) already tells us that attribute 2 is linear-coded, attribute 9 is piecewise coded, while the rest of the attributes are part-worth coded. For this example, we again specify the six alternatives in the `createHOT` function.
 
-For `interpolate.levels`, we have to specify two vectors. The first vector contains the values for the linear-coded attribute 2 (`c(3, 5, 8, 10)`), and the second vector contains the break points you have specified for your piecewise coded price. In `ACBC_interpolate`, we provide an example where we used 7 break points for the price (`c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)`). We specify the column index of the linear-coded attribute in `lin.p`. Next, we specify `piece.p`. The raw utilities for the 7 break points (`c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)`) are stored in the columns 32 to 38. Again, we need to specify the lower and upper break point of the value we would like to interpolate in `piece.p`, and we need to do this for each of the 6 alternatives. For example, for the first alternative (`15.99`), we see that the lower break point is `12.99` while the upper break point is `17.99`. Therefore, we specify the column index of these two in `piece.p` (`c(36, 37)`). Let us also look at the second product since it represents a scenario you also might face. The alternative should have a price of `12.99`. If we look at the break points we can see that one of the break points is also `12.99`. In this case, we could either use the column index of `12.99` as lower or upper position, the results will be the same. 
+For `interpolate.levels`, we have to specify two vectors. The first vector contains the values for the linear-coded attribute 2 (`c(3, 5, 8, 10)`), and the second vector contains the break points you have specified for your piecewise coded price. In `ACBC_interpolate`, we provide an example where we used 7 break points for the price (`c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)`). We specify the column index of the linear-coded attribute in `lin.p`. Next, we specify `piece.p`. The raw utilities for the 7 break points (`c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)`) are stored in the columns 32 to 38. Again, we need to specify the lower and upper break point of the value we would like to interpolate in `piece.p`, and we need to do this for each of the 6 alternatives. For example, for the first alternative (`15.99`), we see that the lower break point is `12.99` while the upper break point is `17.99`. Therefore, we specify the column index of these two in `piece.p` (`c(36, 37)`). Let us also look at the second product since it represents a scenario you also might face. The alternative should have a price of `12.99`. If we look at the break points we can see that one of the break points is also `12.99`. In this case, we could either use the column index of `12.99` as lower or upper position, the results will be the same.
 
 ```{r, eval = F}
 HOT <- createHOT(
@@ -201,17 +200,97 @@ HOT <- createHOT(
 )
 ```
 
-
 ## Validation metrics
 
+First, we focus on metrics that are often reported for validation/ holdout tasks in research papers, namely:
+
+-   Hit rate (<code>hitrate</code>)
+-   Kullback-Leibler-Divergence (<code>kl</code>)
+-   Mean absolute error (<code>mae</code>)
+-   Mean hit probability (<code>mhp</code>)
+-   Median absolute error (<code>medae</code>)
+-   Root-mean-squared error (<code>rmse</code>)
+
+### `hitrate`
+
+Once the validation/ holdout task is created using `createHOT()`, the setup is similar for all 3 methods. We will use the MaxDiff example from above. Moreover, since we also would like to show some functions exemplary spitted by group, we will use the `varskeep` argument.
+
+```{r}
+HOT <- createHOT(
+  data = MaxDiff,
+  id = 1,
+  None = 19,
+  prod = 7,
+  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+  method = "MaxDiff",
+  choice = 20,
+  varskeep = 21
+)
+```
+
+What we can see from the `createHOT()` function above is that we have 7 alternatives `prod = 7` plus a no-buy alternative since we specified the column index of `None`.
+
+For `hitrate()`, we specify our data (`HOT` in our case), the `id` (unique identifier), the column indexes of alternatives (this includes the no-buy alternative; `opts`), and finally the actual choice in the holdout task (`choice`).
+
+```{r}
+hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)
+```
+
+### `kl`
+
+Next, we check the Kullback-Leibler Divergence by running the `kl` function.
+
+```{r}
+kl(data = HOT, id = 1, opts = c(2:9), choice = 10)
+```
+### `mae`
+
+For the mean absolute error, `mae`, we display the results by Group:
+
+```{r}
+mae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+```
+
+In case, we first had change `Group` to a `factor`, the output would have been adapted accordingly. This is shown in the example in which we use `mae` in `tidyverse` logic.
+
+```{r, message=F, warning=F}
+library(tidyverse)
+
+HOT %>% 
+  mutate(Group = factor(Group, levels = c(1:3), labels = paste0("Group ", c(1:3)))) %>%
+  mae(., id = 1, opts = c(2:9), Group = 10, choice = 11) %>% 
+  mutate_if(is.numeric, round, 2)
+```
+
+### `mhp`
+
+We will display the mean hit probability again by also specifying the Group
+
+```{r}
+mhp(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+```
+
+### `medae`
+
+Next, we look at the median absolute error.
+
+```{r}
+medae(data = HOT, id = 1, opts = c(2:9), choice = 11)
+```
+
+
+### `rmse`
+
+And finally to end this block, we look at the root mean squared error.
+
+```{r}
+rmse(data = HOT, id = 1, opts = c(2:9), choice = 11)
+```
 
 
 ## Confusion matrix
 
-
-
 ## Simulation metrics
-
 
 ## References
 
