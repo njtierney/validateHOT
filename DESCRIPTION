@@ -1,34 +1,35 @@
-Package: validateHOT
 Type: Package
-Title: validateHOT - Package to Validate Holdout Tasks in Conjoint Analysis & MaxDiff
+Package: validateHOT
+Title: validateHOT - Package to Validate Holdout Tasks in Conjoint
+    Analysis & MaxDiff
 Version: 1.0.0
 Authors@R: c(
-    person(given = "Joshua", 
-    family = "Schramm", 
-    email = "schramm94@gmail.com", 
-    role = c("aut", "cre"),
-    comment = c(ORCID = "0000-0001-5602-4632")),
-    person(given = "Marcel", 
-    family = "Lichters", 
-    email = "test@123.com", 
-    role = "ctb"))
-Description: validateHOT is a package that validates validation/ holdout tasks (HOTs) in (adaptive) Conjoint analysis as well as MaxDiff. You define the Holdout task and afterward, choose different validation metrics. validateHOT is a user-friendly tool to help you test the predictive validity of your data.
+    person("Joshua", "Schramm", , "schramm94@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-5602-4632")),
+    person("Marcel", "Lichters", , "test@123.com", role = "ctb")
+  )
+Description: validateHOT is a package that validates validation/ holdout
+    tasks (HOTs) in (adaptive) Conjoint analysis as well as MaxDiff. You
+    define the Holdout task and afterward, choose different validation
+    metrics. validateHOT is a user-friendly tool to help you test the
+    predictive validity of your data.
+License: GPL (>= 3)
 URL: https://github.com/JoshSchramm94/validateHOT
 BugReports: https://github.com/JoshSchramm94/validateHOT/issues
-License: GPL (>= 3)
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.2.3
+Depends:
+    R (>= 3.5.0)
+Imports: 
+    dplyr (>= 1.1.0),
+    labelled (>= 2.10.0),
+    magrittr (>= 2.0.3),
+    stats (>= 4.2.2)
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
 Config/testthat/edition: 3
-Imports: 
-    stats (>= 4.2.2),
-    dplyr (>= 1.1.0),
-    magrittr (>= 2.0.3),
-    labelled (>= 2.10.0)
-Depends:
-  	R (>= 3.5.0)
-VignetteBuilder: knitr
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
