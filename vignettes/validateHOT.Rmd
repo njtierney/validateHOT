@@ -78,6 +78,8 @@ createHOT(
 )
 ```
 
+> In case you have a forced-choice validation/ holdout task, just do not specify the `None` argument. 
+
 ### Choice-Based Conjoint
 
 #### Part-Worth utilities only
@@ -169,6 +171,13 @@ HOT <- createHOT(
 
 #### Piecewise-coded ACBC
 
+So far, we have only looked at examples where at maximum only one attribute was not part-worth coded. In the final example, we will have all three types of coding included. 
+Since piece-wise coding is only available for ACBC in Sawtooth Software, we will show another example with an ACBC. The data set is similar to the one from the previous example (6 alternatives plus a no-buy alternative). We will use the data frame `ACBC_interpolate`, which is also part of `validateHOT`. 
+
+The `coding` specified below (`c(0, 1, 0, 0, 0, 0, 0, 0, 2)`) already tells us that attribute 2 is linear-coded, attribute 9 is piecewise coded, while the rest of the attributes are part-worth coded. For this example, we again specify the six alternatives in the `createHOT` function. 
+
+For `interpolate.levels`, we have to specify two vectors. The first vector contains the values for the linear-coded attribute 2 (`c(3, 5, 8, 10)`), and the second vector contains the break points you have specified for your piecewise coded price. In `ACBC_interpolate`, we provide an example where we used 7 break points for the price (`c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)`). We specify the column index of the linear-coded attribute in `lin.p`. Next, we specify `piece.p`. The raw utilities for the 7 break points (`c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)`) are stored in the columns 32 to 38. Again, we need to specify the lower and upper break point of the value we would like to interpolate in `piece.p`, and we need to do this for each of the 6 alternatives. For example, for the first alternative (`15.99`), we see that the lower break point is `12.99` while the upper break point is `17.99`. Therefore, we specify the column index of these two in `piece.p` (`c(36, 37)`). Let us also look at the second product since it represents a scenario you also might face. The alternative should have a price of `12.99`. If we look at the break points we can see that one of the break points is also `12.99`. In this case, we could either use the column index of `12.99` as lower or upper position, the results will be the same. 
+
 ```{r, eval = F}
 HOT <- createHOT(
   data = ACBC_interpolate,
@@ -191,6 +200,17 @@ HOT <- createHOT(
   choice = 40
 )
 ```
+
+
+## Validation metrics
+
+
+
+## Confusion matrix
+
+
+
+## Simulation metrics
 
 
 ## References
