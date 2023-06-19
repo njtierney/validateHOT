@@ -260,6 +260,8 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
         }
       }
 
+
+
       Reach <- base::as.data.frame(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
 
       base::colnames(Reach) <- "reach"
@@ -291,8 +293,6 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
           WS_new[i, k] <- base::ifelse((WS[i, k] == base::max(WS[i, 3:(base::ncol(WS) - 1)]) & (base::max(WS[i, 3:(base::ncol(WS) - 1)]) > WS[i, "None"])), 1, 0)
         }
       }
-
-
 
       WS_new$reach <- base::ifelse(base::rowSums(WS_new[, c(3:base::ncol(WS_new))]) > 0, 1, 0)
 

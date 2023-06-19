@@ -235,7 +235,7 @@ What we can see from the `createHOT()` function above is that we have 7 alternat
 For `hitrate()`, we specify our data (`HOT` in our case), the `id` (unique identifier), the column indexes of alternatives (this includes the no-buy alternative; `opts`), and finally the actual choice in the holdout task (`choice`).
 
 ```{r}
-hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)
+hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11)
 ```
 
 ### `kl`
@@ -243,7 +243,7 @@ hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)
 Next, we check the Kullback-Leibler Divergence by running the `kl` function.
 
 ```{r}
-kl(data = HOT, id = 1, opts = c(2:9), choice = 10)
+kl(data = HOT, id = 1, opts = c(2:9), choice = 11)
 ```
 ### `mae`
 
@@ -253,7 +253,7 @@ For the mean absolute error, `mae`, we display the results by Group:
 mae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 ```
 
-In case, we first had change `Group` to a `factor`, the output would have been adapted accordingly. This is shown in the example in which we use `mae` in `tidyverse` logic. Herefore
+In case, we first had change `Group` to a `factor`, the output would have been adapted accordingly. This is shown in the example in which we use `mae` in `tidyverse` logic. To do so, we load the `magrittr` (Bache & Wickham, 2022) and `dplyr` (Wickham et al., 2023) package.
 
 ```{r, message=F, warning=F}
 library(dplyr)
@@ -292,10 +292,119 @@ rmse(data = HOT, id = 1, opts = c(2:9), choice = 11)
 
 ## Confusion matrix
 
+Next, we will take a look at the 5 metrics from confusion matrix. The current logic for the confusion matrix is that `validateHOT` calculates, e.g., whether your model overestimates or underestimates purchase behavior. Therefore, you need to specify a `None` for the 5 metrics of confusion matrix, namely ...
+
+-   `accuracy`
+-   `f1`
+-   `precision`
+-   `recall`
+-   `specificity`
+
+The setup is similar to the ones from the validation metrics reported above, the only difference is that you have to specify the column index of the no-buy alternative (`None`).
+
+### `accuracy`
+
+We begin with the accuracy and we still work with the `HOT` data frame we created above. We specify the 8 alternatives (7 alternatives + no-buy alternative) and finally the column index of `None`. 
+
+```{r}
+accuracy(data = HOT, id = 1, opts = c(2:9), choice = 11, None = 9)
+```
+
+### `f1`
+
+Calculating the *F1*-score is exactly the same.
+
+```{r}
+f1(data = HOT, id = 1, opts = c(2:9), choice = 11, None = 9)
+```
+
+### `precision`
+
+For `precision`, we will specify the `Group` argument again.
+
+```{r}
+precision(data = HOT, id = 1, opts = c(2:9), choice = 11, None = 9, Group = 10)
+```
+
+
+### `recall``
+
+Similar to the validation metrics shown above, we can also implement these functions in `tidyverse` logic.
+
+```{r}
+HOT %>% 
+  dplyr::mutate(Group = factor(Group, levels = c(1:3), labels = paste0("Group ", c(1:3)))) %>%
+  recall(., id = 1, opts = c(2:9), Group = 10, None = 9, choice = 11) %>% 
+  dplyr::mutate_if(is.numeric, round, 2)
+```
+
+
+
+### `specificity`
+
+Finally, the following code runs the `specificity` function.
+
+```{r}
+specificity(data = HOT, id = 1, opts = c(2:9), choice = 11, None = 9)
+```
+
+
 ## Simulation metrics
+
+Finally, let us talk about the simulation metrics. `validateHOT` currently provides the three following functions
+
+-   Reach of the assortment (`reach`)
+-   Frequency of the assortment (`freqAssort`)
+-   Share of Preference of the assortment (`shareofpref`)
+
+### `reach`
+
+Let us imagine you have a specific assortment, and you want to check how many participants would at least consider purchasing at least one of the products or alternatives you are testing in the function. 
+
+To run this function you need to specify a threshold, i.e., the no-buy alternative. `validateHOT` includes two methods: `threshold` and `First Choice`. `threshold` considers all products / alternatives that pass the threshold as purchase option, while `First Choice` only marks the product / alternative with the highest utility as purchase option and marks it as purchase option in case its preferred over the no-buy alternative.
+
+```{r}
+reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
+```
+
+Let us see, how the reach changes when we use `First Choice` instead and give the results by Groups
+
+```{r}
+reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10)
+```
+
+### `freqAssort`
+
+Next, let us check the `freqAssort` function, which tells you how many products / alternatives on average are preferred over the no-buy alternative. Again, `validateHOT` offers the `threshold` and `First Choice` method. 
+
+```{r}
+freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
+```
+
+```{r}
+HOT %>% 
+  dplyr::mutate(Group = factor(Group, levels = c(1:3), labels = paste0("Group ", c(1:3)))) %>%
+  freqassort(., id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10) %>% 
+  dplyr::mutate_if(is.numeric, round, 2)
+```
+
+### `shareofpref`
+
+Finally, `validateHOT` also provides you the assumed share of preference of all products / alternatives you specify in your assortment
+
+```{r}
+HOT %>%
+  shareofpref(data = ., id = 1, opts = c(2:9))
+```
+
+
 
 ## References
 
+Bache, S., & Wickham, H. (2022). *magrittr: A Forward-Pipe Operator for R*. R package version 2.0.3, <https://CRAN.R-project.org/package=magrittr>.
+
 Orme, B. K., & Chrzan, K. (2017). *Becoming an Expert in Conjoint Analysis. Choice Modelling for Pros*. Orem: Sawtooth Software.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R package version 1.1.2, <https://CRAN.R-project.org/package=dplyr>
 
 Wickham, H., Hester, J., Chang, W., & Bryan, J. (2022). *devtools: Tools to Make Developing R Packages Easier*. R package version 2.4.5, <https://CRAN.R-project.org/package=devtools>.
