@@ -139,7 +139,13 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
         }
       }
 
+      if (base::length(bundles) == 1){
+        Reach <- base::as.data.frame(base::mean(base::ifelse(WS_new[, 2] > 0, 1, 0)) * 100)
+      }
+
+      if (base::length(bundles) > 1){
       Reach <- base::as.data.frame(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
+      }
 
       base::colnames(Reach) <- "reach"
 
@@ -171,7 +177,13 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
         }
       }
 
-      WS_new$reach <- base::ifelse(base::rowSums(WS_new[, c(3:base::ncol(WS_new))]) > 0, 1, 0)
+      if (base::length(bundles) == 1){
+        WS_new$reach <- base::as.data.frame(base::mean(base::ifelse(WS_new[, 3] > 0, 1, 0)) * 100)
+      }
+
+      if (base::length(bundles) > 1){
+        WS_new$reach <- base::ifelse(base::rowSums(WS_new[, c(3:base::ncol(WS_new))]) > 0, 1, 0)
+      }
 
       Reach <- base::rbind(
         WS_new %>%
@@ -261,8 +273,13 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
       }
 
 
+      if (base::length(bundles) == 1){
+        Reach <- base::as.data.frame(base::mean(base::ifelse(WS_new[, 2] > 0, 1, 0)) * 100)
+      }
 
-      Reach <- base::as.data.frame(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
+      if (base::length(bundles) > 1){
+        Reach <- base::as.data.frame(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
+      }
 
       base::colnames(Reach) <- "reach"
 
@@ -294,7 +311,13 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
         }
       }
 
-      WS_new$reach <- base::ifelse(base::rowSums(WS_new[, c(3:base::ncol(WS_new))]) > 0, 1, 0)
+      if (base::length(bundles) == 1){
+        WS_new$reach <- base::as.data.frame(base::mean(base::ifelse(WS_new[, 3] > 0, 1, 0)) * 100)
+      }
+
+      if (base::length(bundles) > 1){
+        WS_new$reach <- base::ifelse(base::rowSums(WS_new[, c(3:base::ncol(WS_new))]) > 0, 1, 0)
+      }
 
       Reach <- base::rbind(
         WS_new %>%

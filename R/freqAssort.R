@@ -141,7 +141,15 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
         }
       }
 
-      Freq <- base::as.data.frame(base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
+      if (base::length(bundles) == 1){
+        Freq <- base::as.data.frame(base::mean(WS_new[, 2]))
+      }
+
+
+      if (base::length(bundles) > 1){
+        Freq <- base::as.data.frame(base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
+      }
+
 
       base::colnames(Freq) <- "Frequency"
 
@@ -173,7 +181,15 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
         }
       }
 
-      WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
+      if (base::length(bundles) == 1){
+        WS_new$freq <- base::as.data.frame(base::mean(WS_new[, 2]))
+      }
+
+
+
+      if (base::length(bundles) > 1){
+        WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
+      }
 
       Frequency <- base::rbind(
         WS_new %>%
@@ -262,7 +278,14 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
         }
       }
 
-      Freq <- base::as.data.frame(base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
+      if (base::length(bundles) == 1){
+        Freq <- base::as.data.frame(base::mean(base::sum(WS_new[, c(2:base::ncol(WS_new))])))
+      }
+
+
+      if (base::length(bundles) > 1){
+        Freq <- base::as.data.frame(base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
+      }
 
       base::colnames(Freq) <- "Frequency"
 
@@ -295,8 +318,13 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
       }
 
 
+      if (base::length(bundles) == 1){
+        WS_new$freq <- base::sum(WS_new[, c(3:base::ncol(WS_new))])
+      }
 
-      WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
+      if (base::length(bundles) > 1){
+        WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
+      }
 
       Frequency <- base::rbind(
         WS_new %>%
