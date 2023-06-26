@@ -1,6 +1,4 @@
-library(validateHOT)
 ####################### Test wo Grouping variable ########################################
-
 HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,
@@ -48,8 +46,8 @@ test_that("Independent of method, results should remain same", {
 })
 
 test_that("Make sure test data is correct", {
-  expect_equal(base::round(reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")[1, 1], digits = 3), 70.000)
-  expect_equal(base::round(reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")[1, 1], digits = 3), 70.000)
+  expect_equal(base::round(as.numeric(reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")[1, 1]), digits = 3), 70.000)
+  expect_equal(base::round(as.numeric(reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")[1, 1]), digits = 3), 70.000)
 })
 
 
@@ -98,7 +96,6 @@ test_that("reach() also working with data.frame not created with createHOT()", {
 })
 
 ####################### Test with Grouping variable ########################################
-
 HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,

@@ -27,7 +27,7 @@ test_that("Test plausability of results", {
 })
 
 test_that("Make sure test data is correct", {
-  expect_equal(specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1], 32)
+  expect_equal(round(as.numeric(specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)[1, 1]), digits = 2), 32)
 })
 
 test_that("Wrong format Choice", {

@@ -4,7 +4,7 @@
 \alias{kl}
 \title{Kullback-Leibler Divergence}
 \usage{
-kl(data, id, Group = NULL, opts, choice, epsilon = NULL)
+kl(data, id, Group = NULL, opts, choice, epsilon = NULL, basis)
 }
 \arguments{
 \item{data}{data frame with all relevant variables.}
@@ -20,6 +20,8 @@ validation/holdout task.}
 \item{choice}{vector of column index of the actual choice.}
 
 \item{epsilon}{vector of noise that should be added to 0 values, per default set to 1e-05}
+
+\item{basis}{character string to define the logarithm base, currently can choose between \code{log} and \code{log2}}
 }
 \value{
 a data frame
@@ -30,7 +32,7 @@ Function to measure the Kullback-Leibler Divergence of a validation task
 \details{
 Kullback-Leibler-Divergence which measures the divergence between the actual choice distribution and the predicted
 choice distribution (Ding et al., 2011; Drost, 2018). Currently only provides
-the deviation measured based on \eqn{log{_2}} algorithm.
+the deviation measured based on \eqn{log} and \eqn{log{_2}} algorithm.
 
 Due to the asymmetry of the Kullback-Leibler divergence, output provides both
 \code{"KL_O_P"} which is equivalent to (Observed || Predicted) and
@@ -55,6 +57,9 @@ Input of opts \code{choice} needs to be the column index of actual choice.
 \code{epsilon} needs to be a numeric input in case of 0 in the numerator or denominator. 0
 then will be replaced by \code{epsilon}. Default value is \code{epsilon = .1e-5}, however, can
 be adopted.
+
+\code{basis} needs to be a character string, deciding which logarithm base you want to apply
+to calculate Kullback-Leibler. You can choose between \eqn{log} and \eqn{log{_2}}
 }
 \examples{
 \dontrun{
@@ -68,7 +73,7 @@ HOT <- createHOT(
   choice = 20
 )
 
-kl(data = HOT, id = 1, opts = c(2:9), choice = 10)
+kl(data = HOT, id = 1, opts = c(2:9), choice = 10, basis = "log2")
 }
 
 \dontrun{
@@ -83,7 +88,7 @@ HOT <- createHOT(
   choice = 20
 )
 
-kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10, basis = "log2")
 }
 
 }

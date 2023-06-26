@@ -17,6 +17,7 @@
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
+#' @importFrom tibble tibble
 #'
 #' @details
 #' Reach measures the averaged percentage of how many participants you can reach (at least one of the products resemble a purchase option)
@@ -112,24 +113,15 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
     base::warning("Warning: Grouping variable contains NAs.")
   }
 
-  reach <- NULL
+  WS <- data[, c(id, Group, bundles, None)]
 
   if (method == "threshold") {
     if (base::is.null(Group)) {
-      WS <- data[, c(id, bundles, None)]
-
-      names <- c("id")
-      for (j in 1:base::length(bundles)) {
-        nj <- base::paste0("Bundle_", j)
-        names <- c(names, nj)
-      }
-      names <- c(names, "None")
-
-      base::colnames(WS) <- names
+      base::colnames(WS) <- c("id", paste0("Bundle_", c(1:base::length(bundles))), "None")
 
       WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
 
-      base::colnames(WS_new) <- names[-base::length(names)]
+      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
 
       WS_new[, 1] <- WS[, 1]
 
@@ -140,36 +132,25 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
       }
 
       if (base::length(bundles) == 1){
-        Reach <- base::as.data.frame(base::mean(base::ifelse(WS_new[, 2] > 0, 1, 0)) * 100)
+        Reach <- tibble::tibble(reach = base::mean(base::ifelse(WS_new[, 2] > 0, 1, 0)) * 100)
       }
 
       if (base::length(bundles) > 1){
-      Reach <- base::as.data.frame(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
+      Reach <- tibble::tibble(reach = base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
       }
 
-      base::colnames(Reach) <- "reach"
 
       return(Reach)
     }
 
     if (!(base::is.null(Group))) {
-      WS <- data[, c(id, Group, bundles, None)]
-
-      names <- c("id", "Group")
-      for (j in 1:base::length(bundles)) {
-        nj <- base::paste0("Bundle_", j)
-        names <- c(names, nj)
-      }
-      names <- c(names, "None")
-
-      base::colnames(WS) <- names
+      base::colnames(WS) <- c("id", "Group", paste0("Bundle_", c(1:base::length(bundles))), "None")
 
       WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
 
-      base::colnames(WS_new) <- names[-base::length(names)]
+      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
 
       WS_new[, c(1, 2)] <- WS[, c(1, 2)]
-
 
       for (i in 1:base::nrow(WS_new)) {
         for (j in 3:base::ncol(WS_new)) {
@@ -185,19 +166,18 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
         WS_new$reach <- base::ifelse(base::rowSums(WS_new[, c(3:base::ncol(WS_new))]) > 0, 1, 0)
       }
 
-      Reach <- base::rbind(
+      Reach <- tibble::tibble(
+        base::rbind(
         WS_new %>%
           dplyr::summarise(
             Group = "All",
             reach = base::mean(reach) * 100
-          ) %>%
-          base::as.data.frame(),
+          ),
         WS_new %>%
           dplyr::group_by(Group) %>%
           dplyr::summarise(
             reach = base::mean(reach) * 100
-          ) %>%
-          base::as.data.frame()
+          ))
       )
 
       # fixing grouping variable
@@ -249,20 +229,11 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
 
   if (method == "First Choice") {
     if (base::is.null(Group)) {
-      WS <- data[, c(id, bundles, None)]
-
-      names <- c("id")
-      for (j in 1:base::length(bundles)) {
-        nj <- base::paste0("Bundle_", j)
-        names <- c(names, nj)
-      }
-      names <- c(names, "None")
-
-      base::colnames(WS) <- names
+      base::colnames(WS) <- c("id", paste0("Bundle_", c(1:base::length(bundles))), "None")
 
       WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
 
-      base::colnames(WS_new) <- names[-base::length(names)]
+      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
 
       WS_new[, 1] <- WS[, 1]
 
@@ -274,36 +245,24 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
 
 
       if (base::length(bundles) == 1){
-        Reach <- base::as.data.frame(base::mean(base::ifelse(WS_new[, 2] > 0, 1, 0)) * 100)
+        Reach <- tibble::tibble(reach = base::mean(base::ifelse(WS_new[, 2] > 0, 1, 0)) * 100)
       }
 
       if (base::length(bundles) > 1){
-        Reach <- base::as.data.frame(base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
+        Reach <- tibble::tibble(reach = base::mean(base::ifelse(base::rowSums(WS_new[, c(2:base::ncol(WS_new))]) > 0, 1, 0)) * 100)
       }
-
-      base::colnames(Reach) <- "reach"
 
       return(Reach)
     }
 
     if (!(base::is.null(Group))) {
-      WS <- data[, c(id, Group, bundles, None)]
-
-      names <- c("id", "Group")
-      for (j in 1:base::length(bundles)) {
-        nj <- base::paste0("Bundle_", j)
-        names <- c(names, nj)
-      }
-      names <- c(names, "None")
-
-      base::colnames(WS) <- names
+      base::colnames(WS) <- c("id", "Group", paste0("Bundle_", c(1:base::length(bundles))), "None")
 
       WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
 
-      base::colnames(WS_new) <- names[-base::length(names)]
+      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
 
       WS_new[, c(1, 2)] <- WS[, c(1, 2)]
-
 
       for (i in 1:base::nrow(WS_new)) {
         for (k in 3:base::ncol(WS_new)) {
@@ -312,26 +271,25 @@ reach <- function(data, id, Group = NULL, None, method, bundles) {
       }
 
       if (base::length(bundles) == 1){
-        WS_new$reach <- base::as.data.frame(base::mean(base::ifelse(WS_new[, 3] > 0, 1, 0)) * 100)
+        WS_new$reach <- base::mean(base::ifelse(WS_new[, 3] > 0, 1, 0)) * 100
       }
 
       if (base::length(bundles) > 1){
         WS_new$reach <- base::ifelse(base::rowSums(WS_new[, c(3:base::ncol(WS_new))]) > 0, 1, 0)
       }
 
-      Reach <- base::rbind(
+      Reach <- tibble::tibble(
+        base::rbind(
         WS_new %>%
           dplyr::summarise(
             Group = "All",
             reach = base::mean(reach) * 100
-          ) %>%
-          base::as.data.frame(),
+          ),
         WS_new %>%
           dplyr::group_by(Group) %>%
           dplyr::summarise(
             reach = base::mean(reach) * 100
-          ) %>%
-          base::as.data.frame()
+          ))
       )
 
       # fixing grouping variable

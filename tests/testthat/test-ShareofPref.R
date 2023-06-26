@@ -1,6 +1,4 @@
-library(validateHOT)
 ####################### Test wo Grouping variable ########################################
-
 HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,
@@ -22,11 +20,11 @@ test_that("Structure of Output", {
 test_that("Structure of Output", {
   expect_equal(base::nrow(shareofpref(data = HOT, id = 1, opts = c(2:9))), 8)
 
-  expect_equal(base::ncol(shareofpref(data = HOT, id = 1, opts = c(2:9))), 4)
+  expect_equal(base::ncol(shareofpref(data = HOT, id = 1, opts = c(2:9))), 5)
 })
 
 test_that("Labeling correct", {
-  expect_equal(colnames(shareofpref(data = HOT, id = 1, opts = c(2:9))), c("Options", "Mean", "Lower CI", "Upper CI"))
+  expect_equal(colnames(shareofpref(data = HOT, id = 1, opts = c(2:9))), c("Options", "Mean", "se", "Lower CI", "Upper CI"))
 })
 
 
@@ -35,18 +33,18 @@ test_that("Test plausability of results", {
 
   for (i in 1:nrow(Results)) {
     expect_true(Results[i, 2] <= 100)
-    expect_true(Results[i, 3] < Results[i, 4] & Results[i, 3] < Results[i, 2])
-    expect_true(Results[i, 4] > Results[i, 3])
+    expect_true(Results[i, 4] < Results[i, 5] & Results[i, 4] < Results[i, 2])
+    expect_true(Results[i, 5] > Results[i, 4])
   }
 
-  expect_equal(base::sum(Results[, 2]), 100)
+  expect_equal(as.numeric(base::sum(Results[, 2])), 100)
 })
 
 
 test_that("Make sure test data is correct", {
-  expect_equal(base::round(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 2], digits = 3), 18.268)
-  expect_equal(base::round(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 3], digits = 3), 10.189)
-  expect_equal(base::round(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 4], digits = 3), 26.346)
+  expect_equal(base::round(as.numeric(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 2]), digits = 3), 18.268)
+  expect_equal(base::round(as.numeric(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 4]), digits = 3), 10.189)
+  expect_equal(base::round(as.numeric(shareofpref(data = HOT, id = 1, opts = c(2:9))[1, 5]), digits = 3), 26.346)
 })
 
 
@@ -81,11 +79,10 @@ test_that("shareofpref() also working with data.frame not created with createHOT
   )
 
   expect_equal(base::nrow(shareofpref(data = newHOT, id = 1, opts = c(2:6))), (base::length(newHOT) - 1))
-  expect_equal(base::ncol(shareofpref(data = newHOT, id = 1, opts = c(2:6))), 4)
+  expect_equal(base::ncol(shareofpref(data = newHOT, id = 1, opts = c(2:6))), 5)
 })
 
 ####################### Test with Grouping variable ########################################
-
 HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,
@@ -110,7 +107,7 @@ test_that("Structure of Output", {
 
 test_that("Labeling correct", {
   for (i in 1:4) {
-    expect_equal(base::colnames(shareofpref(data = HOT, id = 1, opts = c(2:9), Group = 10)[[i]]), c("Options", "Mean", "Lower CI", "Upper CI"))
+    expect_equal(base::colnames(shareofpref(data = HOT, id = 1, opts = c(2:9), Group = 10)[[i]]), c("Options", "Mean", "se", "Lower CI", "Upper CI"))
   }
 })
 
@@ -122,8 +119,8 @@ test_that("Test plausability of results", {
     expect_equal(base::sum(Results[, 2]), 100)
 
     for (row in 1:8) {
-      expect_true(Results[row, 3] < Results[row, 4] & Results[row, 3] < Results[row, 2])
-      expect_true(Results[row, 4] > Results[row, 2])
+      expect_true(Results[row, 4] < Results[row, 5] & Results[row, 4] < Results[row, 2])
+      expect_true(Results[row, 5] > Results[row, 2])
     }
   }
 })
@@ -164,7 +161,7 @@ test_that("shareofpref() also working with data.frame not created with createHOT
 
   for (i in 1:base::length(base::unique(newHOT$Group) + 1)) {
     expect_equal(base::nrow(shareofpref(data = newHOT, id = 1, opts = c(2:5), Group = 7)[[i]]), 4)
-    expect_equal(base::ncol(shareofpref(data = newHOT, id = 1, opts = c(2:5), Group = 7)[[i]]), 4)
+    expect_equal(base::ncol(shareofpref(data = newHOT, id = 1, opts = c(2:5), Group = 7)[[i]]), 5)
 
     expect_equal(base::length(shareofpref(data = newHOT, id = 1, opts = c(2:5), Group = 7)), (base::length(base::unique(newHOT$Group)) + 1))
 

@@ -54,6 +54,7 @@
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
+#' @importFrom tibble tibble
 #'
 #' @examples
 #' \dontrun{
@@ -114,24 +115,15 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
     base::warning("Warning: Grouping variable contains NAs.")
   }
 
-  freq <- NULL
+  WS <- data[, c(id, Group, bundles, None)]
 
   if (method == "threshold") {
     if (base::is.null(Group)) {
-      WS <- data[, c(id, bundles, None)]
-
-      names <- c("id")
-      for (j in 1:base::length(bundles)) {
-        nj <- base::paste0("Bundle_", j)
-        names <- c(names, nj)
-      }
-      names <- c(names, "None")
-
-      base::colnames(WS) <- names
+      base::colnames(WS) <- c("id", paste0("Bundle_", c(1:base::length(bundles))), "None")
 
       WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
 
-      base::colnames(WS_new) <- names[-base::length(names)]
+      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
 
       WS_new[, 1] <- WS[, 1]
 
@@ -142,35 +134,23 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
       }
 
       if (base::length(bundles) == 1){
-        Freq <- base::as.data.frame(base::mean(WS_new[, 2]))
+        Freq <- tibble::tibble(Frequency = base::mean(WS_new[, 2]))
       }
 
 
       if (base::length(bundles) > 1){
-        Freq <- base::as.data.frame(base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
+        Freq <- tibble::tibble(Frequency = base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
       }
-
-
-      base::colnames(Freq) <- "Frequency"
 
       return(Freq)
     }
 
     if (!(base::is.null(Group))) {
-      WS <- data[, c(id, Group, bundles, None)]
-
-      names <- c("id", "Group")
-      for (j in 1:base::length(bundles)) {
-        nj <- base::paste0("Bundle_", j)
-        names <- c(names, nj)
-      }
-      names <- c(names, "None")
-
-      base::colnames(WS) <- names
+      base::colnames(WS) <- c("id", "Group", paste0("Bundle_", c(1:base::length(bundles))), "None")
 
       WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
 
-      base::colnames(WS_new) <- names[-base::length(names)]
+      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
 
       WS_new[, c(1, 2)] <- WS[, c(1, 2)]
 
@@ -182,7 +162,7 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
       }
 
       if (base::length(bundles) == 1){
-        WS_new$freq <- base::as.data.frame(base::mean(WS_new[, 2]))
+        WS_new$freq <- base::mean(WS_new[, 2])
       }
 
 
@@ -191,19 +171,18 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
         WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
       }
 
-      Frequency <- base::rbind(
+      Frequency <- tibble::tibble(
+        base::rbind(
         WS_new %>%
           dplyr::summarise(
             Group = "All",
             Frequency = base::mean(freq)
-          ) %>%
-          base::as.data.frame(),
+          ),
         WS_new %>%
           dplyr::group_by(Group) %>%
           dplyr::summarise(
             Frequency = base::mean(freq)
-          ) %>%
-          base::as.data.frame()
+          ))
       )
 
       # fixing grouping variable
@@ -255,20 +234,11 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
 
   if (method == "First Choice") {
     if (base::is.null(Group)) {
-      WS <- data[, c(id, bundles, None)]
-
-      names <- c("id")
-      for (j in 1:base::length(bundles)) {
-        nj <- base::paste0("Bundle_", j)
-        names <- c(names, nj)
-      }
-      names <- c(names, "None")
-
-      base::colnames(WS) <- names
+      base::colnames(WS) <- c("id", paste0("Bundle_", c(1:base::length(bundles))), "None")
 
       WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
 
-      base::colnames(WS_new) <- names[-base::length(names)]
+      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
 
       WS_new[, 1] <- WS[, 1]
 
@@ -279,37 +249,26 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
       }
 
       if (base::length(bundles) == 1){
-        Freq <- base::as.data.frame(base::mean(base::sum(WS_new[, c(2:base::ncol(WS_new))])))
+        Freq <- tibble::tibble(Frequency = base::mean(base::sum(WS_new[, c(2:base::ncol(WS_new))])))
       }
 
 
       if (base::length(bundles) > 1){
-        Freq <- base::as.data.frame(base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
+        Freq <- tibble::tibble(Frequency = base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
       }
 
-      base::colnames(Freq) <- "Frequency"
 
       return(Freq)
     }
 
     if (!(base::is.null(Group))) {
-      WS <- data[, c(id, Group, bundles, None)]
-
-      names <- c("id", "Group")
-      for (j in 1:base::length(bundles)) {
-        nj <- base::paste0("Bundle_", j)
-        names <- c(names, nj)
-      }
-      names <- c(names, "None")
-
-      base::colnames(WS) <- names
+      base::colnames(WS) <- c("id", "Group", paste0("Bundle_", c(1:base::length(bundles))), "None")
 
       WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
 
-      base::colnames(WS_new) <- names[-base::length(names)]
+      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
 
       WS_new[, c(1, 2)] <- WS[, c(1, 2)]
-
 
       for (i in 1:base::nrow(WS_new)) {
         for (k in 3:base::ncol(WS_new)) {
@@ -319,26 +278,25 @@ freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "F
 
 
       if (base::length(bundles) == 1){
-        WS_new$freq <- base::sum(WS_new[, c(3:base::ncol(WS_new))])
+        WS_new$freq <- base::mean(WS_new[, 2])
       }
 
       if (base::length(bundles) > 1){
         WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
       }
 
-      Frequency <- base::rbind(
+      Frequency <- tibble::tibble(
+        base::rbind(
         WS_new %>%
           dplyr::summarise(
             Group = "All",
             Frequency = base::mean(freq)
-          ) %>%
-          base::as.data.frame(),
+          ),
         WS_new %>%
           dplyr::group_by(Group) %>%
           dplyr::summarise(
             Frequency = base::mean(freq)
-          ) %>%
-          base::as.data.frame()
+          ))
       )
 
       # fixing grouping variable

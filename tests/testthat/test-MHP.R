@@ -1,6 +1,4 @@
-library(validateHOT)
 ####################### Test wo Grouping variable ########################################
-
 HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,
@@ -22,7 +20,7 @@ test_that("Labeling correct", {
 })
 
 test_that("Count of correct predicted people", {
-  expect_equal(base::round(mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], digits = 3), 47.516)
+  expect_equal(base::round(as.numeric(mhp(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1]), digits = 3), 47.516)
 })
 
 test_that("Wrong format Choice", {
@@ -215,3 +213,4 @@ test_that("Missings", {
   HOT2[1, 5] <- NA
   expect_error(mhp(data = HOT2, id = 1, opts = c(2:9), choice = 11, Group = 10))
 })
+

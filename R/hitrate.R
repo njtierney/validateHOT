@@ -72,6 +72,7 @@
 #' @importFrom dplyr group_by summarise mutate
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
+#' @importFrom tibble tibble
 #'
 #' @export
 
@@ -81,154 +82,62 @@ hitrate <- function(data, id, Group = NULL, opts, choice) {
   }
 
   if (!base::is.null(Group) & base::anyNA(data[Group])) {
-    base::warning("Warning: Grouping variable contains NAs.")
+    base::warning("Warning: Grouping variable contains NAs!")
   }
+
+  if (base::anyNA(data[,opts])) {
+    base::stop("Error: opts contains NAs!")
+  }
+
+  for (i in 1:length(opts)){
+    if(!base::is.numeric(data[, opts[i]])){
+      base::stop("Error: opts must be numeric!")
+    }
+  }
+
+
 
   WS <- data[, c(id, Group, choice, opts)]
 
-  pred <- NULL
-
   if (base::is.null(Group)) {
-    Options <- c()
+    base::colnames(WS) <- c("id", "choice", paste0("Option_", c(1:base::length(opts))))
+    WS$pred <- base::max.col(WS[,c(base::which(colnames(WS) == "Option_1"):
+                                     base::which(colnames(WS) == paste0("Option_", base::length(opts))))])
 
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Option_", k)
-      Options <- c(Options, name)
-    }
-
-    newNames <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Opt_", k)
-      newNames <- c(newNames, name)
-    }
-
-    Perc <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Perc_", k)
-      Perc <- c(Perc, name)
-    }
-
-    base::colnames(WS) <- c("id", "choice", Options)
-
-    for (i in 1:base::length(newNames)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- newNames[i]
-    }
-
-    for (i in 3:(base::ncol(WS) - base::length(opts))) {
-      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
-    }
-
-    for (i in 1:base::length(Perc)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- Perc[i]
-    }
-
-    for (i in (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)])) * 100
-    }
-
-
-    HOT <- WS[, c("id", "choice", Perc)]
-
-    HOT$pred <- 0
-
-    for (i in 1:base::nrow(HOT)) {
-      for (k in 3:(base::ncol(HOT) - 1)) {
-        if (HOT[i, k] == base::max(HOT[i, 3:(base::ncol(HOT) - 1)])) {
-          HOT$pred[i] <- k - 2
-        }
-      }
-    }
-
-
-    HR <- base::as.data.frame(rbind(
+    HR <- c(
       (1 / base::length(opts) * 100),
-      base::sum(base::as.integer(HOT$choice == HOT$pred)),
-      (base::sum(base::as.integer(HOT$choice == HOT$pred)) / base::nrow(HOT) * 100)
-    ))
+      base::sum(base::as.integer(WS$choice == WS$pred)),
+      (base::sum(base::as.integer(WS$choice == WS$pred)) / base::nrow(WS) * 100)
+    )
 
-    base::row.names(HR) <- c("chance", "no.", "%")
-    base::colnames(HR) <- "hitrate"
+    HR <- tibble::tibble(name = c("chance", "no.", "%"), stats = HR)
+
 
     return(HR)
   }
 
   if (!(base::is.null(Group))) {
-    pred <- NULL
+    base::colnames(WS) <- c("id", "Group", "choice", paste0("Option_", c(1:base::length(opts))))
 
-    Options <- c()
+    WS$pred <- base::max.col(WS[,c(base::which(colnames(WS) == "Option_1"):
+                                     base::which(colnames(WS) == paste0("Option_", base::length(opts))))])
 
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Option_", k)
-      Options <- c(Options, name)
-    }
-
-    newNames <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Opt_", k)
-      newNames <- c(newNames, name)
-    }
-
-    Perc <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Perc_", k)
-      Perc <- c(Perc, name)
-    }
-
-    base::colnames(WS) <- c("id", "Group", "choice", Options)
-
-    for (i in 1:base::length(newNames)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- newNames[i]
-    }
-
-    for (i in 4:(base::ncol(WS) - base::length(opts))) {
-      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
-    }
-
-    for (i in 1:base::length(Perc)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- Perc[i]
-    }
-
-    for (i in (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)])) * 100
-    }
-
-
-    HOT <- WS[, c("id", "choice", "Group", Perc)]
-
-    HOT$pred <- 0
-
-    for (i in 1:base::nrow(HOT)) {
-      for (k in 4:(base::ncol(HOT) - 1)) {
-        if (HOT[i, k] == base::max(HOT[i, 4:(base::ncol(HOT) - 1)])) {
-          HOT$pred[i] <- k - 3
-        }
-      }
-    }
-
-
-
-    HR <- base::rbind(
-      HOT %>%
+    HR <- tibble::tibble(base::rbind(
+      WS %>%
         dplyr::summarise(
           Group = "All",
           no. = base::sum(base::as.integer(choice == pred)),
           perc. = base::mean(base::as.integer(choice == pred) * 100)
         ) %>%
-        dplyr::mutate(chance = (1 / base::length(opts) * 100)) %>%
-        base::as.data.frame(),
-      HOT %>%
+        dplyr::mutate(chance = (1 / base::length(opts) * 100)),
+      WS %>%
         dplyr::group_by(Group) %>%
         dplyr::summarise(
           no. = base::sum(base::as.integer(choice == pred)),
           perc. = base::mean(base::as.integer(choice == pred) * 100)
         ) %>%
-        dplyr::mutate(chance = (1 / base::length(opts) * 100)) %>%
-        base::as.data.frame()
-    )
+        dplyr::mutate(chance = (1 / base::length(opts) * 100))
+    ))
 
     # fixing grouping variable
 

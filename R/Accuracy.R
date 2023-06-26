@@ -46,6 +46,7 @@
 #' @importFrom dplyr group_by summarise
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
+#' @importFrom tibble tibble
 #'
 #' @return a data frame
 #'
@@ -104,146 +105,50 @@ accuracy <- function(data, id, Group = NULL, opts, choice, None) {
   }
 
   if (!base::is.null(Group) & base::anyNA(data[Group])) {
-    base::warning("Warning: Grouping variable contains NAs.")
+    base::warning("Warning: Grouping variable contains NAs!")
+  }
+
+  if (base::anyNA(data[,opts])) {
+    base::stop("Error: opts contains NAs!")
   }
 
   WS <- data[, c(id, Group, choice, opts)]
 
-  buy <- NULL
-  pred_buy <- NULL
-
   if (base::is.null(Group)) {
-    Options <- c()
+    base::colnames(WS) <- c("id", "choice", paste0("Option_", c(1:base::length(opts))))
+    WS$pred <- base::max.col(WS[,c(base::which(colnames(WS) == "Option_1"):
+                                     base::which(colnames(WS) == paste0("Option_", base::length(opts))))])
 
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Option_", k)
-      Options <- c(Options, name)
-    }
+    WS$buy <- base::ifelse(WS$choice != base::match(None, opts), 1, 2)
+    WS$pred_buy <- base::ifelse(WS$pred != base::match(None, opts), 1, 2)
 
-    newNames <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Opt_", k)
-      newNames <- c(newNames, name)
-    }
-
-    Perc <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Perc_", k)
-      Perc <- c(Perc, name)
-    }
-
-    base::colnames(WS) <- c("id", "choice", Options)
-
-    for (i in 1:base::length(newNames)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[ncol(WS)] <- newNames[i]
-    }
-
-    for (i in 3:(base::ncol(WS) - base::length(opts))) {
-      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
-    }
-
-    for (i in 1:base::length(Perc)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- Perc[i]
-    }
-
-    for (i in (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)])) * 100
-    }
-
-
-    HOT <- WS[, c("id", "choice", Perc)]
-
-    HOT$pred <- 0
-
-    for (i in 1:base::nrow(HOT)) {
-      for (k in 3:(base::ncol(HOT) - 1)) {
-        if (HOT[i, k] == base::max(HOT[i, 3:(base::ncol(HOT) - 1)])) {
-          HOT$pred[i] <- k - 2
-        }
-      }
-    }
-
-
-    HOT$buy <- base::ifelse(HOT$choice != base::match(None, opts), 1, 2)
-    HOT$pred_buy <- base::ifelse(HOT$pred != base::match(None, opts), 1, 2)
-
-    return(HOT %>%
+    return(tibble::tibble(WS %>%
       dplyr::summarise(
-        accuracy = base::round(100 * base::mean(buy == pred_buy), digits = 2)
-      ))
+        accuracy = 100 * base::mean(buy == pred_buy)
+      )))
   }
 
   if (!(base::is.null(Group))) {
-    Options <- c()
 
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Option_", k)
-      Options <- c(Options, name)
-    }
+    base::colnames(WS) <- c("id", "Group", "choice", paste0("Option_", c(1:base::length(opts))))
 
-    newNames <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Opt_", k)
-      newNames <- c(newNames, name)
-    }
+    WS$pred <- base::max.col(WS[,c(base::which(colnames(WS) == "Option_1"):
+                                     base::which(colnames(WS) == paste0("Option_", base::length(opts))))])
 
-    Perc <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Perc_", k)
-      Perc <- c(Perc, name)
-    }
+    WS$buy <- base::ifelse(WS$choice != base::match(None, opts), 1, 2)
+    WS$pred_buy <- base::ifelse(WS$pred != base::match(None, opts), 1, 2)
 
-    base::colnames(WS) <- c("id", "Group", "choice", Options)
-
-    for (i in 1:base::length(newNames)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- newNames[i]
-    }
-
-    for (i in 4:(base::ncol(WS) - base::length(opts))) {
-      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
-    }
-
-    for (i in 1:base::length(Perc)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- Perc[i]
-    }
-
-    for (i in (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)])) * 100
-    }
-
-
-    HOT <- WS[, c("id", "choice", "Group", Perc)]
-
-    HOT$pred <- 0
-
-    for (i in 1:base::nrow(HOT)) {
-      for (k in 4:(base::ncol(HOT) - 1)) {
-        if (HOT[i, k] == base::max(HOT[i, 4:(base::ncol(HOT) - 1)])) {
-          HOT$pred[i] <- k - 3
-        }
-      }
-    }
-
-    HOT$buy <- base::ifelse(HOT$choice != base::match(None, opts), 1, 2)
-    HOT$pred_buy <- base::ifelse(HOT$pred != base::match(None, opts), 1, 2)
-
-    accuracy <- base::rbind(
-      HOT %>%
+    accuracy <- tibble::tibble(base::rbind(
+      WS %>%
         dplyr::summarise(
           Group = "All",
-          accuracy = base::round(100 * base::mean(buy == pred_buy), digits = 2)
-        ) %>%
-        base::as.data.frame(),
-      HOT %>%
+          accuracy = 100 * base::mean(buy == pred_buy)
+        ),
+      WS %>%
         dplyr::group_by(Group) %>%
         dplyr::summarise(
-          accuracy = base::round(100 * base::mean(buy == pred_buy), digits = 2)
-        ) %>%
-        base::as.data.frame()
+          accuracy = 100 * base::mean(buy == pred_buy)
+        ))
     )
 
     # fixing grouping variable

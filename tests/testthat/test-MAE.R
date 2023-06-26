@@ -1,4 +1,3 @@
-library(validateHOT)
 ####################### Test wo Grouping variable ########################################
 
 HOT <- createHOT(
@@ -22,7 +21,7 @@ test_that("Labeling correct", {
 })
 
 test_that("Count of correct predicted people", {
-  expect_equal(base::round(mae(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], digits = 3), 4.933)
+  expect_equal(base::round(as.numeric(mae(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1]), digits = 3), 4.933)
 })
 
 test_that("Wrong format Choice", {
@@ -71,7 +70,6 @@ test_that("mae() also working with data.frame not created with createHOT()", {
 
 
 ####################### Test with Grouping variable ########################################
-
 HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,

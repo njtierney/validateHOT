@@ -1,0 +1,12 @@
+utils::globalVariables(
+  c(
+    ".",
+    "Count",
+    "pred",
+    "buy",
+    "pred_buy",
+    "freq",
+    "reach",
+    "sd"
+  )
+)

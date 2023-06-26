@@ -11,10 +11,11 @@
 #' validation/ holdout task.
 #'
 #' @return a data frame; a list if \code{Group} is specified
-#' @importFrom dplyr group_by summarise
+#' @importFrom dplyr group_by summarise across mutate
 #' @importFrom magrittr "%>%"
 #' @importFrom stats sd
 #' @importFrom labelled is.labelled val_labels
+#' @importFrom tibble tibble
 #'
 #' @details
 #' Share of Preference provides the aggrgated share of each alternative in the
@@ -98,156 +99,101 @@ shareofpref <- function(data, id, Group = NULL, opts) {
 
   WS <- data[, c(id, Group, opts)]
 
-  Count <- sd <- NULL
-
   if (base::is.null(Group)) {
-    Options <- c()
 
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Option_", k)
-      Options <- c(Options, name)
-    }
+    base::colnames(WS) <- c("id", paste0("Option_", c(1:base::length(opts))))
 
-    newNames <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Opt_", k)
-      newNames <- c(newNames, name)
-    }
+    WS <- WS %>%
+      dplyr::mutate(dplyr::across(
+        base::which(base::colnames(WS) == "Option_1"):
+          base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts))),
+        function(x) 100 * (base::exp(x) / base::rowSums(base::exp(WS[, c(
+          base::which(base::colnames(WS) == "Option_1"):
+            base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
+        )])))
+      ))
 
-    Perc <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Perc_", k)
-      Perc <- c(Perc, name)
-    }
+    MW <- base::unname(base::colMeans(WS[, c(
+      base::which(base::colnames(WS) == "Option_1"):
+        base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
+    )]))
 
-    base::colnames(WS) <- c("id", Options)
+    MarketShare <- tibble::tibble(base::data.frame(base::matrix(nrow = length(opts), ncol = 5)),
+                                  .name_repair = ~c("Options", "Mean", "se", "Lower CI", "Upper CI"))
 
-    for (i in 1:base::length(newNames)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- newNames[i]
-    }
-
-    for (i in 2:(base::ncol(WS) - base::length(opts))) {
-      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
-    }
-
-    for (i in 1:base::length(Perc)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- Perc[i]
-    }
-
-    for (i in (base::length(opts) + 2):(base::length(opts) + base::length(opts) + 1)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 2):(base::length(opts) + base::length(opts) + 1)])) * 100
-    }
-
-
-    HOT <- WS[, c("id", Perc)]
-
-
-    MW <- base::unname(base::colMeans(HOT[, c(2:(base::ncol(HOT)))]))
-
-    Options <- c()
-
-    for (i in 2:(base::length(HOT))) {
-      Options <- c(Options, base::paste0("Option ", i - 1))
-    }
-
-    MarketShare <- base::data.frame(base::matrix(nrow = base::length(Options), ncol = 4))
 
     MarketShare[base::is.na(MarketShare)] <- 0
 
-    base::colnames(MarketShare) <- c("Options", "Mean", "Lower CI", "Upper CI")
 
-    MarketShare[, 1] <- Options
+    MarketShare[, 1] <- paste0("Option ", c(1:base::length(opts)))
 
     MarketShare[, 2] <- MW
 
     for (i in 1:base::nrow(MarketShare)) {
       m <- MarketShare[i, 2]
-      s <- stats::sd(HOT[, (i + 1)])
-      n <- base::nrow(HOT)
+      s <- stats::sd(WS[, (i + 1)])
+      n <- base::nrow(WS)
 
       margin <- 1.96 * (s / base::sqrt(n))
 
-      MarketShare[i, 3] <- m - margin
+      MarketShare[i, 3] <- margin
 
-      MarketShare[i, 4] <- m + margin
+      MarketShare[i, 4] <- m - margin
+
+      MarketShare[i, 5] <- m + margin
     }
 
     return(MarketShare)
   }
 
   if (!(base::is.null(Group))) {
-    Options <- c()
+    base::colnames(WS) <- c("id", "Group", paste0("Option_", c(1:base::length(opts))))
 
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Option_", k)
-      Options <- c(Options, name)
-    }
+    WS <- WS %>%
+      dplyr::mutate(dplyr::across(
+        base::which(base::colnames(WS) == "Option_1"):
+          base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts))),
+        function(x) 100 * (base::exp(x) / base::rowSums(base::exp(WS[, c(
+          base::which(base::colnames(WS) == "Option_1"):
+            base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
+        )])))
+      ))
 
-    newNames <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Opt_", k)
-      newNames <- c(newNames, name)
-    }
-
-    Perc <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Perc_", k)
-      Perc <- c(Perc, name)
-    }
-
-    base::colnames(WS) <- c("id", "Group", Options)
-
-    for (i in 1:base::length(newNames)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- newNames[i]
-    }
-
-    for (i in 3:(base::ncol(WS) - base::length(opts))) {
-      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
-    }
-
-    for (i in 1:base::length(Perc)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- Perc[i]
-    }
-
-    for (i in (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)])) * 100
-    }
-
-
-    HOT <- WS[, c("id", "Group", Perc)]
 
     lab <- c()
 
     output <- base::list()
 
-    for (t in 1:base::length(base::unique(HOT$Group))) {
+    for (t in 1:base::length(base::unique(WS$Group))) {
       if (t == 1) {
-        MW <- base::unname(base::colMeans(HOT[, c(3:(base::ncol(HOT)))]))
+        MW <- base::unname(base::colMeans(WS[, c(
+          base::which(base::colnames(WS) == "Option_1"):
+            base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
+        )]))
 
-        MarketShare_ALL <- base::data.frame(base::matrix(nrow = base::length(Options), ncol = 4))
+        MarketShare_ALL <- tibble::tibble(base::data.frame(base::matrix(nrow = length(opts), ncol = 5)),
+                                      .name_repair = ~c("Options", "Mean", "se", "Lower CI", "Upper CI"))
+
 
         MarketShare_ALL[base::is.na(MarketShare_ALL)] <- 0
 
-        base::colnames(MarketShare_ALL) <- c("Options", "Mean", "Lower CI", "Upper CI")
 
-        MarketShare_ALL[, 1] <- Options
+        MarketShare_ALL[, 1] <- paste0("Option ", c(1:base::length(opts)))
 
         MarketShare_ALL[, 2] <- MW
 
         for (all in 1:base::nrow(MarketShare_ALL)) {
           m <- MarketShare_ALL[all, 2]
-          s <- stats::sd(HOT[, (all + 2)])
-          n <- base::nrow(HOT)
+          s <- stats::sd(WS[, (all + 2)])
+          n <- base::nrow(WS)
 
           margin <- 1.96 * (s / base::sqrt(n))
 
-          MarketShare_ALL[all, 3] <- m - margin
+          MarketShare_ALL[all, 3] <- margin
 
-          MarketShare_ALL[all, 4] <- m + margin
+          MarketShare_ALL[all, 4] <- m - margin
+
+          MarketShare_ALL[all, 5] <- m + margin
         }
 
         output[[t]] <- MarketShare_ALL
@@ -261,7 +207,7 @@ shareofpref <- function(data, id, Group = NULL, opts) {
           lab <- c(lab, lab_num[i])
         }
 
-        Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
+        Sub <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[t])
       }
 
       if (base::is.character(WS$Group)) {
@@ -271,7 +217,7 @@ shareofpref <- function(data, id, Group = NULL, opts) {
           lab <- c(lab, lab_char[i])
         }
 
-        Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
+        Sub <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[t])
       }
 
 
@@ -282,7 +228,7 @@ shareofpref <- function(data, id, Group = NULL, opts) {
           lab <- c(lab, base::levels(lab_fac)[i])
         }
 
-        Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
+        Sub <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[t])
       }
 
       if (labelled::is.labelled(WS$Group)) {
@@ -292,24 +238,16 @@ shareofpref <- function(data, id, Group = NULL, opts) {
           lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
         }
 
-        Sub <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[t])
+        Sub <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[t])
       }
 
       MW <- unname(colMeans(Sub[, c(3:(base::ncol(Sub)))]))
 
-      Options <- c()
-
-      for (i in 3:(base::length(Sub))) {
-        Options <- c(Options, base::paste0("Option ", i - 2))
-      }
-
-      MarketShare <- base::data.frame(base::matrix(nrow = base::length(Options), ncol = 4))
-
+      MarketShare <- tibble::tibble(base::data.frame(base::matrix(nrow = length(opts), ncol = 5)),
+                                     .name_repair = ~c("Options", "Mean", "se", "Lower CI", "Upper CI"))
       MarketShare[base::is.na(MarketShare)] <- 0
 
-      base::colnames(MarketShare) <- c("Options", "Mean", "Lower CI", "Upper CI")
-
-      MarketShare[, 1] <- Options
+      MarketShare[, 1] <- paste0("Option ", c(1:base::length(opts)))
 
       MarketShare[, 2] <- MW
 
@@ -320,15 +258,17 @@ shareofpref <- function(data, id, Group = NULL, opts) {
 
         margin <- 1.96 * (s / base::sqrt(n))
 
-        MarketShare[l, 3] <- m - margin
+        MarketShare[l, 3] <- margin
 
-        MarketShare[l, 4] <- m + margin
+        MarketShare[l, 4] <- m - margin
+
+        MarketShare[l, 5] <- m + margin
       }
 
       output[[(t + 1)]] <- MarketShare
 
-      if (t == base::length(base::unique(HOT$Group))) {
-        base::names(output) <- c("All", lab[1:base::length(base::unique(HOT$Group))])
+      if (t == base::length(base::unique(WS$Group))) {
+        base::names(output) <- c("All", lab[1:base::length(base::unique(WS$Group))])
         return(output)
       }
     }

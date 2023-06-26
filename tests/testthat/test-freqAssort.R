@@ -1,5 +1,3 @@
-library(validateHOT)
-
 ####################### Test wo Grouping variable ########################################
 HOT <- createHOT(
   data = MaxDiff, None = 19,
@@ -44,8 +42,8 @@ test_that("Test plausability of results", {
 })
 
 test_that("Make sure test data is correct", {
-  expect_equal(base::round(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")[1, 1], digits = 3), 1.443)
-  expect_equal(base::round(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")[1, 1], digits = 3), 0.700)
+  expect_equal(base::round(as.numeric(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")[1, 1]), digits = 3), 1.443)
+  expect_equal(base::round(as.numeric(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")[1, 1]), digits = 3), 0.700)
 })
 
 

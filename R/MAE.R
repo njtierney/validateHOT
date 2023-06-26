@@ -14,9 +14,10 @@
 #' @param choice vector of column index of the actual choice.
 #'
 #' @return a data frame
-#' @importFrom dplyr group_by summarise
+#' @importFrom dplyr group_by summarise n across mutate
 #' @importFrom magrittr "%>%"
 #' @importFrom labelled is.labelled val_labels
+#' @importFrom tibble tibble
 #'
 #'
 #' @details
@@ -79,85 +80,54 @@ mae <- function(data, id, Group = NULL, opts, choice) {
   }
 
   if (!base::is.null(Group) & base::anyNA(data[Group])) {
-    base::warning("Warning: Grouping variable contains NAs.")
+    base::warning("Warning: Grouping variable contains NAs!")
+  }
+
+  if (base::anyNA(data[,opts])) {
+    base::stop("Error: opts contains NAs!")
+  }
+
+  for (i in 1:length(opts)){
+    if(!base::is.numeric(data[, opts[i]])){
+      base::stop("Error: opts must be numeric!")
+    }
   }
 
   WS <- data[, c(id, Group, choice, opts)]
 
-  Count <- NULL
-
   if (base::is.null(Group)) {
-    Options <- c()
 
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Option_", k)
-      Options <- c(Options, name)
-    }
+    base::colnames(WS) <- c("id", "choice", paste0("Option_", c(1:base::length(opts))))
 
-    newNames <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Opt_", k)
-      newNames <- c(newNames, name)
-    }
-
-    Perc <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Perc_", k)
-      Perc <- c(Perc, name)
-    }
-
-    base::colnames(WS) <- c("id", "choice", Options)
-
-    for (i in 1:base::length(newNames)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- newNames[i]
-    }
-
-    for (i in 3:(base::ncol(WS) - base::length(opts))) {
-      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
-    }
-
-    for (i in 1:base::length(Perc)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- Perc[i]
-    }
-
-    for (i in (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 3):(base::length(opts) + base::length(opts) + 2)])) * 100
-    }
+    WS <- WS %>%
+      dplyr::mutate(dplyr::across(
+        base::which(base::colnames(WS) == "Option_1"):
+          base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts))),
+        function(x) 100 * (base::exp(x) / base::rowSums(base::exp(WS[, c(
+          base::which(base::colnames(WS) == "Option_1"):
+            base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
+        )])))
+      ),
+      pred = base::max.col(WS[,c(base::which(colnames(WS) == "Option_1"):
+                                   base::which(colnames(WS) == paste0("Option_", base::length(opts))))]))
 
 
-    HOT <- WS[, c("id", "choice", Perc)]
+    Helper <- tibble::tibble(Options = c(1:base::length(opts)))
 
-    HOT$pred <- 0
-
-    for (i in 1:base::nrow(HOT)) {
-      for (k in 3:(base::ncol(HOT) - 1)) {
-        if (HOT[i, k] == base::max(HOT[i, 3:(base::ncol(HOT) - 1)])) {
-          HOT$pred[i] <- k - 2
-        }
-      }
-    }
-
-    Helper <- base::as.data.frame(base::matrix(nrow = base::length(3:(base::ncol(HOT) - 1)), ncol = 1))
-
-    base::colnames(Helper) <- "Options"
-
-    Helper$Options <- c(1:base::length(3:(base::ncol(HOT) - 1)))
-
-    Actual <- HOT %>%
+    Actual <- tibble::tibble(WS %>%
       dplyr::group_by(choice) %>%
       dplyr::summarise(Count = dplyr::n()) %>%
       dplyr::ungroup() %>%
-      dplyr::mutate(Share = Count / base::sum(Count) * 100) %>%
-      base::as.data.frame()
+      dplyr::mutate(Share = Count / base::sum(Count) * 100)
+      )
 
-    Predicted <- base::data.frame(base::cbind(
-      c(1:base::length(3:(base::ncol(HOT) - 1))),
-      c(base::unname(base::colMeans(HOT[, c(3:(base::ncol(HOT) - 1))])))
-    ))
-
-    base::colnames(Predicted) <- c("Options", "Pred")
+    Predicted <- tibble::tibble(base::cbind(
+      tibble::tibble(c(1:base::length(opts))),
+      tibble::tibble(c(base::unname(base::colMeans(WS[,
+                                       c(base::which(colnames(WS) == "Option_1"):
+                                           base::which(colnames(WS) == paste0("Option_", base::length(opts))))])))
+    )), .name_repair = ~ c("Options", "Pred")
+    )
 
     MAE <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
@@ -165,88 +135,49 @@ mae <- function(data, id, Group = NULL, opts, choice) {
 
     MAE[base::is.na(MAE)] <- 0
 
-    MeanAbsErr <- base::as.data.frame(base::sum(base::abs(MAE$Share - MAE$Pred)) / base::length(opts))
+    MeanAbsErr <- tibble::tibble(base::sum(base::abs(MAE$Share - MAE$Pred)) / base::length(opts),
+                                 .name_repair = ~ "MAE")
 
-    base::colnames(MeanAbsErr) <- "MAE"
     return(MeanAbsErr)
   }
 
   if (!(base::is.null(Group))) {
-    Options <- c()
+    base::colnames(WS) <- c("id", "Group", "choice", paste0("Option_", c(1:base::length(opts))))
 
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Option_", k)
-      Options <- c(Options, name)
-    }
-
-    newNames <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Opt_", k)
-      newNames <- c(newNames, name)
-    }
-
-    Perc <- c()
-    for (k in 1:base::length(opts)) {
-      name <- base::paste0("Perc_", k)
-      Perc <- c(Perc, name)
-    }
-
-    base::colnames(WS) <- c("id", "Group", "choice", Options)
-
-    for (i in 1:base::length(newNames)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- newNames[i]
-    }
-
-    for (i in 4:(base::ncol(WS) - base::length(opts))) {
-      WS[, (base::length(opts) + i)] <- base::exp(WS[i])
-    }
-
-    for (i in 1:base::length(Perc)) {
-      WS[, base::ncol(WS) + 1] <- 0
-      base::colnames(WS)[base::ncol(WS)] <- Perc[i]
-    }
-
-    for (i in (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)) {
-      WS[, (base::length(opts) + i)] <- (WS[i] / base::rowSums(WS[, (base::length(opts) + 4):(base::length(opts) + base::length(opts) + 3)])) * 100
-    }
+    WS <- WS %>%
+      dplyr::mutate(dplyr::across(
+        base::which(base::colnames(WS) == "Option_1"):
+          base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts))),
+        function(x) 100 * (base::exp(x) / base::rowSums(base::exp(WS[, c(
+          base::which(base::colnames(WS) == "Option_1"):
+            base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
+        )])))
+      ),
+      pred = base::max.col(WS[,c(base::which(colnames(WS) == "Option_1"):
+                                   base::which(colnames(WS) == paste0("Option_", base::length(opts))))]))
 
 
-    HOT <- WS[, c("id", "choice", "Group", Perc)]
+    MAE <- tibble::tibble(Group = base::character(base::length(base::unique(WS$Group)) + 1), MAE = base::numeric(base::length(base::unique(WS$Group)) + 1))
 
-    HOT$pred <- 0
-
-    for (i in 1:base::nrow(HOT)) {
-      for (k in 4:(base::ncol(HOT) - 1)) {
-        if (HOT[i, k] == base::max(HOT[i, 4:(base::ncol(HOT) - 1)])) {
-          HOT$pred[i] <- k - 3
-        }
-      }
-    }
-
-    MAE <- base::data.frame(Group = base::character(base::length(base::unique(HOT$Group)) + 1), MAE = base::numeric(base::length(base::unique(HOT$Group)) + 1))
-
-    for (p in 1:base::length(base::unique(HOT$Group))) {
+    for (p in 1:base::length(base::unique(WS$Group))) {
       if (p == 1) {
-        Helper <- base::as.data.frame(base::matrix(nrow = base::length(4:(base::ncol(HOT) - 1)), ncol = 1))
 
-        base::colnames(Helper) <- "Options"
+        Helper <- tibble::tibble(Options = c(1:base::length(opts)))
 
-        Helper$Options <- c(1:base::length(4:(base::ncol(HOT) - 1)))
-
-        Actual <- HOT %>%
+        Actual <- tibble::tibble(
+          WS %>%
           dplyr::group_by(choice) %>%
           dplyr::summarise(Count = dplyr::n()) %>%
           dplyr::ungroup() %>%
-          dplyr::mutate(Share = Count / sum(Count) * 100) %>%
-          base::as.data.frame()
+          dplyr::mutate(Share = Count / sum(Count) * 100))
 
-        Predicted <- base::data.frame(base::cbind(
-          c(1:base::length(4:(base::ncol(HOT) - 1))),
-          c(base::unname(base::colMeans(HOT[, c(4:(base::ncol(HOT) - 1))])))
-        ))
-
-        base::colnames(Predicted) <- c("Options", "Pred")
+        Predicted <- tibble::tibble(base::cbind(
+          tibble::tibble(c(1:base::length(opts))),
+          tibble::tibble(c(base::unname(base::colMeans(WS[,
+                                                          c(base::which(colnames(WS) == "Option_1"):
+                                                              base::which(colnames(WS) == paste0("Option_", base::length(opts))))])))
+          )), .name_repair = ~ c("Options", "Pred")
+        )
 
         DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
@@ -269,7 +200,7 @@ mae <- function(data, id, Group = NULL, opts, choice) {
           lab <- c(lab, lab_num[i])
         }
 
-        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+        Group <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[p])
       }
 
       if (base::is.character(WS$Group)) {
@@ -280,7 +211,7 @@ mae <- function(data, id, Group = NULL, opts, choice) {
           lab <- c(lab, lab_char[i])
         }
 
-        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+        Group <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[p])
       }
 
       if (base::is.character(WS$Group)) {
@@ -291,7 +222,7 @@ mae <- function(data, id, Group = NULL, opts, choice) {
           lab <- c(lab, lab_char[i])
         }
 
-        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+        Group <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[p])
       }
 
       if (base::is.factor(WS$Group)) {
@@ -302,7 +233,7 @@ mae <- function(data, id, Group = NULL, opts, choice) {
           lab <- c(lab, base::levels(lab_fac)[i])
         }
 
-        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+        Group <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[p])
       }
 
       if (labelled::is.labelled(WS$Group)) {
@@ -313,29 +244,27 @@ mae <- function(data, id, Group = NULL, opts, choice) {
           lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
         }
 
-        Group <- base::subset(HOT, Group == base::sort(base::unique(WS$Group))[p])
+        Group <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[p])
       }
 
-      Helper <- base::as.data.frame(base::matrix(nrow = base::length(4:(base::ncol(Group) - 1)), ncol = 1))
+      Helper <- tibble::tibble(Options = c(1:base::length(opts)))
 
-      base::colnames(Helper) <- "Options"
-
-      Helper$Options <- c(1:base::length(4:(base::ncol(HOT) - 1)))
-
-
-      Actual <- Group %>%
+      Actual <- tibble::tibble(
+        Group %>%
         dplyr::group_by(choice) %>%
         dplyr::summarise(Count = dplyr::n()) %>%
         dplyr::ungroup() %>%
-        dplyr::mutate(Share = Count / base::sum(Count) * 100) %>%
-        base::as.data.frame()
+        dplyr::mutate(Share = Count / base::sum(Count) * 100)
+      )
 
-      Predicted <- base::data.frame(base::cbind(
-        c(1:base::length(4:(base::ncol(Group) - 1))),
-        c(base::unname(base::colMeans(Group[, c(4:(base::ncol(Group) - 1))])))
-      ))
+      Predicted <- tibble::tibble(base::cbind(
+        tibble::tibble(c(1:base::length(opts))),
+        tibble::tibble(c(base::unname(base::colMeans(Group[,
+                                                        c(base::which(colnames(Group) == "Option_1"):
+                                                            base::which(colnames(Group) == paste0("Option_", base::length(opts))))])))
+        )), .name_repair = ~ c("Options", "Pred")
+      )
 
-      base::colnames(Predicted) <- c("Options", "Pred")
 
       DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
 
@@ -349,7 +278,7 @@ mae <- function(data, id, Group = NULL, opts, choice) {
 
       base::rm(Helper, Actual, Predicted, DataFrame)
 
-      if (p == base::max(base::length(base::unique(HOT$Group)))) {
+      if (p == base::max(base::length(base::unique(WS$Group)))) {
         return(MAE)
       }
     }

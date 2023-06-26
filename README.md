@@ -72,7 +72,7 @@ choice distribution (Ding et al., 2011; Drost, 2018). Output provides
 both divergence between predicted from observed and observed from
 predicted due to the asymmetry of the Kullback-Leibler divergence. If
 you specify an optional <code>Group</code> argument the output is split
-by groups.
+by groups. Currently, you can choose between and as logarithm base.
 </li>
 <li>
 <code>mae</code>: average absolute error, i.e., deviation between
@@ -323,10 +323,12 @@ index of the choice. We can see that the hitrate of our example is
 
 ``` r
 hitrate(data = HOT, id = 1, opts = c(2:5), choice = 6)
-#>         hitrate
-#> chance 25.00000
-#> no.    38.00000
-#> %      48.10127
+#> # A tibble: 3 × 2
+#>   name   stats
+#>   <chr>  <dbl>
+#> 1 chance  25  
+#> 2 no.     38  
+#> 3 %       48.1
 ```
 
 Let us also check the magnitude of the mean absolute error by running
@@ -334,8 +336,10 @@ the <code>mae()</code> function.
 
 ``` r
 mae(data = HOT, id = 1, opts = c(2:5), choice = 6)
-#>        MAE
-#> 1 13.14269
+#> # A tibble: 1 × 1
+#>     MAE
+#>   <dbl>
+#> 1  13.1
 ```
 
 To cover also one example on how to use the metrics of the confusion
@@ -347,8 +351,10 @@ running the <code>accuracy()</code> function.
 
 ``` r
 accuracy(data = HOT, id = 1, opts = c(2:5), None = 5, choice = 6)
+#> # A tibble: 1 × 1
 #>   accuracy
-#> 1    93.67
+#>      <dbl>
+#> 1     93.7
 ```
 
 Finally, let us test, how many participants would at least buy one of
@@ -360,8 +366,10 @@ our function.
 
 ``` r
 reach(data = HOT, id = 1, bundles = c(2:4), None = 5, method = "threshold")
-#>      reach
-#> 1 88.60759
+#> # A tibble: 1 × 1
+#>   reach
+#>   <dbl>
+#> 1  88.6
 ```
 
 ### Example II - CBC with linear coding
@@ -440,11 +448,13 @@ argument.
 
 ``` r
 hitrate(data = CBC, id = 1, opts = c(2:5), Group = 6, choice = 7)
-#>   Group no.    perc. chance
-#> 1   All  40 50.63291     25
-#> 2     1  13 59.09091     25
-#> 3     2  10 37.03704     25
-#> 4     3  17 56.66667     25
+#> # A tibble: 4 × 4
+#>   Group   no. perc. chance
+#>   <chr> <int> <dbl>  <dbl>
+#> 1 All      40  50.6     25
+#> 2 1        13  59.1     25
+#> 3 2        10  37.0     25
+#> 4 3        17  56.7     25
 ```
 
 In this case, the Grouping variable is just an integer. However, the
@@ -464,11 +474,13 @@ Afterward, we display the *mean hit probability* by running the
 
 ``` r
 mhp(data = CBC, id = 1, opts = c(2:5), Group = 6, choice = 7)
-#>     Group MeanHitProb
-#> 1     All    43.07061
-#> 2 Group_1    41.66293
-#> 3 Group_2    38.95577
-#> 4 Group_3    47.80627
+#> # A tibble: 4 × 2
+#>   Group   MeanHitProb
+#>   <chr>         <dbl>
+#> 1 All            43.1
+#> 2 Group_1        41.7
+#> 3 Group_2        39.0
+#> 4 Group_3        47.8
 ```
 
 For more examples, please see the accompanied vignette.

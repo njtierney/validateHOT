@@ -1,6 +1,4 @@
-library(validateHOT)
 ####################### Test wo Grouping variable ########################################
-
 HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,
@@ -14,32 +12,31 @@ test_that("Structure of Output", {
 
 test_that("Structure of Output", {
   expect_equal(base::nrow(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)), 3)
-  expect_equal(base::ncol(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)), 1)
+  expect_equal(base::ncol(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)), 2)
 })
 
 test_that("Labeling correct", {
-  expect_equal(base::row.names(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)), c("chance", "no.", "%"))
-  expect_equal(base::colnames(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)), "hitrate")
+  expect_equal(base::colnames(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)), c("name", "stats"))
 })
 
 
 
 test_that("Chance Level correct", {
-  expect_equal(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1], (1 / 8 * 100))
+  expect_equal(as.numeric(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 2]), (1 / 8 * 100))
 })
 
 test_that("Count of correct predicted people", {
-  expect_equal(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 1], 39)
+  expect_equal(as.numeric(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 2]), 39)
 })
 
 test_that("Test plausability of results", {
-  expect_true(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] <= 100 & hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 1] >= 0)
-  expect_true(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 1] <= base::nrow(HOT))
-  expect_true(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1] <= 100 & hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1] >= 0)
+  expect_true(as.numeric(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 2]) <= 100 & as.numeric(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[1, 2]) >= 0)
+  expect_true(as.numeric(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 2]) <= base::nrow(HOT))
+  expect_true(as.numeric(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 2]) <= 100 & as.numeric(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 2]) >= 0)
 })
 
 test_that("Hit Rate % correct", {
-  expect_equal(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 1], (hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 1] / base::nrow(HOT) * 100))
+  expect_equal(as.numeric(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[3, 2]), as.numeric((hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)[2, 2]) / base::nrow(HOT) * 100))
 })
 
 test_that("Wrong format Choice", {
@@ -77,8 +74,8 @@ test_that("hitrate() also working with data.frame not created with createHOT()",
   )
 
   expect_equal(base::nrow(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 3)
-  expect_equal(base::ncol(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 1)
-  expect_equal(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6)[1, 1], (1 / (base::length(newHOT) - 2) * 100))
+  expect_equal(base::ncol(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6)), 2)
+  expect_equal(as.numeric(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6)[1, 2]), (1 / (base::length(newHOT) - 2) * 100))
 
   expect_false(base::anyNA(hitrate(data = newHOT, id = 1, opts = c(2:5), choice = 6)))
 })
@@ -122,7 +119,7 @@ test_that("Chance Level correct", {
 })
 
 test_that("Count of correct predicted people", {
-  expect_equal(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)[1, 2], 39)
+  expect_equal(as.numeric(hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)[1, 2]), 39)
 })
 
 test_that("Test plausability of results", {

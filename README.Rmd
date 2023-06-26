@@ -87,7 +87,7 @@ choice distribution (Ding et al., 2011; Drost, 2018). Output provides both
 divergence between predicted from observed and observed from predicted
 due to the asymmetry of the Kullback-Leibler divergence. If you specify
 an optional <code>Group</code> argument the output is split by
-groups.</li>
+groups. Currently, you can choose between \eqn{log{_2}} and \eqn{log} as logarithm base.</li>
 
 <li><code>mae</code>: average absolute error, i.e., deviation between
 predicted and stated choice share. If you specify an optional
@@ -284,7 +284,7 @@ Let us take a glimpse at the output, which shows the total raw utilities for eac
 head(HOT)
 ```
 
-In the next step, we would like to see how well our model (from which we took the raw utilities) predict the choices in the validation/ holdout task. First, we will test the <code>hitrate()</code> function. We specify the <code>data</code>, the column index of <code>id</code>, the column index of the alternatives (<code>opts</code>; remember we have three alternatives + the *no-buy* alternative), and finally the column index of the choice. We can see that the hitrate of our example is `r round(hitrate(data = HOT, id = 1, opts = c(2:5), choice = 6)[3, 1], digits  = 3)`.
+In the next step, we would like to see how well our model (from which we took the raw utilities) predict the choices in the validation/ holdout task. First, we will test the <code>hitrate()</code> function. We specify the <code>data</code>, the column index of <code>id</code>, the column index of the alternatives (<code>opts</code>; remember we have three alternatives + the *no-buy* alternative), and finally the column index of the choice. We can see that the hitrate of our example is `r round(as.numeric(hitrate(data = HOT, id = 1, opts = c(2:5), choice = 6)[3, 2]), digits  = 3)`.
 
 ```{r}
 hitrate(data = HOT, id = 1, opts = c(2:5), choice = 6)
