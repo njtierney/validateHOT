@@ -4,27 +4,25 @@
 \alias{kl}
 \title{Kullback-Leibler Divergence}
 \usage{
-kl(data, id, Group = NULL, opts, choice, epsilon = NULL, basis)
+kl(data, group, opts, choice, epsilon = NULL, basis)
 }
 \arguments{
-\item{data}{data frame with all relevant variables.}
+\item{data}{data frame with all relevant variables}
 
-\item{id}{vector of column index of unique identifier in \code{data}.}
+\item{group}{optional column name(s) to specify grouping variable(s)
+to get \code{"kl"} by group(s)}
 
-\item{Group}{optional vector of column number to specify grouping variable
-to get \code{"kl"} by group.}
+\item{opts}{column names of the alternatives included in the
+validation/holdout task}
 
-\item{opts}{vector of column indexes of the alternatives included in the
-validation/holdout task.}
-
-\item{choice}{vector of column index of the actual choice.}
+\item{choice}{column name of the actual choice}
 
 \item{epsilon}{vector of noise that should be added to 0 values, per default set to 1e-05}
 
 \item{basis}{character string to define the logarithm base, currently can choose between \code{log} and \code{log2}}
 }
 \value{
-a data frame
+a tibble
 }
 \description{
 Function to measure the Kullback-Leibler Divergence of a validation task
@@ -41,21 +39,18 @@ Due to the asymmetry of the Kullback-Leibler divergence, output provides both
 \code{data} needs to be a data frame including the alternatives shown in
 the validation/holdout task. Can be created using the \code{createHOT()} function.
 
-\code{id} needs to be the column index of the id (unique for each participant)
-in \code{data}.
-
-\code{Group} optional Grouping variable, if results should be display by different conditions.
-Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+\code{group} optional Grouping variable, if results should be display by different groups.
+Needs to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the validation/holdout
-task (also includes the None option).
-Input of \code{opts} needs to be a vector with column index(es).
+task (also includes the \code{none} alternative).
+Input of \code{opts} needs to be column names of variables in \code{data}.
 
-\code{choice} specifies the column index of the actual choice.
-Input of opts \code{choice} needs to be the column index of actual choice.
+\code{choice} to specify column of actual choice.
+Input of opts \code{choice} needs to be column name of actual choice.
 
 \code{epsilon} needs to be a numeric input in case of 0 in the numerator or denominator. 0
-then will be replaced by \code{epsilon}. Default value is \code{epsilon = .1e-5}, however, can
+then will be replaced by \code{epsilon}. Default value is \code{epsilon = 1e-5}, however, can
 be adopted.
 
 \code{basis} needs to be a character string, deciding which logarithm base you want to apply
@@ -70,25 +65,21 @@ HOT <- createHOT(
   prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",
-  choice = 20
+  choice = 20, varskeep = 21
 )
 
-kl(data = HOT, id = 1, opts = c(2:9), choice = 10, basis = "log2")
-}
+# kl ungrouped - log
+kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log")
 
-\dontrun{
-HOT <- createHOT(
-  data = MaxDiff,
-  id = 1,
-  None = 19,
-  prod = 7,
-  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-  method = "MaxDiff",
-  varskeep = 21,
-  choice = 20
-)
+# kl ungrouped - log2
+kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2")
 
-kl(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10, basis = "log2")
+# kl grouped - log + specifying epsilon
+kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log", +
+ group = Group, epsilon = 1e-8)
+
+# kl grouped - log2
+kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2", group = Group)
 }
 
 }
@@ -99,7 +90,6 @@ Ding, Min, John R. Hauser, Songting Dong, Daria Dzyabura, Zhilin Yang, SU Chenti
 Unstructured Direct Elicitation of Decision Rules. \emph{Journal of Marketing Research 48}(1): 116-27. \verb{https://doi.org/10.1509/jmkr.48.1.116}.
 
 Drost, Hajk-Georg. (2018). Philentropy: Information Theory and Distance Quantification with R. \emph{Journal of Open Source Software 3}(26), 765, \verb{https://joss.theoj.org/papers/10.21105/joss.00765}.
-
 
 }
 }

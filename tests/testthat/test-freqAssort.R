@@ -1,98 +1,3 @@
-####################### Test wo Grouping variable ########################################
-HOT <- createHOT(
-  data = MaxDiff, None = 19,
-  id = 1, prod = 7,
-  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-  choice = 20, method = "MaxDiff"
-)
-
-test_that("Columns needs to be numeric", {
-  HOT2 <- HOT
-  HOT2$Option_2 <- as.character(HOT2$Option_2)
-  expect_error(freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold"))
-  expect_error(freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold"))
-})
-
-test_that("Structure of Output", {
-  expect_true(base::is.data.frame(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")))
-  expect_true(base::is.data.frame(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")))
-})
-
-test_that("Right method", {
-  expect_error(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "test"))
-})
-
-test_that("Structure of Output", {
-  expect_equal(base::nrow(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")), 1)
-  expect_equal(base::ncol(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")), 1)
-
-  expect_equal(base::nrow(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")), 1)
-  expect_equal(base::ncol(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")), 1)
-})
-
-test_that("Labeling correct", {
-  expect_equal(base::colnames(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")), "Frequency")
-  expect_equal(base::colnames(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")), "Frequency")
-})
-
-
-test_that("Test plausability of results", {
-  expect_true(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")[1, 1] <= 3)
-  expect_true(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")[1, 1] <= 1)
-})
-
-test_that("Make sure test data is correct", {
-  expect_equal(base::round(as.numeric(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")[1, 1]), digits = 3), 1.443)
-  expect_equal(base::round(as.numeric(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")[1, 1]), digits = 3), 0.700)
-})
-
-
-test_that("Wrong format Option", {
-  names <- base::colnames(HOT)[c(2:9)]
-
-  for (i in 1:base::length(names)) {
-    expect_true(base::is.numeric(HOT[[names[i]]]))
-  }
-})
-
-test_that("Missings", {
-  HOT2 <- HOT
-  HOT2[1, 2] <- NA
-  expect_error(freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold"))
-  expect_error(freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice"))
-})
-
-test_that("No missings in output", {
-  expect_false(base::anyNA(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")))
-  expect_false(base::anyNA(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")))
-})
-
-test_that("freqassort() also working with data.frame not created with createHOT()", {
-  base::set.seed(2023)
-
-  newHOT <- base::data.frame(
-    ID = c(1:10),
-    Option_1 = stats::runif(10, min = -5, max = 5),
-    Option_2 = stats::runif(10, min = -5, max = 5),
-    Option_3 = stats::runif(10, min = -5, max = 5),
-    Option_4 = stats::runif(10, min = -5, max = 5),
-    Option_5 = stats::runif(10, min = -5, max = 5),
-    Choice = base::sample(c(1:5), 10, replace = T)
-  )
-
-  expect_equal(base::nrow(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, method = "threshold")), 1)
-  expect_equal(base::ncol(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, method = "threshold")), 1)
-
-  expect_false(base::anyNA(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, method = "threshold")))
-
-  expect_equal(base::nrow(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, method = "First Choice")), 1)
-  expect_equal(base::ncol(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, method = "First Choice")), 1)
-
-  expect_false(base::anyNA(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, method = "First Choice")))
-})
-
-####################### Test with Grouping variable ########################################
-
 HOT <- createHOT(
   data = MaxDiff, None = 19,
   id = 1, prod = 7,
@@ -100,175 +5,139 @@ HOT <- createHOT(
   choice = 20, method = "MaxDiff", varskeep = 21
 )
 
-test_that("Structure of Output", {
-  expect_true(base::is.data.frame(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold")))
-  expect_true(base::is.data.frame(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice")))
+test_that("Error if none is missing", {
+  expect_error(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6)))
 })
 
-test_that("Structure of Output", {
-  expect_equal(base::nrow(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold")), (base::length(base::unique(HOT$Group)) + 1))
-  expect_equal(base::ncol(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold")), 2)
-
-  expect_equal(base::nrow(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice")), (base::length(base::unique(HOT$Group)) + 1))
-  expect_equal(base::ncol(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice")), 2)
+test_that("Error if opts is missing", {
+  expect_error(freqassort(data = HOT, none = None))
 })
 
-test_that("Expect warning if Grouping variable has NAs", {
+test_that("Error if none is part of opts", {
+  expect_error(freqassort(data = HOT, opts = c(Option_1:None), none = None))
+})
+
+test_that("Warning if group contains NA ", {
+
   HOT2 <- HOT
-  HOT2$Group[c(10, 20, 30)] <- NA
-  expect_warning(freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold"))
-  expect_warning(freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice"))
+
+  HOT2$Group[34] <- NA
+
+  expect_warning(freqassort(data = HOT2, opts = c(Option_1, Option_2, Option_6), none = None, group = Group))
 })
 
-test_that("Labeling correct", {
-  expect_equal(base::colnames(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold")), c("Group", "Frequency"))
-  expect_equal(base::colnames(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice")), c("Group", "Frequency"))
-})
+test_that("Error if alternatives contains NA ", {
 
-
-test_that("Test plausability of results", {
-  Results <- freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold")
-
-  for (i in 1:base::nrow(Results)) {
-    expect_true(Results[i, 2] <= 3)
-  }
-
-  Results <- freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice")
-
-  for (i in 1:base::nrow(Results)) {
-    expect_true(Results[i, 2] <= 1)
-  }
-})
-
-
-test_that("Wrong format Option", {
-  names <- base::colnames(HOT)[c(2:9)]
-
-  for (i in 1:base::length(names)) {
-    expect_true(base::is.numeric(HOT[[names[i]]]))
-  }
-})
-
-test_that("Missings", {
   HOT2 <- HOT
-  HOT2[1, 2] <- NA
-  expect_error(freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold"))
-  expect_error(freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice"))
+
+  HOT2$Option_2[34] <- NA
+
+  expect_error(freqassort(data = HOT2, opts = c(Option_1, Option_2, Option_6), none = None, group = Group))
 })
 
-test_that("No missings in output", {
-  expect_false(base::anyNA(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold")))
-  expect_false(base::anyNA(freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice")))
+test_that("Error if alternatives is not numeric ", {
+
+  HOT2 <- HOT
+
+  HOT2$Option_2 <-base::as.character(HOT2$Option_2)
+
+  expect_error(freqassort(data = HOT2, opts = c(Option_1, Option_2, Option_6), none = None, group = Group))
+})
+
+
+test_that("Error if none contains NA ", {
+
+  HOT2 <- HOT
+
+  HOT2$None[34] <- NA
+
+  expect_error(freqassort(data = HOT2, opts = c(Option_1, Option_2, Option_6), none = None, group = Group))
+})
+
+test_that("Error if none is not numeric ", {
+
+  HOT2 <- HOT
+
+  HOT2$None <- base::as.character(HOT2$None)
+
+  expect_error(freqassort(data = HOT2, opts = c(Option_1, Option_2, Option_6), none = None, group = Group))
+})
+
+
+test_that("Structure of Output data.frame ", {
+  expect_true(base::is.data.frame(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None)))
+})
+
+test_that("Structure of Output tibble ", {
+  expect_true(tibble::is_tibble(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None)))
+})
+
+test_that("Length of output equals number of groups - no group ", {
+  expect_equal(base::nrow(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None)), 1)
+})
+
+test_that("Length of output equals number of groups - 1 group ", {
+  expect_equal(base::nrow(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group)), base::length(base::unique(HOT$Group)))
+})
+
+test_that("Length of output equals number of groups - 2 group ", {
+  HOT$Group2 <- c("Group 1", "Group 2")
+  expect_equal(base::nrow(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = c(Group, Group2))), (base::length(base::unique(HOT$Group)) * base::length(base::unique(HOT$Group2))))
+})
+
+test_that("Numeric output - no group ", {
+  expect_true(base::is.numeric(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None)[[1]]))
+})
+
+test_that("Numeric output - 1 group ", {
+  expect_true(base::is.numeric(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group)[[2]]))
+})
+
+test_that("group output equals group input ", {
+  expect_equal(utils::str(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group)[[1]]), utils::str(HOT$Group))
+})
+
+test_that("group output equals group input - character input ", {
+  HOT$Group2 <- c("Group 1", "Group 2")
+  expect_equal(utils::str(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group2)[[1]]), utils::str(HOT$Group2))
+})
+
+test_that("group output equals group input - labelled input ", {
+  HOT$Group2 <- c(1:2)
+  HOT$Group2 <- labelled::labelled(HOT$Group2,
+                                   labels = c("Group 1" = 1, "Group 2" = 2)
+  )
+  expect_true(labelled::is.labelled(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group2)[[1]]))
+})
+
+test_that("group output equals group input - multiple grouping variables ", {
+  HOT$Group2 <- c(1:2)
+  HOT$Group2 <- labelled::labelled(HOT$Group2,
+                                   labels = c("Group 1" = 1, "Group 2" = 2)
+  )
+  expect_equal(utils::str(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = c(Group, Group2))[[1]]), utils::str(HOT$Group))
+  expect_true(labelled::is.labelled(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = c(Group, Group2))[[2]]))
+  expect_true(base::is.numeric(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = c(Group, Group2))[[3]]))
 })
 
 test_that("freqassort() also working with data.frame not created with createHOT()", {
   base::set.seed(2023)
 
   newHOT <- base::data.frame(
-    ID = c(1:10),
     Option_1 = stats::runif(10, min = -5, max = 5),
     Option_2 = stats::runif(10, min = -5, max = 5),
     Option_3 = stats::runif(10, min = -5, max = 5),
     Option_4 = stats::runif(10, min = -5, max = 5),
     Option_5 = stats::runif(10, min = -5, max = 5),
-    Choice = base::sample(c(1:5), 10, replace = T),
-    Group = base::sample(c(1, 2), 10, replace = T)
+    Choice = base::sample(c(1:5), 10, replace = T)
   )
-
-  expect_equal(base::nrow(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, Group = 8, method = "threshold")), (base::length(base::unique(newHOT$Group)) + 1))
-  expect_equal(base::ncol(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, Group = 8, method = "threshold")), 2)
-
-  expect_false(base::anyNA(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, Group = 8, method = "threshold")))
-
-  expect_equal(base::nrow(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, Group = 8, method = "First Choice")), (base::length(base::unique(newHOT$Group)) + 1))
-  expect_equal(base::ncol(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, Group = 8, method = "First Choice")), 2)
-
-  expect_false(base::anyNA(freqassort(data = newHOT, id = 1, bundles = c(2, 3, 5), None = 6, Group = 8, method = "First Choice")))
+  expect_true(base::is.numeric(freqassort(data = newHOT, opts = c(Option_1:Option_4), none = Option_5)[[1]]))
+  expect_true(tibble::is_tibble(freqassort(data = newHOT, opts = c(Option_1:Option_4), none = Option_5)))
+  expect_false(base::anyNA(freqassort(data = newHOT, opts = c(Option_1:Option_4), none = Option_5)))
 })
 
-test_that("Right labels of 'Group' variable", {
-  # Factor
+test_that("check whether examples are correct ", {
+  expect_equal(base::round(base::as.numeric(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None)), 2), 1.44)
+  expect_equal(base::round(base::as.numeric(freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group)[[2]]), 2), c(1.83, 1.24, 1.27))
 
-  HOT2 <- HOT
-
-  ## change 'Group' to factor
-
-  HOT2$Group <- base::factor(HOT2$Group,
-    levels = c(1:3),
-    labels = c("Group 1", "Group 2", "Group 3")
-  )
-
-  lev <- c(base::levels(HOT2$Group))
-
-  Results <- freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold")
-
-
-  expect_true(Results$Group[1] == "All")
-  expect_true(Results$Group[2] == lev[1])
-  expect_true(Results$Group[3] == lev[2])
-  expect_true(Results$Group[4] == lev[3])
-
-  Results <- freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice")
-
-
-  expect_true(Results$Group[1] == "All")
-  expect_true(Results$Group[2] == lev[1])
-  expect_true(Results$Group[3] == lev[2])
-  expect_true(Results$Group[4] == lev[3])
-
-
-
-  # Labelled data
-
-  HOT2 <- HOT
-
-  ## change 'Group' to labelled data
-  HOT2$Group <- labelled::labelled(HOT2$Group,
-    labels = c("Group 1" = 1, "Group 2" = 2, "Group 3" = 3)
-  )
-  labelled::val_labels(HOT2$Group, prefixed = T)
-
-  lev <- c(base::names(labelled::val_labels(HOT2$Group)))
-
-  Results <- freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold")
-
-
-  expect_true(Results$Group[1] == "All")
-  expect_true(Results$Group[2] == lev[1])
-  expect_true(Results$Group[3] == lev[2])
-  expect_true(Results$Group[4] == lev[3])
-
-  Results <- freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice")
-
-
-  expect_true(Results$Group[1] == "All")
-  expect_true(Results$Group[2] == lev[1])
-  expect_true(Results$Group[3] == lev[2])
-  expect_true(Results$Group[4] == lev[3])
-
-
-  # character
-  HOT2 <- HOT
-
-  ## change 'Group' to character
-  HOT2$Group <- base::as.character(HOT2$Group)
-
-  lev <- c(base::sort(base::unique(HOT2$Group)))
-
-  Results <- freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "threshold")
-
-
-  expect_true(Results$Group[1] == "All")
-  expect_true(Results$Group[2] == lev[1])
-  expect_true(Results$Group[3] == lev[2])
-  expect_true(Results$Group[4] == lev[3])
-
-  Results <- freqassort(data = HOT2, id = 1, bundles = c(2, 3, 7), None = 9, Group = 10, method = "First Choice")
-
-
-  expect_true(Results$Group[1] == "All")
-  expect_true(Results$Group[2] == lev[1])
-  expect_true(Results$Group[3] == lev[2])
-  expect_true(Results$Group[4] == lev[3])
 })
-

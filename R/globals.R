@@ -1,12 +1,17 @@
 utils::globalVariables(
   c(
     ".",
-    "Count",
-    "pred",
+    "MAE",
+    "MEDAE",
+    "RMSE",
+    "alt",
     "buy",
-    "pred_buy",
+    "chosen",
     "freq",
-    "reach",
-    "sd"
+    "merger",
+    "mw",
+    "pred",
+    "se",
+    "std"
   )
 )

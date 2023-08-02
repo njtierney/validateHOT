@@ -4,23 +4,23 @@
 \alias{specificity}
 \title{Specificity}
 \usage{
-specificity(data, id, Group = NULL, opts, choice, None)
+specificity(data, group, opts, choice, none)
 }
 \arguments{
-\item{data}{data frame including Holdout Options and actual \code{"choice"} and \code{"Group"} if optional argument is defined}
+\item{data}{data frame with all relevant variables}
 
-\item{id}{column index}
+\item{group}{optional column name(s) to specify grouping variable(s)
+to get \code{"recall"} by group(s)}
 
-\item{Group}{optional grouping variable to get accuracy by group}
+\item{opts}{column names of the alternatives included in the
+validation/holdout task}
 
-\item{opts}{column indexes of the options included in the validation task}
+\item{choice}{column name of the actual choice}
 
-\item{choice}{column index of the actual choice}
-
-\item{None}{column index}
+\item{none}{column name of none alternative}
 }
 \value{
-a data frame
+a tibble
 }
 \description{
 specificity is one of the 5 metrics of the confusion matrix
@@ -28,32 +28,29 @@ and is defined as \eqn{\frac{TN}{TN + FP}}, where TN =
 True Negatives, FP = False Positives (see, e.g., Burger, 2018).
 }
 \details{
-The current logic of \code{"specificity"} is to provide whether a binary coded event is correctly predicted.
-To use the function a \code{"None"} alternative needs to be in the script.
+The current logic of \code{"recall"} is to provide whether a binary coded event is correctly predicted.
+To use the function a \code{"none"} alternative needs to be in the script.
 One potential usage is, for example, whether a buy or a no-buy condition
 was predicted correctly. For example, you have three alternatives plus
-a \code{"None"} alternative and you want to check whether a buy or no-buy was
+a \code{"none"} alternative and you want to check whether a buy or no-buy was
 correctly predicted. This function can be helpful when you test whether or
 not your model significantly overestimates or underestimates, for example, a purchase likelihood.
 
 \code{data} needs to be a data frame including the alternatives shown in
 the validation/holdout task. Can be created using the \code{createHOT()} function.
 
-\code{id} needs to be the column index of the id (unique for each participant)
-in \code{data}.
-
-\code{Group} optional Grouping variable, if results should be display by different conditions.
-Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+\code{group} optional Grouping variable, if results should be display by different conditions.
+Needs to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the validation/holdout
-task (also includes the None option).
-Input of \code{opts} needs to be a vector with column index(es).
+task (also includes the \code{none} alternative).
+Input of \code{opts} needs to be column names of variables in \code{data}.
 
-\code{choice} specifies the column index of the actual choice.
-Input of opts \code{choice} needs to be the column index of actual choice.
+\code{choice} to specify column of actual choice.
+Input of opts \code{choice} needs to be column name of actual choice.
 
-\code{None} specifies the column index of the \code{None} alternative in the
-validation/holdout task. Needs to be specified for \code{specificity()}.
+\code{none} to specify column name of the \code{none} alternative in the
+validation/holdout task.
 }
 \examples{
 \dontrun{
@@ -64,25 +61,14 @@ HOT <- createHOT(
   prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",
-  choice = 20
+  choice = 20, varskeep = 21
 )
 
-specificity(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
-}
+# specificity ungrouped
+specificity(data = HOT, opts = c(Option_1:None), choice = choice, none = None)
 
-\dontrun{
-HOT <- createHOT(
-  data = MaxDiff,
-  id = 1,
-  None = 19,
-  prod = 7,
-  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-  method = "MaxDiff",
-  varskeep = 21,
-  choice = 20
-)
-
-specificity(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
+# specificity by group
+specificity(data = HOT, opts = c(Option_1:None), choice = choice, none = None, group = Group)
 }
 
 }

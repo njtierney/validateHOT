@@ -5,49 +5,43 @@
 #' differently by Burger (2018) \eqn{\frac{2TP}{2TP + FP + FN}}, where TP =
 #' True Positives, FP = False Positives, and FN = False Negatives.
 #'
-#' @param data data frame with all relevant variables.
-#' @param id vector of column index of unique identifier in \code{data}.
-#' @param Group optional vector of column number to specify grouping variable
-#' to get \code{"f1"} by group
-#' @param opts vector of column indexes of the alternatives included in the
-#' validation/holdout task.
-#' @param choice vector of column index of the actual choice.
-#' @param None vector of column index of None alternative.
+#' @param data data frame with all relevant variables
+#' @param group optional column name(s) to specify grouping variable(s)
+#' to get \code{"f1"} by group(s)
+#' @param opts column names of the alternatives included in the
+#' validation/holdout task
+#' @param choice column name of the actual choice
+#' @param none column name of none alternative
 #'
 #' @details
 #' The current logic of \code{"f1"} is to provide whether a binary coded event is correctly predicted.
-#' To use the function a \code{"None"} alternative needs to be in the script.
+#' To use the function a \code{"none"} alternative needs to be in the script.
 #' One potential usage is, for example, whether a buy or a no-buy condition
 #' was predicted correctly. For example, you have three alternatives plus
-#' a \code{"None"} alternative and you want to check whether a buy or no-buy was
+#' a \code{"none"} alternative and you want to check whether a buy or no-buy was
 #' correctly predicted. This function can be helpful when you test whether or
 #' not your model significantly overestimates or underestimates, for example, a purchase likelihood.
+#' This function was programmed to predict demand for a MaxDiff, CBC, or ACBC.
 #'
 #' \code{data} needs to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
-#' \code{id} needs to be the column index of the id (unique for each participant)
-#' in \code{data}.
-#'
-#' \code{Group} optional Grouping variable, if results should be display by different conditions.
-#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+#' \code{group} optional Grouping variable, if results should be display by different conditions.
+#' Needs to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
-#' task (also includes the None option).
-#' Input of \code{opts} needs to be a vector with column index(es).
+#' task (also includes the \code{none} alternative).
+#' Input of \code{opts} needs to be column names of variables in \code{data}.
 #'
-#' \code{choice} specifies the column index of the actual choice.
-#' Input of opts \code{choice} needs to be the column index of actual choice.
+#' \code{choice} to specify column name of actual choice.
 #'
-#' \code{None} specifies the column index of the \code{None} alternative in the
-#' validation/holdout task. Needs to be specified for \code{f1()}.
+#' \code{none} to specify column name of the \code{none} alternative in the
+#' validation/holdout task.
 #'
-#'
-#' @importFrom dplyr group_by summarise as_tibble
+#' @importFrom dplyr group_by summarise select pick
 #' @importFrom magrittr "%>%"
-#' @importFrom labelled is.labelled val_labels
 #'
-#' @return a data frame
+#' @return a tibble
 #'
 #' @seealso {
 #' \code{\link[=accuracy]{accuracy}}
@@ -72,131 +66,92 @@
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",
-#'   choice = 20
+#'   choice = 20, varskeep = 21
 #' )
 #'
-#' f1(data = HOT, id = 1, opts = c(2:9), choice = 10, None = 9)
+#' # f1 ungrouped
+#' f1(data = HOT, opts = c(Option_1:None), choice = choice, none = None)
+#'
+#' # f1 by group
+#' f1(data = HOT, opts = c(Option_1:None), choice = choice, none = None, group = Group)
 #' }
 #'
-#' @examples
-#' \dontrun{
-#' HOT <- createHOT(
-#'   data = MaxDiff,
-#'   id = 1,
-#'   None = 19,
-#'   prod = 7,
-#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-#'   method = "MaxDiff",
-#'   varskeep = 21,
-#'   choice = 20
-#' )
-#'
-#' f1(data = HOT, id = 1, Group = 10, opts = c(2:9), choice = 11, None = 9)
-#' }
 #' @export
 
 
-f1 <- function(data, id, Group = NULL, opts, choice, None) {
-  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])) {
-    base::stop("Error: Choice must be numeric!")
+f1 <- function(data, group, opts, choice, none) {
+  # check for wrong / missing input
+  if (base::length(data %>% dplyr::select(., {{ none }})) == 0) {
+    stop("Error: argument 'none' is missing!")
   }
 
-  if (!base::is.integer(data[[None]]) & !base::is.numeric(data[[None]])) {
-    base::stop("Error: None must be numeric!")
+  if (base::length(data %>% dplyr::select(., {{ opts }})) == 0) {
+    stop("Error: argument 'opts' is missing!")
   }
 
-  if (!base::is.null(Group) & base::anyNA(data[Group])) {
-    base::warning("Warning: Grouping variable contains NAs!")
+  if (base::length(data %>% dplyr::select(., {{ opts }})) == 1) {
+    stop("Error: specify at least 2 alternatives in 'opts'!")
   }
 
-  if (base::anyNA(data[,opts])) {
-    base::stop("Error: opts contains NAs!")
+  if (!(data %>% dplyr::select(., {{ none }}) %>% base::colnames()) %in%
+    (data %>% dplyr::select(., {{ opts }}) %>% base::colnames())) {
+    stop("Error: 'none' needs to be part of 'opts'!")
   }
 
-  WS <- data[, c(id, Group, choice, opts)]
+  # grouping variable
+  ## check for missings
+  if (base::anyNA(data %>% dplyr::select(., {{ group }}))) {
+    warning("Warning: 'group' contains NAs!")
+  }
 
-  if (base::is.null(Group)) {
-    base::colnames(WS) <- c("id", "choice", paste0("Option_", c(1:base::length(opts))))
-    WS$pred <- base::max.col(WS[,c(base::which(colnames(WS) == "Option_1"):
-                                     base::which(colnames(WS) == paste0("Option_", base::length(opts))))])
+  # alternatives
+  ## store names of alternatives
+  alternatives <- data %>%
+    dplyr::select(., {{ opts }}) %>%
+    base::colnames()
 
-    WS$buy <- base::ifelse(WS$choice != base::match(None, opts), 1, 2)
-    WS$pred_buy <- base::ifelse(WS$pred != base::match(None, opts), 1, 2)
+  ## check whether variable is numeric
+  for (i in 1:base::length(alternatives)) {
+    if (!base::is.numeric(data[[alternatives[i]]])) {
+      stop("Error: 'opts' need to be numeric!")
+    }
+  }
 
-    return(tibble::tibble(
-      WS %>%
-      dplyr::summarise(
-        f1 = 100 * ((2 * (base::sum(buy == 1 & pred_buy == 1))) / (((2 * (base::sum(buy == 1 & pred_buy == 1))) + base::sum(buy == 2 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))))
+  ## check for missings
+  if (anyNA(data %>% dplyr::select(., {{ opts }}))) {
+    stop("Error: 'opts' contains NAs!")
+  }
+
+  # choice
+  ## check for missing
+  if (base::anyNA(data %>% dplyr::select(., {{ choice }}))) {
+    stop("Error: 'choice' contains NAs!")
+  }
+
+  ## check for str
+  choi <- data %>%
+    dplyr::select(., {{ choice }}) %>%
+    base::colnames()
+
+  if (!base::is.numeric(data[[choi]])) {
+    stop("Error: 'choice' needs to be numeric!")
+  }
+
+  return(data %>%
+    dplyr::mutate(
+      pred = base::max.col(dplyr::pick({{ opts }})),
+      buy = base::ifelse({{ choice }} != base::match(
+        data %>% dplyr::select(., {{ none }}) %>% colnames(),
+        data %>% dplyr::select(., {{ opts }}) %>% colnames()
+      ), 1, 2),
+      pred = base::ifelse(pred != base::match(
+        data %>% dplyr::select(., {{ none }}) %>% colnames(),
+        data %>% dplyr::select(., {{ opts }}) %>% colnames()
+      ), 1, 2)
+    ) %>%
+    dplyr::group_by(pick({{ group }})) %>%
+    dplyr::summarise(
+      f1 = 100 * ((2 * (base::sum(buy == 1 & pred == 1))) / (((2 * (base::sum(buy == 1 & pred == 1))) + base::sum(buy == 2 & pred == 1) + base::sum(buy == 1 & pred == 2)))
       )
     ))
-  }
-
-  if (!(base::is.null(Group))) {
-    base::colnames(WS) <- c("id", "Group", "choice", paste0("Option_", c(1:base::length(opts))))
-
-    WS$pred <- base::max.col(WS[,c(base::which(colnames(WS) == "Option_1"):
-                                     base::which(colnames(WS) == paste0("Option_", base::length(opts))))])
-
-    WS$buy <- base::ifelse(WS$choice != base::match(None, opts), 1, 2)
-    WS$pred_buy <- base::ifelse(WS$pred != base::match(None, opts), 1, 2)
-
-    f1 <- tibble::tibble(
-      base::rbind(
-      WS %>%
-        dplyr::summarise(
-          Group = "All",
-          f1 = 100 * ((2 * (base::sum(buy == 1 & pred_buy == 1))) / (((2 * (base::sum(buy == 1 & pred_buy == 1))) + base::sum(buy == 2 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))))
-        ),
-      WS %>%
-        dplyr::group_by(Group) %>%
-        dplyr::summarise(
-          f1 = 100 * ((2 * (base::sum(buy == 1 & pred_buy == 1))) / (((2 * (base::sum(buy == 1 & pred_buy == 1))) + base::sum(buy == 2 & pred_buy == 1) + base::sum(buy == 1 & pred_buy == 2))))
-        )
-    ))
-
-    # fixing grouping variable
-
-    lab <- c()
-
-    if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
-      lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))) {
-        lab_num <- base::sort(base::unique(WS$Group))
-
-        lab <- c(lab, lab_num[i])
-      }
-    }
-
-    if (base::is.character(WS$Group)) {
-      lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))) {
-        lab_char <- base::sort(base::unique(WS$Group))
-
-        lab <- c(lab, lab_char[i])
-      }
-    }
-
-
-    if (base::is.factor(WS$Group)) {
-      lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))) {
-        lab_fac <- base::sort(base::unique(WS$Group))
-
-        lab <- c(lab, base::levels(lab_fac)[i])
-      }
-    }
-
-    if (labelled::is.labelled(WS$Group)) {
-      lab <- "All"
-      for (i in 1:base::length(base::unique(WS$Group))) {
-        lab_lab <- base::sort(base::unique(WS$Group))
-
-        lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-      }
-    }
-
-    f1$Group <- lab
-
-    return(f1)
-  }
 }

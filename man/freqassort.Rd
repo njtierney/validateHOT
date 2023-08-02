@@ -4,72 +4,45 @@
 \alias{freqassort}
 \title{Averaged number of times a person is reached by a specific assortment of bundles}
 \usage{
-freqassort(
-  data,
-  id,
-  Group = NULL,
-  None,
-  method = c("threshold" | "First Choice"),
-  bundles
-)
+freqassort(data, group, none, opts)
 }
 \arguments{
-\item{data}{data data frame with all relevant variables.}
+\item{data}{data frame with all relevant variables}
 
-\item{id}{vector of column index of unique identifier in \code{data}.}
+\item{group}{optional column name(s) to specify grouping variable(s)
+to get \code{"freqassort"} by group(s)}
 
-\item{Group}{optional vector of column number to specify grouping variable
-to get \code{"freqassort"} by group.}
+\item{none}{column name of none alternative}
 
-\item{None}{vector of column index of None alternative.}
-
-\item{method}{character variable that needs to be specified to either \code{"First choice"} or \code{"threshold"}, please see Details.}
-
-\item{bundles}{vector of column indexes of the bundles that should be included in the assortment.}
+\item{opts}{column names of the alternatives included in the assortment}
 }
 \value{
-a data frame
+a tibble
 }
 \description{
 Frequency function of TURF analysis to measure the average time a consumer
-is reached with a specific product bundle assortment. Can either be calculated
-using 'First Choice' or 'threshold' rule. See Details section for more
-information and specifying the data in the correct way.
+is reached with a specific product bundle assortment. \code{"freqassort"} calculates
+the frequency based on the 'threshold' approach, meaning each alternative that exceeds
+utility of none alternative is considered as, for example, purchase option.
 }
 \details{
 Frequency calculates the average times a consumer would be reached with the
 product assortment you are testing. The current logic of \code{freqassort()}
 is that it needs to exceed a threshold. In the case of \code{freqassort()}
-this threshold is referred to the \code{None} argument in \code{data}.
-
-\code{freqassort()} currently provides two methods:
-\itemize{
-\item \code{"First Choice"}: Only the alternative with the highest utility is considered,
-if its utility is above the utility of \code{None}, it is marked as potential purchase option.
-\item \code{"threshold"}: All alternatives are considered. if utility of alternative is
-larger than the utility of \code{None}, it is marked as potential purchase option.
-}
+this threshold is referred to the \code{none} argument in \code{data}.
 
 
-\code{data} needs to be a data frame including the alternatives shown in
-the validation/holdout task. Can be created using the \code{createHOT()} function.
+\code{data} needs to be a data frame including the alternatives that should be tested
 
-\code{id} needs to be the column index of the id (unique for each participant)
-in \code{data}.
+\code{group} optional Grouping variable, if results should be display by different conditions.
+Needs to be column name of variables in \code{data}.
 
-\code{Group} optional Grouping variable, if results should be display by different conditions.
-Input of \code{Group} needs to be a vector of the column index of \code{Group}.
-
-\code{bundles} is needed to specify the different alternatives in the
+\code{opts} is needed to specify the different alternatives in the
 product assortment that should be considered.
-Input of \code{bundles} needs to be a vector with column index(es).
+Input of \code{opts} needs to be column names of variables in \code{data}.
 
-\code{None} specifies the column index of the \code{None} alternative. Is used as
-threshold to determine whether alternative resembles a purchase option or not.
-Needs to be specified for \code{freqassort()}.
-
-\code{method} character variable whether \code{method = "First Choice"} or
-\code{method = "threshold"} should be applied to calculate \code{freqassort()}.
+\code{none} to specify column name of the \code{none} alternative in the
+validation/holdout task.
 }
 \examples{
 \dontrun{
@@ -80,27 +53,15 @@ HOT <- createHOT(
   prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",
-  choice = 20
+  choice = 20, varskeep = 21
 )
 
-freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
-freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")
-}
+# freqassort ungrouped
+freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None)
 
-\dontrun{
-HOT <- createHOT(
-  data = MaxDiff,
-  id = 1,
-  None = 19,
-  prod = 7,
-  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-  method = "MaxDiff",
-  varskeep = 21,
-  choice = 20
-)
+# freqassort grouped
+freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group)
 
-freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold", Group = 10)
-freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10)
 }
 
 }

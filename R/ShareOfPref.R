@@ -3,19 +3,17 @@
 #' @description
 #' Function to measure the share of preferences of each option in the validation task
 #'
-#' @param data a data frame
-#' @param id vector of column index of unique identifier in \code{data}.
-#' @param Group optional vector of column number to specify grouping variable
-#' to get \code{"shareofpref"} by group.
-#' @param opts vector of column indexes of the alternatives included in the
-#' validation/ holdout task.
+#' @param data data frame with all relevant variables
+#' @param group optional column name(s) to specify grouping variable(s)
+#' to get \code{"shareofpref"} by group(s)
+#' @param opts column names of the alternatives included in the
+#' validation/holdout task
 #'
-#' @return a data frame; a list if \code{Group} is specified
-#' @importFrom dplyr group_by summarise across mutate
+#' @return a tibble
+#' @importFrom dplyr select pick mutate across ungroup group_by summarise count
 #' @importFrom magrittr "%>%"
 #' @importFrom stats sd
-#' @importFrom labelled is.labelled val_labels
-#' @importFrom tibble tibble
+#' @importFrom tibble as_tibble
 #'
 #' @details
 #' Share of Preference provides the aggrgated share of each alternative in the
@@ -26,16 +24,12 @@
 #' \code{data} needs to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
-#' \code{id} needs to be the column index of the id (unique for each participant)
-#' in \code{data}.
+#' \code{group} optional Grouping variable, if results should be display by different groups.
+#' Needs to be column name of variables in \code{data}.
 #'
-#' \code{Group} optional Grouping variable, if results should be display by different conditions.
-#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
-#'
-#' \code{opts} is needed to specify the different alternatives in the validation/ holdout
-#' task (also includes the None option).
-#' Input of \code{opts} needs to be a vector with column index(es).
-#'
+#' \code{opts} is needed to specify the different alternatives in the simulation
+#' task (also includes the \code{none} alternative).
+#' Input of \code{opts} needs to be column names of variables in \code{data}.
 #'
 #' @references {
 #'
@@ -54,223 +48,74 @@
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",
-#'   choice = 20
+#'   choice = 20,
+#'   varskeep = 21
 #' )
 #'
-#' shareofpref(data = HOT, id = 1, opts = c(2:9))
-#' }
+#' # shareofpref ungrouped
+#' shareofpref(data = HOT, opts = c(Option_1:None))
 #'
-#' @examples
-#' \dontrun{
-#' HOT <- createHOT(
-#'   data = MaxDiff,
-#'   id = 1,
-#'   None = 19,
-#'   prod = 7,
-#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-#'   method = "MaxDiff",
-#'   varskeep = 21,
-#'   choice = 20
-#' )
-#'
-#' shareofpref(data = HOT, id = 1, opts = c(2:9), Group = 10)
+#' # shareofpref grouped
+#' shareofpref(data = HOT, group = Group, opts = c(Option_1:None))
 #' }
 #'
 #' @export
 
-shareofpref <- function(data, id, Group = NULL, opts) {
-  varCheck <- c(opts)
+shareofpref <- function(data, group, opts) {
 
-  for (i in 1:base::length(varCheck)) {
-    if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])) {
-      base::stop("Error: ", base::colnames(data[varCheck[i]]), " needs to be numeric!")
+  if (base::length(data %>% dplyr::select(., {{ opts }})) == 0) {
+    stop("Error: argument 'opts' is missing!")
+  }
+
+  if (base::length(data %>% dplyr::select(., {{ opts }})) == 1) {
+    stop("Error: specify at least 2 alternatives in 'opts'!")
+  }
+
+  # grouping variable
+  ## check for missings
+  if (base::anyNA(data %>% dplyr::select(., {{ group }}))) {
+    warning("Warning: 'group' contains NAs!")
+  }
+
+  # alternatives
+  ## store names of alternatives
+  alternatives <- data %>%
+    dplyr::select(., {{ opts }}) %>%
+    base::colnames()
+
+  ## check whether variable is numeric
+  for (i in 1:base::length(alternatives)) {
+    if (!base::is.numeric(data[[alternatives[i]]])) {
+      stop("Error: 'opts' need to be numeric!")
     }
   }
 
-  for (i in 1:base::length(varCheck)) {
-    if (base::anyNA(data[varCheck[i]])) {
-      base::stop("Error: ", base::colnames(data[[varCheck[i]]]), " has missing values!")
-    }
+  ## check for missings
+  if (anyNA(data %>% dplyr::select(., {{ opts }}))) {
+    stop("Error: 'opts' contains NAs!")
   }
 
-  if (!base::is.null(Group) & base::anyNA(data[Group])) {
-    base::warning("Warning: Grouping variable contains NAs.")
-  }
 
-  WS <- data[, c(id, Group, opts)]
+  WS1 <- data %>%
+    dplyr::group_by(dplyr::pick({{ group }})) %>%
+    dplyr::count()
 
-  if (base::is.null(Group)) {
+  # change data structure
+  return(data %>%
+           dplyr::mutate(dplyr::across({{ opts }}, base::exp)) %>%
+           dplyr::rowwise() %>%
+           dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>%
+           dplyr::ungroup() %>%
+           dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>%
+           dplyr::group_by(dplyr::pick({{ group }})) %>%
+           dplyr::summarise(across({{opts}}, c(mw = base::mean, std = stats::sd), .names = "{.col}.{.fn}")) %>%
+           tidyr::pivot_longer(., cols = tidyselect::ends_with(c(".mw", ".std")) ,
+                               names_to = c("Option", ".value"), names_sep = "\\.") %>%
+           base::merge(x = ., y = WS1, by =c(data %>% dplyr::select(., {{group}}) %>% base::colnames())) %>%
+           dplyr::mutate(se = std/sqrt(n),
+                         lo.ci = mw - (1.96 * se),
+                         up.ci = mw + (1.96 * se)) %>%
+           dplyr::select(!tidyselect::all_of(c("std", "n")))%>%
+           tibble::as_tibble())
 
-    base::colnames(WS) <- c("id", paste0("Option_", c(1:base::length(opts))))
-
-    WS <- WS %>%
-      dplyr::mutate(dplyr::across(
-        base::which(base::colnames(WS) == "Option_1"):
-          base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts))),
-        function(x) 100 * (base::exp(x) / base::rowSums(base::exp(WS[, c(
-          base::which(base::colnames(WS) == "Option_1"):
-            base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
-        )])))
-      ))
-
-    MW <- base::unname(base::colMeans(WS[, c(
-      base::which(base::colnames(WS) == "Option_1"):
-        base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
-    )]))
-
-    MarketShare <- tibble::tibble(base::data.frame(base::matrix(nrow = length(opts), ncol = 5)),
-                                  .name_repair = ~c("Options", "Mean", "se", "Lower CI", "Upper CI"))
-
-
-    MarketShare[base::is.na(MarketShare)] <- 0
-
-
-    MarketShare[, 1] <- paste0("Option ", c(1:base::length(opts)))
-
-    MarketShare[, 2] <- MW
-
-    for (i in 1:base::nrow(MarketShare)) {
-      m <- MarketShare[i, 2]
-      s <- stats::sd(WS[, (i + 1)])
-      n <- base::nrow(WS)
-
-      margin <- 1.96 * (s / base::sqrt(n))
-
-      MarketShare[i, 3] <- margin
-
-      MarketShare[i, 4] <- m - margin
-
-      MarketShare[i, 5] <- m + margin
-    }
-
-    return(MarketShare)
-  }
-
-  if (!(base::is.null(Group))) {
-    base::colnames(WS) <- c("id", "Group", paste0("Option_", c(1:base::length(opts))))
-
-    WS <- WS %>%
-      dplyr::mutate(dplyr::across(
-        base::which(base::colnames(WS) == "Option_1"):
-          base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts))),
-        function(x) 100 * (base::exp(x) / base::rowSums(base::exp(WS[, c(
-          base::which(base::colnames(WS) == "Option_1"):
-            base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
-        )])))
-      ))
-
-
-    lab <- c()
-
-    output <- base::list()
-
-    for (t in 1:base::length(base::unique(WS$Group))) {
-      if (t == 1) {
-        MW <- base::unname(base::colMeans(WS[, c(
-          base::which(base::colnames(WS) == "Option_1"):
-            base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
-        )]))
-
-        MarketShare_ALL <- tibble::tibble(base::data.frame(base::matrix(nrow = length(opts), ncol = 5)),
-                                      .name_repair = ~c("Options", "Mean", "se", "Lower CI", "Upper CI"))
-
-
-        MarketShare_ALL[base::is.na(MarketShare_ALL)] <- 0
-
-
-        MarketShare_ALL[, 1] <- paste0("Option ", c(1:base::length(opts)))
-
-        MarketShare_ALL[, 2] <- MW
-
-        for (all in 1:base::nrow(MarketShare_ALL)) {
-          m <- MarketShare_ALL[all, 2]
-          s <- stats::sd(WS[, (all + 2)])
-          n <- base::nrow(WS)
-
-          margin <- 1.96 * (s / base::sqrt(n))
-
-          MarketShare_ALL[all, 3] <- margin
-
-          MarketShare_ALL[all, 4] <- m - margin
-
-          MarketShare_ALL[all, 5] <- m + margin
-        }
-
-        output[[t]] <- MarketShare_ALL
-      }
-
-
-      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_num <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, lab_num[i])
-        }
-
-        Sub <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[t])
-      }
-
-      if (base::is.character(WS$Group)) {
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_char <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, lab_char[i])
-        }
-
-        Sub <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[t])
-      }
-
-
-      if (base::is.factor(WS$Group)) {
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_fac <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, base::levels(lab_fac)[i])
-        }
-
-        Sub <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[t])
-      }
-
-      if (labelled::is.labelled(WS$Group)) {
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_lab <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-        }
-
-        Sub <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[t])
-      }
-
-      MW <- unname(colMeans(Sub[, c(3:(base::ncol(Sub)))]))
-
-      MarketShare <- tibble::tibble(base::data.frame(base::matrix(nrow = length(opts), ncol = 5)),
-                                     .name_repair = ~c("Options", "Mean", "se", "Lower CI", "Upper CI"))
-      MarketShare[base::is.na(MarketShare)] <- 0
-
-      MarketShare[, 1] <- paste0("Option ", c(1:base::length(opts)))
-
-      MarketShare[, 2] <- MW
-
-      for (l in 1:base::nrow(MarketShare)) {
-        m <- MarketShare[l, 2]
-        s <- stats::sd(Sub[, (l + 2)])
-        n <- base::nrow(Sub)
-
-        margin <- 1.96 * (s / base::sqrt(n))
-
-        MarketShare[l, 3] <- margin
-
-        MarketShare[l, 4] <- m - margin
-
-        MarketShare[l, 5] <- m + margin
-      }
-
-      output[[(t + 1)]] <- MarketShare
-
-      if (t == base::length(base::unique(WS$Group))) {
-        base::names(output) <- c("All", lab[1:base::length(base::unique(WS$Group))])
-        return(output)
-      }
-    }
-  }
 }

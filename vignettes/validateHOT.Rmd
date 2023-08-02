@@ -240,10 +240,10 @@ HOT <- createHOT(
 
 What we can see from the `createHOT()` function above is that we have 7 alternatives `prod = 7` plus a no-buy alternative since we specified the column index of `None`.
 
-For `hitrate()`, we specify our data (`HOT` in our case), the `id` (unique identifier), the column indexes of alternatives (this includes the no-buy alternative; `opts`), and finally the actual choice in the holdout task (`choice`).
+For `hitrate()`, we specify our data (`HOT` in our case), the column names of alternatives (this includes the no-buy alternative; `opts`), and finally the actual choice in the holdout task (`choice`).
 
 ```{r}
-hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11)
+hitrate(data = HOT, opts = c(Option_1:None), choice = choice)
 ```
 
 ### `kl`
@@ -251,14 +251,14 @@ hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11)
 Next, we check the Kullback-Leibler Divergence by running the `kl` function. Let us first use $log{_2}$ as logarithm base. 
 
 ```{r}
-kl(data = HOT, id = 1, opts = c(2:9), choice = 11, basis = "log2")
+kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2")
 ```
 
 However, we can also use the normal $log$. Let us try this in the next step and this time we display the results by group using the `tidyverse` logic.
 
 ```{r}
 HOT %>% 
-  kl(data = ., id = 1, opts = c(2:9), choice = 11, basis = "log", Group = 10)
+  kl(data = ., opts = c(Option_1:None), choice = choice, basis = "log")
 ```
 
 
@@ -268,24 +268,16 @@ HOT %>%
 For the mean absolute error, `mae`, we display the results by Group:
 
 ```{r}
-mae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+mae(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)
 ```
 
-In case, we first had change `Group` to a `factor`, the output would have been adapted accordingly. 
-
-```{r}
-HOT %>% 
-  dplyr::mutate(Group = factor(Group, levels = c(1:3), labels = paste0("Group ", c(1:3)))) %>%
-  mae(., id = 1, opts = c(2:9), Group = 10, choice = 11) %>% 
-  dplyr::mutate_if(is.numeric, round, 2)
-```
 
 ### `mhp`
 
 We will display the mean hit probability again by also specifying the Group
 
 ```{r}
-mhp(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+mhp(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)
 ```
 
 ### `medae`
@@ -293,7 +285,7 @@ mhp(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 Next, we look at the median absolute error.
 
 ```{r}
-medae(data = HOT, id = 1, opts = c(2:9), choice = 11)
+medae(data = HOT, opts = c(Option_1:None), choice = choice)
 ```
 
 
@@ -302,7 +294,7 @@ medae(data = HOT, id = 1, opts = c(2:9), choice = 11)
 And finally to end this block, we look at the root mean squared error.
 
 ```{r}
-rmse(data = HOT, id = 1, opts = c(2:9), choice = 11)
+rmse(data = HOT, opts = c(Option_1:None), choice = choice)
 ```
 
 
@@ -320,10 +312,10 @@ The setup is similar to the ones from the validation metrics reported above, the
 
 ### `accuracy`
 
-We begin with the accuracy and we still work with the `HOT` data frame we created above. We specify the 8 alternatives (7 alternatives + no-buy alternative) and finally the column index of `None`. 
+We begin with the accuracy and we still work with the `HOT` data frame we created above. We specify the 8 alternatives (7 alternatives + no-buy alternative) and finally `None`. 
 
 ```{r}
-accuracy(data = HOT, id = 1, opts = c(2:9), choice = 11, None = 9)
+accuracy(data = HOT, opts = c(Option_1:None), choice = choice, none = None)
 ```
 
 ### `f1`
@@ -331,7 +323,7 @@ accuracy(data = HOT, id = 1, opts = c(2:9), choice = 11, None = 9)
 Calculating the *F1*-score is exactly the same.
 
 ```{r}
-f1(data = HOT, id = 1, opts = c(2:9), choice = 11, None = 9)
+f1(data = HOT, opts = c(Option_1:None), choice = choice, none = None)
 ```
 
 ### `precision`
@@ -339,7 +331,7 @@ f1(data = HOT, id = 1, opts = c(2:9), choice = 11, None = 9)
 For `precision`, we will specify the `Group` argument again.
 
 ```{r}
-precision(data = HOT, id = 1, opts = c(2:9), choice = 11, None = 9, Group = 10)
+precision(data = HOT, opts = c(Option_1:None), choice = choice, none = None, group = Group)
 ```
 
 
@@ -350,7 +342,7 @@ Similar to the validation metrics shown above, we can also implement these funct
 ```{r}
 HOT %>% 
   dplyr::mutate(Group = factor(Group, levels = c(1:3), labels = paste0("Group ", c(1:3)))) %>%
-  recall(., id = 1, opts = c(2:9), Group = 10, None = 9, choice = 11) %>% 
+  recall(data = ., opts = c(Option_1:None), choice = choice, none = None, group = Group) %>% 
   dplyr::mutate_if(is.numeric, round, 2)
 ```
 
@@ -361,7 +353,7 @@ HOT %>%
 Finally, the following code runs the `specificity` function.
 
 ```{r}
-specificity(data = HOT, id = 1, opts = c(2:9), choice = 11, None = 9)
+specificity(data = HOT, opts = c(Option_1:None), choice = choice, none = None)
 ```
 
 
@@ -377,30 +369,27 @@ Finally, let us talk about the simulation metrics. `validateHOT` currently provi
 
 Let us imagine you have a specific assortment, and you want to check how many participants would at least consider purchasing at least one of the products or alternatives you are testing in the function. 
 
-To run this function you need to specify a threshold, i.e., the no-buy alternative. `validateHOT` includes two methods: `threshold` and `First Choice`. `threshold` considers all products / alternatives that pass the threshold as purchase option, while `First Choice` only marks the product / alternative with the highest utility as purchase option and marks it as purchase option in case its preferred over the no-buy alternative.
+In our case, let us assume we want to test three alternatives - `Option_1`, `Option_4`, and `Option_6` - and see how many participants would consider choosing at least one of these alternatives.
 
 ```{r}
-reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
+reach(data = HOT, opts = c(Option_1, Option_4, Option_6), none = None)
 ```
 
-Let us see, how the reach changes when we use `First Choice` instead and give the results by Groups
-
-```{r}
-reach(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10)
-```
 
 ### `freqAssort`
 
-Next, let us check the `freqAssort` function, which tells you how many products / alternatives on average are preferred over the no-buy alternative. Again, `validateHOT` offers the `threshold` and `First Choice` method. 
+Next, let us check the `freqAssort` function, which tells you how many products / alternatives on average are preferred over the no-buy alternative. We will use the same example as we did when introducing `reach`.
 
 ```{r}
-freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
+freqassort(data = HOT, opts = c(Option_1, Option_4, Option_6), none = None)
 ```
+
+Again, we could use the tidyverse logic and get the results by group
 
 ```{r}
 HOT %>% 
   dplyr::mutate(Group = factor(Group, levels = c(1:3), labels = paste0("Group ", c(1:3)))) %>%
-  freqassort(., id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10) %>% 
+  freqassort(data = ., opts = c(Option_1, Option_4, Option_6), none = None, group = Group) %>% 
   dplyr::mutate_if(is.numeric, round, 2)
 ```
 
@@ -410,7 +399,7 @@ Finally, `validateHOT` also provides you the assumed share of preference of all 
 
 ```{r}
 HOT %>%
-  shareofpref(data = ., id = 1, opts = c(2:9))
+  shareofpref(data = ., opts = c(2:9))
 ```
 
 

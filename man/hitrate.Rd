@@ -4,23 +4,21 @@
 \alias{hitrate}
 \title{Hit Rate}
 \usage{
-hitrate(data, id, Group = NULL, opts, choice)
+hitrate(data, group, opts, choice)
 }
 \arguments{
-\item{data}{frame with all relevant variables.}
+\item{data}{data frame with all relevant variables}
 
-\item{id}{vector of column index of unique identifier in \code{data}.}
+\item{group}{optional column name(s) to specify grouping variable(s)
+to get \code{"hitrate"} by group(s)}
 
-\item{Group}{optional vector of column number to specify grouping variable
-to get \code{"hitrate"} by group.}
+\item{opts}{column names of the alternatives included in the
+validation/holdout task}
 
-\item{opts}{vector of column indexes of the alternatives included in the
-validation/holdout task.}
-
-\item{choice}{vector of column index of the actual choice.}
+\item{choice}{column name of the actual choice}
 }
 \value{
-a data frame
+a tibble
 }
 \description{
 \code{hitrate} measures number of times a choice was correctly predicted in a validation task.
@@ -28,28 +26,26 @@ a data frame
 \details{
 \code{hitrate} measures number of times a participant's choice was correctly
 predicted by our model.
-Output contains the following 3 metrics:
+Output contains the following 4 metrics:
 \itemize{
 \item \code{"chance"} chance level (\eqn{\frac{1}{number of alternatives}}) in percentage
 \item \code{"no."} absolute value of correctly predicted choices
 \item \code{"\%"} correctly predicted choices in percentage
+\item \code{"n"} total number of choices
 }
 
 \code{data} needs to be a data frame including the alternatives shown in
 the validation/holdout task. Can be created using the \code{createHOT()} function.
 
-\code{id} needs to be the column index of the id (unique for each participant)
-in \code{data}.
-
-\code{Group} optional Grouping variable, if results should be display by different conditions.
-Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+\code{group} optional Grouping variable, if results should be display by different groups.
+Needs to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the validation/holdout
-task (also includes the None option).
-Input of \code{opts} needs to be a vector with column index(es).
+task (also includes the \code{none} alternative).
+Input of \code{opts} needs to be column names of variables in \code{data}.
 
-\code{choice} specifies the column index of the actual choice.
-Input of opts \code{choice} needs to be the column index of actual choice.
+\code{choice} to specify column of actual choice.
+Input of opts \code{choice} needs to be column name of actual choice.
 }
 \examples{
 \dontrun{
@@ -60,24 +56,12 @@ HOT <- createHOT(
   prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",
-  choice = 20
+  choice = 20, varskeep = 21
 )
+# hit rate ungrouped
+hitrate(data = HOT, opts = c(Option_1:None), none = None, choice = 10)
 
-hitrate(data = HOT, id = 1, opts = c(2:9), choice = 10)
-}
-
-\dontrun{
-HOT <- createHOT(
-  data = MaxDiff,
-  id = 1,
-  None = 19,
-  prod = 7,
-  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-  method = "MaxDiff",
-  varskeep = 21,
-  choice = 20
-)
-
+# hit rate grouped
 hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
 }
 

@@ -2,59 +2,40 @@
 #'
 #' @description
 #' Frequency function of TURF analysis to measure the average time a consumer
-#' is reached with a specific product bundle assortment. Can either be calculated
-#' using 'First Choice' or 'threshold' rule. See Details section for more
-#' information and specifying the data in the correct way.
+#' is reached with a specific product bundle assortment. \code{"freqassort"} calculates
+#' the frequency based on the 'threshold' approach, meaning each alternative that exceeds
+#' utility of none alternative is considered as, for example, purchase option.
 #'
-#' @param data data data frame with all relevant variables.
-#' @param id vector of column index of unique identifier in \code{data}.
-#' @param Group optional vector of column number to specify grouping variable
-#' to get \code{"freqassort"} by group.
-#' @param bundles vector of column indexes of the bundles that should be included in the assortment.
-#' @param None vector of column index of None alternative.
-#' @param method character variable that needs to be specified to either \code{"First choice"} or \code{"threshold"}, please see Details.
-#'
+#' @param data data frame with all relevant variables
+#' @param group optional column name(s) to specify grouping variable(s)
+#' to get \code{"freqassort"} by group(s)
+#' @param opts column names of the alternatives included in the assortment
+#' @param none column name of none alternative
 #'
 #' @details
 #' Frequency calculates the average times a consumer would be reached with the
 #' product assortment you are testing. The current logic of \code{freqassort()}
 #' is that it needs to exceed a threshold. In the case of \code{freqassort()}
-#' this threshold is referred to the \code{None} argument in \code{data}.
-#'
-#' \code{freqassort()} currently provides two methods:
-#' \itemize{
-#' \item \code{"First Choice"}: Only the alternative with the highest utility is considered,
-#' if its utility is above the utility of \code{None}, it is marked as potential purchase option.
-#' \item \code{"threshold"}: All alternatives are considered. if utility of alternative is
-#' larger than the utility of \code{None}, it is marked as potential purchase option.
-#' }
+#' this threshold is referred to the \code{none} argument in \code{data}.
 #'
 #'
-#' \code{data} needs to be a data frame including the alternatives shown in
-#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#' \code{data} needs to be a data frame including the alternatives that should be tested
 #'
-#' \code{id} needs to be the column index of the id (unique for each participant)
-#' in \code{data}.
+#' \code{group} optional Grouping variable, if results should be display by different conditions.
+#' Needs to be column name of variables in \code{data}.
 #'
-#' \code{Group} optional Grouping variable, if results should be display by different conditions.
-#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
-#'
-#' \code{bundles} is needed to specify the different alternatives in the
+#' \code{opts} is needed to specify the different alternatives in the
 #' product assortment that should be considered.
-#' Input of \code{bundles} needs to be a vector with column index(es).
+#' Input of \code{opts} needs to be column names of variables in \code{data}.
 #'
-#' \code{None} specifies the column index of the \code{None} alternative. Is used as
-#' threshold to determine whether alternative resembles a purchase option or not.
-#' Needs to be specified for \code{freqassort()}.
-#'
-#' \code{method} character variable whether \code{method = "First Choice"} or
-#' \code{method = "threshold"} should be applied to calculate \code{freqassort()}.
+#' \code{none} to specify column name of the \code{none} alternative in the
+#' validation/holdout task.
 #'
 #'
-#' @importFrom dplyr group_by summarise
+#' @importFrom dplyr select mutate across rowwise c_across pick summarise group_by ungroup
 #' @importFrom magrittr "%>%"
-#' @importFrom labelled is.labelled val_labels
-#' @importFrom tibble tibble
+#'
+#' @return a tibble
 #'
 #' @examples
 #' \dontrun{
@@ -65,284 +46,87 @@
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",
-#'   choice = 20
+#'   choice = 20, varskeep = 21
 #' )
 #'
-#' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold")
-#' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice")
+#' # freqassort ungrouped
+#' freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None)
+#'
+#' # freqassort grouped
+#' freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group)
+#'
 #' }
 #'
-#' @examples
-#' \dontrun{
-#' HOT <- createHOT(
-#'   data = MaxDiff,
-#'   id = 1,
-#'   None = 19,
-#'   prod = 7,
-#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-#'   method = "MaxDiff",
-#'   varskeep = 21,
-#'   choice = 20
-#' )
-#'
-#' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "threshold", Group = 10)
-#' freqassort(data = HOT, id = 1, bundles = c(2, 3, 7), None = 9, method = "First Choice", Group = 10)
-#' }
-#'
-#' @return a data frame
 #' @export
-#'
-freqassort <- function(data, id, Group = NULL, None, method = c("threshold" | "First Choice"), bundles) {
-  if (method != "threshold" & method != "First Choice") {
-    base::stop("Error: ", method, " is not valid. Please specify whether to use 'threshold' or 'First Choice'")
+freqassort <- function(data, group, none, opts) {
+
+  # check for wrong / missing input
+  if (base::length(data %>% dplyr::select(., {{ none }})) == 0) {
+    stop("Error: argument 'none' is missing!")
   }
 
-  varCheck <- c(bundles, None)
+  if (base::length(data %>% dplyr::select(., {{ opts }})) == 0) {
+    stop("Error: argument 'opts' is missing!")
+  }
 
-  for (i in 1:base::length(varCheck)) {
-    if (!base::is.integer(data[[varCheck[i]]]) & !base::is.numeric(data[[varCheck[i]]])) {
-      base::stop("Error: ", base::colnames(data[varCheck[i]]), " needs to be numeric!")
+  # grouping variable
+  ## store names of grouping variables
+  groups <- data %>%
+    dplyr::select(., {{ group }}) %>%
+    base::colnames()
+
+  ## check for missings
+  if (base::anyNA(data %>% dplyr::select(., {{ group }}))) {
+    warning("Warning: 'group' contains NAs!")
+  }
+
+  # alternatives
+  ## store names of alternatives
+  alternatives <- data %>%
+    dplyr::select(., {{ opts }}) %>%
+    base::colnames()
+
+  ## check whether variable is numeric
+  for (i in 1:base::length(alternatives)) {
+    if (!base::is.numeric(data[[alternatives[i]]])) {
+      stop("Error: 'opts' need to be numeric!")
     }
   }
 
-  for (i in 1:base::length(varCheck)) {
-    if (base::anyNA(data[varCheck[i]])) {
-      base::stop("Error: ", base::colnames(data[[varCheck[i]]]), " has missing values!")
-    }
+  ## check for missings
+  if (anyNA(data %>% dplyr::select(., {{ opts }}))) {
+    stop("Error: 'opts' contains NAs!")
   }
 
-  if (!base::is.null(Group) & base::anyNA(data[Group])) {
-    base::warning("Warning: Grouping variable contains NAs.")
+  # None
+  ## check for missing
+  if (base::anyNA(data %>% dplyr::select(., {{ none }}))) {
+    stop("Error: 'none' contains NAs!")
   }
 
-  WS <- data[, c(id, Group, bundles, None)]
+  ## check for str
+  Noo <- data %>%
+    dplyr::select(., {{ none }}) %>%
+    base::colnames()
 
-  if (method == "threshold") {
-    if (base::is.null(Group)) {
-      base::colnames(WS) <- c("id", paste0("Bundle_", c(1:base::length(bundles))), "None")
-
-      WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
-
-      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
-
-      WS_new[, 1] <- WS[, 1]
-
-      for (i in 1:base::nrow(WS_new)) {
-        for (j in 2:base::ncol(WS_new)) {
-          WS_new[i, j] <- base::ifelse(WS[i, (j)] > WS[i, "None"], 1, 0)
-        }
-      }
-
-      if (base::length(bundles) == 1){
-        Freq <- tibble::tibble(Frequency = base::mean(WS_new[, 2]))
-      }
-
-
-      if (base::length(bundles) > 1){
-        Freq <- tibble::tibble(Frequency = base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
-      }
-
-      return(Freq)
-    }
-
-    if (!(base::is.null(Group))) {
-      base::colnames(WS) <- c("id", "Group", paste0("Bundle_", c(1:base::length(bundles))), "None")
-
-      WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
-
-      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
-
-      WS_new[, c(1, 2)] <- WS[, c(1, 2)]
-
-
-      for (i in 1:base::nrow(WS_new)) {
-        for (j in 3:base::ncol(WS_new)) {
-          WS_new[i, j] <- base::ifelse(WS[i, (j)] > WS[i, "None"], 1, 0)
-        }
-      }
-
-      if (base::length(bundles) == 1){
-        WS_new$freq <- base::mean(WS_new[, 2])
-      }
-
-
-
-      if (base::length(bundles) > 1){
-        WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
-      }
-
-      Frequency <- tibble::tibble(
-        base::rbind(
-        WS_new %>%
-          dplyr::summarise(
-            Group = "All",
-            Frequency = base::mean(freq)
-          ),
-        WS_new %>%
-          dplyr::group_by(Group) %>%
-          dplyr::summarise(
-            Frequency = base::mean(freq)
-          ))
-      )
-
-      # fixing grouping variable
-
-      lab <- c()
-
-      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_num <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, lab_num[i])
-        }
-      }
-
-      if (base::is.character(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_char <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, lab_char[i])
-        }
-      }
-
-
-      if (base::is.factor(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_fac <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, base::levels(lab_fac)[i])
-        }
-      }
-
-      if (labelled::is.labelled(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_lab <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-        }
-      }
-
-      Frequency$Group <- lab
-
-      return(Frequency)
-    }
+  if (!base::is.numeric(data[[Noo]])) {
+    stop("Error: 'none' needs to be numeric!")
   }
 
-  if (method == "First Choice") {
-    if (base::is.null(Group)) {
-      base::colnames(WS) <- c("id", paste0("Bundle_", c(1:base::length(bundles))), "None")
-
-      WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
-
-      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
-
-      WS_new[, 1] <- WS[, 1]
-
-      for (i in 1:base::nrow(WS_new)) {
-        for (k in 2:base::ncol(WS_new)) {
-          WS_new[i, k] <- base::ifelse((WS[i, k] == base::max(WS[i, 2:(base::ncol(WS) - 1)]) & (base::max(WS[i, 2:(base::ncol(WS) - 1)]) > WS[i, "None"])), 1, 0)
-        }
-      }
-
-      if (base::length(bundles) == 1){
-        Freq <- tibble::tibble(Frequency = base::mean(base::sum(WS_new[, c(2:base::ncol(WS_new))])))
-      }
-
-
-      if (base::length(bundles) > 1){
-        Freq <- tibble::tibble(Frequency = base::mean(base::rowSums(WS_new[, c(2:base::ncol(WS_new))])))
-      }
-
-
-      return(Freq)
-    }
-
-    if (!(base::is.null(Group))) {
-      base::colnames(WS) <- c("id", "Group", paste0("Bundle_", c(1:base::length(bundles))), "None")
-
-      WS_new <- base::data.frame(base::matrix(nrow = base::nrow(WS), ncol = (base::ncol(WS) - 1)))
-
-      base::colnames(WS_new) <- base::colnames(WS)[c(1:(ncol(WS)-1))]
-
-      WS_new[, c(1, 2)] <- WS[, c(1, 2)]
-
-      for (i in 1:base::nrow(WS_new)) {
-        for (k in 3:base::ncol(WS_new)) {
-          WS_new[i, k] <- base::ifelse((WS[i, k] == base::max(WS[i, 3:(base::ncol(WS) - 1)]) & (base::max(WS[i, 3:(base::ncol(WS) - 1)]) > WS[i, "None"])), 1, 0)
-        }
-      }
-
-
-      if (base::length(bundles) == 1){
-        WS_new$freq <- base::mean(WS_new[, 2])
-      }
-
-      if (base::length(bundles) > 1){
-        WS_new$freq <- base::rowSums(WS_new[, c(3:base::ncol(WS_new))])
-      }
-
-      Frequency <- tibble::tibble(
-        base::rbind(
-        WS_new %>%
-          dplyr::summarise(
-            Group = "All",
-            Frequency = base::mean(freq)
-          ),
-        WS_new %>%
-          dplyr::group_by(Group) %>%
-          dplyr::summarise(
-            Frequency = base::mean(freq)
-          ))
-      )
-
-      # fixing grouping variable
-
-      lab <- c()
-
-      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_num <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, lab_num[i])
-        }
-      }
-
-      if (base::is.character(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_char <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, lab_char[i])
-        }
-      }
-
-
-      if (base::is.factor(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_fac <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, base::levels(lab_fac)[i])
-        }
-      }
-
-      if (labelled::is.labelled(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_lab <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-        }
-      }
-
-      Frequency$Group <- lab
-
-      return(Frequency)
-    }
+  ## check none can not be part of opts
+  if ((data %>% dplyr::select(., {{ none }}) %>% base::colnames()) %in%
+      (data %>% dplyr::select(., {{ opts }}) %>% base::colnames())){
+    stop("Error: 'none' can not be part of 'opts'!")
   }
+
+  return(data %>%
+             dplyr::select(., {{opts}}, {{none}}, {{group}}) %>%
+             dplyr::mutate(thres = {{none}},
+                           dplyr::across({{opts}}, ~ base::ifelse(.x > thres, 1, 0))) %>%
+             dplyr::rowwise() %>%
+             dplyr::mutate(freq = base::sum(dplyr::c_across({{opts}}))) %>%
+			 dplyr::ungroup() %>%
+             dplyr::group_by(dplyr::pick({{ group }})) %>%
+             dplyr::summarise(freq = base::mean(freq)))
+
 }

@@ -4,41 +4,37 @@
 #' Function to measure the median absolute error (MedAE) of a validation/
 #' holdout task.
 #'
-#' @param data a data frame
-#' @param id vector of column index of unique identifier in \code{data}.
-#' @param Group optional vector of column number to specify grouping variable
-#' to get \code{"medae"} by group.
-#' @param opts vector of column indexes of the alternatives included in the
-#' validation/ holdout task.
-#' @param choice vector of column index of the actual choice.
+#' @param data data frame with all relevant variables
+#' @param group optional column name(s) to specify grouping variable(s)
+#' to get \code{"medae"} by group(s)
+#' @param opts column names of the alternatives included in the
+#' validation/holdout task
+#' @param choice column name of the actual choice
 #'
-#' @return a data frame
-#' @importFrom dplyr group_by summarise n across mutate
+#' @return a tibble
+#' @importFrom dplyr select mutate group_by pick count ungroup across summarise
 #' @importFrom magrittr "%>%"
-#' @importFrom labelled is.labelled val_labels
-#' @importFrom tibble tibble
 #' @importFrom stats median
+#' @importFrom tidyr pivot_longer
+#' @importFrom tidyselect ends_with
 #'
 #' @details
 #' Median absolute error (MedAE) calculates the deviation between predicted and
 #' stated (actual) choice share and returns the median error in the
-#' validation/ holdout task, which is less liekly to be influenced by outliers.
+#' validation/ holdout task, which is less likely to be influenced by outliers.
 #'
 #' \code{data} needs to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
-#' \code{id} needs to be the column index of the id (unique for each participant)
-#' in \code{data}.
+#' \code{group} optional Grouping variable, if results should be display by different groups.
+#' Needs to be column name of variables in \code{data}.
 #'
-#' \code{Group} optional Grouping variable, if results should be display by different conditions.
-#' Input of \code{Group} needs to be a vector of the column index of \code{Group}.
+#' \code{opts} is needed to specify the different alternatives in the validation/holdout
+#' task (also includes the \code{none} alternative).
+#' Input of \code{opts} needs to be column names of variables in \code{data}.
 #'
-#' \code{opts} is needed to specify the different alternatives in the validation/ holdout
-#' task (also includes the None option).
-#' Input of \code{opts} needs to be a vector with column index(es).
-#'
-#' \code{choice} specifies the column index of the actual choice.
-#' Input of opts \code{choice} needs to be the column index of actual choice.
+#' \code{choice} to specify column of actual choice.
+#' Input of opts \code{choice} needs to be column name of actual choice.
 #'
 #'
 #' @examples
@@ -50,237 +46,92 @@
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",
-#'   choice = 20
+#'   choice = 20, varskeep = 21
 #' )
 #'
-#' medae(data = HOT, id = 1, opts = c(2:9), choice = 10)
-#' }
+#' # medae ungrouped
+#' medae(data = HOT, opts = c(Option_1:None), choice = choice)
 #'
-#' @examples
-#' \dontrun{
-#' HOT <- createHOT(
-#'   data = MaxDiff,
-#'   id = 1,
-#'   None = 19,
-#'   prod = 7,
-#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-#'   method = "MaxDiff",
-#'   varskeep = 21,
-#'   choice = 20
-#' )
-#'
-#' medae(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+#' # medae grouped
+#' medae(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)
 #' }
 #'
 #' @export
 
 
-medae <- function(data, id, Group = NULL, opts, choice) {
-  if (!base::is.integer(data[[choice]]) & !base::is.numeric(data[[choice]])) {
-    base::stop("Error: Choice must be numeric!")
+medae <- function(data, group, opts, choice) {
+
+  if (base::length(data %>% dplyr::select(., {{ opts }})) == 0) {
+    stop("Error: argument 'opts' is missing!")
   }
 
-  if (!base::is.null(Group) & base::anyNA(data[Group])) {
-    base::warning("Warning: Grouping variable contains NAs!")
+  if (base::length(data %>% dplyr::select(., {{ opts }})) == 1) {
+    stop("Error: specify at least 2 alternatives in 'opts'!")
   }
 
-  if (base::anyNA(data[,opts])) {
-    base::stop("Error: opts contains NAs!")
+  # grouping variable
+  ## check for missings
+  if (base::anyNA(data %>% dplyr::select(., {{ group }}))) {
+    warning("Warning: 'group' contains NAs!")
   }
 
-  for (i in 1:length(opts)){
-    if(!base::is.numeric(data[, opts[i]])){
-      base::stop("Error: opts must be numeric!")
+  # alternatives
+  ## store names of alternatives
+  alternatives <- data %>%
+    dplyr::select(., {{ opts }}) %>%
+    base::colnames()
+
+  ## check whether variable is numeric
+  for (i in 1:base::length(alternatives)) {
+    if (!base::is.numeric(data[[alternatives[i]]])) {
+      stop("Error: 'opts' need to be numeric!")
     }
   }
 
-  WS <- data[, c(id, Group, choice, opts)]
-
-  if (base::is.null(Group)) {
-
-    base::colnames(WS) <- c("id", "choice", paste0("Option_", c(1:base::length(opts))))
-
-    WS <- WS %>%
-      dplyr::mutate(dplyr::across(
-        base::which(base::colnames(WS) == "Option_1"):
-          base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts))),
-        function(x) 100 * (base::exp(x) / base::rowSums(base::exp(WS[, c(
-          base::which(base::colnames(WS) == "Option_1"):
-            base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
-        )])))
-      ),
-      pred = base::max.col(WS[,c(base::which(colnames(WS) == "Option_1"):
-                                   base::which(colnames(WS) == paste0("Option_", base::length(opts))))]))
-
-
-    Helper <- tibble::tibble(Options = c(1:base::length(opts)))
-
-    Actual <- tibble::tibble(WS %>%
-                               dplyr::group_by(choice) %>%
-                               dplyr::summarise(Count = dplyr::n()) %>%
-                               dplyr::ungroup() %>%
-                               dplyr::mutate(Share = Count / base::sum(Count) * 100)
-    )
-
-    Predicted <- tibble::tibble(base::cbind(
-      tibble::tibble(c(1:base::length(opts))),
-      tibble::tibble(c(base::unname(base::colMeans(WS[,
-                                                      c(base::which(colnames(WS) == "Option_1"):
-                                                          base::which(colnames(WS) == paste0("Option_", base::length(opts))))])))
-      )), .name_repair = ~ c("Options", "Pred")
-    )
-
-    MedAE <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
-
-    MedAE <- base::merge(x = MedAE, y = Predicted, by = "Options", all.x = T)
-
-    MedAE[base::is.na(MedAE)] <- 0
-
-    MedAEErr <- tibble::tibble(stats::median(base::abs(MedAE$Share - MedAE$Pred)),
-                               .name_repair = ~"MedAE")
-
-    return(MedAEErr)
+  ## check for missings
+  if (anyNA(data %>% dplyr::select(., {{ opts }}))) {
+    stop("Error: 'opts' contains NAs!")
   }
 
-  if (!(base::is.null(Group))) {
-
-    base::colnames(WS) <- c("id", "Group", "choice", paste0("Option_", c(1:base::length(opts))))
-
-    WS <- WS %>%
-      dplyr::mutate(dplyr::across(
-        base::which(base::colnames(WS) == "Option_1"):
-          base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts))),
-        function(x) 100 * (base::exp(x) / base::rowSums(base::exp(WS[, c(
-          base::which(base::colnames(WS) == "Option_1"):
-            base::which(base::colnames(WS) == base::paste0("Option_", base::length(opts)))
-        )])))
-      ),
-      pred = base::max.col(WS[,c(base::which(colnames(WS) == "Option_1"):
-                                   base::which(colnames(WS) == paste0("Option_", base::length(opts))))]))
-
-
-    MedAE <- tibble::tibble(Group = base::character(base::length(base::unique(WS$Group)) + 1), MedAE = base::numeric(base::length(base::unique(WS$Group)) + 1))
-
-    for (p in 1:base::length(base::unique(WS$Group))) {
-      if (p == 1) {
-        Helper <- tibble::tibble(Options = c(1:base::length(opts)))
-
-        Actual <- tibble::tibble(
-          WS %>%
-            dplyr::group_by(choice) %>%
-            dplyr::summarise(Count = dplyr::n()) %>%
-            dplyr::ungroup() %>%
-            dplyr::mutate(Share = Count / sum(Count) * 100))
-
-        Predicted <- tibble::tibble(base::cbind(
-          tibble::tibble(c(1:base::length(opts))),
-          tibble::tibble(c(base::unname(base::colMeans(WS[,
-                                                          c(base::which(colnames(WS) == "Option_1"):
-                                                              base::which(colnames(WS) == paste0("Option_", base::length(opts))))])))
-          )), .name_repair = ~ c("Options", "Pred")
-        )
-
-        DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
-
-        DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
-
-        DataFrame[base::is.na(DataFrame)] <- 0
-
-        MedAE[p, p] <- "All"
-
-        MedAE[p, (p + 1)] <- stats::median(base::abs(DataFrame$Share - DataFrame$Pred))
-
-        base::rm(Helper, Actual, Predicted, DataFrame)
-      }
-
-      if (base::is.numeric(WS$Group) & !labelled::is.labelled(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_num <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, lab_num[i])
-        }
-
-        Group <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[p])
-      }
-
-      if (base::is.character(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_char <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, lab_char[i])
-        }
-
-        Group <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[p])
-      }
-
-      if (base::is.character(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_char <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, lab_char[i])
-        }
-
-        Group <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[p])
-      }
-
-      if (base::is.factor(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_fac <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, base::levels(lab_fac)[i])
-        }
-
-        Group <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[p])
-      }
-
-      if (labelled::is.labelled(WS$Group)) {
-        lab <- "All"
-        for (i in 1:base::length(base::unique(WS$Group))) {
-          lab_lab <- base::sort(base::unique(WS$Group))
-
-          lab <- c(lab, base::names(labelled::val_labels(lab_lab))[i])
-        }
-
-        Group <- base::subset(WS, Group == base::sort(base::unique(WS$Group))[p])
-      }
-
-      Helper <- tibble::tibble(Options = c(1:base::length(opts)))
-
-      Actual <- tibble::tibble(
-        Group %>%
-          dplyr::group_by(choice) %>%
-          dplyr::summarise(Count = dplyr::n()) %>%
-          dplyr::ungroup() %>%
-          dplyr::mutate(Share = Count / base::sum(Count) * 100)
-      )
-
-      Predicted <- tibble::tibble(base::cbind(
-        tibble::tibble(c(1:base::length(opts))),
-        tibble::tibble(c(base::unname(base::colMeans(Group[,
-                                                           c(base::which(colnames(Group) == "Option_1"):
-                                                               base::which(colnames(Group) == paste0("Option_", base::length(opts))))])))
-        )), .name_repair = ~ c("Options", "Pred")
-      )
-
-      DataFrame <- base::merge(x = Helper, y = Actual[, c("choice", "Share")], by.x = "Options", by.y = "choice", all.x = T)
-
-      DataFrame <- base::merge(x = DataFrame, y = Predicted, by = "Options", all.x = T)
-
-      DataFrame[base::is.na(DataFrame)] <- 0
-
-      MedAE[(p + 1), 1] <- lab[(p + 1)]
-
-      MedAE[(p + 1), 2] <- stats::median(base::abs(DataFrame$Share - DataFrame$Pred))
-
-      base::rm(Helper, Actual, Predicted, DataFrame)
-
-      if (p == base::max(base::length(base::unique(WS$Group)))) {
-        return(MedAE)
-      }
-    }
+  # choice
+  ## check for missing
+  if (base::anyNA(data %>% dplyr::select(., {{ choice }}))) {
+    stop("Error: 'choice' contains NAs!")
   }
+
+  ## check for str
+  choi <- data %>%
+    dplyr::select(., {{ choice }}) %>%
+    base::colnames()
+
+  if (!base::is.numeric(data[[choi]])) {
+    stop("Error: 'choice' needs to be numeric!")
+  }
+
+  # create actual share of actual choice
+  base::suppressMessages(WS1 <- data %>%
+                           dplyr::mutate(merger = base::factor({{choice}}, levels = c(1:base::length(dplyr::select(., {{opts}}))), labels = c(1:base::length(dplyr::select(., {{opts}}))))) %>%
+                           dplyr::group_by(dplyr::pick({{ group }})) %>%
+                           dplyr::count(merger, .drop = F) %>%
+                           dplyr::mutate(chosen = n / base::sum(n) * 100) %>%
+                           dplyr::select(-"n"))
+
+
+  base::suppressMessages(WS2 <- data %>%
+                           dplyr::mutate(dplyr::across({{ opts }}, base::exp)) %>%
+                           dplyr::rowwise() %>%
+                           dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>%
+                           dplyr::ungroup() %>%
+                           dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>%
+                           dplyr::group_by(dplyr::pick({{ group }})) %>%
+                           dplyr::summarise(across({{opts}}, ~ mean(.), .names = "{.col}_mean")) %>%
+                           tidyr::pivot_longer(., cols = tidyselect::ends_with("_mean"), names_to = "alt", values_to = "mean") %>%
+                           dplyr::mutate(alt = base::substr(alt, 1, (base::nchar(alt) - base::nchar("_mean"))),
+                                         merger = base::rep(1:base::length(dplyr::select(data, {{opts}})), length.out = base::length(alt))))
+
+  return(suppressMessages(WS2 %>%
+                            base::merge(x = ., y = WS1, by = c(WS2 %>% dplyr::select(., {{group}}) %>% base::colnames(), "merger")) %>%
+                            dplyr::group_by(dplyr::pick({{ group }})) %>%
+                            dplyr::mutate(MEDAE = base::abs(mean - chosen)) %>%
+                            dplyr::summarise(medae = stats::median(MEDAE))))
 }

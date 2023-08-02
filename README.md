@@ -11,8 +11,8 @@ task (also known as holdout task). A validation task is essential to
 make sure that your collected data of a MaxDiff, CBC, or ACBC are valid
 and can also predict outside task that were not included in estimating
 your utility scores. Although commercial studies often do not include a
-validation/holdout task (Yang et al., 2018), it is highly recommended to
-do so (Orme, 2015; Rao, 2014). This validation/ holdout task does not
+validation/ holdout task (Yang et al., 2018), it is highly recommended
+to do so (Orme, 2015; Rao, 2014). This validation/ holdout task does not
 only help to check whether everything went right during data collection
 but also to determine your final model. <code>validatHOT</code> provides
 some of the relevant metrics to test the performance of your data in
@@ -49,10 +49,11 @@ combinations
 
 For all 3 key areas, the <code>createHOT</code> function is essential.
 This function creates the total utilities for each alternative in the
-validation/holdout task and also in the simulation method, respectively.
-Rao (2014, p. 82) mentions the additive utility model stating that the
-total utility of a profile or conjoint model is the sum of its attribute
-levels. <code>createHOT</code> will do exactly this for you.
+validation/ holdout task and also in the simulation method,
+respectively. Rao (2014, p. 82) mentions the additive utility model
+stating that the total utility of a profile or conjoint model is the sum
+of its attribute levels. <code>createHOT</code> will do exactly this for
+you.
 
 ### Classical validation metrics
 
@@ -63,7 +64,7 @@ of your validation task. The output will contain the chance level in
 your validation task ($\frac{1}{alternatives}$) in percentage. The
 number of correctly predicted participants’ choices as well as the
 percentage of how many choices were correctly predicted. If you specify
-an optional <code>Group</code> argument the output is split by groups.
+an optional <code>group</code> argument the output is split by groups.
 </li>
 <li>
 <code>kl</code>: Kullback-Leibler-Divergence which measures the
@@ -71,28 +72,28 @@ divergence between the actual choice distribution and the predicted
 choice distribution (Ding et al., 2011; Drost, 2018). Output provides
 both divergence between predicted from observed and observed from
 predicted due to the asymmetry of the Kullback-Leibler divergence. If
-you specify an optional <code>Group</code> argument the output is split
+you specify an optional <code>group</code> argument the output is split
 by groups. Currently, you can choose between and as logarithm base.
 </li>
 <li>
 <code>mae</code>: average absolute error, i.e., deviation between
 predicted and stated choice share. If you specify an optional
-<code>Group</code> argument the output is split by groups.
+<code>group</code> argument the output is split by groups.
 </li>
 <li>
 <code>medae</code>: since the averaged absolute error can be highly
-influenced by the If you specify an optional <code>Group</code> argument
+influenced by the If you specify an optional <code>group</code> argument
 the output is split by groups.
 </li>
 <li>
 <code>mhp</code>: averaged hit probability of participant’s actual
 choice in the validation/ holdout task. If you specify an optional
-<code>Group</code> argument the output is split by groups.
+<code>group</code> argument the output is split by groups.
 </li>
 <li>
 <code>rmse</code>: provides the root-mean-squared error of deviation
 between predicted and stated choice share. If you specify an optional
-<code>Group</code> argument the output is split by groups.
+<code>group</code> argument the output is split by groups.
 </li>
 </ul>
 
@@ -111,26 +112,26 @@ negatives.
 <ul>
 <li>
 <code>accuracy</code>: defined as $\frac{TP + TN}{TP + FP + TN + FN}$.
-If you specify an optional <code>Group</code> argument the output is
+If you specify an optional <code>group</code> argument the output is
 split by groups.
 </li>
 <li>
 <code>f1</code>: defined as
 $\frac{2 * precision * recall}{precision + recall}$ or stated
 differently by Burger (2018) $\frac{2TP}{2TP + FP + FN}$. If you specify
-an optional <code>Group</code> argument the output is split by groups.
+an optional <code>group</code> argument the output is split by groups.
 </li>
 <li>
 <code>precision</code>: defined as $\frac{TP}{TP + FP}$. If you specify
-an optional <code>Group</code> argument the output is split by groups.
+an optional <code>group</code> argument the output is split by groups.
 </li>
 <li>
 <code>recall</code>: defined as $\frac{TP}{TP + FN}$. If you specify an
-optional <code>Group</code> argument the output is split by groups.
+optional <code>group</code> argument the output is split by groups.
 </li>
 <li>
 <code>specificity</code>: defined as $\frac{TN}{TN + FP}$. If you
-specify an optional <code>Group</code> argument the output is split by
+specify an optional <code>group</code> argument the output is split by
 groups.
 </li>
 </ul>
@@ -143,14 +144,11 @@ groups.
 <a href="https://github.com/cran/turfR" target="_blank">turfR</a>
 package, <code>freqassort</code> will give you the averaged frequency,
 how many products the participants will choose from your in the function
-determined potential assortment. For the <code>method</code> argument
-you can decide between <code>method = “threshold”</code> (if utility of
-product is larger than the utility of <code>None</code>, it is marked as
-potential purchase option) and <code>method = “First Choice”</code>
-(only product with highest utility is considered. If its utility is
-above the utility of <code>None</code>, it is marked as potential
-purchase option). If you specify an optional <code>Group</code> argument
-the output is split by groups.
+determined potential assortment. Again, you have to define a `none`
+alternative. `freqassort` uses the *threshold* approach, meaning if the
+utility of one product is above the utility of `none`, it is marked as
+potential purchase option. If you specify an optional <code>group</code>
+argument the output is split by groups.
 </li>
 <li>
 <code>reach</code>: Inspired by the former
@@ -158,20 +156,13 @@ the output is split by groups.
 package, <code>reach</code> will give you the averaged percentage of how
 many participants you can reach (at least one of the products resemble a
 purchase option) with your in the function determined potential
-assortment. or the <code>method</code> argument you can decide between
-<code>method = “threshold”</code> (if utility of product is larger than
-the utility of <code>None</code>, it is marked as potential purchase
-option) and <code>method = “First Choice”</code> (only product with
-highest utility is considered. If its utility is above the utility of
-<code>None</code>, it is marked as potential purchase option). If you
-specify an optional <code>Group</code> argument the output is split by
-groups.
+assortment. `reach` also uses the *threshold* approach (see above).
 </li>
 <li>
 <code>shareofpref</code>: provides you the aggregated share of
 preference, including the lower and upper confidence interval, which is
 calculated according to the $mean +/- 1.96 x \frac{sd}{\sqrt(n)}$. If
-you specify an optional <code>Group</code> argument the output is split
+you specify an optional <code>group</code> argument the output is split
 by groups and provided in a list element.
 </li>
 </ul>
@@ -211,7 +202,7 @@ We are teaching a preference measurement seminar for students. Often
 these students did not have experience with *R* before or only sparsely.
 We teach them to also validate their results and wanted to give them an
 easy way on how to do this in *R*. Of course, there are other great
-packages which are even faster in running (i.e., Hamner & Frasco, 2018),
+packages which are faster in running (i.e., Hamner & Frasco, 2018),
 however, these packages need some more data wrangling in order to use
 the appropriate functions, which might be a burden or barrier for the
 one or the other.
@@ -271,14 +262,14 @@ is composed of the following attribute levels <code>Att1_Lev1</code>,
 
 As mentioned above, all the attributes are part-worth coded, therefore,
 we set <code>coding = c(0, 0, 0)</code>. Finally, we specify the method
-of prefernce measurement technique, which is <code>method = “CBC”</code>
-in our case and the column index of the actual participant’s choice
-(<code>choice</code>). If you run the code, a data frame called
-<code>HOT</code> (short form of **H**old**o**ut **t**ask) will be
-returned to the global environment.
+of preference measurement technique, which is <code>method =
+“CBC”</code> in our case and the column index of the actual
+participant’s choice (<code>choice</code>). If you run the code, a data
+frame called <code>HOT</code> (short form of **H**old**o**ut **t**ask)
+will be returned to the global environment.
 
-> ❗ <code>validateHOT</code> is currently just taking indexes instead
-> of column names, please be aware of this. However, you can easily find
+> ❗ <code>createHOT</code> is currently just taking indexes instead of
+> column names, please be aware of this. However, you can easily find
 > out the index by using the <code>names()</code> function or by using
 > <code>which()</code> and <code>colnames()</code>, both functions are
 > provided by the base package (R Core Team, 2023). For example, if you
@@ -315,29 +306,26 @@ head(HOT)
 In the next step, we would like to see how well our model (from which we
 took the raw utilities) predict the choices in the validation/ holdout
 task. First, we will test the <code>hitrate()</code> function. We
-specify the <code>data</code>, the column index of <code>id</code>, the
-column index of the alternatives (<code>opts</code>; remember we have
-three alternatives + the *no-buy* alternative), and finally the column
-index of the choice. We can see that the hitrate of our example is
-48.101.
+specify the <code>data</code>, the column names of the alternatives
+(<code>opts</code>; remember we have three alternatives + the *no-buy*
+alternative), and finally the choice. We can see that the hitrate of our
+example is NA.
 
 ``` r
-hitrate(data = HOT, id = 1, opts = c(2:5), choice = 6)
-#> # A tibble: 3 × 2
-#>   name   stats
-#>   <chr>  <dbl>
-#> 1 chance  25  
-#> 2 no.     38  
-#> 3 %       48.1
+hitrate(data = HOT, opts = c(2:5), choice = choice)
+#> # A tibble: 1 × 4
+#>      HR chance   cor     n
+#>   <dbl>  <dbl> <int> <int>
+#> 1  48.1     25    38    79
 ```
 
 Let us also check the magnitude of the mean absolute error by running
 the <code>mae()</code> function.
 
 ``` r
-mae(data = HOT, id = 1, opts = c(2:5), choice = 6)
+mae(data = HOT, opts = c(2:5), choice = choice)
 #> # A tibble: 1 × 1
-#>     MAE
+#>     mae
 #>   <dbl>
 #> 1  13.1
 ```
@@ -350,7 +338,7 @@ participant opts for a *buy*). We will test the accuracy of the model by
 running the <code>accuracy()</code> function.
 
 ``` r
-accuracy(data = HOT, id = 1, opts = c(2:5), None = 5, choice = 6)
+accuracy(data = HOT, opts = c(2:5), choice = choice, none = None)
 #> # A tibble: 1 × 1
 #>   accuracy
 #>      <dbl>
@@ -361,11 +349,11 @@ Finally, let us test, how many participants would at least buy one of
 the three products, assuming that this is one potential assortment we
 would like to offer to our consumers. We will use the
 <code>reach()</code> function and use the threshold approach. To specify
-the bundles we are offering we use the <code>bundles</code> argument in
-our function.
+the bundles we are offering we use the <code>opts</code> argument in our
+function.
 
 ``` r
-reach(data = HOT, id = 1, bundles = c(2:4), None = 5, method = "threshold")
+reach(data = HOT, opts = c(Option_1:Option_3), none = None)
 #> # A tibble: 1 × 1
 #>   reach
 #>   <dbl>
@@ -443,23 +431,21 @@ CBC <- createHOT(
 The next steps are the same as above. However, let us take a look at
 some examples in which we display the results per group. Let us again
 begin with the <code>hitrate()</code> function. To do so, we specify the
-column index of the grouping variable in the <code>Group</code>
-argument.
+column name of the grouping variable in the <code>group</code> argument.
 
 ``` r
-hitrate(data = CBC, id = 1, opts = c(2:5), Group = 6, choice = 7)
-#> # A tibble: 4 × 4
-#>   Group   no. perc. chance
-#>   <chr> <int> <dbl>  <dbl>
-#> 1 All      40  50.6     25
-#> 2 1        13  59.1     25
-#> 3 2        10  37.0     25
-#> 4 3        17  56.7     25
+hitrate(data = CBC, opts = c(Option_1:None), choice = choice, group = Group)
+#> # A tibble: 3 × 5
+#>   Group    HR chance   cor     n
+#>   <int> <dbl>  <dbl> <int> <int>
+#> 1     1  59.1     25    13    22
+#> 2     2  37.0     25    10    27
+#> 3     3  56.7     25    17    30
 ```
 
 In this case, the Grouping variable is just an integer. However, the
 output is different if it is a factor or if it is labelled data. To
-proof this we just quickly change <code>Group</code> in a factor by
+proof this we just quickly change <code>group</code> in a factor by
 using the <code>factor()</code> function provided by R Core Team (2023).
 
 ``` r
@@ -473,14 +459,13 @@ Afterward, we display the *mean hit probability* by running the
 <code>mhp()</code> function.
 
 ``` r
-mhp(data = CBC, id = 1, opts = c(2:5), Group = 6, choice = 7)
-#> # A tibble: 4 × 2
-#>   Group   MeanHitProb
-#>   <chr>         <dbl>
-#> 1 All            43.1
-#> 2 Group_1        41.7
-#> 3 Group_2        39.0
-#> 4 Group_3        47.8
+mhp(data = CBC, opts = c(Option_1:None), choice = choice, group = Group)
+#> # A tibble: 3 × 2
+#>   Group     MHP
+#>   <fct>   <dbl>
+#> 1 Group_1  41.7
+#> 2 Group_2  39.0
+#> 3 Group_3  47.8
 ```
 
 For more examples, please see the accompanied vignette.
