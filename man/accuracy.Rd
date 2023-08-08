@@ -37,19 +37,21 @@ was predicted correctly. For example, you have three alternatives plus
 a \code{"none"} alternative and you want to check whether a buy or no-buy was
 correctly predicted. This function can be helpful when you test whether or
 not your model significantly overestimates or underestimates, for example, a purchase likelihood.
+This function was programmed to predict demand for a MaxDiff, CBC, or ACBC.
+
 
 \code{data} needs to be a data frame including the alternatives shown in
 the validation/holdout task. Can be created using the \code{createHOT()} function.
 
-\code{group} optional Grouping variable, if results should be display by different groups.
-Needs to be column name of variables in \code{data}.
+\code{group} optional grouping variable(s), if results should be display by different groups.
+Need to be column name(s) of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the validation/holdout
 task (also includes the \code{none} alternative).
 Input of \code{opts} needs to be column names of variables in \code{data}.
 
 \code{choice} to specify column of actual choice.
-Input of opts \code{choice} needs to be column name of actual choice.
+Input of \code{choice} needs to be column name of actual choice.
 
 \code{none} to specify column name of the \code{none} alternative in the
 validation/holdout task.

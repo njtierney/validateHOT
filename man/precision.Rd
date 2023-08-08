@@ -37,6 +37,7 @@ was predicted correctly. For example, you have three alternatives plus
 a \code{"none"} alternative and you want to check whether a buy or no-buy was
 correctly predicted. This function can be helpful when you test whether or
 not your model significantly overestimates or underestimates, for example, a purchase likelihood.
+This function was programmed to predict demand for a MaxDiff, CBC, or ACBC.
 
 \code{data} needs to be a data frame including the alternatives shown in
 the validation/holdout task. Can be created using the \code{createHOT()} function.

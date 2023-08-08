@@ -3,7 +3,7 @@
 #' @description Function used to create utilities for validation task.
 #'
 #' @param data data frame with all relevant variables.
-#' @param id ector of column index of unique identifier in \code{data}.
+#' @param id vector of column index of unique identifier in \code{data}.
 #' @param None column index of \code{None} in \code{data}; if of \code{None} is not included, leave empty
 #' @param prod number of options in the Holdout task without the \code{None} option, must be numeric
 #' @param prod.levels a list to define the attribute levels of the options (\code{prod})
