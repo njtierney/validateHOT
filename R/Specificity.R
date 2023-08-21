@@ -6,34 +6,33 @@
 #'
 #' @param data data frame with all relevant variables
 #' @param group optional column name(s) to specify grouping variable(s)
-#' to get \code{"recall"} by group(s)
+#' to get \code{"specificity"} by group(s)
 #' @param opts column names of the alternatives included in the
 #' validation/holdout task
 #' @param choice column name of the actual choice
 #' @param none column name of none alternative
 #'
 #' @details
-#' The current logic of \code{"recall"} is to provide whether a binary coded event is correctly predicted.
-#' To use the function a \code{"none"} alternative needs to be in the script.
+#' The current logic of \code{"specificity"} is to determine whether a binary coded is correctly predicted by the model.
+#' To use the function a \code{"none"} alternative has to be included in the validation/holdout task.
 #' One potential usage is, for example, whether a buy or a no-buy condition
 #' was predicted correctly. For example, you have three alternatives plus
 #' a \code{"none"} alternative and you want to check whether a buy or no-buy was
-#' correctly predicted. This function can be helpful when you test whether or
-#' not your model significantly overestimates or underestimates, for example, a purchase likelihood.
-#' This function was programmed to predict demand for a MaxDiff, CBC, or ACBC.
+#' correctly predicted. This function can be helpful when you test, for example, if
+#' your model significantly overestimates or underestimates, for example, a purchase likelihood.
 #'
-#' \code{data} needs to be a data frame including the alternatives shown in
+#' \code{data} has to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
 #' \code{group} optional Grouping variable, if results should be display by different conditions.
-#' Needs to be column name of variables in \code{data}.
+#' Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
 #' task (also includes the \code{none} alternative).
-#' Input of \code{opts} needs to be column names of variables in \code{data}.
+#' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.
-#' Input of opts \code{choice} needs to be column name of actual choice.
+#' Input of opts \code{choice} has to be column name of actual choice.
 #'
 #' \code{none} to specify column name of the \code{none} alternative in the
 #' validation/holdout task.
@@ -65,7 +64,8 @@
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",
-#'   choice = 20, varskeep = 21
+#'   varskeep = 21,
+#'   choice = 20
 #' )
 #'
 #' # specificity ungrouped
@@ -94,7 +94,7 @@ specificity <- function(data, group, opts, choice, none) {
 
   if (!(data %>% dplyr::select(., {{ none }}) %>% base::colnames()) %in%
       (data %>% dplyr::select(., {{ opts }}) %>% base::colnames())) {
-    stop("Error: 'none' needs to be part of 'opts'!")
+    stop("Error: 'none' has to be part of 'opts'!")
   }
 
   # grouping variable
@@ -112,7 +112,7 @@ specificity <- function(data, group, opts, choice, none) {
   ## check whether variable is numeric
   for (i in 1:base::length(alternatives)) {
     if (!base::is.numeric(data[[alternatives[i]]])) {
-      stop("Error: 'opts' need to be numeric!")
+      stop("Error: 'opts' has to be numeric!")
     }
   }
 
@@ -133,7 +133,7 @@ specificity <- function(data, group, opts, choice, none) {
     base::colnames()
 
   if (!base::is.numeric(data[[choi]])) {
-    stop("Error: 'choice' needs to be numeric!")
+    stop("Error: 'choice' has to be numeric!")
   }
 
   return(data %>%

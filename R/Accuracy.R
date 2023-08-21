@@ -1,7 +1,7 @@
 #' Accuracy
 #'
 #' @description accuracy is one of the 5 metrics of the confusion matrix
-#' and is defined as number of correct predicted participants divided by the total number of predictions.
+#' and is defined as number of correctly predicted participants divided by the total number of predictions.
 #' See, for example, Burger (2018): \eqn{\frac{TP + TN}{TP + FP + TN + FN}}, where TP =
 #' True Positives, TN = True Negatives, FP = False Positives, and FN =
 #' False Negatives.
@@ -15,28 +15,27 @@
 #' @param none column name of none alternative
 #'
 #' @details
-#' The current logic of \code{"accuracy"} is to provide whether a binary coded event is correctly predicted.
-#' To use the function a \code{"none"} alternative needs to be in the script.
+#' The current logic of \code{"accuracy"} is to determine whether a binary coded is correctly predicted by the model.
+#' To use the function a \code{"none"} alternative has to be included in the validation/holdout task.
 #' One potential usage is, for example, whether a buy or a no-buy condition
-#' was predicted correctly. For example, you have three alternatives plus
+#' was predicted correctly. For example, assume you have three alternatives plus
 #' a \code{"none"} alternative and you want to check whether a buy or no-buy was
-#' correctly predicted. This function can be helpful when you test whether or
-#' not your model significantly overestimates or underestimates, for example, a purchase likelihood.
-#' This function was programmed to predict demand for a MaxDiff, CBC, or ACBC.
+#' correctly predicted. This function can be helpful when you test, for example, if
+#' your model significantly overestimates or underestimates, for example, a purchase likelihood.
 #'
 #'
-#' \code{data} needs to be a data frame including the alternatives shown in
+#' \code{data} has to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
 #' \code{group} optional grouping variable(s), if results should be display by different groups.
-#' Need to be column name(s) of variables in \code{data}.
+#' Has to be column name(s) of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
 #' task (also includes the \code{none} alternative).
-#' Input of \code{opts} needs to be column names of variables in \code{data}.
+#' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.
-#' Input of \code{choice} needs to be column name of actual choice.
+#' Input of \code{choice} has to be column name of actual choice.
 #'
 #' \code{none} to specify column name of the \code{none} alternative in the
 #' validation/holdout task.
@@ -72,12 +71,14 @@
 #'   varskeep = 21,
 #'   choice = 20
 #' )
+#'
 #' # accuracy ungrouped
 #' accuracy(data = HOT, opts = c(Option_1:None), choice = choice, none = None)
 #'
 #' # accuracy by group
 #' accuracy(data = HOT, opts = c(Option_1:None), choice = choice, none = None, group = Group)
 #' }
+#'
 #' @export
 accuracy <- function(data, group, opts, choice, none) {
   # check for wrong / missing input
@@ -97,7 +98,7 @@ accuracy <- function(data, group, opts, choice, none) {
   # check whether none is part of opts
   if (!(data %>% dplyr::select(., {{ none }}) %>% base::colnames()) %in%
     (data %>% dplyr::select(., {{ opts }}) %>% base::colnames())) {
-    stop("Error: 'none' needs to be part of 'opts'!")
+    stop("Error: 'none' has to be part of 'opts'!")
   }
 
   # grouping variable
@@ -115,7 +116,7 @@ accuracy <- function(data, group, opts, choice, none) {
   ## check whether variable is numeric
   for (i in 1:base::length(alternatives)) {
     if (!base::is.numeric(data[[alternatives[i]]])) {
-      stop("Error: 'opts' need to be numeric!")
+      stop("Error: 'opts' has to be numeric!")
     }
   }
 
@@ -136,23 +137,23 @@ accuracy <- function(data, group, opts, choice, none) {
     base::colnames()
 
   if (!base::is.numeric(data[[choi]])) {
-    stop("Error: 'choice' needs to be numeric!")
+    stop("Error: 'choice' has to be numeric!")
   }
 
   return(data %>%
     dplyr::mutate(
-      pred = base::max.col(dplyr::pick({{ opts }})),
+      pred = base::max.col(dplyr::pick({{ opts }})), # store column with highest utility
       buy = base::ifelse({{ choice }} != base::match(
         data %>% dplyr::select(., {{ none }}) %>% colnames(),
         data %>% dplyr::select(., {{ opts }}) %>% colnames()
-      ), 1, 2),
+      ), 1, 2), # dichotomies actual choice (1 = prod, 2 = none)
       pred = base::ifelse(pred != base::match(
         data %>% dplyr::select(., {{ none }}) %>% colnames(),
         data %>% dplyr::select(., {{ opts }}) %>% colnames()
-      ), 1, 2)
+      ), 1, 2) # dichotomies pred choice (1 = prod, 2 = none)
     ) %>%
-    dplyr::group_by(pick({{ group }})) %>%
+    dplyr::group_by(pick({{ group }})) %>% # potential grouping variable
     dplyr::summarise(
-      accuracy = 100 * base::mean(buy == pred)
+      accuracy = 100 * base::mean(buy == pred) # calculate accuracy
     ))
 }

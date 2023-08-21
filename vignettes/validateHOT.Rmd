@@ -335,7 +335,7 @@ precision(data = HOT, opts = c(Option_1:None), choice = choice, none = None, gro
 ```
 
 
-### `recall``
+### `recall`
 
 Similar to the validation metrics shown above, we can also implement these functions in `tidyverse` logic.
 
