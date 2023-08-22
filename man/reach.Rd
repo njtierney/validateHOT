@@ -20,24 +20,24 @@ to get \code{"reach"} by group(s)}
 a tibble
 }
 \description{
-Reach function of TURF analysis to measure the number of  the averaged percentage of how many participants you can reach
+Reach function of **T**(otal) **U**(nduplicated) **R**(Reach) and **F**(requency) analysis to measure the number of  the averaged percentage of how many participants you can reach
 (at least one of the products resemble a purchase option) is reached with a specific product bundle assortment.
 }
 \details{
 \code{"reach"} calculates the the percentage of consumers that would be reached with the
 product assortment you are testing. The current logic of \code{reach()}
-is that it needs to exceed a threshold. In the case of \code{reach()}
+is that the utility of an alternative has to exceed a threshold. In the case of \code{reach()}
 this threshold is referred to the \code{none} argument in \code{data}.
 
 
-\code{data} needs to be a data frame including the alternatives that should be tested
+\code{data} has to be a data frame including the alternatives that should be tested
 
-\code{group} optional Grouping variable, if results should be display by different conditions.
-Needs to be column name of variables in \code{data}.
+\code{group} optional Grouping variable, if results should be displayed by different conditions.
+Has to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the
 product assortment that should be considered.
-Input of \code{opts} needs to be column names of variables in \code{data}.
+Input of \code{opts} has to be column names of variables in \code{data}.
 
 \code{none} to specify column name of the \code{none} alternative in the
 validation/holdout task.
@@ -59,7 +59,6 @@ reach(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None)
 
 # reach grouped
 reach(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group)
-
 }
 
 }

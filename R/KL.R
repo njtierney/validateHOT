@@ -1,6 +1,6 @@
 #' Kullback-Leibler Divergence
 #'
-#' @description Function to measure the Kullback-Leibler Divergence of a validation task
+#' @description Function to measure the Kullback-Leibler Divergence of a validation/holdout task.
 #' @param data data frame with all relevant variables
 #' @param group optional column name(s) to specify grouping variable(s)
 #' to get \code{"kl"} by group(s)
@@ -8,7 +8,7 @@
 #' validation/holdout task
 #' @param choice column name of the actual choice
 #' @param epsilon vector of noise that should be added to 0 values, per default set to 1e-05
-#' @param basis character string to define the logarithm base, currently can choose between \code{log} and \code{log2}
+#' @param basis character string to define the logarithm base, currently choice between \code{log} (default) and \code{log2}
 #'
 #' @return a tibble
 #' @importFrom dplyr select mutate group_by pick count summarise
@@ -17,31 +17,31 @@
 #' @details
 #' Kullback-Leibler-Divergence which measures the divergence between the actual choice distribution and the predicted
 #' choice distribution (Ding et al., 2011; Drost, 2018). Currently only provides
-#' the deviation measured based on \eqn{log} and \eqn{log{_2}} algorithm.
+#' the deviation measured based on \eqn{log} and \eqn{log{_2}} algorithm. \eqn{log} set as default.
 #'
 #' Due to the asymmetry of the Kullback-Leibler divergence, output provides both
 #' \code{"KL_O_P"} which is equivalent to (Observed || Predicted) and
 #' \code{"KL_P_O"} which is equivalent to (Predicted || Observed).
 #'
-#' \code{data} needs to be a data frame including the alternatives shown in
+#' \code{data} has to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
-#' \code{group} optional Grouping variable, if results should be display by different groups.
-#' Needs to be column name of variables in \code{data}.
+#' \code{group} optional grouping variable, if results should be displayed by different groups.
+#' Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
 #' task (also includes the \code{none} alternative).
-#' Input of \code{opts} needs to be column names of variables in \code{data}.
+#' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.
-#' Input of opts \code{choice} needs to be column name of actual choice.
+#' Input of opts \code{choice} has to be column name of actual choice.
 #'
-#' \code{epsilon} needs to be a numeric input in case of 0 in the numerator or denominator. 0
+#' \code{epsilon} has to be a numeric input in case of 0 in the numerator or denominator. 0
 #' then will be replaced by \code{epsilon}. Default value is \code{epsilon = 1e-5}, however, can
 #' be adopted.
 #'
 #' \code{basis} needs to be a character string, deciding which logarithm base you want to apply
-#' to calculate Kullback-Leibler. You can choose between \eqn{log} and \eqn{log{_2}}
+#' to calculate Kullback-Leibler. You can choose between \eqn{log} and \eqn{log{_2}}. Default set to \eqn{log}.
 #'
 #' @references {
 #'
@@ -61,7 +61,8 @@
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",
-#'   choice = 20, varskeep = 21
+#'   choice = 20,
+#'   varskeep = 21
 #' )
 #'
 #' # kl ungrouped - log
@@ -71,8 +72,7 @@
 #' kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2")
 #'
 #' # kl grouped - log + specifying epsilon
-#' kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log", +
-#'  group = Group, epsilon = 1e-8)
+#' kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log", <br> group = Group, epsilon = 1e-8)
 #'
 #' # kl grouped - log2
 #' kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2", group = Group)
@@ -80,17 +80,21 @@
 #'
 #' @export
 
-kl <- function(data, group, opts, choice, epsilon = NULL, basis) {
+kl <- function(data, group, opts, choice, epsilon = NULL, basis = NULL) {
   # specify epsilon if not defined
   if (base::is.null(epsilon)) {
     epsilon <- .00001
   }
 
-  if (!base::is.numeric(epsilon)){
-    stop("Error: 'epsilon' needs to be numeric!")
+  if (!base::is.numeric(epsilon)) {
+    stop("Error: 'epsilon' has to be numeric!")
   }
 
-  # check logarithm base
+  # specify basis if not defined
+  if (base::is.null(basis)) {
+    basis <- "log"
+  }
+
   if ((basis != "log") & (basis != "log2")) {
     base::stop("Error: Basis can only be 'log' or 'log2'!")
   }
@@ -118,7 +122,7 @@ kl <- function(data, group, opts, choice, epsilon = NULL, basis) {
   ## check whether variable is numeric
   for (i in 1:base::length(alternatives)) {
     if (!base::is.numeric(data[[alternatives[i]]])) {
-      stop("Error: 'opts' need to be numeric!")
+      stop("Error: 'opts' has to be numeric!")
     }
   }
 
@@ -139,7 +143,7 @@ kl <- function(data, group, opts, choice, epsilon = NULL, basis) {
     base::colnames()
 
   if (!base::is.numeric(data[[choi]])) {
-    stop("Error: 'choice' needs to be numeric!")
+    stop("Error: 'choice' has to be numeric!")
   }
 
   # create actual share of actual choice
@@ -150,6 +154,7 @@ kl <- function(data, group, opts, choice, epsilon = NULL, basis) {
     dplyr::mutate(chosen = n / base::sum(n)) %>%
     dplyr::select(-"n"))
 
+  # create share of predicted choice
   base::suppressMessages(WS2 <- data %>%
     dplyr::mutate(pred = base::max.col(pick({{ opts }}))) %>%
     dplyr::mutate(alt = base::factor(pred, levels = c(1:base::length(dplyr::select(., {{ opts }}))), labels = base::paste0("Option_", c(1:base::length(dplyr::select(., {{ opts }})))))) %>%
@@ -161,11 +166,11 @@ kl <- function(data, group, opts, choice, epsilon = NULL, basis) {
   # if basis set to 'log'
   if (basis == "log") {
     return(WS1 %>%
-      base::merge(x = ., y = WS2, by = c(WS1 %>% dplyr::select(., {{ group }}) %>% base::colnames(), "alt")) %>%
+      base::merge(x = ., y = WS2, by = c(WS1 %>% dplyr::select(., {{ group }}) %>% base::colnames(), "alt")) %>% # merge both data frames
       dplyr::group_by(dplyr::pick({{ group }})) %>%
       dplyr::mutate(
-        chosen = base::ifelse(chosen == 0, epsilon, chosen),
-        pred = base::ifelse(pred == 0, epsilon, pred)
+        chosen = base::ifelse(chosen == 0, epsilon, chosen), # add epsilon if 0
+        pred = base::ifelse(pred == 0, epsilon, pred) # add epsilon if 0
       ) %>%
       dplyr::summarise(
         kl_o_p = base::sum(chosen * base::log(chosen / pred)),

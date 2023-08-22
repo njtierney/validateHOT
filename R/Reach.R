@@ -1,7 +1,7 @@
 #' Percentage of participants that are reached by assortment
 #'
 #' @description
-#' Reach function of TURF analysis to measure the number of  the averaged percentage of how many participants you can reach
+#' Reach function of **T**(otal) **U**(nduplicated) **R**(Reach) and **F**(requency) analysis to measure the number of  the averaged percentage of how many participants you can reach
 #' (at least one of the products resemble a purchase option) is reached with a specific product bundle assortment.
 #'
 #' @param data data frame with all relevant variables
@@ -13,18 +13,18 @@
 #' @details
 #' \code{"reach"} calculates the the percentage of consumers that would be reached with the
 #' product assortment you are testing. The current logic of \code{reach()}
-#' is that it needs to exceed a threshold. In the case of \code{reach()}
+#' is that the utility of an alternative has to exceed a threshold. In the case of \code{reach()}
 #' this threshold is referred to the \code{none} argument in \code{data}.
 #'
 #'
-#' \code{data} needs to be a data frame including the alternatives that should be tested
+#' \code{data} has to be a data frame including the alternatives that should be tested
 #'
-#' \code{group} optional Grouping variable, if results should be display by different conditions.
-#' Needs to be column name of variables in \code{data}.
+#' \code{group} optional Grouping variable, if results should be displayed by different conditions.
+#' Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the
 #' product assortment that should be considered.
-#' Input of \code{opts} needs to be column names of variables in \code{data}.
+#' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{none} to specify column name of the \code{none} alternative in the
 #' validation/holdout task.
@@ -52,14 +52,12 @@
 #'
 #' # reach grouped
 #' reach(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group)
-#'
 #' }
 
 #'
 #' @export
 
 reach <- function(data, group, none, opts) {
-
   # check for wrong / missing input
   if (base::length(data %>% dplyr::select(., {{ none }})) == 0) {
     stop("Error: argument 'none' is missing!")
@@ -115,17 +113,18 @@ reach <- function(data, group, none, opts) {
 
   ## check none can not be part of opts
   if ((data %>% dplyr::select(., {{ none }}) %>% base::colnames()) %in%
-      (data %>% dplyr::select(., {{ opts }}) %>% base::colnames())){
+    (data %>% dplyr::select(., {{ opts }}) %>% base::colnames())) {
     stop("Error: 'none' can not be part of 'opts'!")
   }
 
   return(data %>%
-           dplyr::select(., {{opts}}, {{none}}, {{group}}) %>%
-           dplyr::mutate(thres = {{none}},
-                         dplyr::across({{opts}}, ~ base::ifelse(.x > thres, 1, 0))) %>%
-           dplyr::rowwise() %>%
-           dplyr::mutate(reach = base::ifelse(sum({{opts}}) > 0, 1, 0)) %>%
-           dplyr::group_by(dplyr::pick({{ group }})) %>%
-           dplyr::summarise(reach = base::mean(reach) * 100))
+    dplyr::select(., {{ opts }}, {{ none }}, {{ group }}) %>% # select relevant variables
+    dplyr::mutate(
+      thres = {{ none }}, # store utility of threshold
+      dplyr::across({{ opts }}, ~ base::ifelse(.x > thres, 1, 0))
+    ) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(reach = base::ifelse(sum({{ opts }}) > 0, 1, 0)) %>% # if sum of alternatves is above 0 --> reached
+    dplyr::group_by(dplyr::pick({{ group }})) %>%
+    dplyr::summarise(reach = base::mean(reach) * 100))
 }
-

@@ -27,7 +27,7 @@
 #' \code{data} has to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
-#' \code{group} optional grouping variable(s), if results should be display by different groups.
+#' \code{group} optional grouping variable(s), if results should be displayed by different groups.
 #' Has to be column name(s) of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
@@ -142,7 +142,7 @@ accuracy <- function(data, group, opts, choice, none) {
 
   return(data %>%
     dplyr::mutate(
-      pred = base::max.col(dplyr::pick({{ opts }})), # store column with highest utility
+      pred = base::max.col(dplyr::pick({{ opts }})), # store column index with highest utility
       buy = base::ifelse({{ choice }} != base::match(
         data %>% dplyr::select(., {{ none }}) %>% colnames(),
         data %>% dplyr::select(., {{ opts }}) %>% colnames()

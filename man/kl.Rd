@@ -4,7 +4,7 @@
 \alias{kl}
 \title{Kullback-Leibler Divergence}
 \usage{
-kl(data, group, opts, choice, epsilon = NULL, basis)
+kl(data, group, opts, choice, epsilon = NULL, basis = NULL)
 }
 \arguments{
 \item{data}{data frame with all relevant variables}
@@ -19,42 +19,42 @@ validation/holdout task}
 
 \item{epsilon}{vector of noise that should be added to 0 values, per default set to 1e-05}
 
-\item{basis}{character string to define the logarithm base, currently can choose between \code{log} and \code{log2}}
+\item{basis}{character string to define the logarithm base, currently choice between \code{log} (default) and \code{log2}}
 }
 \value{
 a tibble
 }
 \description{
-Function to measure the Kullback-Leibler Divergence of a validation task
+Function to measure the Kullback-Leibler Divergence of a validation/holdout task.
 }
 \details{
 Kullback-Leibler-Divergence which measures the divergence between the actual choice distribution and the predicted
 choice distribution (Ding et al., 2011; Drost, 2018). Currently only provides
-the deviation measured based on \eqn{log} and \eqn{log{_2}} algorithm.
+the deviation measured based on \eqn{log} and \eqn{log{_2}} algorithm. \eqn{log} set as default.
 
 Due to the asymmetry of the Kullback-Leibler divergence, output provides both
 \code{"KL_O_P"} which is equivalent to (Observed || Predicted) and
 \code{"KL_P_O"} which is equivalent to (Predicted || Observed).
 
-\code{data} needs to be a data frame including the alternatives shown in
+\code{data} has to be a data frame including the alternatives shown in
 the validation/holdout task. Can be created using the \code{createHOT()} function.
 
-\code{group} optional Grouping variable, if results should be display by different groups.
-Needs to be column name of variables in \code{data}.
+\code{group} optional grouping variable, if results should be displayed by different groups.
+Has to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the validation/holdout
 task (also includes the \code{none} alternative).
-Input of \code{opts} needs to be column names of variables in \code{data}.
+Input of \code{opts} has to be column names of variables in \code{data}.
 
 \code{choice} to specify column of actual choice.
-Input of opts \code{choice} needs to be column name of actual choice.
+Input of opts \code{choice} has to be column name of actual choice.
 
-\code{epsilon} needs to be a numeric input in case of 0 in the numerator or denominator. 0
+\code{epsilon} has to be a numeric input in case of 0 in the numerator or denominator. 0
 then will be replaced by \code{epsilon}. Default value is \code{epsilon = 1e-5}, however, can
 be adopted.
 
 \code{basis} needs to be a character string, deciding which logarithm base you want to apply
-to calculate Kullback-Leibler. You can choose between \eqn{log} and \eqn{log{_2}}
+to calculate Kullback-Leibler. You can choose between \eqn{log} and \eqn{log{_2}}. Default set to \eqn{log}.
 }
 \examples{
 \dontrun{
@@ -65,7 +65,8 @@ HOT <- createHOT(
   prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",
-  choice = 20, varskeep = 21
+  choice = 20,
+  varskeep = 21
 )
 
 # kl ungrouped - log
@@ -75,8 +76,7 @@ kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log")
 kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2")
 
 # kl grouped - log + specifying epsilon
-kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log", +
- group = Group, epsilon = 1e-8)
+kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log", <br> group = Group, epsilon = 1e-8)
 
 # kl grouped - log2
 kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2", group = Group)

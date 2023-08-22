@@ -996,4 +996,3 @@ test_that("Make sure varskeep is working ", {
     varskeep = 41
   ))
 })
-

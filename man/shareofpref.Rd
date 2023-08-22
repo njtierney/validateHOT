@@ -19,23 +19,23 @@ validation/holdout task}
 a tibble
 }
 \description{
-Function to measure the share of preferences of each option in the validation task
+Function to measure the share of preferences of each option in a validation/holdout task
 }
 \details{
-Share of Preference provides the aggrgated share of each alternative in the
-validation/ holdout task as well as the lower and upper confidence interval
+Share of Preference provides the aggregated share of each alternative in the
+validation/holdout task as well as the lower and upper confidence interval
 of each alternative which is calculated according to the following formula
 \eqn{mean +/- 1.96 x \frac{sd}{\sqrt(n)}} (Orme, 2020, p. 94).
 
-\code{data} needs to be a data frame including the alternatives shown in
+\code{data} has to be a data frame including the alternatives shown in
 the validation/holdout task. Can be created using the \code{createHOT()} function.
 
-\code{group} optional Grouping variable, if results should be display by different groups.
-Needs to be column name of variables in \code{data}.
+\code{group} optional grouping variable, if results should be displyed by different groups.
+Has to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the simulation
-task (also includes the \code{none} alternative).
-Input of \code{opts} needs to be column names of variables in \code{data}.
+task.
+Input of \code{opts} has to be column names of variables in \code{data}.
 }
 \examples{
 \dontrun{

@@ -1,8 +1,8 @@
 #' Mean Absolute Error
 #'
-#' @description Function to measure the mean absolute error of a validation/ holdout task.
+#' @description Function to measure the mean absolute error of a validation/holdout task.
 #' Calculates the averaged absolute error, i.e., deviation between predicted and
-#' stated share of alternatives in the validation/ holdout task.
+#' stated share of alternatives in the validation/holdout task.
 #'
 #'
 #' @param data data frame with all relevant variables
@@ -15,20 +15,20 @@
 #' @details
 #' Mean absolute error (MAE) calculates the deviation between predicted and
 #' stated (actual) choice share. It is an aggregated value across all alternatives
-#' in the validation/ holdout task.
+#' in the validation/holdout task.
 #'
-#' \code{data} needs to be a data frame including the alternatives shown in
+#' \code{data} has to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
-#' \code{group} optional Grouping variable, if results should be display by different groups.
-#' Needs to be column name of variables in \code{data}.
+#' \code{group} optional grouping variable, if results should be displayed by different groups.
+#' Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
-#' task (also includes the \code{none} alternative).
-#' Input of \code{opts} needs to be column names of variables in \code{data}.
+#' task.
+#' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.
-#' Input of opts \code{choice} needs to be column name of actual choice.
+#' Input of opts \code{choice} has to be column name of actual choice.
 #'
 #' @return a tibble
 #' @importFrom dplyr select mutate group_by pick count rowwise ungroup across summarise
@@ -45,20 +45,19 @@
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",
-#'   choice = 20, varskeep = 21
+#'   choice = 20,
+#'   varskeep = 21
 #' )
 #'
-#'  # mae ungrouped
-#'  mae(data = HOT, opts = c(Option_1:None), choice = choice)
+#' # mae ungrouped
+#' mae(data = HOT, opts = c(Option_1:None), choice = choice)
 #'
-#'  # mae ungrouped
-#'  mae(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)
-#'
+#' # mae grouped
+#' mae(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)
 #' }
 #' @export
 
 mae <- function(data, group, opts, choice) {
-
   if (base::length(data %>% dplyr::select(., {{ opts }})) == 0) {
     stop("Error: argument 'opts' is missing!")
   }
@@ -108,28 +107,30 @@ mae <- function(data, group, opts, choice) {
 
   # create actual share of actual choice
   base::suppressMessages(WS1 <- data %>%
-                           dplyr::mutate(merger = base::factor({{choice}}, levels = c(1:base::length(dplyr::select(., {{opts}}))), labels = c(1:base::length(dplyr::select(., {{opts}}))))) %>%
-                           dplyr::group_by(dplyr::pick({{ group }})) %>%
-                           dplyr::count(merger, .drop = F) %>%
-                           dplyr::mutate(chosen = n / base::sum(n) * 100) %>%
-                           dplyr::select(-"n"))
+    dplyr::mutate(merger = base::factor({{ choice }}, levels = c(1:base::length(dplyr::select(., {{ opts }}))), labels = c(1:base::length(dplyr::select(., {{ opts }}))))) %>%
+    dplyr::group_by(dplyr::pick({{ group }})) %>%
+    dplyr::count(merger, .drop = F) %>%
+    dplyr::mutate(chosen = n / base::sum(n) * 100) %>%
+    dplyr::select(-"n"))
 
-
+  # create predicted share
   base::suppressMessages(WS2 <- data %>%
-                           dplyr::mutate(dplyr::across({{ opts }}, base::exp)) %>%
-                           dplyr::rowwise() %>%
-                           dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>%
-                           dplyr::ungroup() %>%
-                           dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>%
-                           dplyr::group_by(dplyr::pick({{ group }})) %>%
-                           dplyr::summarise(across({{opts}}, ~ mean(.), .names = "{.col}_mean")) %>%
-                           tidyr::pivot_longer(., cols = tidyselect::ends_with("_mean"), names_to = "alt", values_to = "mean") %>%
-                           dplyr::mutate(alt = base::substr(alt, 1, (base::nchar(alt) - base::nchar("_mean"))),
-                                         merger = base::rep(1:base::length(dplyr::select(data, {{opts}})), length.out = base::length(alt))))
+    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>% # exponentiate utilities
+    dplyr::rowwise() %>%
+    dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>% # create sum
+    dplyr::ungroup() %>%
+    dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>% # rescale
+    dplyr::group_by(dplyr::pick({{ group }})) %>%
+    dplyr::summarise(across({{ opts }}, ~ mean(.x), .names = "{.col}_mean")) %>%
+    tidyr::pivot_longer(., cols = tidyselect::ends_with("_mean"), names_to = "alt", values_to = "mean") %>%
+    dplyr::mutate(
+      alt = base::substr(alt, 1, (base::nchar(alt) - base::nchar("_mean"))),
+      merger = base::rep(1:base::length(dplyr::select(data, {{ opts }})), length.out = base::length(alt))
+    ))
 
   return(suppressMessages(WS2 %>%
-                            base::merge(x = ., y = WS1, by = c(WS2 %>% dplyr::select(., {{group}}) %>% base::colnames(), "merger")) %>%
-                            dplyr::group_by(dplyr::pick({{ group }})) %>%
-                            dplyr::mutate(MAE = base::abs(mean - chosen)) %>%
-                            dplyr::summarise(mae = base::mean(MAE))))
+    base::merge(x = ., y = WS1, by = c(WS2 %>% dplyr::select(., {{ group }}) %>% base::colnames(), "merger")) %>%
+    dplyr::group_by(dplyr::pick({{ group }})) %>%
+    dplyr::mutate(MAE = base::abs(mean - chosen)) %>%
+    dplyr::summarise(mae = base::mean(MAE))))
 }

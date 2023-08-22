@@ -28,7 +28,7 @@
 #' Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
-#' task (also includes the \code{none} alternative).
+#' task.
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column name of actual choice.
@@ -139,15 +139,15 @@ precision <- function(data, group, opts, choice, none) {
 
   return(data %>%
     dplyr::mutate(
-      pred = base::max.col(dplyr::pick({{ opts }})),
+      pred = base::max.col(dplyr::pick({{ opts }})), # store column index with highest utility
       buy = base::ifelse({{ choice }} != base::match(
         data %>% dplyr::select(., {{ none }}) %>% colnames(),
         data %>% dplyr::select(., {{ opts }}) %>% colnames()
-      ), 1, 2),
+      ), 1, 2), # dichotomies actual choice (1 = prod, 2 = none)
       pred = base::ifelse(pred != base::match(
         data %>% dplyr::select(., {{ none }}) %>% colnames(),
         data %>% dplyr::select(., {{ opts }}) %>% colnames()
-      ), 1, 2)
+      ), 1, 2) # dichotomies pred choice (1 = prod, 2 = none)
     ) %>%
     dplyr::group_by(pick({{ group }})) %>%
     dplyr::summarise(

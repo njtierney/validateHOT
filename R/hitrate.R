@@ -1,6 +1,6 @@
 #' Hit Rate
 #'
-#' @description \code{hitrate} measures number of times a choice was correctly predicted in a validation task.
+#' @description \code{hitrate} measures number of times a choice was correctly predicted in a validation/holdout task.
 #'
 #' @param data data frame with all relevant variables
 #' @param group optional column name(s) to specify grouping variable(s)
@@ -11,7 +11,7 @@
 #'
 #' @details
 #' \code{hitrate} measures number of times a participant's choice was correctly
-#' predicted by our model.
+#' predicted by the model.
 #' Output contains the following 4 metrics:
 #' \itemize{
 #' \item \code{"chance"} chance level (\eqn{\frac{1}{number of alternatives}}) in percentage
@@ -20,18 +20,18 @@
 #' \item \code{"n"} total number of choices
 #' }
 #'
-#' \code{data} needs to be a data frame including the alternatives shown in
+#' \code{data} has to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
-#' \code{group} optional Grouping variable, if results should be display by different groups.
-#' Needs to be column name of variables in \code{data}.
+#' \code{group} optional grouping variable, if results should be displayed by different groups.
+#' Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
 #' task (also includes the \code{none} alternative).
-#' Input of \code{opts} needs to be column names of variables in \code{data}.
+#' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.
-#' Input of opts \code{choice} needs to be column name of actual choice.
+#' Input of opts \code{choice} has to be column name of actual choice.
 #'
 #' @return a tibble
 #' @importFrom dplyr select mutate pick group_by summarise n
@@ -46,19 +46,19 @@
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",
-#'   choice = 20, varskeep = 21
+#'   choice = 20,
+#'   varskeep = 21
 #' )
 #' # hit rate ungrouped
-#' hitrate(data = HOT, opts = c(Option_1:None), none = None, choice = 10)
+#' hitrate(data = HOT, opts = c(Option_1:None), choice = choice)
 #'
 #' # hit rate grouped
-#' hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+#' hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)
 #' }
 #'
 #' @export
 
 hitrate <- function(data, group, opts, choice) {
-
   if (base::length(data %>% dplyr::select(., {{ opts }})) == 0) {
     stop("Error: argument 'opts' is missing!")
   }
@@ -82,7 +82,7 @@ hitrate <- function(data, group, opts, choice) {
   ## check whether variable is numeric
   for (i in 1:base::length(alternatives)) {
     if (!base::is.numeric(data[[alternatives[i]]])) {
-      stop("Error: 'opts' need to be numeric!")
+      stop("Error: 'opts' has to be numeric!")
     }
   }
 
@@ -103,17 +103,17 @@ hitrate <- function(data, group, opts, choice) {
     base::colnames()
 
   if (!base::is.numeric(data[[choi]])) {
-    stop("Error: 'choice' needs to be numeric!")
+    stop("Error: 'choice' has to be numeric!")
   }
 
 
   suppressMessages(return(data %>%
-                            dplyr::mutate(pred = base::max.col(dplyr::pick({{ opts }}))) %>%
-                            dplyr::group_by(dplyr::pick({{ group }})) %>%
-                            dplyr::summarise(
-                              HR = mean(as.integer({{ choice }} == pred)) * 100,
-                              chance = 1 / base::length(dplyr::select(data, {{ opts }})) * 100,
-                              cor = base::sum(base::as.integer({{ choice }} == pred)),
-                              n = dplyr::n()
-                            )))
+    dplyr::mutate(pred = base::max.col(dplyr::pick({{ opts }}))) %>% # store column index with highest utility
+    dplyr::group_by(dplyr::pick({{ group }})) %>%
+    dplyr::summarise(
+      HR = mean(as.integer({{ choice }} == pred)) * 100, # calculate the hit rate
+      chance = 1 / base::length(dplyr::select(data, {{ opts }})) * 100, # calculate the chance level
+      cor = base::sum(base::as.integer({{ choice }} == pred)), # calculate number of correct predicted
+      n = dplyr::n() # n
+    )))
 }

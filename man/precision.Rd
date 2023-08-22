@@ -30,24 +30,23 @@ and is defined as \eqn{\frac{TP}{TP + FP}}, where TP =
 True Positives, FP = False Positives (see, e.g., Burger, 2018).
 }
 \details{
-The current logic of \code{"precision"} is to provide whether a binary coded event is correctly predicted.
-To use the function a \code{"none"} alternative needs to be in the script.
+The current logic of \code{"precision"} is to determine whether a binary coded is correctly predicted by the model.
+To use the function a \code{"none"} alternative has to be included in the validation/holdout task.
 One potential usage is, for example, whether a buy or a no-buy condition
 was predicted correctly. For example, you have three alternatives plus
 a \code{"none"} alternative and you want to check whether a buy or no-buy was
-correctly predicted. This function can be helpful when you test whether or
-not your model significantly overestimates or underestimates, for example, a purchase likelihood.
-This function was programmed to predict demand for a MaxDiff, CBC, or ACBC.
+correctly predicted. This function can be helpful when you test, for example, if
+your model significantly overestimates or underestimates, for example, a purchase likelihood.
 
-\code{data} needs to be a data frame including the alternatives shown in
+\code{data} has to be a data frame including the alternatives shown in
 the validation/holdout task. Can be created using the \code{createHOT()} function.
 
 \code{group} optional Grouping variable, if results should be display by different conditions.
-Needs to be column name of variables in \code{data}.
+Has to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the validation/holdout
-task (also includes the \code{none} alternative).
-Input of \code{opts} needs to be column names of variables in \code{data}.
+task.
+Input of \code{opts} has to be column names of variables in \code{data}.
 
 \code{choice} to specify column name of actual choice.
 

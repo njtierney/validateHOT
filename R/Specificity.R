@@ -24,11 +24,11 @@
 #' \code{data} has to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
-#' \code{group} optional Grouping variable, if results should be display by different conditions.
+#' \code{group} optional grouping variable, if results should be displayed by different conditions.
 #' Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
-#' task (also includes the \code{none} alternative).
+#' task.
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.
@@ -78,7 +78,6 @@
 #' @export
 
 specificity <- function(data, group, opts, choice, none) {
-
   # check for wrong / missing input
   if (base::length(data %>% dplyr::select(., {{ none }})) == 0) {
     stop("Error: argument 'none' is missing!")
@@ -93,7 +92,7 @@ specificity <- function(data, group, opts, choice, none) {
   }
 
   if (!(data %>% dplyr::select(., {{ none }}) %>% base::colnames()) %in%
-      (data %>% dplyr::select(., {{ opts }}) %>% base::colnames())) {
+    (data %>% dplyr::select(., {{ opts }}) %>% base::colnames())) {
     stop("Error: 'none' has to be part of 'opts'!")
   }
 
@@ -137,13 +136,19 @@ specificity <- function(data, group, opts, choice, none) {
   }
 
   return(data %>%
-           dplyr::mutate(pred = base::max.col(dplyr::pick({{ opts }})),
-                         buy = base::ifelse({{choice}} != base::match(data %>% dplyr::select(., {{none}}) %>% colnames(),
-                                                                      data %>% dplyr::select(., {{opts}}) %>% colnames()), 1, 2),
-                         pred = base::ifelse(pred != base::match(data %>% dplyr::select(., {{none}}) %>% colnames(),
-                                                                 data %>% dplyr::select(., {{opts}}) %>% colnames()), 1, 2)) %>%
-           dplyr::group_by(pick({{ group }})) %>%
-           dplyr::summarise(
-             specificity = 100 * (base::sum(buy == 2 & pred == 2) / (base::sum(buy == 2 & pred == 2) + base::sum(buy == 2 & pred == 1)))
-           ))
+    dplyr::mutate(
+      pred = base::max.col(dplyr::pick({{ opts }})), # store column index with highest utility
+      buy = base::ifelse({{ choice }} != base::match(
+        data %>% dplyr::select(., {{ none }}) %>% colnames(),
+        data %>% dplyr::select(., {{ opts }}) %>% colnames()
+      ), 1, 2), # dichotomies actual choice (1 = prod, 2 = none)
+      pred = base::ifelse(pred != base::match(
+        data %>% dplyr::select(., {{ none }}) %>% colnames(),
+        data %>% dplyr::select(., {{ opts }}) %>% colnames()
+      ), 1, 2) # dichotomies pred choice (1 = prod, 2 = none)
+    ) %>%
+    dplyr::group_by(pick({{ group }})) %>%
+    dplyr::summarise(
+      specificity = 100 * (base::sum(buy == 2 & pred == 2) / (base::sum(buy == 2 & pred == 2) + base::sum(buy == 2 & pred == 1)))
+    ))
 }

@@ -21,11 +21,11 @@ validation/holdout task}
 a tibble
 }
 \description{
-\code{hitrate} measures number of times a choice was correctly predicted in a validation task.
+\code{hitrate} measures number of times a choice was correctly predicted in a validation/holdout task.
 }
 \details{
 \code{hitrate} measures number of times a participant's choice was correctly
-predicted by our model.
+predicted by the model.
 Output contains the following 4 metrics:
 \itemize{
 \item \code{"chance"} chance level (\eqn{\frac{1}{number of alternatives}}) in percentage
@@ -34,18 +34,18 @@ Output contains the following 4 metrics:
 \item \code{"n"} total number of choices
 }
 
-\code{data} needs to be a data frame including the alternatives shown in
+\code{data} has to be a data frame including the alternatives shown in
 the validation/holdout task. Can be created using the \code{createHOT()} function.
 
-\code{group} optional Grouping variable, if results should be display by different groups.
-Needs to be column name of variables in \code{data}.
+\code{group} optional grouping variable, if results should be displayed by different groups.
+Has to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the validation/holdout
 task (also includes the \code{none} alternative).
-Input of \code{opts} needs to be column names of variables in \code{data}.
+Input of \code{opts} has to be column names of variables in \code{data}.
 
 \code{choice} to specify column of actual choice.
-Input of opts \code{choice} needs to be column name of actual choice.
+Input of opts \code{choice} has to be column name of actual choice.
 }
 \examples{
 \dontrun{
@@ -56,13 +56,14 @@ HOT <- createHOT(
   prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",
-  choice = 20, varskeep = 21
+  choice = 20,
+  varskeep = 21
 )
 # hit rate ungrouped
-hitrate(data = HOT, opts = c(Option_1:None), none = None, choice = 10)
+hitrate(data = HOT, opts = c(Option_1:None), choice = choice)
 
 # hit rate grouped
-hitrate(data = HOT, id = 1, opts = c(2:9), choice = 11, Group = 10)
+hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)
 }
 
 }

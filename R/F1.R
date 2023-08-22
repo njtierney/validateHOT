@@ -26,7 +26,7 @@
 #' \code{data} has to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
-#' \code{group} optional Grouping variable, if results should be display by different conditions.
+#' \code{group} optional grouping variable, if results should be displayed by different conditions.
 #' Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the validation/holdout
@@ -139,16 +139,16 @@ f1 <- function(data, group, opts, choice, none) {
 
   return(data %>%
     dplyr::mutate(
-      pred = base::max.col(dplyr::pick({{ opts }})),
+      pred = base::max.col(dplyr::pick({{ opts }})), # store column index with highest utility
       buy = base::ifelse({{ choice }} != base::match(
         data %>% dplyr::select(., {{ none }}) %>% colnames(),
         data %>% dplyr::select(., {{ opts }}) %>% colnames()
-      ), 1, 2),
+      ), 1, 2), # dichotomies actual choice (1 = prod, 2 = none)
       pred = base::ifelse(pred != base::match(
         data %>% dplyr::select(., {{ none }}) %>% colnames(),
         data %>% dplyr::select(., {{ opts }}) %>% colnames()
       ), 1, 2)
-    ) %>%
+    ) %>% # dichotomies pred choice (1 = prod, 2 = none)
     dplyr::group_by(pick({{ group }})) %>%
     dplyr::summarise(
       f1 = 100 * ((2 * (base::sum(buy == 1 & pred == 1))) / (((2 * (base::sum(buy == 1 & pred == 1))) + base::sum(buy == 2 & pred == 1) + base::sum(buy == 1 & pred == 2)))

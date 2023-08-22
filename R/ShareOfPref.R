@@ -1,7 +1,7 @@
 #' Share of Preferences of Options included in HOT
 #'
 #' @description
-#' Function to measure the share of preferences of each option in the validation task
+#' Function to measure the share of preferences of each option in a validation/holdout task
 #'
 #' @param data data frame with all relevant variables
 #' @param group optional column name(s) to specify grouping variable(s)
@@ -16,20 +16,20 @@
 #' @importFrom tibble as_tibble
 #'
 #' @details
-#' Share of Preference provides the aggrgated share of each alternative in the
-#' validation/ holdout task as well as the lower and upper confidence interval
+#' Share of Preference provides the aggregated share of each alternative in the
+#' validation/holdout task as well as the lower and upper confidence interval
 #' of each alternative which is calculated according to the following formula
 #' \eqn{mean +/- 1.96 x \frac{sd}{\sqrt(n)}} (Orme, 2020, p. 94).
 #'
-#' \code{data} needs to be a data frame including the alternatives shown in
+#' \code{data} has to be a data frame including the alternatives shown in
 #' the validation/holdout task. Can be created using the \code{createHOT()} function.
 #'
-#' \code{group} optional Grouping variable, if results should be display by different groups.
-#' Needs to be column name of variables in \code{data}.
+#' \code{group} optional grouping variable, if results should be displyed by different groups.
+#' Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the simulation
-#' task (also includes the \code{none} alternative).
-#' Input of \code{opts} needs to be column names of variables in \code{data}.
+#' task.
+#' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' @references {
 #'
@@ -62,7 +62,6 @@
 #' @export
 
 shareofpref <- function(data, group, opts) {
-
   if (base::length(data %>% dplyr::select(., {{ opts }})) == 0) {
     stop("Error: argument 'opts' is missing!")
   }
@@ -86,7 +85,7 @@ shareofpref <- function(data, group, opts) {
   ## check whether variable is numeric
   for (i in 1:base::length(alternatives)) {
     if (!base::is.numeric(data[[alternatives[i]]])) {
-      stop("Error: 'opts' need to be numeric!")
+      stop("Error: 'opts' has to be numeric!")
     }
   }
 
@@ -102,20 +101,23 @@ shareofpref <- function(data, group, opts) {
 
   # change data structure
   return(data %>%
-           dplyr::mutate(dplyr::across({{ opts }}, base::exp)) %>%
-           dplyr::rowwise() %>%
-           dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>%
-           dplyr::ungroup() %>%
-           dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>%
-           dplyr::group_by(dplyr::pick({{ group }})) %>%
-           dplyr::summarise(across({{opts}}, c(mw = base::mean, std = stats::sd), .names = "{.col}.{.fn}")) %>%
-           tidyr::pivot_longer(., cols = tidyselect::ends_with(c(".mw", ".std")) ,
-                               names_to = c("Option", ".value"), names_sep = "\\.") %>%
-           base::merge(x = ., y = WS1, by =c(data %>% dplyr::select(., {{group}}) %>% base::colnames())) %>%
-           dplyr::mutate(se = std/sqrt(n),
-                         lo.ci = mw - (1.96 * se),
-                         up.ci = mw + (1.96 * se)) %>%
-           dplyr::select(!tidyselect::all_of(c("std", "n")))%>%
-           tibble::as_tibble())
-
+    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>%
+    dplyr::group_by(dplyr::pick({{ group }})) %>%
+    dplyr::summarise(across({{ opts }}, c(mw = base::mean, std = stats::sd), .names = "{.col}.{.fn}")) %>%
+    tidyr::pivot_longer(.,
+      cols = tidyselect::ends_with(c(".mw", ".std")),
+      names_to = c("Option", ".value"), names_sep = "\\."
+    ) %>%
+    base::merge(x = ., y = WS1, by = c(data %>% dplyr::select(., {{ group }}) %>% base::colnames())) %>%
+    dplyr::mutate(
+      se = std / sqrt(n),
+      lo.ci = mw - (1.96 * se),
+      up.ci = mw + (1.96 * se)
+    ) %>%
+    dplyr::select(!tidyselect::all_of(c("std", "n"))) %>%
+    tibble::as_tibble())
 }
