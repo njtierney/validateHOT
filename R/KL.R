@@ -8,7 +8,7 @@
 #' validation/holdout task
 #' @param choice column name of the actual choice
 #' @param epsilon vector of noise that should be added to 0 values, per default set to 1e-05
-#' @param basis character string to define the logarithm base, currently choice between \code{log} (default) and \code{log2}
+#' @param base character string to define the logarithm base, currently choice between \code{log} (default) and \code{log2}
 #'
 #' @return a tibble
 #' @importFrom dplyr select mutate group_by pick count summarise
@@ -40,7 +40,7 @@
 #' then will be replaced by \code{epsilon}. Default value is \code{epsilon = 1e-5}, however, can
 #' be adopted.
 #'
-#' \code{basis} needs to be a character string, deciding which logarithm base you want to apply
+#' \code{base} needs to be a character string, deciding which logarithm base you want to apply
 #' to calculate Kullback-Leibler. You can choose between \eqn{log} and \eqn{log{_2}}. Default set to \eqn{log}.
 #'
 #' @references {
@@ -66,21 +66,21 @@
 #' )
 #'
 #' # kl ungrouped - log
-#' kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log")
+#' kl(data = HOT, opts = c(Option_1:None), choice = choice, base = "log")
 #'
 #' # kl ungrouped - log2
-#' kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2")
+#' kl(data = HOT, opts = c(Option_1:None), choice = choice, base = "log2")
 #'
 #' # kl grouped - log + specifying epsilon
-#' kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log", <br> group = Group, epsilon = 1e-8)
+#' kl(data = HOT, opts = c(Option_1:None), choice = choice, base = "log", group = Group, epsilon = 1e-8)
 #'
 #' # kl grouped - log2
-#' kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2", group = Group)
+#' kl(data = HOT, opts = c(Option_1:None), choice = choice, base = "log2", group = Group)
 #' }
 #'
 #' @export
 
-kl <- function(data, group, opts, choice, epsilon = NULL, basis = NULL) {
+kl <- function(data, group, opts, choice, epsilon = NULL, base = NULL) {
   # specify epsilon if not defined
   if (base::is.null(epsilon)) {
     epsilon <- .00001
@@ -90,13 +90,13 @@ kl <- function(data, group, opts, choice, epsilon = NULL, basis = NULL) {
     stop("Error: 'epsilon' has to be numeric!")
   }
 
-  # specify basis if not defined
-  if (base::is.null(basis)) {
-    basis <- "log"
+  # specify base if not defined
+  if (base::is.null(base)) {
+    base <- "log"
   }
 
-  if ((basis != "log") & (basis != "log2")) {
-    base::stop("Error: Basis can only be 'log' or 'log2'!")
+  if ((base != "log") & (base != "log2")) {
+    base::stop("Error: base can only be 'log' or 'log2'!")
   }
 
   if (base::length(data %>% dplyr::select(., {{ opts }})) == 0) {
@@ -148,23 +148,23 @@ kl <- function(data, group, opts, choice, epsilon = NULL, basis = NULL) {
 
   # create actual share of actual choice
   base::suppressMessages(WS1 <- data %>%
-    dplyr::mutate(alt = base::factor({{ choice }}, levels = c(1:base::length(dplyr::select(., {{ opts }}))), labels = base::paste0("Option_", c(1:base::length(dplyr::select(., {{ opts }})))))) %>%
+    dplyr::mutate(alt = base::factor({{ choice }}, levels = c(1:base::length(dplyr::select(., {{ opts }}))), labels = base::paste0("Option_", c(1:base::length(dplyr::select(., {{ opts }})))))) %>% # create factor for actual choice
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-    dplyr::count(alt, .drop = F) %>%
-    dplyr::mutate(chosen = n / base::sum(n)) %>%
-    dplyr::select(-"n"))
+    dplyr::count(alt, .drop = F) %>% # count choices
+    dplyr::mutate(chosen = n / base::sum(n)) %>% # calculate percentage
+    dplyr::select(-"n")) # drop variable
 
   # create share of predicted choice
   base::suppressMessages(WS2 <- data %>%
-    dplyr::mutate(pred = base::max.col(pick({{ opts }}))) %>%
-    dplyr::mutate(alt = base::factor(pred, levels = c(1:base::length(dplyr::select(., {{ opts }}))), labels = base::paste0("Option_", c(1:base::length(dplyr::select(., {{ opts }})))))) %>%
+    dplyr::mutate(pred = base::max.col(pick({{ opts }}))) %>% # store column index of highest utility
+    dplyr::mutate(alt = base::factor(pred, levels = c(1:base::length(dplyr::select(., {{ opts }}))), labels = base::paste0("Option_", c(1:base::length(dplyr::select(., {{ opts }})))))) %>% # create factor
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-    dplyr::count(alt, .drop = F) %>%
-    dplyr::mutate(pred = n / base::sum(n)) %>%
-    dplyr::select(-"n"))
+    dplyr::count(alt, .drop = F) %>% # count number of predicted choice
+    dplyr::mutate(pred = n / base::sum(n)) %>% # calculate percentage
+    dplyr::select(-"n")) # drop variable
 
-  # if basis set to 'log'
-  if (basis == "log") {
+  # if base set to 'log'
+  if (base == "log") {
     return(WS1 %>%
       base::merge(x = ., y = WS2, by = c(WS1 %>% dplyr::select(., {{ group }}) %>% base::colnames(), "alt")) %>% # merge both data frames
       dplyr::group_by(dplyr::pick({{ group }})) %>%
@@ -178,14 +178,14 @@ kl <- function(data, group, opts, choice, epsilon = NULL, basis = NULL) {
       ))
   }
 
-  # if basis set to 'log2'
-  if (basis == "log2") {
+  # if base set to 'log2'
+  if (base == "log2") {
     return(WS1 %>%
-      base::merge(x = ., y = WS2, by = c(WS1 %>% dplyr::select(., {{ group }}) %>% base::colnames(), "alt")) %>%
+      base::merge(x = ., y = WS2, by = c(WS1 %>% dplyr::select(., {{ group }}) %>% base::colnames(), "alt")) %>% # merge both data frames
       dplyr::group_by(dplyr::pick({{ group }})) %>%
       dplyr::mutate(
-        chosen = base::ifelse(chosen == 0, epsilon, chosen),
-        pred = base::ifelse(pred == 0, epsilon, pred)
+        chosen = base::ifelse(chosen == 0, epsilon, chosen), # add epsilon if 0
+        pred = base::ifelse(pred == 0, epsilon, pred) # add epsilon if 0
       ) %>%
       dplyr::summarise(
         kl_o_p = base::sum(chosen * base::log2(chosen / pred)),

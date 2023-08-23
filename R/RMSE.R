@@ -1,8 +1,8 @@
-#' Root Mean Squared Error
+#' Root Mean Square Error
 #'
-#' @description Function to measure the root mean squared error
+#' @description Function to measure the root mean square error
 #'  of a validation/holdout task. Calculates the averaged
-#'  root mean squared error of the stated and predicted share of alternatives
+#'  root mean square error of the stated and predicted share of alternatives
 #'  in the validation/holdout task.
 #'
 #'
@@ -21,7 +21,7 @@
 #'
 #'
 #' @details
-#' Root mean squared error (RMSE) calculates the root mean squared error when comparing
+#' Root mean square error (RMSE) calculates the root mean square error when comparing
 #' the share of the actual choice in the holdout task and the predicted share.
 #'
 #'
@@ -112,30 +112,30 @@ rmse <- function(data, group, opts, choice) {
 
   # create actual share of actual choice
   base::suppressMessages(WS1 <- data %>%
-    dplyr::mutate(merger = base::factor({{ choice }}, levels = c(1:base::length(dplyr::select(., {{ opts }}))), labels = c(1:base::length(dplyr::select(., {{ opts }}))))) %>%
+    dplyr::mutate(merger = base::factor({{ choice }}, levels = c(1:base::length(dplyr::select(., {{ opts }}))), labels = c(1:base::length(dplyr::select(., {{ opts }}))))) %>% # factor choice
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-    dplyr::count(merger, .drop = F) %>%
-    dplyr::mutate(chosen = n / base::sum(n) * 100) %>%
-    dplyr::select(-"n"))
+    dplyr::count(merger, .drop = F) %>% # count choice
+    dplyr::mutate(chosen = n / base::sum(n) * 100) %>% # calculate percentage
+    dplyr::select(-"n")) # drop variable
 
   # create share of predicted choice
   base::suppressMessages(WS2 <- data %>%
-    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>%
+    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>% # exponentiate
     dplyr::rowwise() %>%
-    dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>%
+    dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>% # create sum
     dplyr::ungroup() %>%
-    dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>%
+    dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>% # calculate choice probability in percentage
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-    dplyr::summarise(across({{ opts }}, ~ mean(.x), .names = "{.col}_mean")) %>%
+    dplyr::summarise(across({{ opts }}, ~ mean(.x), .names = "{.col}_mean")) %>% # aggreagte choice probability
     tidyr::pivot_longer(., cols = tidyselect::ends_with("_mean"), names_to = "alt", values_to = "mean") %>%
     dplyr::mutate(
-      alt = base::substr(alt, 1, (base::nchar(alt) - base::nchar("_mean"))),
-      merger = base::rep(1:base::length(dplyr::select(data, {{ opts }})), length.out = base::length(alt))
+      alt = base::substr(alt, 1, (base::nchar(alt) - base::nchar("_mean"))), # adjust labeling
+      merger = base::rep(1:base::length(dplyr::select(data, {{ opts }})), length.out = base::length(alt)) # prepare merge helper variable
     ))
 
   return(suppressMessages(WS2 %>%
-    base::merge(x = ., y = WS1, by = c(WS2 %>% dplyr::select(., {{ group }}) %>% base::colnames(), "merger")) %>%
+    base::merge(x = ., y = WS1, by = c(WS2 %>% dplyr::select(., {{ group }}) %>% base::colnames(), "merger")) %>% # merge
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-    dplyr::mutate(RMSE = (base::abs(mean - chosen))^2) %>%
+    dplyr::mutate(RMSE = (base::abs(mean - chosen))^2) %>% # calculate RMSE
     dplyr::summarise(rmse = base::sqrt(base::mean(RMSE)))))
 }

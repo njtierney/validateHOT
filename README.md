@@ -9,26 +9,27 @@
 The goal of validateHOT is to validate the results of your validation
 task (also known as holdout task). A validation task is essential to
 make sure that your collected data of a MaxDiff, CBC, or ACBC are valid
-and can also predict outside task that were not included in estimating
+and can also predict outside tasks that were not included in estimating
 your utility scores. Although commercial studies often do not include a
-validation/ holdout task (Yang et al., 2018), it is highly recommended
-to do so (Orme, 2015; Rao, 2014). This validation/ holdout task does not
+validation/holdout task (Yang et al., 2018), it is highly recommended to
+do so (Orme, 2015; Rao, 2014). This validation/holdout task does not
 only help to check whether everything went right during data collection
 but also to determine your final model. <code>validatHOT</code> provides
 some of the relevant metrics to test the performance of your data in
 predicting a holdout task. In [Sawtooth
 Software’s](https://sawtoothsoftware.com/) CBC a fixed validation/
 holdout task is automatically implemented. If you conduct a MaxDiff or
-ACBC study these have to be programmed by yourself.
+ACBC study, you have to program these on your own.
 
 👉🏾 <u>**What you need to provide**</u>: <br> After collecting your data,
 and running your initial Hierarchical Bayes models, you can turn to
 <code>validateHOT</code> and test how good your model predicts choices
-in the validation/ holdout task. Herefore, you only have to insert your
+in the validation/holdout task. Herefore, you only have to read in your
 raw utility scores as well as the actual choice of your validation/
-holdout task. You can use the <code>merge()</code> provided by
+holdout task. You can use the <code>merge()</code> provided by the
 <code>base</code> package (R Core Team, 2023). Afterward, you can read
-in your data file and enjoy <code>validateHOT</code>.
+in your data file and enjoy <code>validateHOT</code>. We provide a
+tutorial a short tutorial in the vignette.
 
 👈🏾 <u>**What you get**</u>:<br> At the moment, <code>validateHOT</code>
 provides functions for 3 key areas:
@@ -49,92 +50,95 @@ combinations
 
 For all 3 key areas, the <code>createHOT</code> function is essential.
 This function creates the total utilities for each alternative in the
-validation/ holdout task and also in the simulation method,
-respectively. Rao (2014, p. 82) mentions the additive utility model
-stating that the total utility of a profile or conjoint model is the sum
-of its attribute levels. <code>createHOT</code> will do exactly this for
-you.
+validation/holdout task and also in the simulation method, respectively.
+Rao (2014, p. 82) mentions the additive utility model stating that the
+total utility of a profile or conjoint model is the sum of its attribute
+levels. <code>createHOT</code> will do exactly this for you.
 
 ### Classical validation metrics
 
 <ul>
 <li>
 <code>hitrate</code>: creates the Hit Rate (correctly predicted choices)
-of your validation task. The output will contain the chance level in
-your validation task ($\frac{1}{alternatives}$) in percentage. The
-number of correctly predicted participants’ choices as well as the
-percentage of how many choices were correctly predicted. If you specify
+of your validation task. The output will contain the percentage of how
+many choices were correctly predicted, the chance level in your
+validation task ($\frac{1}{alternatives}$) in percentage, the number of
+correctly predicted participants’ choices as well as the number of
+observations.
+</li>
+<li>
+<code>kl</code>: Kullback-Leibler-Divergence measures the divergence
+between the actual choice distribution and the predicted choice
+distribution (Ding et al., 2011; Drost, 2018). Output provides both
+divergence between predicted from observed and observed from predicted
+due to the asymmetry of the Kullback-Leibler divergence. If you specify
 an optional <code>group</code> argument the output is split by groups.
+Currently, you can choose between and as logarithm base. The default is
+set to .
 </li>
 <li>
-<code>kl</code>: Kullback-Leibler-Divergence which measures the
-divergence between the actual choice distribution and the predicted
-choice distribution (Ding et al., 2011; Drost, 2018). Output provides
-both divergence between predicted from observed and observed from
-predicted due to the asymmetry of the Kullback-Leibler divergence. If
-you specify an optional <code>group</code> argument the output is split
-by groups. Currently, you can choose between and as logarithm base.
+<code>mae</code>: mean absolute error, i.e., deviation between predicted
+and stated choice share.
 </li>
 <li>
-<code>mae</code>: average absolute error, i.e., deviation between
-predicted and stated choice share. If you specify an optional
-<code>group</code> argument the output is split by groups.
-</li>
-<li>
-<code>medae</code>: since the averaged absolute error can be highly
-influenced by the If you specify an optional <code>group</code> argument
-the output is split by groups.
+<code>medae</code>: median absolute error, which is less affected by
+outliers compared to the mean absolute error.
 </li>
 <li>
 <code>mhp</code>: averaged hit probability of participant’s actual
-choice in the validation/ holdout task. If you specify an optional
-<code>group</code> argument the output is split by groups.
+choice in the validation/holdout task.
 </li>
 <li>
-<code>rmse</code>: provides the root-mean-squared error of deviation
-between predicted and stated choice share. If you specify an optional
-<code>group</code> argument the output is split by groups.
+<code>rmse</code>: provides the root-mean-square error of deviation
+between predicted and stated choice share.
 </li>
 </ul>
+
+All functions can be extended with the `group` argument to get output by
+group.
 
 ### Confusion Matrix
 
 We also include metrics from machine learning, i.e., the confusion
 matrix (e.g., Burger, 2018). For all of the 5 provided functions, you
-currently have to have a **none** option in your data. We currently
-predict, e.g., whether a buy or no-buy was correctly predicted.
-Information could be used for overestimating and underestimating,
-respectively, of product purchases. In the following <code>TP</code>
-stands for true positives, <code>FP</code> for false positives,
-<code>TN</code> for true negatives, and <code>FN</code> for false
-negatives.
+currently have to include a **none** alternative in your
+validation/holdout task. We currently predict, e.g., whether a buy or
+no-buy was correctly predicted. Information could be used for
+overestimating and underestimating, respectively, of product purchases.
+In the following <code>TP</code> stands for true positives,
+<code>FP</code> for false positives, <code>TN</code> for true negatives,
+and <code>FN</code> for false negatives (Burger, 2018). To translate
+this to the `validateHOT` logic, imagine you have a validation/holdout
+task with 5 alternatives plus the alternative not to buy any of those
+chosen. `validateHOT` now measures whether or not a buy (participant
+opts for one of the 5 alternatives) or a no-buy (participant opts for
+the no-buy alternative), respectively, is correctly predicted.
 
 <ul>
 <li>
-<code>accuracy</code>: defined as $\frac{TP + TN}{TP + FP + TN + FN}$.
-If you specify an optional <code>group</code> argument the output is
-split by groups.
+<code>accuracy</code>: calculates the number of correctly predicted
+choices (buy or no-buy); $\frac{TP + TN}{TP + TN + FP + FN}$ (Burger,
+2018).
 </li>
 <li>
 <code>f1</code>: defined as
 $\frac{2 * precision * recall}{precision + recall}$ or stated
-differently by Burger (2018) $\frac{2TP}{2TP + FP + FN}$. If you specify
-an optional <code>group</code> argument the output is split by groups.
+differently by Burger (2018) $\frac{2TP}{2TP + FP + FN}$.
 </li>
 <li>
-<code>precision</code>: defined as $\frac{TP}{TP + FP}$. If you specify
-an optional <code>group</code> argument the output is split by groups.
+<code>precision</code>: defined as $\frac{TP}{TP + FP}$ (Burger, 2018).
 </li>
 <li>
-<code>recall</code>: defined as $\frac{TP}{TP + FN}$. If you specify an
-optional <code>group</code> argument the output is split by groups.
+<code>recall</code>: defined as $\frac{TP}{TP + FN}$ (Burger, 2018).
 </li>
 <li>
-<code>specificity</code>: defined as $\frac{TN}{TN + FP}$. If you
-specify an optional <code>group</code> argument the output is split by
-groups.
+<code>specificity</code>: defined as $\frac{TN}{TN + FP}$ (Burger,
+2018).
 </li>
 </ul>
+
+Again, all functions can be extended with the `group` argument to get
+output by group.
 
 ### Simulation Methods
 
@@ -145,10 +149,9 @@ groups.
 package, <code>freqassort</code> will give you the averaged frequency,
 how many products the participants will choose from your in the function
 determined potential assortment. Again, you have to define a `none`
-alternative. `freqassort` uses the *threshold* approach, meaning if the
-utility of one product is above the utility of `none`, it is marked as
-potential purchase option. If you specify an optional <code>group</code>
-argument the output is split by groups.
+alternative, because `freqassort` uses the *threshold* approach, meaning
+if the utility of one product is above the utility of `none`, it is
+marked as potential purchase option.
 </li>
 <li>
 <code>reach</code>: Inspired by the former
@@ -160,10 +163,9 @@ assortment. `reach` also uses the *threshold* approach (see above).
 </li>
 <li>
 <code>shareofpref</code>: provides you the aggregated share of
-preference, including the lower and upper confidence interval, which is
-calculated according to the $mean +/- 1.96 x \frac{sd}{\sqrt(n)}$. If
-you specify an optional <code>group</code> argument the output is split
-by groups and provided in a list element.
+preference, including the standard error, as well as the lower and upper
+confidence interval, which is calculated according to the
+$mean +/- 1.96 x \frac{sd}{\sqrt(n)}$ (Orme, 2020, p. 94).
 </li>
 </ul>
 
@@ -199,21 +201,21 @@ study conducted in Sawtooth.
 ## Why <code>validateHOT</code>
 
 We are teaching a preference measurement seminar for students. Often
-these students did not have experience with *R* before or only sparsely.
-We teach them to also validate their results and wanted to give them an
-easy way on how to do this in *R*. Of course, there are other great
-packages which are faster in running (i.e., Hamner & Frasco, 2018),
-however, these packages need some more data wrangling in order to use
-the appropriate functions, which might be a burden or barrier for the
-one or the other.
+these students did not have any prior experience (or only sparsely) with
+*R*. One of the chapters in this class is about model validating the
+results obtained and we teach this, of course, in *R*. Of course, there
+are other great packages which are faster in running (i.e., `Metrics` by
+Hamner & Frasco, 2018), however, these packages need some more data
+wrangling in order to use the appropriate functions, which might be a
+burden or barrier for one or the other.
 
-Moreover, as Yang et al. (2018) also report, often commercial studies do
-not use any validation task. Some market research companies (as far as
-we have realized) are not that familiar with *R* yet. Since these
-functions are not always implemented in other softwares, this might be
-one reason why they do not include one simply because they do not know
-how to use it correctly. Having a package to evaluate the validation/
-holdout task can also be beneficial for those companies.
+Moreover, as Yang et al. (2018) report, commercial studies often do not
+use any validation task. Again, the missing experience in *R* could be
+one explanation. Since these functions are not always implemented in
+other softwares, this might be one reason why they do not include one
+simply because they do not know how to use it correctly. Having a
+package to evaluate the validation/holdout task can also be beneficial
+from this perspective.
 
 ## Installation
 
@@ -273,24 +275,24 @@ will be returned to the global environment.
 > out the index by using the <code>names()</code> function or by using
 > <code>which()</code> and <code>colnames()</code>, both functions are
 > provided by the base package (R Core Team, 2023). For example, if you
-> want to find out the column index of <code>id</code>, we could also
+> want to find out the column index of <code>ID</code>, we could also
 > use <code>which(colnames(CBC) == “ID”)</code>.
 
 ``` r
 HOT <- createHOT(
-  data = CBC,
-  id = 1,
-  None = 21,
-  prod = 3,
-  prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
-  coding = c(0, 0, 0),
-  method = "CBC",
-  choice = 22
+  data = CBC, # data frame
+  id = 1, # column index of the id
+  None = 21, # column index of none alternative
+  prod = 3, # number of alternatives in validation task (excluding none)
+  prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)), # column index of the attribute levels for each alternative
+  coding = c(0, 0, 0), # how the attributes were coded
+  method = "CBC", # method
+  choice = 22 # column index of choice
 )
 ```
 
 Let us take a glimpse at the output, which shows the total raw utilities
-for each of the function included in the validation/ holdout task.
+for each of the alternatives included in the validation/holdout task.
 
 ``` r
 head(HOT)
@@ -304,15 +306,18 @@ head(HOT)
 ```
 
 In the next step, we would like to see how well our model (from which we
-took the raw utilities) predict the choices in the validation/ holdout
-task. First, we will test the <code>hitrate()</code> function. We
-specify the <code>data</code>, the column names of the alternatives
-(<code>opts</code>; remember we have three alternatives + the *no-buy*
-alternative), and finally the choice. We can see that the hitrate of our
-example is NA.
+took the raw utilities) predict the actual choices in the
+validation/holdout task. First, we will test the <code>hitrate()</code>
+function. We specify the <code>data</code>, the column names of the
+alternatives (<code>opts</code>; remember we have three alternatives +
+the *no-buy* alternative), and finally the actual choice.
 
 ``` r
-hitrate(data = HOT, opts = c(2:5), choice = choice)
+hitrate(
+  data = HOT, # data frame
+  opts = c(Option_1:None), # column names of alternatives
+  choice = choice # column name of choice
+)
 #> # A tibble: 1 × 4
 #>      HR chance   cor     n
 #>   <dbl>  <dbl> <int> <int>
@@ -323,7 +328,11 @@ Let us also check the magnitude of the mean absolute error by running
 the <code>mae()</code> function.
 
 ``` r
-mae(data = HOT, opts = c(2:5), choice = choice)
+mae(
+  data = HOT, # data frame
+  opts = c(Option_1:None), # column names of alternatives
+  choice = choice # column name of choice
+)
 #> # A tibble: 1 × 1
 #>     mae
 #>   <dbl>
@@ -338,7 +347,12 @@ participant opts for a *buy*). We will test the accuracy of the model by
 running the <code>accuracy()</code> function.
 
 ``` r
-accuracy(data = HOT, opts = c(2:5), choice = choice, none = None)
+accuracy(
+  data = HOT, # data frame
+  opts = c(Option_1:None), # column names of alternatives
+  choice = choice, # column name of choice
+  none = None # column name of none alternative
+)
 #> # A tibble: 1 × 1
 #>   accuracy
 #>      <dbl>
@@ -353,7 +367,11 @@ the bundles we are offering we use the <code>opts</code> argument in our
 function.
 
 ``` r
-reach(data = HOT, opts = c(Option_1:Option_3), none = None)
+reach(
+  data = HOT, # data frame
+  opts = c(Option_1:Option_3), # products that should be considered
+  none = None # column name of none alternative
+)
 #> # A tibble: 1 × 1
 #>   reach
 #>   <dbl>
@@ -364,7 +382,7 @@ reach(data = HOT, opts = c(Option_1:Option_3), none = None)
 
 In a second example, we again use a *CBC*, however, this time we show
 how to use <code>validateHOT</code> if one of the variables are linear
-coded. All other examples are provided in the Vignette.
+coded. All other examples are provided in the accompanied vignette.
 
 We are using the data frame <code>CBC_lin</code> which is also provided
 by the <code>validateHOT</code> package. We first load the data frame.
@@ -373,11 +391,11 @@ by the <code>validateHOT</code> package. We first load the data frame.
 data("CBC_lin")
 ```
 
-Next, we create the validation/ holdout task to evaluate it in the next
-step. We use a validation/ holdout task with three alternatives plus the
-*no-buy* option, just as we did in the previous example. The only
-difference to the previous example is that we coded the third attribute
-(<code>Att3_Lin</code>) as linear.
+Next, we create the validation/holdout task to evaluate it in the next
+step. We use a validation/holdout task with three alternatives plus the
+*no-buy* alternative, just as we did in the previous example. The only
+difference to the previous example is that for our model estimation, the
+third attribute (<code>Att3_Lin</code>) was coded as linear.
 
 Again, we first define <code>data</code>. The <code>id</code> is saved
 in the first column. The utilities for the <code>None</code> parameter
@@ -395,36 +413,35 @@ attribute is linear coded (<code>1</code>).
 
 To interpolate the value, we have to provide <code>validateHOT</code>
 the <code>interpolate.levels</code>. These **need** to be the same as
-provided to, e.g., Sawtooth as levels. Moreover, it is important that
-the value that should be interpolated needs to lie within the lower and
-upper bound of <code>interpolate.levels</code>. In our case, we had 7
-levels that range from 10 to 70. The value we want to interpolate for
-the second alternative is 40, which of course lies within 10 and 70.
+provided to Sawtooth as levels. Moreover, it is important that the value
+that should be interpolated needs to lie within the lower and upper
+bound of <code>interpolate.levels</code>. In our case, we had 7 levels
+that range from 10 to 70.
 
 Next, we define the column index of the linear coded variable
 (<code>lin.p</code>) and specify the <code>coding</code> we talked about
 above. Again, we are running a *CBC* specified by the
 <code>method</code> argument. This time, we would like to keep some of
-the variables to the data frame, which we specify in
+the variables in the data frame, which we specify in
 <code>varskeep</code>. We only keep one further variable, however, you
 can specify as many as you want. This could be relevant if you would
 like to display results per group. Finally, we just tell
 <code>validateHOT</code> the column index of the final choice
-(<code>choice</code>) and we are good to go.
+(<code>choice</code>) and we are all set.
 
 ``` r
 CBC <- createHOT(
-  data = CBC_lin,
-  id = 1,
-  None = 15,
-  prod = 3,
-  prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
-  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
-  lin.p = 14,
-  coding = c(0, 0, 1),
-  method = "CBC",
-  varskeep = 17,
-  choice = 16
+  data = CBC_lin, # data frame
+  id = 1, # column index of the id
+  None = 15, # column index of none alternative
+  prod = 3, # number of alternatives in validation task (excluding none)
+  prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)), # column index of the attribute levels for each alternative (for linear coded we specify value to be interpolated)
+  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)), # actual values for the levels that should be interpolated
+  lin.p = 14, # column index of the linear coded variable
+  coding = c(0, 0, 1), # coding of the 3 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
+  method = "CBC", # method
+  varskeep = 17, # column index of variables that should be kept in the dataframe
+  choice = 16 # column index of choice
 )
 ```
 
@@ -434,7 +451,12 @@ begin with the <code>hitrate()</code> function. To do so, we specify the
 column name of the grouping variable in the <code>group</code> argument.
 
 ``` r
-hitrate(data = CBC, opts = c(Option_1:None), choice = choice, group = Group)
+hitrate(
+  data = CBC, # data frame
+  opts = c(Option_1:None), # column names of alternatives
+  choice = choice, # column name of choice
+  group = Group # column name of Grouping variable
+)
 #> # A tibble: 3 × 5
 #>   Group    HR chance   cor     n
 #>   <int> <dbl>  <dbl> <int> <int>
@@ -443,13 +465,15 @@ hitrate(data = CBC, opts = c(Option_1:None), choice = choice, group = Group)
 #> 3     3  56.7     25    17    30
 ```
 
-In this case, the Grouping variable is just an integer. However, the
-output is different if it is a factor or if it is labelled data. To
-proof this we just quickly change <code>group</code> in a factor by
-using the <code>factor()</code> function provided by R Core Team (2023).
+In this case, the group assignment is stored in form of integers.
+However, the output is the same if it is a factor or if it is labelled
+data. To proof this we just quickly change <code>group</code> into a
+factor by using the <code>factor()</code> function provided by R Core
+Team (2023).
 
 ``` r
-CBC$Group <- base::factor(CBC$Group,
+CBC$Group <- base::factor(
+  CBC$Group,
   levels = c(1:3),
   labels = paste0("Group_", c(1:3))
 )
@@ -459,7 +483,12 @@ Afterward, we display the *mean hit probability* by running the
 <code>mhp()</code> function.
 
 ``` r
-mhp(data = CBC, opts = c(Option_1:None), choice = choice, group = Group)
+mhp(
+  data = CBC, # data frame
+  opts = c(Option_1:None), # column names of alternatives
+  choice = choice, # column name of choice
+  group = Group # column name of Grouping variable
+)
 #> # A tibble: 3 × 2
 #>   Group     MHP
 #>   <fct>   <dbl>
@@ -490,6 +519,10 @@ Machine Learning.” <https://CRAN.R-project.org/package=Metrics>.
 Orme, Bryan K. 2015. “Including Holdout Choice Tasks in Conjoint
 Studies.”
 <https://sawtoothsoftware.com/resources/technical-papers/including-holdout-choice-tasks-in-conjoint-studies>.
+
+Orme, B. K. (2020). <em>Getting Started with Conjoint Analysis:
+Strategies for Product Design and Pricing Research</em>. 4th edition.
+Manhattan Beach, CA: Research Publishers LLC.
 
 R Core Team. 2023. “R: A Language and Environment for Statistical
 Computing.” <https://www.R-project.org/>.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RMSE.R
 \name{rmse}
 \alias{rmse}
-\title{Root Mean Squared Error}
+\title{Root Mean Square Error}
 \usage{
 rmse(data, group, opts, choice)
 }
@@ -21,13 +21,13 @@ validation/holdout task}
 a tibble
 }
 \description{
-Function to measure the root mean squared error
+Function to measure the root mean square error
  of a validation/holdout task. Calculates the averaged
- root mean squared error of the stated and predicted share of alternatives
+ root mean square error of the stated and predicted share of alternatives
  in the validation/holdout task.
 }
 \details{
-Root mean squared error (RMSE) calculates the root mean squared error when comparing
+Root mean square error (RMSE) calculates the root mean square error when comparing
 the share of the actual choice in the holdout task and the predicted share.
 
 

@@ -4,7 +4,7 @@
 \alias{kl}
 \title{Kullback-Leibler Divergence}
 \usage{
-kl(data, group, opts, choice, epsilon = NULL, basis = NULL)
+kl(data, group, opts, choice, epsilon = NULL, base = NULL)
 }
 \arguments{
 \item{data}{data frame with all relevant variables}
@@ -19,7 +19,7 @@ validation/holdout task}
 
 \item{epsilon}{vector of noise that should be added to 0 values, per default set to 1e-05}
 
-\item{basis}{character string to define the logarithm base, currently choice between \code{log} (default) and \code{log2}}
+\item{base}{character string to define the logarithm base, currently choice between \code{log} (default) and \code{log2}}
 }
 \value{
 a tibble
@@ -53,7 +53,7 @@ Input of opts \code{choice} has to be column name of actual choice.
 then will be replaced by \code{epsilon}. Default value is \code{epsilon = 1e-5}, however, can
 be adopted.
 
-\code{basis} needs to be a character string, deciding which logarithm base you want to apply
+\code{base} needs to be a character string, deciding which logarithm base you want to apply
 to calculate Kullback-Leibler. You can choose between \eqn{log} and \eqn{log{_2}}. Default set to \eqn{log}.
 }
 \examples{
@@ -70,16 +70,16 @@ HOT <- createHOT(
 )
 
 # kl ungrouped - log
-kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log")
+kl(data = HOT, opts = c(Option_1:None), choice = choice, base = "log")
 
 # kl ungrouped - log2
-kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2")
+kl(data = HOT, opts = c(Option_1:None), choice = choice, base = "log2")
 
 # kl grouped - log + specifying epsilon
-kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log", <br> group = Group, epsilon = 1e-8)
+kl(data = HOT, opts = c(Option_1:None), choice = choice, base = "log", group = Group, epsilon = 1e-8)
 
 # kl grouped - log2
-kl(data = HOT, opts = c(Option_1:None), choice = choice, basis = "log2", group = Group)
+kl(data = HOT, opts = c(Option_1:None), choice = choice, base = "log2", group = Group)
 }
 
 }

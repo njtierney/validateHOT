@@ -95,29 +95,31 @@ shareofpref <- function(data, group, opts) {
   }
 
 
+
+  # store the number of persons in each group for creating the standard error
   WS1 <- data %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::count()
 
   # change data structure
   return(data %>%
-    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>%
+    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>% # exponentiate all alternatives
     dplyr::rowwise() %>%
-    dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>%
+    dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>% # sum up
     dplyr::ungroup() %>%
-    dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>%
+    dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>% # scale
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-    dplyr::summarise(across({{ opts }}, c(mw = base::mean, std = stats::sd), .names = "{.col}.{.fn}")) %>%
+    dplyr::summarise(across({{ opts }}, c(mw = base::mean, std = stats::sd), .names = "{.col}.{.fn}")) %>% # calculate mean and sd
     tidyr::pivot_longer(.,
       cols = tidyselect::ends_with(c(".mw", ".std")),
       names_to = c("Option", ".value"), names_sep = "\\."
-    ) %>%
-    base::merge(x = ., y = WS1, by = c(data %>% dplyr::select(., {{ group }}) %>% base::colnames())) %>%
+    ) %>% # change to longer format
+    base::merge(x = ., y = WS1, by = c(data %>% dplyr::select(., {{ group }}) %>% base::colnames())) %>% # merge
     dplyr::mutate(
-      se = std / sqrt(n),
-      lo.ci = mw - (1.96 * se),
-      up.ci = mw + (1.96 * se)
+      se = std / sqrt(n), # calculate standard error
+      lo.ci = mw - (1.96 * se), # lower ci
+      up.ci = mw + (1.96 * se) # upper ci
     ) %>%
-    dplyr::select(!tidyselect::all_of(c("std", "n"))) %>%
+    dplyr::select(!tidyselect::all_of(c("std", "n"))) %>% # delete irrelevant variables
     tibble::as_tibble())
 }

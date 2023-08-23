@@ -107,13 +107,13 @@ mhp <- function(data, group, opts, choice) {
   #############################################################################
   # change data structure
   data <- data %>%
-    dplyr::relocate(., c({{ opts }}, {{ choice }}, {{ group }})) %>%
-    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>%
+    dplyr::relocate(., c({{ opts }}, {{ choice }}, {{ group }})) %>% # reorder columns
+    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>% # exponentiate
     dplyr::rowwise() %>%
-    dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>%
+    dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>% # calculate sum
     dplyr::ungroup() %>%
-    dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>%
-    dplyr::mutate(mhp = 0)
+    dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>% # choice probability in percentage
+    dplyr::mutate(mhp = 0) # create mhp variable
 
 
   # store actual choice
@@ -127,7 +127,7 @@ mhp <- function(data, group, opts, choice) {
     data$mhp[j] <- base::unlist(data[j, choi[j]])
   }
 
-
+  # calculate MHP
   return(suppressMessages(data %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::summarise(MHP = base::mean(mhp))))
