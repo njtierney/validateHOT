@@ -60,10 +60,15 @@ HOT <- createHOT(
   varskeep = 21
 )
 # hit rate ungrouped
-hitrate(data = HOT, opts = c(Option_1:None), choice = choice)
+hitrate(data = HOT,
+        opts = c(Option_1:None),
+        choice = choice)
 
 # hit rate grouped
-hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)
+hitrate(data = HOT,
+        opts = c(Option_1:None),
+        choice = choice,
+        group = Group)
 }
 
 }

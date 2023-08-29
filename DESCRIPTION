@@ -8,9 +8,9 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-5602-4632")),
     person("Marcel", "Lichters", , "test@123.com", role = "ctb")
   )
-Description: validateHOT is a package that validates validation/ holdout
+Description: validateHOT is a package that validates validation/holdout
     tasks (HOTs) in (adaptive) Conjoint analysis as well as MaxDiff. You
-    define the Holdout task and afterward, choose different validation
+    define the validation/holdout task and afterwards, choose different validation
     metrics. validateHOT is a user-friendly tool to help you test the
     predictive validity of your data.
 License: GPL (>= 3)
@@ -24,11 +24,12 @@ Imports:
     stats (>= 4.2.2),
     tibble (>= 3.2.1),
     tidyr (>= 1.3.0),
-    tidyselect (>= 1.2.0)
+    tidyselect (>= 1.2.0),
+    utils (>= 4.3.0)
 Suggests: 
-    knitr,
+    knitr (>= 1.43),
     labelled (>= 2.12.0),
-    rmarkdown,
+    rmarkdown (>= 2.24),
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr

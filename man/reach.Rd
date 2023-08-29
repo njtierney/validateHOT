@@ -12,7 +12,7 @@ reach(data, group, none, opts)
 \item{group}{optional column name(s) to specify grouping variable(s)
 to get \code{"reach"} by group(s)}
 
-\item{none}{column name of none alternative}
+\item{none}{column name of none / threshold alternative}
 
 \item{opts}{column names of the alternatives included in the assortment}
 }
@@ -20,7 +20,8 @@ to get \code{"reach"} by group(s)}
 a tibble
 }
 \description{
-Reach function of **T**(otal) **U**(nduplicated) **R**(Reach) and **F**(requency) analysis to measure the number of  the averaged percentage of how many participants you can reach
+Reach function of T(otal) U(nduplicated) R(each) and F(requency)
+analysis to measure the number of  the averaged percentage of how many participants you can reach
 (at least one of the products resemble a purchase option) is reached with a specific product bundle assortment.
 }
 \details{
@@ -55,10 +56,15 @@ HOT <- createHOT(
 )
 
 # reach ungrouped
-reach(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None)
+reach(data = HOT,
+      opts = c(Option_1, Option_2, Option_6),
+      none = None)
 
 # reach grouped
-reach(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group)
+reach(data = HOT,
+      opts = c(Option_1, Option_2, Option_6),
+      none = None,
+      group = Group)
 }
 
 }

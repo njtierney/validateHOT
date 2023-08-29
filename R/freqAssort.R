@@ -1,7 +1,7 @@
 #' Averaged number of times a person is reached by a specific assortment of bundles
 #'
 #' @description
-#' Frequency function of **T**(otal) **U**(nduplicated) **R**(Reach) and **F**(requency)
+#' Frequency function of T(otal) U(nduplicated) R(each) and F(requency)
 #' analysis to measure the average time a consumer
 #' is reached with a specific product bundle assortment. \code{"freqassort"} calculates
 #' the frequency based on the 'threshold' approach, meaning each alternative that exceeds
@@ -11,7 +11,7 @@
 #' @param group optional column name(s) to specify grouping variable(s)
 #' to get \code{"freqassort"} by group(s)
 #' @param opts column names of the alternatives included in the assortment
-#' @param none column name of none alternative
+#' @param none column name of none / threshold alternative
 #'
 #' @details
 #' Frequency calculates the average times a consumer would be reached with the
@@ -51,10 +51,15 @@
 #' )
 #'
 #' # freqassort ungrouped
-#' freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None)
+#' freqassort(data = HOT,
+#'            opts = c(Option_1, Option_2, Option_6),
+#'            none = None)
 #'
 #' # freqassort grouped
-#' freqassort(data = HOT, opts = c(Option_1, Option_2, Option_6), none = None, group = Group)
+#' freqassort(data = HOT,
+#'            opts = c(Option_1, Option_2, Option_6),
+#'            none = None,
+#'            group = Group)
 #' }
 #'
 #' @export

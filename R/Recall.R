@@ -68,10 +68,17 @@
 #'   choice = 20
 #' )
 #' # recall ungrouped
-#' recall(data = HOT, opts = c(Option_1:None), choice = choice, none = None)
+#' recall(data = HOT,
+#'        opts = c(Option_1:None),
+#'        choice = choice,
+#'        none = None)
 #'
 #' # recall by group
-#' recall(data = HOT, opts = c(Option_1:None), choice = choice, none = None, group = Group)
+#' recall(data = HOT,
+#'        opts = c(Option_1:None),
+#'        choice = choice,
+#'        none = None,
+#'        group = Group)
 #' }
 #'
 #' @export

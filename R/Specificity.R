@@ -69,10 +69,17 @@
 #' )
 #'
 #' # specificity ungrouped
-#' specificity(data = HOT, opts = c(Option_1:None), choice = choice, none = None)
+#' specificity(data = HOT,
+#'             opts = c(Option_1:None),
+#'             choice = choice,
+#'             none = None)
 #'
 #' # specificity by group
-#' specificity(data = HOT, opts = c(Option_1:None), choice = choice, none = None, group = Group)
+#' specificity(data = HOT,
+#'             opts = c(Option_1:None),
+#'             choice = choice,
+#'             none = None,
+#'             group = Group)
 #' }
 #'
 #' @export

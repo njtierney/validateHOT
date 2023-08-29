@@ -70,10 +70,17 @@
 #' )
 #'
 #' # f1 ungrouped
-#' f1(data = HOT, opts = c(Option_1:None), choice = choice, none = None)
+#' f1(data = HOT,
+#'    opts = c(Option_1:None),
+#'    choice = choice,
+#'    none = None)
 #'
 #' # f1 by group
-#' f1(data = HOT, opts = c(Option_1:None), choice = choice, none = None, group = Group)
+#' f1(data = HOT,
+#'    opts = c(Option_1:None),
+#'    choice = choice,
+#'    none = None,
+#'    group = Group)
 #' }
 #'
 #' @export

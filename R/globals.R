@@ -12,6 +12,10 @@ utils::globalVariables(
     "mw",
     "pred",
     "se",
-    "std"
+    "std",
+    "combo",
+    "must",
+    "maximum",
+    "thres"
   )
 )
