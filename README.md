@@ -144,7 +144,6 @@ output by group.
 
 <ul>
 <li>
-
 <code>turf</code>: **T**(otal) **U**(nduplicated) **R**(each) and
 **F**(requency) is a “product line extension model” (Miaoulis et al.,
 1990, p. 29) that helps to find the perfect product bundle based on the
@@ -156,7 +155,7 @@ all products that exceed a threshold are considered, e.g., a purchase
 option; Chrzan & Orme, 2019, p. 112) and the first choice approach
 (<code>approach = ‘fc’</code>; only product with highest utility is
 considered as purchase option; Chrzan & Orme, 2019, p. 111).
-
+</li>
 <li>
 <code>freqassort</code>: Similar to <code>turf</code>,
 <code>freqassort</code> will give you the averaged frequency, how many

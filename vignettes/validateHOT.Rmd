@@ -491,7 +491,8 @@ HOT %>%
 
 Now let us imagine that you are unsure about what the *right* bundle is. `turf` helps you to determine the perfect bundle based on the `reach` and `frequency` (for explanations, please see above). When applying `turf`, you can decide between applying the *threshold* (`approach = 'thres'`) or *first choice* (approach = 'fc'`) approach. While former considers each alternative as, for example, purchase option if it exceeds a threshold (Chrzan & Orme, 2019, p. 112), the latter only considers the product alternative with the highest utility (Chrzan & Orme, 2019, p. 112).
 
-
+- erklären wie es geht
+- wie man es bsow. auch mit likert skalen nutzen kann
 
 
 ### `shareofpref`
