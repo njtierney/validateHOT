@@ -35,7 +35,7 @@ this threshold is referred to the \code{none} argument in \code{data}.
 \code{data} has to be a data frame including the alternatives that should be tested
 
 \code{group} optional grouping variable, if results should be displayed by different conditions.
-Needs to be column name of variables in \code{data}.
+Has to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the
 product assortment that should be considered.

@@ -32,7 +32,7 @@
 #' threshold \code{approach = 'thres'}. If \code{approach = 'fc'}, participants are
 #' considered being reached, if there alternative with highest utility is included in the assortment (Chrzan & Orme, 2019, p. 111).
 #' On the contrary, if \code{approach = 'thres'}, participants are considered being reached, if utility of one product is
-#' highr than the one of the \code{none} alternative. If \code{approach = 'fc'}, \code{reach} equals \code{freq} since participants
+#' highr than the one of the \code{none} alternative (Chrzan & Orme, 2019, p. 112). If \code{approach = 'fc'}, \code{reach} equals \code{freq} since participants
 #' have at maximum their most preferred alternative that exceeds the \code{none} alternative.
 #'
 #' @references {
@@ -58,14 +58,15 @@
 #'   id = 1,
 #'   None = 19,
 #'   prod = 7,
-#'   prod.levels = list(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18),
+#'   prod.levels = list(3, 4, 5, 6, 7, 8, 9, 10, 11,
+#'                      12, 13, 14, 15, 16, 17, 18),
 #'   method = "MaxDiff",
 #'   choice = 20
 #' )
 #'
 #' # turf no fixed alternatives
 #' t1 <- turf(data = HOT,
-#'            opts = c(Option_1, Option_2, Option_6),
+#'            opts = c(Option_1:Option_16),
 #'            none = None,
 #'            size = 3,
 #'            approach = "thres")
@@ -74,9 +75,9 @@
 #'
 #' # turf alternative 4 and 5 fixed
 #' t2 <- turf(data = HOT,
-#'            opts = c(Option_1, Option_2, Option_6),
+#'            opts = c(Option_1:Option_16),
 #'            none = None,
-#'            size = 3,
+#'            size = 4,
 #'            fixed = c("Option_4", "Option_5"),
 #'            approach = "thres")
 #'
@@ -96,8 +97,13 @@ turf <- function(data, opts, none, size, fixed = NULL, approach = c("thres", "fc
   }
 
   # size can not be larger than or equal to opts
-  if (size >= base::length(data %>% dplyr::select(., {{ opts }}))){
-    base::stop("Error: 'size' can not be larger or equal to size of 'opts'!")
+  if (size > base::length(data %>% dplyr::select(., {{ opts }}))){
+    base::stop("Error: 'size' can not be larger than size of 'opts'!")
+  }
+
+  # approach needs to be specified
+  if (base::missing(approach)){
+    base::stop("Error: 'approach' is missing!")
   }
 
   # approach can only be 'thres' or 'fc'
@@ -110,7 +116,7 @@ turf <- function(data, opts, none, size, fixed = NULL, approach = c("thres", "fc
     base::stop("Error: 'approach' is not defined!")
   }
 
-  # size needs to be numeric
+  # size has to be numeric
   ## imports whole number function from base package
   is.wholenumber <-
     function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
@@ -119,13 +125,22 @@ turf <- function(data, opts, none, size, fixed = NULL, approach = c("thres", "fc
   }
   rm(is.wholenumber)
 
-  # fixed needs to be part in opts
+  # fixed has to be part of opts
   if (!base::is.null(fixed)){
-    if (!(data %>% dplyr::select(tidyselect::all_of(fixed)) %>% base::colnames()) %in%
-        (data %>% dplyr::select(., {{ opts }}) %>% base::colnames())){
-      base::stop("Error: 'fixed' needs to be part of 'opts'!")
+    fixed <- data %>% dplyr::select(tidyselect::all_of(fixed)) %>% base::colnames()
+
+    if (!base::all(fixed %in% (data %>% dplyr::select(., {{ opts }}) %>% base::colnames()))){
+      base::stop("Error: 'fixed' has to be part of 'opts'!")
     }
   }
+
+  # fixed can not be larger than size
+  if (!base::is.null(fixed)){
+    if (length(data %>% dplyr::select(tidyselect::all_of(fixed))) > size){
+      stop("Error: 'fixed' can not be larger than 'size'!")
+    }
+  }
+
 
   # alternatives
   ## store names of alternatives
@@ -136,7 +151,7 @@ turf <- function(data, opts, none, size, fixed = NULL, approach = c("thres", "fc
   ## check whether variable is numeric
   for (i in 1:base::length(alternatives)) {
     if (!base::is.numeric(data[[alternatives[i]]])) {
-      stop("Error: 'opts' need to be numeric!")
+      stop("Error: 'opts' has to be numeric!")
     }
   }
 
@@ -157,7 +172,7 @@ turf <- function(data, opts, none, size, fixed = NULL, approach = c("thres", "fc
     base::colnames()
 
   if (!base::is.numeric(data[[Noo]])) {
-    stop("Error: 'none' needs to be numeric!")
+    stop("Error: 'none' has to be numeric!")
   }
 
   ## check none can not be part of opts
@@ -204,10 +219,14 @@ turf <- function(data, opts, none, size, fixed = NULL, approach = c("thres", "fc
     dplyr::select(., {{ opts }}) %>% # select specified opts
     base::colnames() # store column names only
 
+  # define new variable names
+  var_names <- c(items, paste0("new_col_names_", c(1:size)))
+  var_names <- base::make.unique(var_names, sep = "...")
+  var_names <- var_names[-c(1:length(items))]
+
   # create combos
   combos <- base::as.data.frame(base::t(utils::combn(items, size))) %>% # create all possible combinations
-    dplyr::rename_all(., ~ c(base::paste0("alt_", c(1:size)))) # rename variables
-
+    dplyr::rename_all(., ~ var_names) # rename variables
 
   if (!base::is.null(fixed)) { # only run if there are fixed values and delete ones that do not contain fixed values
     # create all possible combinations
@@ -277,8 +296,8 @@ turf <- function(data, opts, none, size, fixed = NULL, approach = c("thres", "fc
   # prepare final step
 
   return(new_df %>%
-           dplyr::select(-tidyselect::all_of(base::colnames(new_df)[1:size])) %>% # delete the first variables (variables indicating name of item)
-           base::merge(x = total, y = ., by = "combo") %>% # merge with total
-           arrange(-reach, -freq) %>% # arrange  # sort descending for reach and frequency
-           mutate(combo = paste0("Combo ", dplyr::row_number()))) # rename combo
+         dplyr::select(-tidyselect::all_of(base::colnames(new_df)[1:size])) %>% # delete the first variables (variables indicating name of item)
+         base::merge(x = total, y = ., by = "combo") %>% # merge with total
+         arrange(-reach, -freq) %>% # arrange  # sort descending for reach and frequency
+         mutate(combo = paste0("Combo ", dplyr::row_number()))) # rename combo
 }

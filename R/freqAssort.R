@@ -22,7 +22,7 @@
 #' \code{data} has to be a data frame including the alternatives that should be tested
 #'
 #' \code{group} optional grouping variable, if results should be displayed by different conditions.
-#' Needs to be column name of variables in \code{data}.
+#' Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the
 #' product assortment that should be considered.
@@ -93,7 +93,7 @@ freqassort <- function(data, group, none, opts) {
   ## check whether variable is numeric
   for (i in 1:base::length(alternatives)) {
     if (!base::is.numeric(data[[alternatives[i]]])) {
-      stop("Error: 'opts' need to be numeric!")
+      stop("Error: 'opts' has to be numeric!")
     }
   }
 
@@ -114,7 +114,7 @@ freqassort <- function(data, group, none, opts) {
     base::colnames()
 
   if (!base::is.numeric(data[[Noo]])) {
-    stop("Error: 'none' needs to be numeric!")
+    stop("Error: 'none' has to be numeric!")
   }
 
   ## check none can not be part of opts

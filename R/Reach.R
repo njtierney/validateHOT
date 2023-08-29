@@ -92,7 +92,7 @@ reach <- function(data, group, none, opts) {
   ## check whether variable is numeric
   for (i in 1:base::length(alternatives)) {
     if (!base::is.numeric(data[[alternatives[i]]])) {
-      stop("Error: 'opts' need to be numeric!")
+      stop("Error: 'opts' has to be numeric!")
     }
   }
 
@@ -113,7 +113,7 @@ reach <- function(data, group, none, opts) {
     base::colnames()
 
   if (!base::is.numeric(data[[Noo]])) {
-    stop("Error: 'none' needs to be numeric!")
+    stop("Error: 'none' has to be numeric!")
   }
 
   ## check none can not be part of opts

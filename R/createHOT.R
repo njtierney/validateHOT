@@ -7,7 +7,7 @@
 #' @param None optional column index to specify \code{None} alternative in \code{data}.
 #' @param prod number of alternatives in the holdout/validation task (does not count the \code{None} alternative); input has to be numeric
 #' @param prod.levels a list to define the attribute levels of the alternatives (\code{prod})
-#' @param interpolate.levels a list of the levels of the variables that should be interpolated. These have to be the same as provided to Sawtooth Software. Please make sure to provide the whole list. Only needs to be specified for the variables that are coded as '1' (linear) or '2' (piecewise)
+#' @param interpolate.levels a list of the levels of the variables that should be interpolated. These have to be the same as provided to Sawtooth Software. Please make sure to provide the whole list. Only has to be specified for the variables that are coded as '1' (linear) or '2' (piecewise)
 #' @param piece.p a list of the column indexes of the lower level and the upper level that should be used for interpolating
 #' @param lin.p vector of the column indexes of the linear variables
 #' @param coding vector of the coding of each attribute, '0' = part-worth coding, '1' = linear coding, '2' = piecewise coding; please make sure to code linear price of ACBC as piecewise since you have two values to interpolate
@@ -35,7 +35,7 @@
 #' \code{method = "ACBC"} use a vector to specify the attribute levels for each alternative. For \code{method = "CBC"} and \code{method = "ACBC"}
 #' also the column index(es) of the attribute level has to be specified.
 #' In case values for one attribute are interpolated (assuming linear or
-#' piecewise coding), the value to be interpolated needs to be specified.
+#' piecewise coding), the value to be interpolated has to be specified.
 #' In addition, \code{lin.p} and/or \code{piece.p}, \code{interpolate.levels}
 #' as well as \code{coding} have to be specified.
 #'

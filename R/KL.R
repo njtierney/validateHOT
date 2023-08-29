@@ -40,7 +40,7 @@
 #' then will be replaced by \code{epsilon}. Default value is \code{epsilon = 1e-5}, however, can
 #' be adopted.
 #'
-#' \code{base} needs to be a character string, deciding which logarithm base you want to apply
+#' \code{base} has to be a character string, deciding which logarithm base you want to apply
 #' to calculate Kullback-Leibler. You can choose between \eqn{log} and \eqn{log{_2}}. Default set to \eqn{log}.
 #'
 #' @references {

@@ -37,7 +37,7 @@ have to be part of the assortment
 threshold \code{approach = 'thres'}. If \code{approach = 'fc'}, participants are
 considered being reached, if there alternative with highest utility is included in the assortment (Chrzan & Orme, 2019, p. 111).
 On the contrary, if \code{approach = 'thres'}, participants are considered being reached, if utility of one product is
-highr than the one of the \code{none} alternative. If \code{approach = 'fc'}, \code{reach} equals \code{freq} since participants
+highr than the one of the \code{none} alternative (Chrzan & Orme, 2019, p. 112). If \code{approach = 'fc'}, \code{reach} equals \code{freq} since participants
 have at maximum their most preferred alternative that exceeds the \code{none} alternative.}
 }
 \value{
@@ -57,14 +57,15 @@ HOT <- createHOT(
   id = 1,
   None = 19,
   prod = 7,
-  prod.levels = list(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18),
+  prod.levels = list(3, 4, 5, 6, 7, 8, 9, 10, 11,
+                     12, 13, 14, 15, 16, 17, 18),
   method = "MaxDiff",
   choice = 20
 )
 
 # turf no fixed alternatives
 t1 <- turf(data = HOT,
-           opts = c(Option_1, Option_2, Option_6),
+           opts = c(Option_1:Option_16),
            none = None,
            size = 3,
            approach = "thres")
@@ -73,9 +74,9 @@ head(t1)
 
 # turf alternative 4 and 5 fixed
 t2 <- turf(data = HOT,
-           opts = c(Option_1, Option_2, Option_6),
+           opts = c(Option_1:Option_16),
            none = None,
-           size = 3,
+           size = 4,
            fixed = c("Option_4", "Option_5"),
            approach = "thres")
 

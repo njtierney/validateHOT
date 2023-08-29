@@ -83,7 +83,7 @@ mhp <- function(data, group, opts, choice) {
   ## check whether variable is numeric
   for (i in 1:base::length(alternatives)) {
     if (!base::is.numeric(data[[alternatives[i]]])) {
-      stop("Error: 'opts' need to be numeric!")
+      stop("Error: 'opts' has to be numeric!")
     }
   }
 
@@ -104,7 +104,7 @@ mhp <- function(data, group, opts, choice) {
     base::colnames()
 
   if (!base::is.numeric(data[[choi]])) {
-    stop("Error: 'choice' needs to be numeric!")
+    stop("Error: 'choice' has to be numeric!")
   }
 
   rm(choi)
