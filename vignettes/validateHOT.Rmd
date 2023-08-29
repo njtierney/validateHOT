@@ -41,6 +41,7 @@ In this vignette we would like to present to you ...
 -   ... and how to use <code>validateHOT</code> for simulation purposes
     -   Frequency of how many products are bought on average of a specified assortment (<code>freqassort</code>)
     -   How many participants are reached with a specified assortment (buying at least one alternative of the assortment; <code>reach</code>)
+    -   Determine the pefect product assortment with highest reach and frequency; <code>turf</code>)
     -   calculating the share of preference of specified set (<code>shareofpref</code>)
 
 ## Installation
@@ -431,6 +432,7 @@ Finally, let us talk about the simulation metrics. `validateHOT` currently provi
 
 -   Reach of the assortment (`reach`)
 -   Frequency of the assortment (`freqAssort`)
+-   **T**(otal) **U**(nduplicated) **R**(each) and **F**(requency) (`turf`)
 -   Share of Preference of the assortment (`shareofpref`)
 
 ### `reach`
@@ -485,6 +487,13 @@ HOT %>%
             2) # round results to 2 decimals
 ```
 
+### `turf`
+
+Now let us imagine that you are unsure about what the *right* bundle is. `turf` helps you to determine the perfect bundle based on the `reach` and `frequency` (for explanations, please see above). When applying `turf`, you can decide between applying the *threshold* (`approach = 'thres'`) or *first choice* (approach = 'fc'`) approach. While former considers each alternative as, for example, purchase option if it exceeds a threshold (Chrzan & Orme, 2019, p. 112), the latter only considers the product alternative with the highest utility (Chrzan & Orme, 2019, p. 112).
+
+
+
+
 ### `shareofpref`
 
 Finally, `validateHOT` also provides a function, `shareofpref` to calculate the share of preference of all products/alternatives you specify in your assortment.
@@ -502,6 +511,8 @@ HOT %>%
 ## References
 
 Bache, S., & Wickham, H. (2022). *magrittr: A Forward-Pipe Operator for R*. R package version 2.0.3, <https://CRAN.R-project.org/package=magrittr>.
+
+Chrzan, K., & Orme, B. K. (2019). <em>Applied MaxDiff: A Practitioner’s Guide to Best-Worst Scaling</em> Provo, UT: Sawtooth Software.
 
 Orme, B. K., & Chrzan, K. (2017). *Becoming an Expert in Conjoint Analysis. Choice Modelling for Pros*. Orem: Sawtooth Software.
 
