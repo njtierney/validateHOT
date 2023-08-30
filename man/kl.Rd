@@ -70,31 +70,39 @@ HOT <- createHOT(
 )
 
 # kl ungrouped - log
-kl(data = HOT,
-   opts = c(Option_1:None),
-   choice = choice,
-   base = "log")
+kl(
+  data = HOT,
+  opts = c(Option_1:None),
+  choice = choice,
+  base = "log"
+)
 
 # kl ungrouped - log2
-kl(data = HOT,
-   opts = c(Option_1:None),
-   choice = choice,
-   base = "log2")
+kl(
+  data = HOT,
+  opts = c(Option_1:None),
+  choice = choice,
+  base = "log2"
+)
 
 # kl grouped - log + specifying epsilon
-kl(data = HOT,
-   opts = c(Option_1:None),
-   choice = choice,
-   base = "log",
-   group = Group,
-   epsilon = 1e-8)
+kl(
+  data = HOT,
+  opts = c(Option_1:None),
+  choice = choice,
+  base = "log",
+  group = Group,
+  epsilon = 1e-8
+)
 
 # kl grouped - log2
-kl(data = HOT,
-   opts = c(Option_1:None),
-   choice = choice,
-   base = "log2",
-   group = Group)
+kl(
+  data = HOT,
+  opts = c(Option_1:None),
+  choice = choice,
+  base = "log2",
+  group = Group
+)
 }
 
 }

@@ -57,28 +57,34 @@ HOT <- createHOT(
   id = 1,
   None = 19,
   prod = 7,
-  prod.levels = list(3, 4, 5, 6, 7, 8, 9, 10, 11,
-                     12, 13, 14, 15, 16, 17, 18),
+  prod.levels = list(
+    3, 4, 5, 6, 7, 8, 9, 10, 11,
+    12, 13, 14, 15, 16, 17, 18
+  ),
   method = "MaxDiff",
   choice = 20
 )
 
 # turf no fixed alternatives
-t1 <- turf(data = HOT,
-           opts = c(Option_1:Option_16),
-           none = None,
-           size = 3,
-           approach = "thres")
+t1 <- turf(
+  data = HOT,
+  opts = c(Option_1:Option_16),
+  none = None,
+  size = 3,
+  approach = "thres"
+)
 
 head(t1)
 
 # turf alternative 4 and 5 fixed
-t2 <- turf(data = HOT,
-           opts = c(Option_1:Option_16),
-           none = None,
-           size = 4,
-           fixed = c("Option_4", "Option_5"),
-           approach = "thres")
+t2 <- turf(
+  data = HOT,
+  opts = c(Option_1:Option_16),
+  none = None,
+  size = 4,
+  fixed = c("Option_4", "Option_5"),
+  approach = "thres"
+)
 
 head(t2)
 }

@@ -139,6 +139,13 @@ test_that("Check whether fixed workds - all combinations must have a 1 for fixed
   expect_true(base::all(t1$Option_4 == 1))
 })
 
+test_that("Fixed needs to be part of opts ", {
+  HOT2 <- HOT %>%
+    mutate(Option_18 = 1)
+
+  expect_error(turf(data = HOT2, opts = c(Option_1:Option_16), none = None, size = 3, fixed = "Option_18", approach = "thres"))
+})
+
 test_that("First three columns are set ", {
   expect_equal(
     c(base::colnames(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "thres"))[1:3]),

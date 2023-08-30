@@ -249,7 +249,20 @@ createHOT <- function(data, id, None = NULL, prod,
 
   # test input of prod.levels
   if (!(base::is.list(prod.levels))) {
-    base::stop("Error: 'prod.levels' has to be a list!")
+    base::stop("Error: Input of 'prod.levels' has to be a list!")
+  }
+
+  # test input of list in prod.levels
+  if (!(base::is.null(prod.levels))) {
+    for (tt in 1:base::length(prod.levels)) {
+      lng <- base::length(prod.levels[[tt]])
+
+      for (lng_lev in 1:lng) {
+        if (!(base::is.numeric(prod.levels[[tt]][lng_lev]))) {
+          base::stop("Error: Input of 'prod.levels' has to be a list with only numeric values!")
+        }
+      }
+    }
   }
 
   # test variables of prod.levels
@@ -276,22 +289,9 @@ createHOT <- function(data, id, None = NULL, prod,
     }
   }
 
-  # test input of list in prod.levels
-  if (!(base::is.null(prod.levels))) {
-    for (tt in 1:base::length(prod.levels)) {
-      lng <- base::length(prod.levels[[tt]])
-
-      for (lng_lev in 1:lng) {
-        if (!(base::is.numeric(prod.levels[[tt]][lng_lev]))) {
-          base::stop("Error: 'prod.levels' has to be a list with only numeric input!")
-        }
-      }
-    }
-  }
-
   # test input of interpolate levels
   if (!(base::is.list(interpolate.levels)) & !(base::is.null(interpolate.levels))) {
-    base::stop("Error: 'interpolate.levels' has to be a list!")
+    base::stop("Error: Input of 'interpolate.levels' has to be a list!")
   }
 
   # test variables of interpolate.levels
@@ -301,7 +301,7 @@ createHOT <- function(data, id, None = NULL, prod,
 
       for (lng_lev in 1:lng) {
         if (!(base::is.numeric(interpolate.levels[[tt]][lng_lev]))) {
-          base::stop("Error: 'interpolate.levels' has to be a list with only numeric input!")
+          base::stop("Error: Input of 'interpolate.levels' has to be a list with only numeric values!")
         }
       }
     }
@@ -312,20 +312,15 @@ createHOT <- function(data, id, None = NULL, prod,
     base::stop("Error: Number of products and defined products do not match!")
   }
 
-  # test input of lin.p
-  if (!(base::is.null(lin.p)) & !(base::is.vector(lin.p))) {
-    base::stop("Error: 'lin.p' has to be a vector!")
-  }
-
-  # test lin.p variablse format
+  # test lin.p variables format
   if (!(base::is.null(lin.p))) {
     for (ll in 1:base::length(lin.p)) {
       if (!(base::is.numeric(lin.p[ll]))) {
-        base::stop("Error: 'lin.p' has to be a vector with only numeric values!")
+        base::stop("Error: Input of 'lin.p' has to be a vector with only numeric values!")
       }
 
       if (!base::is.numeric(data[[lin.p[ll]]])) {
-        base::stop("Error: Variables included in 'lin.p' has to be numeric!")
+        base::stop("Error: Variables included in 'lin.p' have to be numeric!")
       }
     }
   }
@@ -342,7 +337,7 @@ createHOT <- function(data, id, None = NULL, prod,
 
   # test input of piece.p
   if (!(base::is.null(piece.p)) & !(base::is.list(piece.p))) {
-    base::stop("Error: 'piece.p' has to be a list!")
+    base::stop("Error: Input of 'piece.p' has to be a list!")
   }
 
   # test variables specified in piece.p

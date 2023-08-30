@@ -58,15 +58,19 @@ HOT <- createHOT(
 )
 
 # freqassort ungrouped
-freqassort(data = HOT,
-           opts = c(Option_1, Option_2, Option_6),
-           none = None)
+freqassort(
+  data = HOT,
+  opts = c(Option_1, Option_2, Option_6),
+  none = None
+)
 
 # freqassort grouped
-freqassort(data = HOT,
-           opts = c(Option_1, Option_2, Option_6),
-           none = None,
-           group = Group)
+freqassort(
+  data = HOT,
+  opts = c(Option_1, Option_2, Option_6),
+  none = None,
+  group = Group
+)
 }
 
 }

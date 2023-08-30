@@ -116,11 +116,6 @@ turf <- function(data, opts, none, size, fixed = NULL, approach = c("thres", "fc
     base::stop("Error: 'approach' is wrong, please choose between 'fc' and 'thres'!")
   }
 
-  # approach is missing
-  if (base::missing(approach)) {
-    base::stop("Error: 'approach' is not defined!")
-  }
-
   # size has to be numeric
   ## imports whole number function from base package
   is.wholenumber <-

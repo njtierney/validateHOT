@@ -996,3 +996,56 @@ test_that("Make sure varskeep is working ", {
     varskeep = 41
   ))
 })
+
+
+# Add missing tests
+test_that("piece.p only takes numeric values ", {
+  prod1 <- c(5, 5, 12, 14, 18, 22, 29, 31, 15.99)
+  prod2 <- c(6, 4, 12, 14, 20, 24, 28, 31, 12.99)
+  prod3 <- c(8, 6, 13, 16, 20, 21, 25, 31, 12.99)
+  prod4 <- c(7, 5, 11, 15, 19, 21, 25, 30, 9.99)
+  prod5 <- c(4, 9, 10, 14, 20, 24, 25, 31, 7.99)
+  prod6 <- c(5, 8, 11, 14, 20, 24, 26, 30, 9.99)
+
+  expect_error(createHOT(
+    data = ACBC_interpolate,
+    id = 1,
+    None = 39,
+    prod = 6,
+    prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
+    interpolate.levels = list(c(3, 5, 8, 10), c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)),
+    piece.p = list(c("36", 37), c(35, 36), c(35, 36), c(33, 34), c(33, 34), c(33, 34)),
+    lin.p = 9,
+    coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
+    method = "ACBC",
+    choice = 40,
+    varskeep = 41
+  ))
+})
+
+
+test_that("Variables in piece.p only have to be numeric ", {
+  prod1 <- c(5, 5, 12, 14, 18, 22, 29, 31, 15.99)
+  prod2 <- c(6, 4, 12, 14, 20, 24, 28, 31, 12.99)
+  prod3 <- c(8, 6, 13, 16, 20, 21, 25, 31, 12.99)
+  prod4 <- c(7, 5, 11, 15, 19, 21, 25, 30, 9.99)
+  prod5 <- c(4, 9, 10, 14, 20, 24, 25, 31, 7.99)
+  prod6 <- c(5, 8, 11, 14, 20, 24, 26, 30, 9.99)
+
+  ACBC_interpolate[3, 36] <- as.character(ACBC_interpolate[3, 36])
+
+  expect_error(createHOT(
+    data = ACBC_interpolate,
+    id = 1,
+    None = 39,
+    prod = 6,
+    prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
+    interpolate.levels = list(c(3, 5, 8, 10), c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)),
+    piece.p = list(c(36, 37), c(35, 36), c(35, 36), c(33, 34), c(33, 34), c(33, 34)),
+    lin.p = 9,
+    coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
+    method = "ACBC",
+    choice = 40,
+    varskeep = 41
+  ))
+})

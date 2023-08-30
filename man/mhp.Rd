@@ -56,15 +56,19 @@ HOT <- createHOT(
 )
 
 # mhp ungrouped
-mhp(data = HOT,
-    opts = c(Option_1:None),
-    choice = choice)
+mhp(
+  data = HOT,
+  opts = c(Option_1:None),
+  choice = choice
+)
 
 # mhp grouped
-mhp(data = HOT,
-    opts = c(Option_1:None),
-    choice = choice,
-    group = Group)
+mhp(
+  data = HOT,
+  opts = c(Option_1:None),
+  choice = choice,
+  group = Group
+)
 }
 
 }

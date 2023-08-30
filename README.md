@@ -19,7 +19,7 @@ some of the relevant metrics to test the performance of your data in
 predicting a holdout task. In [Sawtooth
 Software’s](https://sawtoothsoftware.com/) CBC a fixed validation/
 holdout task is automatically implemented. If you conduct a MaxDiff or
-ACBC study, you have to program these on your own.
+ACBC study, you have to program these on your own. Since the start of
 
 👉🏾 <u>**What you need to provide**</u>: <br> After collecting your data,
 and running your initial Hierarchical Bayes models, you can turn to

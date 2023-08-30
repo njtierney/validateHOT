@@ -58,15 +58,19 @@ HOT <- createHOT(
 )
 
 # rmse ungrouped
-rmse(data = HOT,
-     opts = c(Option_1:None),
-     choice = choice)
+rmse(
+  data = HOT,
+  opts = c(Option_1:None),
+  choice = choice
+)
 
 # rmse grouped
-rmse(data = HOT,
-     opts = c(Option_1:None),
-     choice = choice,
-     group = Group)
+rmse(
+  data = HOT,
+  opts = c(Option_1:None),
+  choice = choice,
+  group = Group
+)
 }
 
 }

@@ -56,15 +56,19 @@ HOT <- createHOT(
 )
 
 # reach ungrouped
-reach(data = HOT,
-      opts = c(Option_1, Option_2, Option_6),
-      none = None)
+reach(
+  data = HOT,
+  opts = c(Option_1, Option_2, Option_6),
+  none = None
+)
 
 # reach grouped
-reach(data = HOT,
-      opts = c(Option_1, Option_2, Option_6),
-      none = None,
-      group = Group)
+reach(
+  data = HOT,
+  opts = c(Option_1, Option_2, Option_6),
+  none = None,
+  group = Group
+)
 }
 
 }
