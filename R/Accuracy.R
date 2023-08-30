@@ -73,17 +73,21 @@
 #' )
 #'
 #' # accuracy ungrouped
-#' accuracy(data = HOT,
-#'          opts = c(Option_1:None),
-#'          choice = choice,
-#'          none = None)
+#' accuracy(
+#'   data = HOT,
+#'   opts = c(Option_1:None),
+#'   choice = choice,
+#'   none = None
+#' )
 #'
 #' # accuracy by group
-#' accuracy(data = HOT,
-#'          opts = c(Option_1:None),
-#'          choice = choice,
-#'          none = None,
-#'          group = Group)
+#' accuracy(
+#'   data = HOT,
+#'   opts = c(Option_1:None),
+#'   choice = choice,
+#'   none = None,
+#'   group = Group
+#' )
 #' }
 #'
 #' @export

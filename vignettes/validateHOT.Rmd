@@ -405,9 +405,11 @@ HOT %>%
     none = None, # column name of none alternative
     group = Group
   ) %>% # Grouping variable
-  mutate_if(is.numeric, # only for numeric
-            round, # round 
-            2) # round results to 2 decimals
+  mutate_if(
+    is.numeric, # only for numeric
+    round, # round
+    2
+  ) # round results to 2 decimals
 ```
 
 
@@ -482,17 +484,113 @@ HOT %>%
     none = None, # threshold that has to be exceeded
     group = Group
   ) %>% # Grouping variable
-  mutate_if(is.numeric, # only for numeric
-            round, # round 
-            2) # round results to 2 decimals
+  mutate_if(
+    is.numeric, # only for numeric
+    round, # round
+    2
+  ) # round results to 2 decimals
 ```
 
 ### `turf`
 
 Now let us imagine that you are unsure about what the *right* bundle is. `turf` helps you to determine the perfect bundle based on the `reach` and `frequency` (for explanations, please see above). When applying `turf`, you can decide between applying the *threshold* (`approach = 'thres'`) or *first choice* (approach = 'fc'`) approach. While former considers each alternative as, for example, purchase option if it exceeds a threshold (Chrzan & Orme, 2019, p. 112), the latter only considers the product alternative with the highest utility (Chrzan & Orme, 2019, p. 112).
 
-- erklären wie es geht
-- wie man es bsow. auch mit likert skalen nutzen kann
+This function is extremely helpful when running a `MaxDiff` (Chrzan & Orme, 2019), however, we also show a way to use `turf` with other methods. Let us first assume we ran a MaxDiff study with 16 alternatives and we now want to find out which combination of 3 alternatives can reach most of the participants, put differently, the combination of 3 alternatives for which most of the participants buy at least one alternative.
+
+Let us load the `MaxDiff` data set, which is included in `validateHOT`.
+
+```{r}
+data("MaxDiff")
+```
+
+We have 16 different alternatives included as well as outside option (`none`). In the following, we will use the `turf` function. First, we have to specify out data frame `data = MaxDiff`. Afterwards, we specify the alternatives (`opts`) that should be considered when creating the different assortments as well as the threshold (`none`) that needs to be exceeded. As described above, the final product assortment should have 3 items included (`size = 3`). Finally, we apply the threshold approach (`thres`). We store the results in `t1` and display the first 5 results using the `head()` function. To 
+
+```{r}
+t1 <- turf(
+  data = MaxDiff,
+  opts = c(Option_01:Option_16),
+  none = none,
+  size = 3,
+  approach = "thres"
+)
+
+head(t1, n = 5)
+```
+
+By default, the results are sorted in descending order by reach. We see that `Combo 1` has a `reach` of `r round(t1$reach[1], digits = 2)`%. This assortment includes `Option_01`, `Option_04`, and `Option_13`. This means that `r round(t1$reach[1], digits = 2)`% have at least one these 3 alternative exceeding the threshold. Finally, the frequency `freq` of this assortment is `r round(t1$freq[1], digits = 2)`.
+
+If we decide to rather use the first choice approach, we simply change `approach` to `approach = 'fc'`.
+
+```{r}
+t1_fc <- turf(
+  data = MaxDiff,
+  opts = c(Option_01:Option_16),
+  none = none,
+  size = 3,
+  approach = "fc"
+)
+
+head(t1_fc, n = 5)
+```
+
+We see that the combination with the highest reach has changed. The combination with the highest reach (`reach` equal to `r round(t1_fc$reach[1], digits = 2)`%) includes `Option_01`, `Option_04`, and `Option_06`. Please be aware that, if `approach = 'fc'`, `reach` and `freq` will be equal since the volume is limited to 1 per participant.
+
+Let us know imagine the case that we already have 2 fixed alternatives, meaning that they have to be included in the assortment, and we want to find 2 further items that maximize `reach`. In `turf`, we only have to use the `fixed` argument. So let us assume that `Option_02` as well as `Option_12` are fixed.
+
+```{r}
+t2 <- turf(
+  data = MaxDiff,
+  opts = c(Option_01:Option_16),
+  none = none,
+  size = 4,
+  fixed = c("Option_02", "Option_12"),
+  approach = "thres"
+)
+
+head(t2, n = 5)
+```
+
+We see that adding `Option_01` and `Option_4` yields the highest reach (`reach` = `r round(t2$reach[1], digits = 2)`%). Again, we could also use `approach = 'fc'` instead.
+
+If you would like to use `turf` with data surveyed using, for example, a Likert Scale, you also do this, however, you need some more data wrangling. Let's say you have 10 items and for each of the items you asked for the purchase likelihood on a 5-point Likert scale (*1 = not very likely to purchase* to *5 = very likely to purchase*). And you want to say that each item is considered as purchase option if participants choose a **4** or **5** on the scale. 
+
+Let us create hypothetical data for this example: 
+
+```{r}
+Likert <- base::data.frame(
+  alt_01 = base::round(stats::runif(1000, min = 1, max = 5), digits = 0),
+  alt_02 = base::round(stats::runif(1000, min = 1, max = 5), digits = 0),
+  alt_03 = base::round(stats::runif(1000, min = 1, max = 5), digits = 0),
+  alt_04 = base::round(stats::runif(1000, min = 1, max = 5), digits = 0),
+  alt_05 = base::round(stats::runif(1000, min = 1, max = 5), digits = 0),
+  alt_06 = base::round(stats::runif(1000, min = 1, max = 5), digits = 0),
+  alt_07 = base::round(stats::runif(1000, min = 1, max = 5), digits = 0),
+  alt_08 = base::round(stats::runif(1000, min = 1, max = 5), digits = 0),
+  alt_09 = base::round(stats::runif(1000, min = 1, max = 5), digits = 0),
+  alt_10 = base::round(stats::runif(1000, min = 1, max = 5), digits = 0)
+)
+```
+
+In order to use `turf`, we need to provide a threshold to the data frame, a value that needs to be exceeded. In our case, we only want to consider option **4** and **5**  on the scale, therefore, the threshold needs to be lower than 4 accordingly (please be aware that setting the threshold to 4 is not working in this case, the threshold **has** to be lower, for example, 3.9999). In our case, since we only have whole numbers we could also set the threshold to **3**. 
+
+```{r}
+Likert$thres <- 3
+```
+
+Next, we could use the `turf` function described as above.
+
+```{r}
+t_likert <- turf(
+  data = Likert,
+  opts = c(alt_01:alt_10),
+  none = thres,
+  size = 3,
+  approach = "thres"
+)
+
+head(t_likert, n = 5)
+```
+
 
 
 ### `shareofpref`

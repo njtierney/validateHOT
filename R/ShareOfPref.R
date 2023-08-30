@@ -53,13 +53,17 @@
 #' )
 #'
 #' # shareofpref ungrouped
-#' shareofpref(data = HOT,
-#'             opts = c(Option_1:None))
+#' shareofpref(
+#'   data = HOT,
+#'   opts = c(Option_1:None)
+#' )
 #'
 #' # shareofpref grouped
-#' shareofpref(data = HOT,
-#'             opts = c(Option_1:None),
-#'             group = Group)
+#' shareofpref(
+#'   data = HOT,
+#'   opts = c(Option_1:None),
+#'   group = Group
+#' )
 #' }
 #'
 #' @export

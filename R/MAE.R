@@ -50,15 +50,19 @@
 #' )
 #'
 #' # mae ungrouped
-#' mae(data = HOT,
-#'     opts = c(Option_1:None),
-#'     choice = choice)
+#' mae(
+#'   data = HOT,
+#'   opts = c(Option_1:None),
+#'   choice = choice
+#' )
 #'
 #' # mae grouped
-#' mae(data = HOT,
-#'     opts = c(Option_1:None),
-#'     choice = choice,
-#'     group = Group)
+#' mae(
+#'   data = HOT,
+#'   opts = c(Option_1:None),
+#'   choice = choice,
+#'   group = Group
+#' )
 #' }
 #' @export
 

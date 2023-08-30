@@ -82,38 +82,41 @@
 #' \dontrun{
 #' # MaxDiff example
 #' HOT_MD <- createHOT(
-#'  data = MaxDiff,
-#'  id = 1,
-#'  None = 19,
-#'  prod = 7,
-#'  prod.levels = list(3, 10, 11, 15, 16, 17, 18),
-#'  method = "MaxDiff",
-#'  choice = 20)
+#'   data = MaxDiff,
+#'   id = 1,
+#'   None = 19,
+#'   prod = 7,
+#'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+#'   method = "MaxDiff",
+#'   choice = 20
+#' )
 #'
 #' # CBC example
 #' HOT_CBC <- createHOT(
-#'  data = CBC,
-#'  id = 1,
-#'  None = 21,
-#'  prod = 3,
-#'  prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
-#'  coding = c(0, 0, 0),
-#'  method = "CBC",
-#'  choice = 22)
+#'   data = CBC,
+#'   id = 1,
+#'   None = 21,
+#'   prod = 3,
+#'   prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
+#'   coding = c(0, 0, 0),
+#'   method = "CBC",
+#'   choice = 22
+#' )
 #'
 #' # CBC example with linear coding
 #' HOT_CBC_lin <- createHOT(
-#'  data = CBC_lin,
-#'  id = 1,
-#'  None = 15,
-#'  prod = 3,
-#'  prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
-#'  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
-#'  lin.p = 14,
-#'  coding = c(0, 0, 1),
-#'  method = "CBC",
-#'  varskeep = 17,
-#'  choice = 16)
+#'   data = CBC_lin,
+#'   id = 1,
+#'   None = 15,
+#'   prod = 3,
+#'   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
+#'   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+#'   lin.p = 14,
+#'   coding = c(0, 0, 1),
+#'   method = "CBC",
+#'   varskeep = 17,
+#'   choice = 16
+#' )
 #'
 #' # ACBC example with linear price
 #' prod1 <- c(5, 11, 15, 17, 21, 25, 32, 34, 15.99)
@@ -124,17 +127,20 @@
 #' prod6 <- c(5, 9, 14, 17, 23, 27, 29, 33, 9.99)
 #'
 #' HOT_ACBC <- createHOT(
-#'  data = ACBC,
-#'  id = 1,
-#'  None = 37,
-#'  prod = 6,
-#'  prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
-#'  interpolate.levels = list(c(2.093, 27.287)),
-#'  piece.p = list(c(35, 36), c(35, 36), c(35, 36),
-#'                 c(35, 36), c(35, 36), c(35, 36)),
-#'  coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
-#'  method = "ACBC",
-#'  choice = 38)
+#'   data = ACBC,
+#'   id = 1,
+#'   None = 37,
+#'   prod = 6,
+#'   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
+#'   interpolate.levels = list(c(2.093, 27.287)),
+#'   piece.p = list(
+#'     c(35, 36), c(35, 36), c(35, 36),
+#'     c(35, 36), c(35, 36), c(35, 36)
+#'   ),
+#'   coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
+#'   method = "ACBC",
+#'   choice = 38
+#' )
 #'
 #' prod1 <- c(5, 5, 12, 14, 18, 22, 29, 31, 15.99)
 #' prod2 <- c(6, 4, 12, 14, 20, 24, 28, 31, 12.99)
@@ -144,19 +150,24 @@
 #' prod6 <- c(5, 8, 11, 14, 20, 24, 26, 30, 9.99)
 #'
 #' HOT_ACBC_inter <- createHOT(
-#'  data = ACBC_interpolate,
-#'  id = 1,
-#'  None = 39,
-#'  prod = 6,
-#'  prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
-#'  interpolate.levels = list(c(3, 5, 8, 10),
-#'                            c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)),
-#'  piece.p = list(c(36, 37), c(35, 36), c(35, 36),
-#'                 c(33, 34), c(33, 34), c(33, 34)),
-#'  lin.p = 9,
-#'  coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
-#'  method = "ACBC",
-#'  choice = 40)
+#'   data = ACBC_interpolate,
+#'   id = 1,
+#'   None = 39,
+#'   prod = 6,
+#'   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
+#'   interpolate.levels = list(
+#'     c(3, 5, 8, 10),
+#'     c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)
+#'   ),
+#'   piece.p = list(
+#'     c(36, 37), c(35, 36), c(35, 36),
+#'     c(33, 34), c(33, 34), c(33, 34)
+#'   ),
+#'   lin.p = 9,
+#'   coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
+#'   method = "ACBC",
+#'   choice = 40
+#' )
 #' }
 #' @export
 createHOT <- function(data, id, None = NULL, prod,

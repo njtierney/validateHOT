@@ -10,11 +10,11 @@ HOT <- createHOT(
 
 # examples
 test_that("Example 1 should work ", {
-  expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "thres"))
+  expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "thres"))
 })
 
 test_that("Example 2 should work ", {
-  expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 4, fixed = c("Option_1", "Option_5"), approach = "thres"))
+  expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 4, fixed = c("Option_1", "Option_5"), approach = "thres"))
 })
 
 
@@ -76,7 +76,7 @@ test_that("Error if opts contains NA ", {
 
   HOT2$Option_2[34] <- NA
 
-  expect_error(turf(data = HOT2, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "thres"))
+  expect_error(turf(data = HOT2, opts = c(Option_1:Option_16), none = None, size = 3, approach = "thres"))
 })
 
 
@@ -85,28 +85,30 @@ test_that("Error if opts is not numeric ", {
 
   HOT2$Option_2 <- base::as.character(HOT2$Option_2)
 
-  expect_error(turf(data = HOT2, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "thres"))
+  expect_error(turf(data = HOT2, opts = c(Option_1:Option_16), none = None, size = 3, approach = "thres"))
 })
 
 
 # Output
 test_that("Data Frame as output ", {
-  expect_true(is.data.frame(turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "thres")))
+  expect_true(is.data.frame(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "thres")))
 })
 
 test_that("length of output should equal number of possible combinations ", {
-  expect_equal(base::nrow(turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "thres")),
-               base::nrow(base::as.data.frame(base::t(utils::combn(base::length(HOT %>% select(Option_1:Option_16)), 3)))))
+  expect_equal(
+    base::nrow(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "thres")),
+    base::nrow(base::as.data.frame(base::t(utils::combn(base::length(HOT %>% select(Option_1:Option_16)), 3))))
+  )
 })
 
 test_that("Number of colums of output should be equal to number of alternatives plus 3 ", {
-  expect_equal(base::ncol(turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "thres")),
-               (base::length(HOT %>% dplyr::select(Option_1:Option_16)) + 3))
+  expect_equal(
+    base::ncol(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "thres")),
+    (base::length(HOT %>% dplyr::select(Option_1:Option_16)) + 3)
+  )
 })
 
 test_that("All options should have the same names in output ", {
-
-
   # change names just for robustness testing
   HOT2 <- HOT
 
@@ -115,44 +117,44 @@ test_that("All options should have the same names in output ", {
   # store item names
   item.names <- base::colnames(HOT2)[base::which(base::colnames(HOT2) == "alt_1"):(base::which(base::colnames(HOT2) == "alt_16"))]
 
-  expect_true(base::all(item.names %in% base::colnames(turf(data = HOT2, opts = c(alt_1:alt_16),  none = None, size = 3, approach = "thres"))))
-
+  expect_true(base::all(item.names %in% base::colnames(turf(data = HOT2, opts = c(alt_1:alt_16), none = None, size = 3, approach = "thres"))))
 })
 
 test_that("Number of rows should be reduced accordingly if fixed is used ", {
-  expect_equal(base::nrow(turf(data = HOT, opts = c(Option_1:Option_16),  fixed = c("Option_1", "Option_16"), none = None, size = 4, approach = "thres")),
-               base::nrow(base::as.data.frame(base::t(utils::combn((base::length(HOT %>% dplyr::select(Option_1:Option_16)) - 2), 2)))))
+  expect_equal(
+    base::nrow(turf(data = HOT, opts = c(Option_1:Option_16), fixed = c("Option_1", "Option_16"), none = None, size = 4, approach = "thres")),
+    base::nrow(base::as.data.frame(base::t(utils::combn((base::length(HOT %>% dplyr::select(Option_1:Option_16)) - 2), 2))))
+  )
 })
 
 test_that("Check whether fixed workds - all combinations must have a 1 for fixed ", {
-  t1 <- turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, fixed = "Option_4", approach = "thres")
+  t1 <- turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, fixed = "Option_4", approach = "thres")
 
   expect_true(base::all(t1$Option_4 == 1))
-
 })
 
 test_that("Check whether fixed workds - all combinations must have a 1 for fixed (also works with column index) ", {
-  t1 <- turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, fixed = 5, approach = "thres")
+  t1 <- turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, fixed = 5, approach = "thres")
 
   expect_true(base::all(t1$Option_4 == 1))
-
 })
 
 test_that("First three columns are set ", {
-  expect_equal(c(base::colnames(turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "thres"))[1:3]),
-               c("combo", "reach", "freq"))
+  expect_equal(
+    c(base::colnames(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "thres"))[1:3]),
+    c("combo", "reach", "freq")
+  )
 })
 
 test_that("Check results - Reach never larger than 100, freq never larger than size ", {
-  t1 <- turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 2, approach = "thres")
+  t1 <- turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 2, approach = "thres")
 
   expect_true(max(t1$reach) <= 100)
   expect_true(base::max(t1$freq) <= 2)
-
 })
 
 test_that("Check data type of output ", {
-  t1 <- turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 2, approach = "thres")
+  t1 <- turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 2, approach = "thres")
 
   # combo == character
   expect_true(base::is.character(t1[, 1]))
@@ -163,39 +165,39 @@ test_that("Check data type of output ", {
   # freq == numeric
   expect_true(base::is.numeric(t1[, 3]))
 
-  vars <- HOT %>% dplyr::select(Option_1:Option_16) %>% base::colnames()
+  vars <- HOT %>%
+    dplyr::select(Option_1:Option_16) %>%
+    base::colnames()
 
-  for (i in vars){
+  for (i in vars) {
     expect_true(base::is.numeric(t1[[i]]))
   }
-
-
 })
 
 test_that("Fixed can not be larger than size ", {
-  expect_error(turf(data = HOT, opts = c(Option_1:Option_3),  none = None, size = 2, fixed = c(2:4), approach = "thres"))
-  })
+  expect_error(turf(data = HOT, opts = c(Option_1:Option_3), none = None, size = 2, fixed = c(2:4), approach = "thres"))
+})
 
 test_that("Fixed can not be larger than opts ", {
-  expect_error(turf(data = HOT, opts = c(Option_1:Option_3),  none = None, size = 4, fixed = c(2:5), approach = "thres"))
+  expect_error(turf(data = HOT, opts = c(Option_1:Option_3), none = None, size = 4, fixed = c(2:5), approach = "thres"))
 })
 
 
 # approach
 test_that("'approach' has to be 'thres' or 'fc' ", {
-  expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "thres"))
-  expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "fc"))
-  expect_error(turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "abc"))
+  expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "thres"))
+  expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "fc"))
+  expect_error(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "abc"))
 })
 
 test_that("'approach' can not be empty ", {
-  expect_error(turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3))
+  expect_error(turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3))
 })
 
 test_that("'fc' can not be larger than 'thres' in terms of statistics ", {
-  t1 <- turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "thres")
+  t1 <- turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "thres")
 
-  t2 <- turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "fc")
+  t2 <- turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "fc")
 
   expect_true(base::all(t1$reach >= t2$reach))
 
@@ -203,7 +205,7 @@ test_that("'fc' can not be larger than 'thres' in terms of statistics ", {
 })
 
 test_that("if 'fc' 'reach' and 'freq' ", {
-  t2 <- turf(data = HOT, opts = c(Option_1:Option_16),  none = None, size = 3, approach = "fc")
+  t2 <- turf(data = HOT, opts = c(Option_1:Option_16), none = None, size = 3, approach = "fc")
 
   expect_true(base::all(t2$reach == (t2$freq * 100)))
 })
@@ -211,31 +213,29 @@ test_that("if 'fc' 'reach' and 'freq' ", {
 # other data format is working as well
 
 test_that("turf also working with other data ", {
+  df <- base::data.frame(
+    Option_1 = stats::rnorm(10000, mean = 0, sd = 1),
+    Option_2 = stats::rnorm(10000, mean = 0, sd = 1),
+    Option_3 = stats::rnorm(10000, mean = 0, sd = 1),
+    Option_4 = stats::rnorm(10000, mean = 0, sd = 1),
+    Option_5 = stats::rnorm(10000, mean = 0, sd = 1),
+    thres = base::rep(0, 10000)
+  )
 
-  df <-  base::data.frame(
-  Option_1 = stats::rnorm(10000, mean = 0, sd = 1),
-  Option_2 = stats::rnorm(10000, mean = 0, sd = 1),
-  Option_3 = stats::rnorm(10000, mean = 0, sd = 1),
-  Option_4 = stats::rnorm(10000, mean = 0, sd = 1),
-  Option_5 = stats::rnorm(10000, mean = 0, sd = 1),
-  thres = base::rep(0, 10000))
-
-  expect_no_error(turf(data = df, opts = c(Option_1:Option_5),  none = thres, size = 3, approach = "thres"))
-  expect_no_error(turf(data = df, opts = c(Option_1:Option_5),  none = thres, size = 3, approach = "fc"))
-
+  expect_no_error(turf(data = df, opts = c(Option_1:Option_5), none = thres, size = 3, approach = "thres"))
+  expect_no_error(turf(data = df, opts = c(Option_1:Option_5), none = thres, size = 3, approach = "fc"))
 })
 
 test_that("turf also working with Likert scale ", {
-
-  df <-  base::data.frame(
+  df <- base::data.frame(
     Option_1 = base::round(stats::runif(10000, min = 1, max = 5), digits = 0),
     Option_2 = base::round(stats::runif(10000, min = 1, max = 5), digits = 0),
     Option_3 = base::round(stats::runif(10000, min = 1, max = 5), digits = 0),
     Option_4 = base::round(stats::runif(10000, min = 1, max = 5), digits = 0),
     Option_5 = base::round(stats::runif(10000, min = 1, max = 5), digits = 0),
-    thres = base::rep(2.99, 10000))
+    thres = base::rep(2.99, 10000)
+  )
 
-  expect_no_error(turf(data = df, opts = c(Option_1:Option_5),  none = thres, size = 3, approach = "thres"))
-  expect_no_error(turf(data = df, opts = c(Option_1:Option_5),  none = thres, size = 3, approach = "fc"))
-
+  expect_no_error(turf(data = df, opts = c(Option_1:Option_5), none = thres, size = 3, approach = "thres"))
+  expect_no_error(turf(data = df, opts = c(Option_1:Option_5), none = thres, size = 3, approach = "fc"))
 })

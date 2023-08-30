@@ -51,15 +51,19 @@
 #' )
 #'
 #' # medae ungrouped
-#' medae(data = HOT,
-#'       opts = c(Option_1:None),
-#'       choice = choice)
+#' medae(
+#'   data = HOT,
+#'   opts = c(Option_1:None),
+#'   choice = choice
+#' )
 #'
 #' # medae grouped
-#' medae(data = HOT,
-#'       opts = c(Option_1:None),
-#'       choice = choice,
-#'       group = Group)
+#' medae(
+#'   data = HOT,
+#'   opts = c(Option_1:None),
+#'   choice = choice,
+#'   group = Group
+#' )
 #' }
 #'
 #' @export
