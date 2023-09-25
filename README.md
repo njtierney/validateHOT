@@ -4,6 +4,8 @@
 # validateHOT 🎯
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/JoshSchramm94/validateHOT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JoshSchramm94/validateHOT/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of validateHOT is to validate the results of your validation
