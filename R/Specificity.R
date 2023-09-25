@@ -166,7 +166,7 @@ specificity <- function(data, group, opts, choice, none) {
     dplyr::group_by(pick({{ group }})) %>%
     dplyr::summarise(
       specificity = 100 * (base::sum(buy == 2 & pred == 2) /
-                             (base::sum(buy == 2 & pred == 2) +
-                                base::sum(buy == 2 & pred == 1)))
+        (base::sum(buy == 2 & pred == 2) +
+          base::sum(buy == 2 & pred == 1)))
     ))
 }

@@ -210,9 +210,9 @@ createHOT <- function(data, id, None = NULL, prod,
                       varskeep = NULL, choice) {
   # test whether input is numeric
   if (!(base::is.numeric(id)) |
-      (!(base::is.numeric(None)) & !(base::is.null(None))) |
-      !(base::is.numeric(prod)) |
-      (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
+    (!(base::is.numeric(None)) & !(base::is.null(None))) |
+    !(base::is.numeric(prod)) |
+    (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
     base::stop("Error: Please insert column index. Input has to be numeric!")
   }
 
@@ -232,8 +232,10 @@ createHOT <- function(data, id, None = NULL, prod,
 
   # test whether method is correctly specified
   if ((method != "ACBC") & (method != "CBC") & (method != "MaxDiff")) {
-    base::stop("Error: Please choose one of the supported methods: 'MaxDiff',",
-    " 'ACBC', 'CBC'!")
+    base::stop(
+      "Error: Please choose one of the supported methods: 'MaxDiff',",
+      " 'ACBC', 'CBC'!"
+    )
   }
 
   # test whether coding is empty if method == MaxDiff
@@ -258,9 +260,11 @@ createHOT <- function(data, id, None = NULL, prod,
 
   # test whether coding only includes 0, 1, 2
   if ((method == "ACBC" | method == "CBC") &
-      base::any(coding != 0 & coding != 1 & coding != 2)) {
-    base::stop("Error: Please only use '0' (for part-worth), '1' (for linear)",
-    ", or '2' (for piecewise)!")
+    base::any(coding != 0 & coding != 1 & coding != 2)) {
+    base::stop(
+      "Error: Please only use '0' (for part-worth), '1' (for linear)",
+      ", or '2' (for piecewise)!"
+    )
   }
 
   # test whether CBC is specified and no coding equal to 2
@@ -283,7 +287,7 @@ createHOT <- function(data, id, None = NULL, prod,
   # test whether ACBC is used, one variable piecewise coded however
   # position not specified  (or other way arund)
   if (method == "ACBC" & !(base::any(coding == 2)) &
-      !(base::is.null(piece.p))) {
+    !(base::is.null(piece.p))) {
     base::stop("Error: 'piece.p' specified but no '2' in coding!")
   }
 
@@ -299,8 +303,10 @@ createHOT <- function(data, id, None = NULL, prod,
 
       for (lng_lev in 1:lng) {
         if (!(base::is.numeric(prod.levels[[tt]][lng_lev]))) {
-          base::stop("Error: Input of 'prod.levels' has to be a list ",
-          "with only numeric values!")
+          base::stop(
+            "Error: Input of 'prod.levels' has to be a list ",
+            "with only numeric values!"
+          )
         }
       }
     }
@@ -313,8 +319,10 @@ createHOT <- function(data, id, None = NULL, prod,
       if (lng == 1) {
         var <- prod.levels[[tt]]
         if (!(base::is.numeric(data[[var]]))) {
-          base::stop("Error: Variables included in 'prod.levels' ",
-          "have to be numeric!")
+          base::stop(
+            "Error: Variables included in 'prod.levels' ",
+            "have to be numeric!"
+          )
         }
       }
 
@@ -323,8 +331,10 @@ createHOT <- function(data, id, None = NULL, prod,
           if (coding[lng_lev] != 1 & coding[lng_lev] != 2) {
             var <- prod.levels[[tt]][lng_lev]
             if (!(base::is.numeric(data[[var]]))) {
-              base::stop("Error: Variables included in 'prod.levels' ",
-              "have to be numeric!")
+              base::stop(
+                "Error: Variables included in 'prod.levels' ",
+                "have to be numeric!"
+              )
             }
           }
         }
@@ -334,7 +344,7 @@ createHOT <- function(data, id, None = NULL, prod,
 
   # test input of interpolate levels
   if (!(base::is.list(interpolate.levels)) &
-      !(base::is.null(interpolate.levels))) {
+    !(base::is.null(interpolate.levels))) {
     base::stop("Error: Input of 'interpolate.levels' has to be a list!")
   }
 
@@ -345,8 +355,10 @@ createHOT <- function(data, id, None = NULL, prod,
 
       for (lng_lev in 1:lng) {
         if (!(base::is.numeric(interpolate.levels[[tt]][lng_lev]))) {
-          base::stop("Error: Input of 'interpolate.levels' has to be a list ",
-          "with only numeric values!")
+          base::stop(
+            "Error: Input of 'interpolate.levels' has to be a list ",
+            "with only numeric values!"
+          )
         }
       }
     }
@@ -361,8 +373,10 @@ createHOT <- function(data, id, None = NULL, prod,
   if (!(base::is.null(lin.p))) {
     for (ll in 1:base::length(lin.p)) {
       if (!(base::is.numeric(lin.p[ll]))) {
-        base::stop("Error: Input of 'lin.p' has to be a vector ",
-        "with only numeric values!")
+        base::stop(
+          "Error: Input of 'lin.p' has to be a vector ",
+          "with only numeric values!"
+        )
       }
 
       if (!base::is.numeric(data[[lin.p[ll]]])) {
@@ -395,8 +409,10 @@ createHOT <- function(data, id, None = NULL, prod,
       if (lng == 1) {
         var <- piece.p[[tt]]
         if (!(base::is.numeric(data[[var]]))) {
-          base::stop("Error: Variables included in 'piece.p' ",
-          "have to be numeric!")
+          base::stop(
+            "Error: Variables included in 'piece.p' ",
+            "have to be numeric!"
+          )
         }
       }
 
@@ -404,8 +420,10 @@ createHOT <- function(data, id, None = NULL, prod,
         for (lng_lev in 1:lng) {
           var <- piece.p[[tt]][lng_lev]
           if (!(base::is.numeric(data[[var]]))) {
-            base::stop("Error: Variables included in 'piece.p' ",
-            "have to be numeric!")
+            base::stop(
+              "Error: Variables included in 'piece.p' ",
+              "have to be numeric!"
+            )
           }
         }
       }
@@ -426,14 +444,18 @@ createHOT <- function(data, id, None = NULL, prod,
 
   # create empty data frame to store - None alternative specified
   if (!(base::is.null(None))) {
-    df <- base::data.frame(base::matrix(nrow = base::nrow(Input),
-                                        ncol = (prod + 1 + 1)))
+    df <- base::data.frame(base::matrix(
+      nrow = base::nrow(Input),
+      ncol = (prod + 1 + 1)
+    ))
   }
 
   # create empty data frame to store - no None alternative specified
   if (base::is.null(None)) {
-    df <- base::data.frame(base::matrix(nrow = base::nrow(Input),
-                                        ncol = (prod + 1)))
+    df <- base::data.frame(base::matrix(
+      nrow = base::nrow(Input),
+      ncol = (prod + 1)
+    ))
   }
 
   # prepare output names
@@ -488,7 +510,8 @@ createHOT <- function(data, id, None = NULL, prod,
 
           # center the attribute levels
           lin.levels_eff <- c(base::scale(inter.levels,
-                                          center = TRUE, scale = FALSE))
+            center = TRUE, scale = FALSE
+          ))
 
           # get utility of lower bound of linear coded attribute
           lin.low <- lin.levels_eff[1] * Input[row, pos]

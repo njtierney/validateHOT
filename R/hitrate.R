@@ -120,7 +120,7 @@ hitrate <- function(data, group, opts, choice) {
 
 
   suppressMessages(return(data %>%
-                            # store column index with highest utility
+    # store column index with highest utility
     dplyr::mutate(pred = base::max.col(dplyr::pick({{ opts }}))) %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::summarise(

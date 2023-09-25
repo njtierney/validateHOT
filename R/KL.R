@@ -188,9 +188,14 @@ kl <- function(data, group, opts, choice, epsilon = NULL, base = NULL) {
       alt = base::factor(
         {{ choice }},
         levels = c(1:base::length(dplyr::select(., {{ opts }}))),
-        labels = base::paste0("Option_",
-                              c(1:base::length(dplyr::select(
-                                ., {{ opts }})))))) %>%
+        labels = base::paste0(
+          "Option_",
+          c(1:base::length(dplyr::select(
+            ., {{ opts }}
+          )))
+        )
+      )
+    ) %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::count(alt, .drop = F) %>% # count choices
     dplyr::mutate(chosen = n / base::sum(n)) %>% # calculate percentage
@@ -204,7 +209,10 @@ kl <- function(data, group, opts, choice, epsilon = NULL, base = NULL) {
         pred,
         levels = c(1:base::length(dplyr::select(., {{ opts }}))),
         labels = base::paste0("Option_", c(1:base::length(
-          dplyr::select(., {{ opts }})))))) %>% # create factor
+          dplyr::select(., {{ opts }})
+        )))
+      )
+    ) %>% # create factor
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::count(alt, .drop = F) %>% # count number of predicted choice
     dplyr::mutate(pred = n / base::sum(n)) %>% # calculate percentage
@@ -213,12 +221,15 @@ kl <- function(data, group, opts, choice, epsilon = NULL, base = NULL) {
   # if base set to 'log'
   if (base == "log") {
     return(WS1 %>%
-             # merge both data frames
-      base::merge(x = .,
-                  y = WS2,
-                  by = c(WS1 %>%
-                           dplyr::select(
-                             ., {{ group }}) %>% base::colnames(), "alt")) %>%
+      # merge both data frames
+      base::merge(
+        x = .,
+        y = WS2,
+        by = c(WS1 %>%
+          dplyr::select(
+            ., {{ group }}
+          ) %>% base::colnames(), "alt")
+      ) %>%
       dplyr::group_by(dplyr::pick({{ group }})) %>%
       dplyr::mutate(
         chosen = base::ifelse(chosen == 0, epsilon, chosen), # add epsilon if 0
@@ -233,11 +244,14 @@ kl <- function(data, group, opts, choice, epsilon = NULL, base = NULL) {
   # if base set to 'log2'
   if (base == "log2") {
     return(WS1 %>%
-             # merge both data frames
-      base::merge(x = .,
-                  y = WS2,
-                  by = c(WS1 %>% dplyr::select(
-                    ., {{ group }}) %>% base::colnames(), "alt")) %>%
+      # merge both data frames
+      base::merge(
+        x = .,
+        y = WS2,
+        by = c(WS1 %>% dplyr::select(
+          ., {{ group }}
+        ) %>% base::colnames(), "alt")
+      ) %>%
       dplyr::group_by(dplyr::pick({{ group }})) %>%
       dplyr::mutate(
         chosen = base::ifelse(chosen == 0, epsilon, chosen), # add epsilon if 0

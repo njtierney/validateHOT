@@ -127,8 +127,10 @@ turf <- function(data, opts, none, size, fixed = NULL,
 
   # approach can only be 'thres' or 'fc'
   if ((approach != "thres") & (approach != "fc")) {
-    base::stop("Error: 'approach' is wrong, please choose between",
-    " 'fc' and 'thres'!")
+    base::stop(
+      "Error: 'approach' is wrong, please choose between",
+      " 'fc' and 'thres'!"
+    )
   }
 
   # size has to be numeric
@@ -147,7 +149,7 @@ turf <- function(data, opts, none, size, fixed = NULL,
       base::colnames()
 
     if (!base::all(fixed %in% (data %>% dplyr::select(., {{ opts }}) %>%
-                               base::colnames()))) {
+      base::colnames()))) {
       base::stop("Error: 'fixed' has to be part of 'opts'!")
     }
   }
@@ -264,8 +266,9 @@ turf <- function(data, opts, none, size, fixed = NULL,
 
     combos <- combos %>%
       # check for each combo whether the fixed ones are included
-      dplyr::mutate(must = base::apply(., 1, function(x)
-        base::as.integer(base::all(fixies %in% x)))) %>%
+      dplyr::mutate(must = base::apply(., 1, function(x) {
+        base::as.integer(base::all(fixies %in% x))
+      })) %>%
       # only choose those that have the fixed options
       dplyr::filter(must == 1) %>%
       dplyr::select(-must) # delete must variable
@@ -285,33 +288,35 @@ turf <- function(data, opts, none, size, fixed = NULL,
   # next create the total data frame
   total <- base::merge(
     x = (df %>%
-        # only select the variables that start with comb. (see approach before)
+      # only select the variables that start with comb. (see approach before)
       dplyr::select(tidyselect::all_of(tidyselect::starts_with("comb."))) %>%
-        # create the reach score
-      dplyr::summarise(dplyr::across(1:base::ncol(.),
-                                     ~ (base::sum(. > 0) / base::nrow(df)
-                                        * 100))) %>%
+      # create the reach score
+      dplyr::summarise(dplyr::across(
+        1:base::ncol(.),
+        ~ (base::sum(. > 0) / base::nrow(df)
+          * 100)
+      )) %>%
       base::t() %>% # transpose
       base::as.data.frame() %>% # store as data frame
-        # rename variable into 'reach'
+      # rename variable into 'reach'
       dplyr::rename_all(., ~"reach") %>%
-        # store rownames in new variable
+      # store rownames in new variable
       dplyr::mutate(combo = base::rownames(.)) %>%
       tibble::remove_rownames() %>% # remove rownames
-        # relocate combo variable at the beginning
+      # relocate combo variable at the beginning
       dplyr::relocate(combo, .before = tidyselect::everything())),
     y = (df %>%
-        # only select the variables that start with comb. (see approach before)
+      # only select the variables that start with comb. (see approach before)
       dplyr::select(tidyselect::all_of(tidyselect::starts_with("comb."))) %>%
-        # create frequency score
+      # create frequency score
       dplyr::summarise(dplyr::across(1:base::ncol(.), ~ base::mean(.x))) %>%
       base::t() %>% # transpose
       base::as.data.frame() %>% # store as data frame
       dplyr::rename_all(., ~"freq") %>% # rename variable into 'freq'
-        # store rownames in new variable
+      # store rownames in new variable
       dplyr::mutate(combo = base::rownames(.)) %>%
       tibble::remove_rownames() %>% # remove rownames
-        # relocate combo variable at the beginning
+      # relocate combo variable at the beginning
       dplyr::relocate(combo, .before = tidyselect::everything())),
     by = "combo" # merge both by 'combo'
   )
@@ -319,8 +324,10 @@ turf <- function(data, opts, none, size, fixed = NULL,
   # prepare a new data frame that mimics output of turfR (variables are
   # coded as 1 and 0 whether or not item is present in that assortment or not)
   # create a new data frame
-  new_df <- base::data.frame(base::matrix(nrow = base::nrow(combos),
-                                          ncol = base::length(items))) %>%
+  new_df <- base::data.frame(base::matrix(
+    nrow = base::nrow(combos),
+    ncol = base::length(items)
+  )) %>%
     dplyr::rename_all(., ~items) %>% # rename columns
     # replace nas by 0s
     dplyr::mutate_all(., ~ base::ifelse(base::is.na(.x), 0, NA)) %>%
@@ -339,15 +346,18 @@ turf <- function(data, opts, none, size, fixed = NULL,
 
   # store the names in the variable for merging purposes
   for (i in 1:base::nrow(new_df)) { # loop for merging purposes
-    new_df[i, "combo"] <- base::paste0("comb.",
-                                       base::paste0(new_df[i, c(1:size)],
-                                                    collapse = "_"))
+    new_df[i, "combo"] <- base::paste0(
+      "comb.",
+      base::paste0(new_df[i, c(1:size)],
+        collapse = "_"
+      )
+    )
   }
 
   # prepare final step
 
   return(new_df %>%
-           # delete the first variables (variables indicating name of item)
+    # delete the first variables (variables indicating name of item)
     dplyr::select(-tidyselect::all_of(base::colnames(new_df)[1:size])) %>%
     base::merge(x = total, y = ., by = "combo") %>% # merge with total
     arrange(-reach, -freq) %>% # sort descending for reach and frequency

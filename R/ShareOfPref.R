@@ -112,31 +112,34 @@ shareofpref <- function(data, group, opts) {
 
   # change data structure
   return(data %>%
-           # exponentiate all alternatives
+    # exponentiate all alternatives
     dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>% # sum up
     dplyr::ungroup() %>%
     dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>% # scale
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-      # calculate mean and sd
+    # calculate mean and sd
     dplyr::summarise(across({{ opts }},
-                            c(mw = base::mean, std = stats::sd),
-                            .names = "{.col}.{.fn}")) %>%
+      c(mw = base::mean, std = stats::sd),
+      .names = "{.col}.{.fn}"
+    )) %>%
     tidyr::pivot_longer(.,
       cols = tidyselect::ends_with(c(".mw", ".std")),
       names_to = c("Option", ".value"), names_sep = "\\."
     ) %>% # change to longer format
-    base::merge(x = .,
-                y = WS1,
-                by = c(data %>% dplyr::select(., {{ group }}) %>%
-                         base::colnames())) %>% # merge
+    base::merge(
+      x = .,
+      y = WS1,
+      by = c(data %>% dplyr::select(., {{ group }}) %>%
+        base::colnames())
+    ) %>% # merge
     dplyr::mutate(
       se = std / sqrt(n), # calculate standard error
       lo.ci = mw - (1.96 * se), # lower ci
       up.ci = mw + (1.96 * se) # upper ci
     ) %>%
-      # delete irrelevant variables
+    # delete irrelevant variables
     dplyr::select(!tidyselect::all_of(c("std", "n"))) %>%
     tibble::as_tibble())
 }

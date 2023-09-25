@@ -167,7 +167,7 @@ recall <- function(data, group, opts, choice, none) {
     dplyr::group_by(pick({{ group }})) %>%
     dplyr::summarise(
       recall = 100 * (base::sum(buy == 1 & pred == 1) /
-                        (base::sum(buy == 1 & pred == 1) +
-                           base::sum(buy == 1 & pred == 2)))
+        (base::sum(buy == 1 & pred == 1) +
+          base::sum(buy == 1 & pred == 2)))
     ))
 }

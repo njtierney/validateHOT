@@ -141,7 +141,7 @@ freqassort <- function(data, group, none, opts) {
       dplyr::across({{ opts }}, ~ base::ifelse(.x > thres, 1, 0))
     ) %>%
     dplyr::rowwise() %>%
-      # # sum the number of options rowwise
+    # # sum the number of options rowwise
     dplyr::mutate(freq = base::sum(dplyr::c_across({{ opts }}))) %>%
     dplyr::ungroup() %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%

@@ -131,7 +131,7 @@ reach <- function(data, group, none, opts) {
   }
 
   return(data %>%
-           # select relevant variables
+    # select relevant variables
     dplyr::select(., {{ opts }}, {{ none }}, {{ group }}) %>%
     dplyr::mutate(
       thres = {{ none }}, # store utility of threshold
@@ -139,7 +139,7 @@ reach <- function(data, group, none, opts) {
       dplyr::across({{ opts }}, ~ base::ifelse(.x > thres, 1, 0))
     ) %>%
     dplyr::rowwise() %>%
-      # if sum of alternatves is at least once above 0 --> reached
+    # if sum of alternatves is at least once above 0 --> reached
     dplyr::mutate(reach = base::ifelse(sum({{ opts }}) > 0, 1, 0)) %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::summarise(reach = base::mean(reach) * 100))

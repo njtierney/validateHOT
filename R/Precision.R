@@ -168,7 +168,7 @@ precision <- function(data, group, opts, choice, none) {
     dplyr::group_by(pick({{ group }})) %>%
     dplyr::summarise(
       precision = 100 * (base::sum(buy == 1 & pred == 1) /
-                           (base::sum(buy == 1 & pred == 1) +
-                              base::sum(buy == 2 & pred == 1)))
+        (base::sum(buy == 1 & pred == 1) +
+          base::sum(buy == 2 & pred == 1)))
     ))
 }

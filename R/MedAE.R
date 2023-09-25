@@ -125,7 +125,9 @@ medae <- function(data, group, opts, choice) {
       merger = base::factor(
         {{ choice }},
         levels = c(1:base::length(dplyr::select(., {{ opts }}))),
-        labels = c(1:base::length(dplyr::select(., {{ opts }}))))) %>%
+        labels = c(1:base::length(dplyr::select(., {{ opts }})))
+      )
+    ) %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::count(merger, .drop = F) %>% # count choices
     dplyr::mutate(chosen = n / base::sum(n) * 100) %>% # calculate percentage
@@ -133,35 +135,42 @@ medae <- function(data, group, opts, choice) {
 
   # create predicted share
   base::suppressMessages(WS2 <- data %>%
-                           # exponentiate
+    # exponentiate
     dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>%
     dplyr::rowwise() %>%
-      # calculate sum rowwise
+    # calculate sum rowwise
     dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>%
     dplyr::ungroup() %>%
-      # calculate choice probability
+    # calculate choice probability
     dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-      # aggregate choice probability
+    # aggregate choice probability
     dplyr::summarise(across({{ opts }}, ~ mean(.x),
-                            .names = "{.col}_mean")) %>%
-      # change to longer format
+      .names = "{.col}_mean"
+    )) %>%
+    # change to longer format
     tidyr::pivot_longer(.,
-                        cols = tidyselect::ends_with("_mean"),
-                        names_to = "alt", values_to = "mean") %>%
+      cols = tidyselect::ends_with("_mean"),
+      names_to = "alt", values_to = "mean"
+    ) %>%
     dplyr::mutate(
       # adapt labeling
-      alt = base::substr(alt, 1,
-                         (base::nchar(alt) - base::nchar("_mean"))),
+      alt = base::substr(
+        alt, 1,
+        (base::nchar(alt) - base::nchar("_mean"))
+      ),
       merger = base::rep(1:base::length(dplyr::select(data, {{ opts }})),
-                         length.out = base::length(alt)) # create merger
+        length.out = base::length(alt)
+      ) # create merger
     ))
 
   return(suppressMessages(WS2 %>%
-    base::merge(x = .,
-                y = WS1,
-                by = c(WS2 %>% dplyr::select(., {{ group }}) %>%
-                         base::colnames(), "merger")) %>% # merge
+    base::merge(
+      x = .,
+      y = WS1,
+      by = c(WS2 %>% dplyr::select(., {{ group }}) %>%
+        base::colnames(), "merger")
+    ) %>% # merge
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::mutate(MEDAE = base::abs(mean - chosen)) %>% # calculate medae
     dplyr::summarise(medae = stats::median(MEDAE))))

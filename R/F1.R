@@ -168,9 +168,9 @@ f1 <- function(data, group, opts, choice, none) {
     dplyr::group_by(pick({{ group }})) %>%
     dplyr::summarise(
       f1 = 100 * ((2 * (base::sum(buy == 1 & pred == 1))) /
-                    (((2 * (base::sum(buy == 1 & pred == 1))) +
-                        base::sum(buy == 2 & pred == 1) +
-                        base::sum(buy == 1 & pred == 2)))
+        (((2 * (base::sum(buy == 1 & pred == 1))) +
+          base::sum(buy == 2 & pred == 1) +
+          base::sum(buy == 1 & pred == 2)))
       )
     ))
 }
