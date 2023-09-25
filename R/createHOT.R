@@ -4,77 +4,110 @@
 #'
 #' @param data data frame with all relevant variables.
 #' @param id vector of column index of unique identifier in \code{data}.
-#' @param None optional column index to specify \code{None} alternative in \code{data}.
-#' @param prod number of alternatives in the holdout/validation task (does not count the \code{None} alternative); input has to be numeric
-#' @param prod.levels a list to define the attribute levels of the alternatives (\code{prod})
-#' @param interpolate.levels a list of the levels of the variables that should be interpolated. These have to be the same as provided to Sawtooth Software. Please make sure to provide the whole list. Only has to be specified for the variables that are coded as '1' (linear) or '2' (piecewise)
-#' @param piece.p a list of the column indexes of the lower level and the upper level that should be used for interpolating
+#' @param None optional column index to specify \code{None}
+#' alternative in \code{data}.
+#' @param prod number of alternatives in the holdout/validation task
+#' (does not count the \code{None} alternative); input has to be numeric
+#' @param prod.levels a list to define the attribute levels of the
+#' alternatives (\code{prod})
+#' @param interpolate.levels a list of the levels of the variables that should
+#' be interpolated. These have to be the same as provided to Sawtooth Software.
+#' Please make sure to provide the whole list. Only has to be specified for the
+#' variables that are coded as '1' (linear) or '2' (piecewise)
+#' @param piece.p a list of the column indexes of the lower level and the upper
+#' level that should be used for interpolating
 #' @param lin.p vector of the column indexes of the linear variables
-#' @param coding vector of the coding of each attribute, '0' = part-worth coding, '1' = linear coding, '2' = piecewise coding; please make sure to code linear price of ACBC as piecewise since you have two values to interpolate
-#' @param method specify the \code{method} your study; has to be one of the following three: MaxDiff, CBC, or ACBC
-#' @param varskeep vector of column index(es) of variables that should be kept in the data frame
+#' @param coding vector of the coding of each attribute, '0' = part-worth
+#' coding,'1' = linear coding, '2' = piecewise coding; please make sure to code
+#' linear price of ACBC as piecewise since you have two values to interpolate
+#' @param method specify the \code{method} your study; has to be one of the
+#' following three: MaxDiff, CBC, or ACBC
+#' @param varskeep vector of column index(es) of variables that should be kept
+#' in the data frame
 #' @param choice actual choice in the holdout/validation task
 #'
 #' @details
-#' In order to test validation metrics of a holdout/validation task, the holdout/validation task first has to be created.
+#' In order to test validation metrics of a holdout/validation task, the
+#' holdout/validation task first has to be created.
 #' This is done by the function \code{createHOT}.
 #' Make sure to upload the raw utilities of your study.
-#' Afterwards, the function will create the utilities based on the additive utility model (Rao, 2014, p. 82).
+#' Afterwards, the function will create the utilities based on the additive
+#' utility model (Rao, 2014, p. 82).
 #'
-#' \code{data} has to be a data frame with **raw** scores of the attribute levels.
+#' \code{data} has to be a data frame with **raw** scores of the attribute
+#' levels.
 #'
-#' \code{id} has to be the column index of the id (unique for each participant) in data frame.
+#' \code{id} has to be the column index of the id (unique for each participant)
+#' in data frame.
 #'
-#' \code{None} has to be specified in case a \code{None} alternative is included in
-#' holdout/validation task, please specify this by specifying the column index of \code{None} alternative, otherwise leave it empty.
+#' \code{None} has to be specified in case a \code{None} alternative is
+#' included in holdout/validation task, please specify this by specifying the
+#' column index of \code{None} alternative, otherwise leave it empty.
 #'
-#' \code{prod} should specify the total number of alternatives included in your holdout/validation task (excluding the \code{None} alternative).
+#' \code{prod} should specify the total number of alternatives included in your
+#' holdout/validation task (excluding the \code{None} alternative).
 #'
-#' \code{prod.levels} specifies the attribute levels for each alternative. Input for \code{prod.levels} has to be a list. In case \code{method = "MaxDiff"}
-#' this will only be a list of the column indexes of the alternatives in the holdout/validation task. If \code{method = "CBC"} or
-#' \code{method = "ACBC"} use a vector to specify the attribute levels for each alternative. For \code{method = "CBC"} and \code{method = "ACBC"}
+#' \code{prod.levels} specifies the attribute levels for each alternative.
+#' Input for \code{prod.levels} has to be a list. In case
+#' \code{method = "MaxDiff"} this will only be a list of the column indexes of
+#' the alternatives in the holdout/validation task. If \code{method = "CBC"} or
+#' \code{method = "ACBC"} use a vector to specify the attribute levels for each
+#' alternative. For \code{method = "CBC"} and \code{method = "ACBC"}
 #' also the column index(es) of the attribute level has to be specified.
 #' In case values for one attribute are interpolated (assuming linear or
 #' piecewise coding), the value to be interpolated has to be specified.
 #' In addition, \code{lin.p} and/or \code{piece.p}, \code{interpolate.levels}
 #' as well as \code{coding} have to be specified.
 #'
-#' \code{interpolate.levels} has to be specified in case interpolating is used (only if variables are coded as linear or piecewise).
-#' If scaled or centered values were used for hierarchical bayes (HB) estimation, these have to be specified in this case.
-#' All values have to be specified. For example if one linear coded attribute had 5 levels, all 5 levels have to be inserted.
-#' In case for linear coded price for \code{method = "ACBC"}, specify both lower bound and upper bound and code as piecewise in \code{coding}.
-#' For piecewise coded price, specify each breakpoint. Input for \code{interpolate.levels} has to be a list.
+#' \code{interpolate.levels} has to be specified in case interpolating is used
+#' (only if variables are coded as linear or piecewise).
+#' If scaled or centered values were used for hierarchical bayes (HB)
+#' estimation, these have to be specified in this case.
+#' All values have to be specified. For example if one linear coded attribute
+#' had 5 levels, all 5 levels have to be inserted.In case for linear coded
+#' price for \code{method = "ACBC"}, specify both lower bound and upper
+#' bound and code as piecewise in \code{coding}.
+#' For piecewise coded price, specify each breakpoint.
+#' Input for \code{interpolate.levels} has to be a list.
 #'
-#' \code{piece.p} has to be specified in case a variable is coded as piecewise (see coding).
-#' Positions of both lower and upper bound have to be specified. In case interpolated values (see
-#' prod.levels) is equal to a lower or upper bound, this can be specified either as
-#' lower or upper bound. Input for \code{piece.p} has to be a list.
+#' \code{piece.p} has to be specified in case a variable is coded as
+#' piecewise (see coding). Positions of both lower and upper bound have to
+#' be specified. In case interpolated values (see
+#' prod.levels) is equal to a lower or upper bound, this can be specified
+#' either as lower or upper bound. Input for \code{piece.p} has to be a list.
 #'
-#' \code{lin.p} has to be specified in case a variable is coded as linear (see coding).
-#' Since for linear coding (except for price in \code{method = "ACBC"}) only one
-#' coefficient is provided in the output, just this column index has to be specified, consequently, input for \code{piece.p} has to be a vector.
+#' \code{lin.p} has to be specified in case a variable is coded as linear
+#' (see coding). Since for linear coding (except for price
+#' in \code{method = "ACBC"}) only one coefficient is provided in the output,
+#' just this column index has to be specified, consequently, input
+#' for \code{piece.p} has to be a vector.
 #'
-#' \code{coding} has to be specified for if \code{method = "CBC"} or \code{method = "ACBC"}.
-#' \code{0} has to be used for parth-worth coding, \code{1} for linear coding, and \code{2} for piecewise coding.
-#' In case \code{method = "ACBC"} and linear price function is used, this variable has to be coded
-#' as piecewise (\code{2}) in this case. In case \code{method} is set to \code{"MaxDiff"}, leave
+#' \code{coding} has to be specified for if \code{method = "CBC"}
+#' or \code{method = "ACBC"}. \code{0} has to be used for parth-worth
+#' coding, \code{1} for linear coding, and \code{2} for piecewise coding.
+#' In case \code{method = "ACBC"} and linear price function is used, this
+#' variable has to be coded as piecewise (\code{2}) in this case. In
+#' case \code{method} is set to \code{"MaxDiff"}, leave
 #' \code{coding} empty. Input for \code{coding} has to be a vector.
 #'
 #' \code{method} specifies the preference measurement method. Can be set to
 #' \code{"MaxDiff"}, \code{"CBC"}, or \code{"ACBC"}.
 #'
-#' \code{varskeep} has to be specified in case other variables should be kept in the
-#' data frame (for example, a grouping variable). Input for \code{varskeep} has to be a vector
-#' with the column index(es) of the variable(s) that should be kept.
+#' \code{varskeep} has to be specified in case other variables should be kept
+#' in the data frame (for example, a grouping variable). Input
+#' for \code{varskeep} has to be a vector with the column index(es) of the
+#' variable(s) that should be kept.
 #'
-#' \code{choice} specifies the column index of the acutal choice in the holdout/validation task.
+#' \code{choice} specifies the column index of the acutal choice in the
+#' holdout/validation task.
 #'
 #' @return a data frame
 #' @importFrom stats approx
 #'
 #' @references {
 #'
-#' Rao, V. R. (2014). \emph{Applied Conjoint Analysis}. Heidelberg: Springer Berlin. \verb{https://doi.org/10.1007/978-3-540-87753-0}
+#' Rao, V. R. (2014). \emph{Applied Conjoint Analysis}. Heidelberg: Springer
+#' Berlin. \verb{https://doi.org/10.1007/978-3-540-87753-0}
 #'
 #' }
 #'
@@ -177,9 +210,9 @@ createHOT <- function(data, id, None = NULL, prod,
                       varskeep = NULL, choice) {
   # test whether input is numeric
   if (!(base::is.numeric(id)) |
-    (!(base::is.numeric(None)) & !(base::is.null(None))) |
-    !(base::is.numeric(prod)) |
-    (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
+      (!(base::is.numeric(None)) & !(base::is.null(None))) |
+      !(base::is.numeric(prod)) |
+      (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
     base::stop("Error: Please insert column index. Input has to be numeric!")
   }
 
@@ -199,7 +232,8 @@ createHOT <- function(data, id, None = NULL, prod,
 
   # test whether method is correctly specified
   if ((method != "ACBC") & (method != "CBC") & (method != "MaxDiff")) {
-    base::stop("Error: Please choose one of the supported methods: 'MaxDiff', 'ACBC', 'CBC'!")
+    base::stop("Error: Please choose one of the supported methods: 'MaxDiff',",
+    " 'ACBC', 'CBC'!")
   }
 
   # test whether coding is empty if method == MaxDiff
@@ -223,8 +257,10 @@ createHOT <- function(data, id, None = NULL, prod,
   }
 
   # test whether coding only includes 0, 1, 2
-  if ((method == "ACBC" | method == "CBC") & base::any(coding != 0 & coding != 1 & coding != 2)) {
-    base::stop("Error: Please only use '0' (for part-worth), '1' (for linear), or '2' (for piecewise)!")
+  if ((method == "ACBC" | method == "CBC") &
+      base::any(coding != 0 & coding != 1 & coding != 2)) {
+    base::stop("Error: Please only use '0' (for part-worth), '1' (for linear)",
+    ", or '2' (for piecewise)!")
   }
 
   # test whether CBC is specified and no coding equal to 2
@@ -232,18 +268,22 @@ createHOT <- function(data, id, None = NULL, prod,
     base::stop("Error: Piecewise coding not possible for ", method, "!")
   }
 
-  # test whether CBC is used, one variable linear coded however position not specified (or other way arund)
+  # test whether CBC is used, one variable linear coded however
+  # position not specified (or other way arund)
   if (method == "CBC" & !(base::any(coding == 1)) & !(base::is.null(lin.p))) {
     base::stop("Error: 'lin.p' specified but no '1' in coding!")
   }
 
-  # test whether ACBC is used, one variable linear coded however position not specified  (or other way arund)
+  # test whether ACBC is used, one variable linear coded however
+  # position not specified  (or other way arund)
   if (method == "ACBC" & !(base::any(coding == 1)) & !(base::is.null(lin.p))) {
     base::stop("Error: 'lin.p' specified but no '1' in coding!")
   }
 
-  # test whether ACBC is used, one variable piecewise coded however position not specified  (or other way arund)
-  if (method == "ACBC" & !(base::any(coding == 2)) & !(base::is.null(piece.p))) {
+  # test whether ACBC is used, one variable piecewise coded however
+  # position not specified  (or other way arund)
+  if (method == "ACBC" & !(base::any(coding == 2)) &
+      !(base::is.null(piece.p))) {
     base::stop("Error: 'piece.p' specified but no '2' in coding!")
   }
 
@@ -259,7 +299,8 @@ createHOT <- function(data, id, None = NULL, prod,
 
       for (lng_lev in 1:lng) {
         if (!(base::is.numeric(prod.levels[[tt]][lng_lev]))) {
-          base::stop("Error: Input of 'prod.levels' has to be a list with only numeric values!")
+          base::stop("Error: Input of 'prod.levels' has to be a list ",
+          "with only numeric values!")
         }
       }
     }
@@ -272,7 +313,8 @@ createHOT <- function(data, id, None = NULL, prod,
       if (lng == 1) {
         var <- prod.levels[[tt]]
         if (!(base::is.numeric(data[[var]]))) {
-          base::stop("Error: Variables included in 'prod.levels' have to be numeric!")
+          base::stop("Error: Variables included in 'prod.levels' ",
+          "have to be numeric!")
         }
       }
 
@@ -281,7 +323,8 @@ createHOT <- function(data, id, None = NULL, prod,
           if (coding[lng_lev] != 1 & coding[lng_lev] != 2) {
             var <- prod.levels[[tt]][lng_lev]
             if (!(base::is.numeric(data[[var]]))) {
-              base::stop("Error: Variables included in 'prod.levels' have to be numeric!")
+              base::stop("Error: Variables included in 'prod.levels' ",
+              "have to be numeric!")
             }
           }
         }
@@ -290,7 +333,8 @@ createHOT <- function(data, id, None = NULL, prod,
   }
 
   # test input of interpolate levels
-  if (!(base::is.list(interpolate.levels)) & !(base::is.null(interpolate.levels))) {
+  if (!(base::is.list(interpolate.levels)) &
+      !(base::is.null(interpolate.levels))) {
     base::stop("Error: Input of 'interpolate.levels' has to be a list!")
   }
 
@@ -301,7 +345,8 @@ createHOT <- function(data, id, None = NULL, prod,
 
       for (lng_lev in 1:lng) {
         if (!(base::is.numeric(interpolate.levels[[tt]][lng_lev]))) {
-          base::stop("Error: Input of 'interpolate.levels' has to be a list with only numeric values!")
+          base::stop("Error: Input of 'interpolate.levels' has to be a list ",
+          "with only numeric values!")
         }
       }
     }
@@ -316,7 +361,8 @@ createHOT <- function(data, id, None = NULL, prod,
   if (!(base::is.null(lin.p))) {
     for (ll in 1:base::length(lin.p)) {
       if (!(base::is.numeric(lin.p[ll]))) {
-        base::stop("Error: Input of 'lin.p' has to be a vector with only numeric values!")
+        base::stop("Error: Input of 'lin.p' has to be a vector ",
+        "with only numeric values!")
       }
 
       if (!base::is.numeric(data[[lin.p[ll]]])) {
@@ -325,12 +371,14 @@ createHOT <- function(data, id, None = NULL, prod,
     }
   }
 
-  # test whether coding indicated linear coded variable, however, not specified
+  # test whether coding indicated linear coded variable, however,
+  # not specified
   if (base::any(coding == 1) & base::is.null(lin.p)) {
     base::stop("Error: Please specify 'lin.p'!")
   }
 
-  # test whether coding indicated piecewise coded variable, however, not specified
+  # test whether coding indicated piecewise coded variable, however,
+  # not specified
   if (base::any(coding == 2) & base::is.null(piece.p)) {
     base::stop("Error: Please specify 'piece.p'!")
   }
@@ -347,7 +395,8 @@ createHOT <- function(data, id, None = NULL, prod,
       if (lng == 1) {
         var <- piece.p[[tt]]
         if (!(base::is.numeric(data[[var]]))) {
-          base::stop("Error: Variables included in 'piece.p' have to be numeric!")
+          base::stop("Error: Variables included in 'piece.p' ",
+          "have to be numeric!")
         }
       }
 
@@ -355,7 +404,8 @@ createHOT <- function(data, id, None = NULL, prod,
         for (lng_lev in 1:lng) {
           var <- piece.p[[tt]][lng_lev]
           if (!(base::is.numeric(data[[var]]))) {
-            base::stop("Error: Variables included in 'piece.p' have to be numeric!")
+            base::stop("Error: Variables included in 'piece.p' ",
+            "have to be numeric!")
           }
         }
       }
@@ -376,12 +426,14 @@ createHOT <- function(data, id, None = NULL, prod,
 
   # create empty data frame to store - None alternative specified
   if (!(base::is.null(None))) {
-    df <- base::data.frame(base::matrix(nrow = base::nrow(Input), ncol = (prod + 1 + 1)))
+    df <- base::data.frame(base::matrix(nrow = base::nrow(Input),
+                                        ncol = (prod + 1 + 1)))
   }
 
   # create empty data frame to store - no None alternative specified
   if (base::is.null(None)) {
-    df <- base::data.frame(base::matrix(nrow = base::nrow(Input), ncol = (prod + 1)))
+    df <- base::data.frame(base::matrix(nrow = base::nrow(Input),
+                                        ncol = (prod + 1)))
   }
 
   # prepare output names
@@ -413,24 +465,37 @@ createHOT <- function(data, id, None = NULL, prod,
     for (q in 1:prod) { # and for each prod
       helper <- 1 # define helper variables
       linear_pos <- 1 # define helper variables
-      for (pq in 1:base::length(prod.levels[[q]])) { # loop for each level specified for an alternative (prod)
+
+      # loop for each level specified for an alternative (prod)
+      for (pq in 1:base::length(prod.levels[[q]])) {
         if (coding[pq] == 0) { # only run for part-worth coded variable
-          df[row, (q + 1)] <- df[row, (q + 1)] + Input[row, prod.levels[[q]][pq]] # in case of part-worth coding the utilitiy can be added
+
+          # in case of part-worth coding the utilitiy can be added
+          df[row, (q + 1)] <- df[row, (q + 1)] +
+            Input[row, prod.levels[[q]][pq]]
         }
         if (coding[pq] == 1) { # loop for each linear coded attribute
-          inter.levels <- interpolate.levels[[helper]] # extract the interpolate levels
+
+          # extract the interpolate levels
+          inter.levels <- interpolate.levels[[helper]]
 
           # error if xout is larger than maximum
           if (prod.levels[[q]][(pq)] > base::max(inter.levels)) {
             base::stop("Error: Extrapolation not possible!")
           }
 
-          pos <- lin.p[linear_pos] # extract the column index of the variale
+          pos <- lin.p[linear_pos] # extract the column index of the variable
 
-          lin.levels_eff <- c(base::scale(inter.levels, center = T, scale = F)) # center the attribute levels
+          # center the attribute levels
+          lin.levels_eff <- c(base::scale(inter.levels,
+                                          center = TRUE, scale = FALSE))
 
-          lin.low <- lin.levels_eff[1] * Input[row, pos] # get utility of lower bound of linear coded attribute
-          lin.up <- lin.levels_eff[base::length(lin.levels_eff)] * Input[row, pos] # get utility of upper bound of linear coded attribute
+          # get utility of lower bound of linear coded attribute
+          lin.low <- lin.levels_eff[1] * Input[row, pos]
+
+          # get utility of upper bound of linear coded attribute
+          lin.up <- lin.levels_eff[base::length(lin.levels_eff)] *
+            Input[row, pos]
 
           # finally extrapolate utility for specified value
           util <- base::as.numeric(stats::approx(
@@ -449,20 +514,25 @@ createHOT <- function(data, id, None = NULL, prod,
 
         if (coding[pq] == 2) { # loop for piecewise coded variable
 
-          inter.levels <- interpolate.levels[[helper]] # extract the interpolate levels
+          # extract the interpolate levels
+          inter.levels <- interpolate.levels[[helper]]
 
           pos.l <- piece.p[[q]][1] # store position of lower bound
           pos.u <- piece.p[[q]][2] # store position of upper bound
 
-          interprice <- prod.levels[[q]][(pq)] # extract price that should be interpolated
+          # extract price that should be interpolated
+          interprice <- prod.levels[[q]][(pq)]
 
           # error if xout is larger than maximum
           if (interprice > base::max(inter.levels)) {
             base::stop("Error: Extrapolation not possible!")
           }
 
-          lower_b <- base::max(inter.levels[inter.levels < interprice]) # extract the breakpoint below the price to be interpolated
-          upper_b <- base::min(inter.levels[inter.levels >= interprice]) # extract the breakpoint equal or above the price to be interpolated
+          # extract the breakpoint below the price to be interpolated
+          lower_b <- base::max(inter.levels[inter.levels < interprice])
+
+          # extract the breakpoint equal or above the price to be interpolated
+          upper_b <- base::min(inter.levels[inter.levels >= interprice])
 
           # interpolate
           util <- base::as.numeric(stats::approx(
@@ -493,7 +563,8 @@ createHOT <- function(data, id, None = NULL, prod,
 
   # store the final choice
   final_choice <- Input[, c(id, choice)]
-  base::colnames(final_choice) <- c("ID", "choice") # rename variables for merging purposes
+  # rename variables for merging purposes
+  base::colnames(final_choice) <- c("ID", "choice")
   df <- base::merge(x = df, y = final_choice, by = "ID") # merge
 
   # store the finished data frame in new object

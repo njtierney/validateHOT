@@ -26,17 +26,18 @@ task. Calculates the hit/ choice probability of the actual choice
 in the validation/holdout task.
 }
 \details{
-Mean hit probability (MHP) measures the averaged hit probability of participants actual
-choices in the validation/holdout task.
+Mean hit probability (MHP) measures the averaged hit probability of
+participants actual choices in the validation/holdout task.
 
 \code{data} has to be a data frame including the alternatives shown in
-the validation/holdout task. Can be created using the \code{createHOT()} function.
+the validation/holdout task. Can be created using the \code{createHOT()}
+function.
 
-\code{group} optional grouping variable, if results should be displayed by different groups.
-Has to be column name of variables in \code{data}.
+\code{group} optional grouping variable, if results should be displayed by
+different groups. Has to be column name of variables in \code{data}.
 
-\code{opts} is needed to specify the different alternatives in the validation/holdout
-task.
+\code{opts} is needed to specify the different alternatives in the
+validation/holdout task.
 Input of \code{opts} has to be column names of variables in \code{data}.
 
 \code{choice} to specify column of actual choice.

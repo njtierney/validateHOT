@@ -11,7 +11,8 @@ A data frame with 95 rows and 41 variables
 data(ACBC_interpolate)
 }
 \description{
-A data set with raw scores export for an adaptive choice-based conjoint including a linear-coded variable as well as price piecewise-coded.
+A data set with raw scores export for an adaptive choice-based conjoint
+including a linear-coded variable as well as price piecewise-coded.
 }
 \details{
 \itemize{

@@ -443,7 +443,7 @@ Let us imagine you have a specific assortment, and you want to check how many pa
 
 In our case, let us assume we want to test three alternatives - `Option_1`, `Option_4`, and `Option_6` - and see how many participants would consider choosing at least one of these alternatives. 
 
-> **NOTE**: Both `reach` and `freqassort` apply the threshold approach. In this case, each alternative whose utility exceeds the one of the threshold is considered as, for example, purchase option. In our case, we use the utility of the oustide good (i.e., no-buy), however, it could also be the utility of a status quo alternative. A participant is considered as reached, if at least one alternative exceeds this threshold.
+> **NOTE**: Both `reach` and `freqassort` apply the threshold approach. In this case, each alternative whose utility exceeds the one of the threshold is considered as, for example, purchase option. In our case, we use the utility of the outside good (i.e., no-buy), however, it could also be the utility of a status quo alternative. A participant is considered as reached, if at least one alternative exceeds this threshold.
 
 ```{r}
 reach(

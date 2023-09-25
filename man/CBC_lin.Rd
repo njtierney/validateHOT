@@ -11,7 +11,8 @@ A data frame with 79 rows and 17 variables
 data(CBC_lin)
 }
 \description{
-A data set with raw scores export for an CBC including a linear-coded variable.
+A data set with raw scores export for an CBC including a linear-coded
+variable.
 }
 \details{
 \itemize{

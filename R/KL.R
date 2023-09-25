@@ -1,54 +1,66 @@
 #' Kullback-Leibler Divergence
 #'
-#' @description Function to measure the Kullback-Leibler Divergence of a validation/holdout task.
+#' @description Function to measure the Kullback-Leibler Divergence of a
+#' validation/holdout task.
 #' @param data data frame with all relevant variables
 #' @param group optional column name(s) to specify grouping variable(s)
 #' to get \code{"kl"} by group(s)
 #' @param opts column names of the alternatives included in the
 #' validation/holdout task
 #' @param choice column name of the actual choice
-#' @param epsilon vector of noise that should be added to 0 values, per default set to 1e-05
-#' @param base character string to define the logarithm base, currently choice between \code{log} (default) and \code{log2}
+#' @param epsilon vector of noise that should be added to 0 values, per
+#' default set to 1e-05
+#' @param base character string to define the logarithm base, currently choice
+#' between \code{log} (default) and \code{log2}
 #'
 #' @return a tibble
 #' @importFrom dplyr select mutate group_by pick count summarise
 #' @importFrom magrittr "%>%"
 #'
 #' @details
-#' Kullback-Leibler-Divergence which measures the divergence between the actual choice distribution and the predicted
+#' Kullback-Leibler-Divergence which measures the divergence between the actual
+#' choice distribution and the predicted
 #' choice distribution (Ding et al., 2011; Drost, 2018). Currently only provides
-#' the deviation measured based on \eqn{log} and \eqn{log{_2}} algorithm. \eqn{log} set as default.
+#' the deviation measured based on \eqn{log} and \eqn{log{_2}}
+#' algorithm. \eqn{log} set as default.
 #'
 #' Due to the asymmetry of the Kullback-Leibler divergence, output provides both
 #' \code{"KL_O_P"} which is equivalent to (Observed || Predicted) and
 #' \code{"KL_P_O"} which is equivalent to (Predicted || Observed).
 #'
 #' \code{data} has to be a data frame including the alternatives shown in
-#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#' the validation/holdout task. Can be created using the \code{createHOT()}
+#' function.
 #'
-#' \code{group} optional grouping variable, if results should be displayed by different groups.
-#' Has to be column name of variables in \code{data}.
+#' \code{group} optional grouping variable, if results should be displayed
+#' by different groups. Has to be column name of variables in \code{data}.
 #'
-#' \code{opts} is needed to specify the different alternatives in the validation/holdout
-#' task (also includes the \code{none} alternative).
+#' \code{opts} is needed to specify the different alternatives in the
+#' validation/holdout task (also includes the \code{none} alternative).
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.
 #' Input of opts \code{choice} has to be column name of actual choice.
 #'
-#' \code{epsilon} has to be a numeric input in case of 0 in the numerator or denominator. 0
-#' then will be replaced by \code{epsilon}. Default value is \code{epsilon = 1e-5}, however, can
-#' be adopted.
+#' \code{epsilon} has to be a numeric input in case of 0 in the numerator or
+#' denominator. 0 then will be replaced by \code{epsilon}. Default value
+#' is \code{epsilon = 1e-5}, however, can be adopted.
 #'
-#' \code{base} has to be a character string, deciding which logarithm base you want to apply
-#' to calculate Kullback-Leibler. You can choose between \eqn{log} and \eqn{log{_2}}. Default set to \eqn{log}.
+#' \code{base} has to be a character string, deciding which logarithm base
+#' you want to apply to calculate Kullback-Leibler. You can choose
+#' between \eqn{log} and \eqn{log{_2}}. Default set to \eqn{log}.
 #'
 #' @references {
 #'
-#' Ding, Min, John R. Hauser, Songting Dong, Daria Dzyabura, Zhilin Yang, SU Chenting, and Steven P. Gaskin. (2011).
-#' Unstructured Direct Elicitation of Decision Rules. \emph{Journal of Marketing Research 48}(1): 116-27. \verb{https://doi.org/10.1509/jmkr.48.1.116}.
+#' Ding, Min, John R. Hauser, Songting Dong, Daria Dzyabura, Zhilin Yang,
+#' SU Chenting, and Steven P. Gaskin. (2011).
+#' Unstructured Direct Elicitation of Decision Rules. \emph{Journal of
+#' Marketing Research 48}(1): 116-27. \verb{https://doi.org/10.1509/jmkr.48.1.116}.
 #'
-#' Drost, Hajk-Georg. (2018). Philentropy: Information Theory and Distance Quantification with R. \emph{Journal of Open Source Software 3}(26), 765, \verb{https://joss.theoj.org/papers/10.21105/joss.00765}.
+#'
+#' Drost, Hajk-Georg. (2018). Philentropy: Information Theory and Distance
+#' Quantification with R. \emph{Journal of Open Source Software 3}(26),
+#' 765, \verb{https://joss.theoj.org/papers/10.21105/joss.00765}.
 #'
 #' }
 #'
@@ -171,7 +183,14 @@ kl <- function(data, group, opts, choice, epsilon = NULL, base = NULL) {
 
   # create actual share of actual choice
   base::suppressMessages(WS1 <- data %>%
-    dplyr::mutate(alt = base::factor({{ choice }}, levels = c(1:base::length(dplyr::select(., {{ opts }}))), labels = base::paste0("Option_", c(1:base::length(dplyr::select(., {{ opts }})))))) %>% # create factor for actual choice
+    dplyr::mutate(
+      # create factor for actual choice
+      alt = base::factor(
+        {{ choice }},
+        levels = c(1:base::length(dplyr::select(., {{ opts }}))),
+        labels = base::paste0("Option_",
+                              c(1:base::length(dplyr::select(
+                                ., {{ opts }})))))) %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::count(alt, .drop = F) %>% # count choices
     dplyr::mutate(chosen = n / base::sum(n)) %>% # calculate percentage
@@ -180,7 +199,12 @@ kl <- function(data, group, opts, choice, epsilon = NULL, base = NULL) {
   # create share of predicted choice
   base::suppressMessages(WS2 <- data %>%
     dplyr::mutate(pred = base::max.col(pick({{ opts }}))) %>% # store column index of highest utility
-    dplyr::mutate(alt = base::factor(pred, levels = c(1:base::length(dplyr::select(., {{ opts }}))), labels = base::paste0("Option_", c(1:base::length(dplyr::select(., {{ opts }})))))) %>% # create factor
+    dplyr::mutate(
+      alt = base::factor(
+        pred,
+        levels = c(1:base::length(dplyr::select(., {{ opts }}))),
+        labels = base::paste0("Option_", c(1:base::length(
+          dplyr::select(., {{ opts }})))))) %>% # create factor
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::count(alt, .drop = F) %>% # count number of predicted choice
     dplyr::mutate(pred = n / base::sum(n)) %>% # calculate percentage
@@ -189,7 +213,12 @@ kl <- function(data, group, opts, choice, epsilon = NULL, base = NULL) {
   # if base set to 'log'
   if (base == "log") {
     return(WS1 %>%
-      base::merge(x = ., y = WS2, by = c(WS1 %>% dplyr::select(., {{ group }}) %>% base::colnames(), "alt")) %>% # merge both data frames
+             # merge both data frames
+      base::merge(x = .,
+                  y = WS2,
+                  by = c(WS1 %>%
+                           dplyr::select(
+                             ., {{ group }}) %>% base::colnames(), "alt")) %>%
       dplyr::group_by(dplyr::pick({{ group }})) %>%
       dplyr::mutate(
         chosen = base::ifelse(chosen == 0, epsilon, chosen), # add epsilon if 0
@@ -204,7 +233,11 @@ kl <- function(data, group, opts, choice, epsilon = NULL, base = NULL) {
   # if base set to 'log2'
   if (base == "log2") {
     return(WS1 %>%
-      base::merge(x = ., y = WS2, by = c(WS1 %>% dplyr::select(., {{ group }}) %>% base::colnames(), "alt")) %>% # merge both data frames
+             # merge both data frames
+      base::merge(x = .,
+                  y = WS2,
+                  by = c(WS1 %>% dplyr::select(
+                    ., {{ group }}) %>% base::colnames(), "alt")) %>%
       dplyr::group_by(dplyr::pick({{ group }})) %>%
       dplyr::mutate(
         chosen = base::ifelse(chosen == 0, epsilon, chosen), # add epsilon if 0

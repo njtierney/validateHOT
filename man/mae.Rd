@@ -21,23 +21,25 @@ validation/holdout task}
 a tibble
 }
 \description{
-Function to measure the mean absolute error of a validation/holdout task.
-Calculates the averaged absolute error, i.e., deviation between predicted and
-stated share of alternatives in the validation/holdout task.
+Function to measure the mean absolute error of a
+validation/holdout task.Calculates the averaged absolute error, i.e.,
+deviation between predicted and stated share of alternatives in the
+validation/holdout task.
 }
 \details{
 Mean absolute error (MAE) calculates the deviation between predicted and
-stated (actual) choice share. It is an aggregated value across all alternatives
-in the validation/holdout task.
+stated (actual) choice share. It is an aggregated value across all
+alternatives in the validation/holdout task.
 
 \code{data} has to be a data frame including the alternatives shown in
-the validation/holdout task. Can be created using the \code{createHOT()} function.
+the validation/holdout task. Can be created using the \code{createHOT()}
+function.
 
-\code{group} optional grouping variable, if results should be displayed by different groups.
-Has to be column name of variables in \code{data}.
+\code{group} optional grouping variable, if results should be displayed
+by different groups. Has to be column name of variables in \code{data}.
 
-\code{opts} is needed to specify the different alternatives in the validation/holdout
-task.
+\code{opts} is needed to specify the different alternatives in the
+validation/holdout task.
 Input of \code{opts} has to be column names of variables in \code{data}.
 
 \code{choice} to specify column of actual choice.

@@ -30,14 +30,15 @@ stated (actual) choice share and returns the median error in the
 validation/holdout task, which is less likely to be influenced by outliers.
 
 \code{data} has to be a data frame including the alternatives shown in
-the validation/holdout task. Can be created using the \code{createHOT()} function.
+the validation/holdout task. Can be created using the \code{createHOT()}
+function.
 
-\code{group} optional grouping variable, if results should be displayed by different groups.
-Has to be column name of variables in \code{data}.
+\code{group} optional grouping variable, if results should be displayed by
+different groups.Has to be column name of variables in \code{data}.
 
-\code{opts} is needed to specify the different alternatives in the validation/holdout
-task.
-Input of \code{opts} has to be column names of variables in \code{data}.
+\code{opts} is needed to specify the different alternatives in the
+validation/holdout task. Input of \code{opts} has to be column names
+of variables in \code{data}.
 
 \code{choice} to specify column of actual choice.
 Input of opts \code{choice} has to be column name of actual choice.

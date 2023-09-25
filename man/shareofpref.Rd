@@ -19,7 +19,8 @@ validation/holdout task}
 a tibble
 }
 \description{
-Function to measure the share of preferences of each option in a validation/holdout task
+Function to measure the share of preferences of each option in a
+validation/holdout task
 }
 \details{
 Share of Preference provides the aggregated share of each alternative in the
@@ -28,10 +29,11 @@ of each alternative which is calculated according to the following formula
 \eqn{mean +/- 1.96 x \frac{sd}{\sqrt(n)}} (Orme, 2020, p. 94).
 
 \code{data} has to be a data frame including the alternatives shown in
-the validation/holdout task. Can be created using the \code{createHOT()} function.
+the validation/holdout task. Can be created using the \code{createHOT()}
+function.
 
-\code{group} optional grouping variable, if results should be displyed by different groups.
-Has to be column name of variables in \code{data}.
+\code{group} optional grouping variable, if results should be displayed by
+different groups. Has to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the simulation
 task.

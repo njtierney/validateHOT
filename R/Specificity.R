@@ -13,23 +13,26 @@
 #' @param none column name of none alternative
 #'
 #' @details
-#' The current logic of \code{"specificity"} is to determine whether a binary coded is correctly predicted by the model.
-#' To use the function a \code{"none"} alternative has to be included in the validation/holdout task.
-#' One potential usage is, for example, whether a buy or a no-buy condition
-#' was predicted correctly. For example, you have three alternatives plus
-#' a \code{"none"} alternative and you want to check whether a buy or no-buy was
-#' correctly predicted. This function can be helpful when you test, for example, if
-#' your model significantly overestimates or underestimates, for example, a purchase likelihood.
+#' The current logic of \code{"specificity"} is to determine whether a binary
+#' coded is correctly predicted by the model.To use the function
+#' a \code{"none"} alternative has to be included in the validation/holdout
+#' task. One potential usage is, for example, whether a buy or a no-buy
+#' condition was predicted correctly. For example, you have three alternatives
+#' plus a \code{"none"} alternative and you want to check whether a buy or
+#' no-buy was correctly predicted. This function can be helpful when you test,
+#' for example, if your model significantly overestimates or underestimates,
+#' for example, a purchase likelihood.
 #'
 #' \code{data} has to be a data frame including the alternatives shown in
-#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#' the validation/holdout task. Can be created using the \code{createHOT()}
+#' function.
 #'
-#' \code{group} optional grouping variable, if results should be displayed by different conditions.
-#' Has to be column name of variables in \code{data}.
+#' \code{group} optional grouping variable, if results should be displayed by
+#' different conditions. Has to be column name of variables in \code{data}.
 #'
-#' \code{opts} is needed to specify the different alternatives in the validation/holdout
-#' task.
-#' Input of \code{opts} has to be column names of variables in \code{data}.
+#' \code{opts} is needed to specify the different alternatives in the
+#' validation/holdout task. Input of \code{opts} has to be column names of
+#' variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.
 #' Input of opts \code{choice} has to be column name of actual choice.
@@ -51,7 +54,8 @@
 #'
 #' @references {
 #'
-#' Burger, S. V. (2018). \emph{Introduction to Machine Learning with R: Rigorous Mathematical Analysis}. O'Reilly.
+#' Burger, S. V. (2018). \emph{Introduction to Machine Learning with R:
+#' Rigorous Mathematical Analysis}. O'Reilly.
 #'
 #' }
 #'
@@ -148,7 +152,8 @@ specificity <- function(data, group, opts, choice, none) {
 
   return(data %>%
     dplyr::mutate(
-      pred = base::max.col(dplyr::pick({{ opts }})), # store column index with highest utility
+      # store column index with highest utility
+      pred = base::max.col(dplyr::pick({{ opts }})),
       buy = base::ifelse({{ choice }} != base::match(
         data %>% dplyr::select(., {{ none }}) %>% colnames(),
         data %>% dplyr::select(., {{ opts }}) %>% colnames()
@@ -160,6 +165,8 @@ specificity <- function(data, group, opts, choice, none) {
     ) %>%
     dplyr::group_by(pick({{ group }})) %>%
     dplyr::summarise(
-      specificity = 100 * (base::sum(buy == 2 & pred == 2) / (base::sum(buy == 2 & pred == 2) + base::sum(buy == 2 & pred == 1)))
+      specificity = 100 * (base::sum(buy == 2 & pred == 2) /
+                             (base::sum(buy == 2 & pred == 2) +
+                                base::sum(buy == 2 & pred == 1)))
     ))
 }

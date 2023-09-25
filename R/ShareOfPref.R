@@ -1,7 +1,8 @@
 #' Share of Preferences of Options included in HOT
 #'
 #' @description
-#' Function to measure the share of preferences of each option in a validation/holdout task
+#' Function to measure the share of preferences of each option in a
+#' validation/holdout task
 #'
 #' @param data data frame with all relevant variables
 #' @param group optional column name(s) to specify grouping variable(s)
@@ -22,10 +23,11 @@
 #' \eqn{mean +/- 1.96 x \frac{sd}{\sqrt(n)}} (Orme, 2020, p. 94).
 #'
 #' \code{data} has to be a data frame including the alternatives shown in
-#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#' the validation/holdout task. Can be created using the \code{createHOT()}
+#' function.
 #'
-#' \code{group} optional grouping variable, if results should be displyed by different groups.
-#' Has to be column name of variables in \code{data}.
+#' \code{group} optional grouping variable, if results should be displayed by
+#' different groups. Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the simulation
 #' task.
@@ -110,23 +112,31 @@ shareofpref <- function(data, group, opts) {
 
   # change data structure
   return(data %>%
-    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>% # exponentiate all alternatives
+           # exponentiate all alternatives
+    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>% # sum up
     dplyr::ungroup() %>%
     dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>% # scale
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-    dplyr::summarise(across({{ opts }}, c(mw = base::mean, std = stats::sd), .names = "{.col}.{.fn}")) %>% # calculate mean and sd
+      # calculate mean and sd
+    dplyr::summarise(across({{ opts }},
+                            c(mw = base::mean, std = stats::sd),
+                            .names = "{.col}.{.fn}")) %>%
     tidyr::pivot_longer(.,
       cols = tidyselect::ends_with(c(".mw", ".std")),
       names_to = c("Option", ".value"), names_sep = "\\."
     ) %>% # change to longer format
-    base::merge(x = ., y = WS1, by = c(data %>% dplyr::select(., {{ group }}) %>% base::colnames())) %>% # merge
+    base::merge(x = .,
+                y = WS1,
+                by = c(data %>% dplyr::select(., {{ group }}) %>%
+                         base::colnames())) %>% # merge
     dplyr::mutate(
       se = std / sqrt(n), # calculate standard error
       lo.ci = mw - (1.96 * se), # lower ci
       up.ci = mw + (1.96 * se) # upper ci
     ) %>%
-    dplyr::select(!tidyselect::all_of(c("std", "n"))) %>% # delete irrelevant variables
+      # delete irrelevant variables
+    dplyr::select(!tidyselect::all_of(c("std", "n"))) %>%
     tibble::as_tibble())
 }

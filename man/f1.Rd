@@ -24,28 +24,31 @@ a tibble
 }
 \description{
 F1 is one of the 5 metrics of the confusion matrix
-and is defined as \eqn{\frac{2 * precision * recall}{precision + recall}} or stated
-differently by Burger (2018) \eqn{\frac{2TP}{2TP + FP + FN}}, where TP =
-True Positives, FP = False Positives, and FN = False Negatives.
+and is defined as \eqn{\frac{2 * precision * recall}{precision + recall}} or
+stated differently by Burger (2018) \eqn{\frac{2TP}{2TP + FP + FN}},
+where TP = True Positives, FP = False Positives, and FN = False Negatives.
 }
 \details{
-The current logic of \code{"f1"} is to determine whether a binary coded is correctly predicted by the model.
-To use the function a \code{"none"} alternative has to be included in the validation/holdout task.
+The current logic of \code{"f1"} is to determine whether a binary coded is
+correctly predicted by the model. To use the function a \code{"none"}
+alternative has to be included in the validation/holdout task.
 One potential usage is, for example, whether a buy or a no-buy condition
 was predicted correctly. For example, you have three alternatives plus
 a \code{"none"} alternative and you want to check whether a buy or no-buy was
-correctly predicted. This function can be helpful when you test, for example, if
-your model significantly overestimates or underestimates, for example, a purchase likelihood.
+correctly predicted. This function can be helpful when you test, for example,
+if your model significantly overestimates or underestimates, for example,
+a purchase likelihood.
 
 
 \code{data} has to be a data frame including the alternatives shown in
-the validation/holdout task. Can be created using the \code{createHOT()} function.
+the validation/holdout task. Can be created using the \code{createHOT()}
+function.
 
-\code{group} optional grouping variable, if results should be displayed by different conditions.
-Has to be column name of variables in \code{data}.
+\code{group} optional grouping variable, if results should be displayed by
+different conditions. #' Has to be column name of variables in \code{data}.
 
-\code{opts} is needed to specify the different alternatives in the validation/holdout
-task (also includes the \code{none} alternative).
+\code{opts} is needed to specify the different alternatives in the
+validation/holdout task (also includes the \code{none} alternative).
 Input of \code{opts} has to be column names of variables in \code{data}.
 
 \code{choice} to specify column name of actual choice.
@@ -87,7 +90,8 @@ f1(
 \references{
 {
 
-Burger, S. V. (2018). \emph{Introduction to Machine Learning with R: Rigorous Mathematical Analysis}. O'Reilly.
+Burger, S. V. (2018). \emph{Introduction to Machine Learning with R:
+Rigorous Mathematical Analysis}. O'Reilly.
 
 }
 }

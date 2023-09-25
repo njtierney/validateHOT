@@ -1,6 +1,7 @@
 #' CBC example dataset
 #'
-#' A data set with raw scores export for an CBC, assuming part-wo coding for price (if included).
+#' A data set with raw scores export for an CBC, assuming part-worth coding for
+#' price (if included).
 #'
 #'
 #' \itemize{

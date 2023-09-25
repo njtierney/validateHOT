@@ -15,11 +15,14 @@ turf(data, opts, none, size, fixed = NULL, approach = c("thres", "fc"))
 
 \item{size}{numeric vector to determine size of the assortment}
 
-\item{fixed}{optional vector to determine alternatives that have to be included in the assortment}
+\item{fixed}{optional vector to determine alternatives that have to be
+included in the assortment}
 
-\item{approach}{character whether to run First Choice approach ('fc') or Threshold approach ('thres')
+\item{approach}{character whether to run First Choice approach ('fc') or
+Threshold approach ('thres')
 
-\code{data} has to be a data frame including the alternatives that should be tested
+\code{data} has to be a data frame including the alternatives that should be
+tested
 
 \code{opts} is needed to specify the different alternatives in the
 product assortment that should be considered.
@@ -30,25 +33,32 @@ validation/holdout task.
 
 \code{size} has to be a whole number determining the size of the assortment.
 
-\code{fixed} has to be a vector of variables that are fixed in the assortment, i.e., they
-have to be part of the assortment
+\code{fixed} has to be a vector of variables that are fixed in the
+assortment, i.e., they have to be part of the assortment
 
-\code{approach} character defining whether first choice \code{approach = 'fc'} or
-threshold \code{approach = 'thres'}. If \code{approach = 'fc'}, participants are
-considered being reached, if there alternative with highest utility is included in the assortment (Chrzan & Orme, 2019, p. 111).
-On the contrary, if \code{approach = 'thres'}, participants are considered being reached, if utility of one product is
-highr than the one of the \code{none} alternative (Chrzan & Orme, 2019, p. 112). If \code{approach = 'fc'}, \code{reach} equals \code{freq} since participants
-have at maximum their most preferred alternative that exceeds the \code{none} alternative.}
+\code{approach} character defining whether first
+choice \code{approach = 'fc'} or threshold \code{approach = 'thres'}.
+If \code{approach = 'fc'}, participants are considered being reached, if
+there alternative with highest utility is included in the assortment
+(Chrzan & Orme, 2019, p. 111).
+ On the contrary, if \code{approach = 'thres'}, participants are considered
+ being reached, if utility of one product is higher than the one of
+ the \code{none} alternative (Chrzan & Orme, 2019, p. 112).
+ If \code{approach = 'fc'}, \code{reach} equals \code{freq} since
+ participants have at maximum their most preferred alternative that
+ exceeds the \code{none} alternative.}
 }
 \value{
 data frame
 }
 \description{
 T(otal) U(nduplicated) R(each) and F(requency) is
-a "product line extension model" (Miaoulis et al., 1990, p. 29). For each possible combinations,
-it looks for the reach and frequency of this combination. Participants are reached,
-if at least one of the alternatives in a combination has a higher utility than \code{none}. On the contrary,
-frequency calculates the averaged number of alternatives that have a higher utility than \code{none}.
+a "product line extension model" (Miaoulis et al., 1990, p. 29). For each
+possible combinations, it looks for the reach and frequency of this
+combination. Participants are reached, if at least one of the alternatives
+in a combination has a higher utility than \code{none}. On the contrary,
+frequency calculates the averaged number of alternatives that have a
+higher utility than \code{none}.
 }
 \examples{
 \dontrun{
@@ -93,9 +103,11 @@ head(t2)
 \references{
 {
 
-Chrzan, K., & Orme, B. K. (2019). \emph{Applied MaxDiff: A Practitioner’s Guide to Best-Worst Scaling} Provo, UT: Sawtooth Software.
+Chrzan, K., & Orme, B. K. (2019). \emph{Applied MaxDiff: A Practitioner’s
+Guide to Best-Worst Scaling} Provo, UT: Sawtooth Software.
 
-Miaoulis, G., Parsons, H., & Free, V. (1990). Turf: A New Planning Approach for Product Line Extensions. \emph{Marketing Research 2} (1): 28-40.
+Miaoulis, G., Parsons, H., & Free, V. (1990). Turf: A New Planning Approach
+for Product Line Extensions. \emph{Marketing Research 2} (1): 28-40.
 
 }
 }

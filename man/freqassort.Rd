@@ -2,7 +2,8 @@
 % Please edit documentation in R/freqAssort.R
 \name{freqassort}
 \alias{freqassort}
-\title{Averaged number of times a person is reached by a specific assortment of bundles}
+\title{Averaged number of times a person is reached by a specific assortment of
+bundles}
 \usage{
 freqassort(data, group, none, opts)
 }
@@ -22,22 +23,25 @@ a tibble
 \description{
 Frequency function of T(otal) U(nduplicated) R(each) and F(requency)
 analysis to measure the average time a consumer
-is reached with a specific product bundle assortment. \code{"freqassort"} calculates
-the frequency based on the 'threshold' approach, meaning each alternative that exceeds
-utility of \code{none} alternative is considered as, for example, purchase option.
+is reached with a specific product bundle assortment. \code{"freqassort"}
+calculates the frequency based on the 'threshold' approach, meaning
+each alternative that exceeds utility of \code{none} alternative is
+considered as, for example, purchase option.
 }
 \details{
 Frequency calculates the average times a consumer would be reached with the
 product assortment you are testing. The current logic of \code{freqassort()}
-is that the utility of an alternative has to exceed a threshold. In the case of \code{freqassort()}
+is that the utility of an alternative has to exceed a threshold. In the case
+ of \code{freqassort()}
 this threshold is referred to the \code{none} argument in \code{data}.
 
-\code{data} has to be a data frame including the alternatives that should be tested
+\code{data} has to be a data frame including the alternatives that should
+be tested
 
-\code{group} optional grouping variable, if results should be displayed by different conditions.
+\code{group} optional grouping variable, if results should be displayed
+by different conditions.
 Has to be column name of variables in \code{data}.
 
-\code{opts} is needed to specify the different alternatives in the
 product assortment that should be considered.
 Input of \code{opts} has to be column names of variables in \code{data}.
 

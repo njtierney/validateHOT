@@ -13,24 +13,26 @@
 #' @param choice column name of the actual choice
 #'
 #' @details
-#' Mean hit probability (MHP) measures the averaged hit probability of participants actual
-#' choices in the validation/holdout task.
+#' Mean hit probability (MHP) measures the averaged hit probability of
+#' participants actual choices in the validation/holdout task.
 #'
 #' \code{data} has to be a data frame including the alternatives shown in
-#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#' the validation/holdout task. Can be created using the \code{createHOT()}
+#' function.
 #'
-#' \code{group} optional grouping variable, if results should be displayed by different groups.
-#' Has to be column name of variables in \code{data}.
+#' \code{group} optional grouping variable, if results should be displayed by
+#' different groups. Has to be column name of variables in \code{data}.
 #'
-#' \code{opts} is needed to specify the different alternatives in the validation/holdout
-#' task.
+#' \code{opts} is needed to specify the different alternatives in the
+#' validation/holdout task.
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.
 #' Input of opts \code{choice} has to be column name of actual choice.
 #'
 #' @return a tibble
-#' @importFrom dplyr select relocate mutate rowwise pick across ungroup group_by summarise
+#' @importFrom dplyr select relocate mutate rowwise pick across ungroup
+#' group_by summarise
 #' @importFrom magrittr "%>%"
 #'
 #' @examples
@@ -116,13 +118,18 @@ mhp <- function(data, group, opts, choice) {
   #############################################################################
   # change data structure
   data <- data %>%
-    dplyr::relocate(., c({{ opts }}, {{ choice }}, {{ group }})) %>% # reorder columns
-    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>% # exponentiate
+    # reorder columns
+    dplyr::relocate(., c({{ opts }}, {{ choice }}, {{ group }})) %>%
+    # exponentiate
+    dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>% # calculate sum
+    # calculate sum
+    dplyr::mutate(Summe = base::sum(dplyr::pick({{ opts }}))) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>% # choice probability in percentage
-    dplyr::mutate(mhp = 0) # create mhp variable
+    # choice probability in percentage
+    dplyr::mutate(dplyr::across({{ opts }}, ~ .x / Summe * 100)) %>%
+    # create mhp variable
+    dplyr::mutate(mhp = 0)
 
 
   # store actual choice

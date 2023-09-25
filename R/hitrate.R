@@ -1,6 +1,7 @@
 #' Hit Rate
 #'
-#' @description \code{hitrate} measures number of times a choice was correctly predicted in a validation/holdout task.
+#' @description \code{hitrate} measures number of times a choice was correctly
+#' predicted in a validation/holdout task.
 #'
 #' @param data data frame with all relevant variables
 #' @param group optional column name(s) to specify grouping variable(s)
@@ -14,20 +15,22 @@
 #' predicted by the model.
 #' Output contains the following 4 metrics:
 #' \itemize{
-#' \item \code{"chance"} chance level (\eqn{\frac{1}{number of alternatives}}) in percentage
+#' \item \code{"chance"} chance level (\eqn{\frac{1}{number of alternatives}})
+#' in percentage
 #' \item \code{"no."} absolute value of correctly predicted choices
 #' \item \code{"\%"} correctly predicted choices in percentage
 #' \item \code{"n"} total number of choices
 #' }
 #'
 #' \code{data} has to be a data frame including the alternatives shown in
-#' the validation/holdout task. Can be created using the \code{createHOT()} function.
+#' the validation/holdout task. Can be created using the \code{createHOT()}
+#' function.
 #'
-#' \code{group} optional grouping variable, if results should be displayed by different groups.
-#' Has to be column name of variables in \code{data}.
+#' \code{group} optional grouping variable, if results should be displayed by
+#' different groups. Has to be column name of variables in \code{data}.
 #'
-#' \code{opts} is needed to specify the different alternatives in the validation/holdout
-#' task (also includes the \code{none} alternative).
+#' \code{opts} is needed to specify the different alternatives in the
+#' validation/holdout task (also includes the \code{none} alternative).
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.
@@ -117,12 +120,16 @@ hitrate <- function(data, group, opts, choice) {
 
 
   suppressMessages(return(data %>%
-    dplyr::mutate(pred = base::max.col(dplyr::pick({{ opts }}))) %>% # store column index with highest utility
+                            # store column index with highest utility
+    dplyr::mutate(pred = base::max.col(dplyr::pick({{ opts }}))) %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::summarise(
-      HR = mean(as.integer({{ choice }} == pred)) * 100, # calculate the hit rate
-      chance = 1 / base::length(dplyr::select(data, {{ opts }})) * 100, # calculate the chance level
-      cor = base::sum(base::as.integer({{ choice }} == pred)), # calculate number of correct predicted
+      # calculate the hit rate
+      HR = mean(as.integer({{ choice }} == pred)) * 100,
+      # calculate the chance level
+      chance = 1 / base::length(dplyr::select(data, {{ opts }})) * 100,
+      # calculate number of correct predicted
+      cor = base::sum(base::as.integer({{ choice }} == pred)),
       n = dplyr::n() # n
     )))
 }
