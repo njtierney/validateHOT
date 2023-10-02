@@ -241,7 +241,7 @@ HOT <- createHOT(
 
 What we can see from the `createHOT()` function above is that we have 7 alternatives `prod = 7` plus a no-buy alternative since we specified the column index of `None = 19`.
 
-For `hitrate()`, we specify our data (`HOT` in our case), the column names of alternatives (this includes the no-buy alternative; `opts`), and finally the actual choice in the holdout task (`choice`).
+For `hitrate()`, we specify our data (`HOT` in our case), the column names of alternatives (this includes the no-buy alternative; `opts`), and finally, the actual choice in the holdout task (`choice`).
 
 ```{r}
 hitrate(
