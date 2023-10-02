@@ -15,10 +15,12 @@
 #' predicted by the model.
 #' Output contains the following 4 metrics:
 #' \itemize{
-#' \item \code{"chance"} chance level (\eqn{\frac{1}{number of alternatives}})
-#' in percentage
-#' \item \code{"no."} absolute value of correctly predicted choices
-#' \item \code{"\%"} correctly predicted choices in percentage
+#' \item \code{"HR"} hit rate (number of correctly predicted
+#' choices) in percentages
+#' \item \code{"se"} standard error in percentages
+#' \item \code{"chance"} chance level of correctly predicted choices by simply
+#' guessing
+#' \item \code{"cor"} absolute number of correctly predicted choices
 #' \item \code{"n"} total number of choices
 #' }
 #'
@@ -39,6 +41,7 @@
 #' @return a tibble
 #' @importFrom dplyr select mutate pick group_by summarise n
 #' @importFrom magrittr "%>%"
+#' @importFrom stats sd
 #'
 #' @examples
 #' \dontrun{
@@ -125,7 +128,9 @@ hitrate <- function(data, group, opts, choice) {
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::summarise(
       # calculate the hit rate
-      HR = mean(as.integer({{ choice }} == pred)) * 100,
+      HR = base::mean(as.integer({{ choice }} == pred)) * 100,
+      # calculate se
+      se = (stats::sd(as.integer({{ choice }} == pred)) / base::sqrt(dplyr::n())) * 100,
       # calculate the chance level
       chance = 1 / base::length(dplyr::select(data, {{ opts }})) * 100,
       # calculate number of correct predicted

@@ -203,7 +203,8 @@ kl <- function(data, group, opts, choice, epsilon = NULL, base = NULL) {
 
   # create share of predicted choice
   base::suppressMessages(WS2 <- data %>%
-    dplyr::mutate(pred = base::max.col(pick({{ opts }}))) %>% # store column index of highest utility
+     # store column index of highest utility
+    dplyr::mutate(pred = base::max.col(pick({{ opts }}))) %>%
     dplyr::mutate(
       alt = base::factor(
         pred,

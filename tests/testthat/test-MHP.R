@@ -121,11 +121,14 @@ test_that("mhp() also working with data.frame not created with createHOT()", {
     Choice = base::sample(c(1:5), 10, replace = T)
   )
   expect_true(base::is.numeric(mhp(data = newHOT, opts = c(Option_1:Option_5), choice = Choice)[[1]]))
+  expect_true(base::is.numeric(mhp(data = newHOT, opts = c(Option_1:Option_5), choice = Choice)[[2]]))
   expect_true(tibble::is_tibble(mhp(data = newHOT, opts = c(Option_1:Option_5), choice = Choice)))
   expect_false(base::anyNA(mhp(data = newHOT, opts = c(Option_1:Option_5), choice = Choice)))
 })
 
 test_that("check whether examples are correct ", {
-  expect_equal(base::round(base::as.numeric(mhp(data = HOT, opts = c(Option_1:None), choice = choice)), 0), 48)
+  expect_equal(base::round(base::as.numeric(mhp(data = HOT, opts = c(Option_1:None), choice = choice))[[1]], 0), 48)
+  expect_equal(base::round(base::as.numeric(mhp(data = HOT, opts = c(Option_1:None), choice = choice))[[2]], 1), 4.5)
   expect_equal(base::round(base::as.numeric(mhp(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[2]]), 0), c(49, 50, 44))
+  expect_equal(base::round(base::as.numeric(mhp(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[3]]), 1), c(7.7, 7.6, 8.6))
 })

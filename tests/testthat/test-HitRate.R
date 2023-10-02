@@ -126,10 +126,11 @@ test_that("hitrate() also working with data.frame not created with createHOT()",
 })
 
 test_that("check whether examples are correct ", {
-  expect_equal(base::round(base::as.numeric(hitrate(data = HOT, opts = c(Option_1:None), choice = choice)), 0), c(56, 12, 39, 70))
+  expect_equal(base::round(base::as.numeric(hitrate(data = HOT, opts = c(Option_1:None), choice = choice)), 0), c(56, 6, 12, 39, 70))
   expect_equal(base::round(base::as.numeric(hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[2]]), 0), c(57, 60, 50))
-  expect_equal(base::round(base::as.numeric(hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[3]]), 1), c(12.5, 12.5, 12.5))
-  expect_equal(base::round(base::as.numeric(hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[4]]), 1), c(13, 15, 11))
-  expect_equal(base::round(base::as.numeric(hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[5]]), 1), c(23, 25, 22))
-  expect_equal(base::sum(hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[5]]), base::nrow(HOT))
+  expect_equal(base::round(base::as.numeric(hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[3]]), 1), c(10.6, 10.0, 10.9))
+  expect_equal(base::round(base::as.numeric(hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[4]]), 1), c(12.5, 12.5, 12.5))
+  expect_equal(base::round(base::as.numeric(hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[5]]), 1), c(13, 15, 11))
+  expect_equal(base::round(base::as.numeric(hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[6]]), 1), c(23, 25, 22))
+  expect_equal(base::sum(hitrate(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[6]]), base::nrow(HOT))
 })

@@ -213,7 +213,7 @@ createHOT <- function(data, id, None = NULL, prod,
     (!(base::is.numeric(None)) & !(base::is.null(None))) |
     !(base::is.numeric(prod)) |
     (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
-    base::stop("Error: Please insert column index. Input has to be numeric!")
+    base::stop("Error: Please insert column index (numeric inpute)!")
   }
 
   # test numeric input for coding
@@ -273,19 +273,19 @@ createHOT <- function(data, id, None = NULL, prod,
   }
 
   # test whether CBC is used, one variable linear coded however
-  # position not specified (or other way arund)
+  # position not specified (or other way around)
   if (method == "CBC" & !(base::any(coding == 1)) & !(base::is.null(lin.p))) {
     base::stop("Error: 'lin.p' specified but no '1' in coding!")
   }
 
   # test whether ACBC is used, one variable linear coded however
-  # position not specified  (or other way arund)
+  # position not specified  (or other way around)
   if (method == "ACBC" & !(base::any(coding == 1)) & !(base::is.null(lin.p))) {
     base::stop("Error: 'lin.p' specified but no '1' in coding!")
   }
 
   # test whether ACBC is used, one variable piecewise coded however
-  # position not specified  (or other way arund)
+  # position not specified  (or other way around)
   if (method == "ACBC" & !(base::any(coding == 2)) &
     !(base::is.null(piece.p))) {
     base::stop("Error: 'piece.p' specified but no '2' in coding!")

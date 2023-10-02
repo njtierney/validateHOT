@@ -29,10 +29,12 @@ predicted in a validation/holdout task.
 predicted by the model.
 Output contains the following 4 metrics:
 \itemize{
-\item \code{"chance"} chance level (\eqn{\frac{1}{number of alternatives}})
-in percentage
-\item \code{"no."} absolute value of correctly predicted choices
-\item \code{"\%"} correctly predicted choices in percentage
+\item \code{"HR"} hit rate (number of correctly predicted
+choices) in percentages
+\item \code{"se"} standard error in percentages
+\item \code{"chance"} chance level of correctly predicted choices by simply
+guessing
+\item \code{"cor"} absolute number of correctly predicted choices
 \item \code{"n"} total number of choices
 }
 

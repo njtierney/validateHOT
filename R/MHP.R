@@ -30,10 +30,14 @@
 #' \code{choice} to specify column of actual choice.
 #' Input of opts \code{choice} has to be column name of actual choice.
 #'
+#' Output will display both mean hit probability and its corresponding standard
+#' error.
+#'
 #' @return a tibble
 #' @importFrom dplyr select relocate mutate rowwise pick across ungroup
 #' group_by summarise
 #' @importFrom magrittr "%>%"
+#' @importFrom stats sd
 #'
 #' @examples
 #' \dontrun{
@@ -146,5 +150,6 @@ mhp <- function(data, group, opts, choice) {
   # calculate MHP
   return(suppressMessages(data %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-    dplyr::summarise(MHP = base::mean(mhp))))
+    dplyr::summarise(MHP = base::mean(mhp),
+                     se = (stats::sd(mhp) / base::sqrt(dplyr::n())))))
 }

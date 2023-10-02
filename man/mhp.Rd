@@ -42,6 +42,9 @@ Input of \code{opts} has to be column names of variables in \code{data}.
 
 \code{choice} to specify column of actual choice.
 Input of opts \code{choice} has to be column name of actual choice.
+
+Output will display both mean hit probability and its corresponding standard
+error.
 }
 \examples{
 \dontrun{
