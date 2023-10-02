@@ -272,7 +272,7 @@ head(HOT)
 In the next step, we would like to see how well our model (from which we took the raw utilities) predict 
 the actual choices in the validation/holdout task. First, we will test the <code>hitrate()</code> function. 
 We specify the <code>data</code>, the column names of the alternatives (<code>opts</code>; remember 
-we have three alternatives + the *no-buy* alternative), and finally the actual choice. 
+there are three alternatives + the *no-buy* alternative), and finally the actual choice. 
 
 ```{r}
 hitrate(

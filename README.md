@@ -328,7 +328,7 @@ In the next step, we would like to see how well our model (from which we
 took the raw utilities) predict the actual choices in the
 validation/holdout task. First, we will test the <code>hitrate()</code>
 function. We specify the <code>data</code>, the column names of the
-alternatives (<code>opts</code>; remember we have three alternatives +
+alternatives (<code>opts</code>; remember there are three alternatives +
 the *no-buy* alternative), and finally the actual choice.
 
 ``` r
@@ -337,10 +337,10 @@ hitrate(
   opts = c(Option_1:None), # column names of alternatives
   choice = choice # column name of choice
 )
-#> # A tibble: 1 × 4
-#>      HR chance   cor     n
-#>   <dbl>  <dbl> <int> <int>
-#> 1  48.1     25    38    79
+#> # A tibble: 1 × 5
+#>      HR    se chance   cor     n
+#>   <dbl> <dbl>  <dbl> <int> <int>
+#> 1  48.1  5.66     25    38    79
 ```
 
 Let us also check the magnitude of the mean absolute error by running
@@ -476,12 +476,12 @@ hitrate(
   choice = choice, # column name of choice
   group = Group # column name of Grouping variable
 )
-#> # A tibble: 3 × 5
-#>   Group    HR chance   cor     n
-#>   <int> <dbl>  <dbl> <int> <int>
-#> 1     1  59.1     25    13    22
-#> 2     2  37.0     25    10    27
-#> 3     3  56.7     25    17    30
+#> # A tibble: 3 × 6
+#>   Group    HR    se chance   cor     n
+#>   <int> <dbl> <dbl>  <dbl> <int> <int>
+#> 1     1  59.1 10.7      25    13    22
+#> 2     2  37.0  9.47     25    10    27
+#> 3     3  56.7  9.20     25    17    30
 ```
 
 In this case, the group assignment is stored in form of integers.
@@ -508,12 +508,12 @@ mhp(
   choice = choice, # column name of choice
   group = Group # column name of Grouping variable
 )
-#> # A tibble: 3 × 2
-#>   Group     MHP
-#>   <fct>   <dbl>
-#> 1 Group_1  41.7
-#> 2 Group_2  39.0
-#> 3 Group_3  47.8
+#> # A tibble: 3 × 3
+#>   Group     MHP    se
+#>   <fct>   <dbl> <dbl>
+#> 1 Group_1  41.7  6.11
+#> 2 Group_2  39.0  5.17
+#> 3 Group_3  47.8  5.00
 ```
 
 For more examples, please see the accompanied vignette.
