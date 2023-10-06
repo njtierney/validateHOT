@@ -21,11 +21,13 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/JoshSchramm94/validateHOT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JoshSchramm94/validateHOT/actions/workflows/R-CMD-check.yaml)
+
+[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 <!-- badges: end -->
 
 The goal of validateHOT is to validate the results of your validation
 task (also known as holdout task). A validation task is essential to
-make sure that your collected data of a MaxDiff, CBC, or ACBC are valid
+make sure that your collected data of a MaxDiff, CBC, or ACBC is valid
 and can also predict outside tasks that were not included in estimating
 your utility scores. Although commercial studies often do not include a
 validation/holdout task (Yang et al., 2018), it is highly recommended to do so
@@ -36,7 +38,10 @@ some of the relevant metrics to test the performance of your data in
 predicting a holdout task. In [Sawtooth
 Software's](https://sawtoothsoftware.com/) CBC a fixed validation/
 holdout task is automatically implemented. If you conduct a MaxDiff or
-ACBC study, you have to program these on your own. Since the start of 
+ACBC study, you have to program these on your own. 
+
+> Currently <code>validateHOT</code> only works with data from Sawtooth Software 
+due to the coding of price.
 
 👉🏾 <u>**What you need to provide**</u>: <br> After collecting your data,
 and running your initial Hierarchical Bayes models, you can turn to
