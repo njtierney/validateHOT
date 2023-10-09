@@ -186,10 +186,11 @@ combinations, you specify the combination you are interested in
 <code>reach</code>
 </li>
 <li>
-<code>shareofpref</code>: provides you the aggregated share of
-preference, including the standard error, as well as the lower and upper
-confidence interval, which is calculated according to the
-$mean +/- 1.96 x \frac{sd}{\sqrt(n)}$ (Orme, 2020, p. 94).
+<code>marksim</code>: runs market simulations (either share of
+preference or first choice rule), including the standard error, as well
+as the lower and upper confidence interval, which is calculated
+according to the $mean +/- 1.96 x \frac{sd}{\sqrt(n)}$ (Orme, 2020,
+p. 94).
 </li>
 </ul>
 

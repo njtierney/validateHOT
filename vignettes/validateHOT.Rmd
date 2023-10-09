@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 <code>validateHOT</code> is a package to validate your validation/holdout task and test whether your model is valid in terms of predicting outside choice sets (outside means not included in your model estimation).
 
-We created <code>validateHOT</code> to support students and practitioners who are less familiar with *R*. Moreover, we would also like to provide an easy and convenient way to validate a validation/holdout task for all the [Sawtooth Software](https://sawtoothsoftware.com/) users, who would like to validate their validation/holdout task in *R* for open-science purposes. Finally, the package has expanded in the past years, so `validateHOT` also offers some convenient functions to do some other fun stuff, e.g., running some simulations (e.g., TURF analysis or share of preference).
+We created <code>validateHOT</code> to support students and practitioners who are less familiar with *R*. Moreover, we would also like to provide an easy and convenient way to validate a validation/holdout task for all the [Sawtooth Software](https://sawtoothsoftware.com/) users, who would like to validate their validation/holdout task in *R* for open-science purposes. Finally, the package has expanded in the past years, so `validateHOT` also offers some convenient functions to do some other fun stuff, e.g., running some simulations (e.g., TURF analysis or market simulations).
 
 In this vignette we would like to present to you ...
 
@@ -41,8 +41,8 @@ In this vignette we would like to present to you ...
 -   ... and how to use <code>validateHOT</code> for simulation purposes
     -   Frequency of how many products are bought on average of a specified assortment (<code>freqassort</code>)
     -   How many participants are reached with a specified assortment (buying at least one alternative of the assortment; <code>reach</code>)
-    -   Determine the pefect product assortment with highest reach and frequency; <code>turf</code>)
-    -   calculating the share of preference of specified set (<code>shareofpref</code>)
+    -   Determine the perfect product assortment with highest reach and frequency; <code>turf</code>)
+    -   running market simulations with specified set (<code>marksim</code>). <code>validateHOT</code> currently provides market simulations based on share of preference as well as first choice rule.
 
 ## Installation
 
@@ -435,7 +435,7 @@ Finally, let us talk about the simulation metrics. `validateHOT` currently provi
 -   Reach of the assortment (`reach`)
 -   Frequency of the assortment (`freqAssort`)
 -   **T**(otal) **U**(nduplicated) **R**(each) and **F**(requency) (`turf`)
--   Share of Preference of the assortment (`shareofpref`)
+-   Market simulations of the assortment (`marksim`)
 
 ### `reach`
 
@@ -593,15 +593,29 @@ head(t_likert, n = 5)
 
 
 
-### `shareofpref`
+### `marksim`
 
-Finally, `validateHOT` also provides a function, `shareofpref` to calculate the share of preference of all products/alternatives you specify in your assortment.
+Finally, `validateHOT` also provides a function, `marksim` to calculate the assumed market share of a specified assortment. <code>validateHOT</code> currently provides market simulations based on share on preference or first choice rule. To specify which market simulation method to run, you can easily decide by specifying the <code>method</code> argument.
+
+#### Share of Preference
 
 ```{r}
 HOT %>%
-  shareofpref(
+  marksim(
     data = ., # data frame
-    opts = c(Option_1:None) # column names of alternatives
+    opts = c(Option_1:None), # column names of alternatives
+    method = "shareofpref" # market simulation method
+  )
+```
+
+#### First Choice rule
+
+```{r}
+HOT %>%
+  marksim(
+    data = ., # data frame
+    opts = c(Option_1:None), # column names of alternatives
+    method = "firstchoice" # market simulation method
   )
 ```
 
