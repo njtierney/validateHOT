@@ -98,8 +98,8 @@ as well as \code{coding} have to be specified.
 (only if variables are coded as linear or piecewise).
 If scaled or centered values were used for hierarchical bayes (HB)
 estimation, these have to be specified in this case.
-All values have to be specified. For example if one linear coded attribute
-had 5 levels, all 5 levels have to be inserted.In case for linear coded
+All values have to be specified. For example, if one linear coded attribute
+had 5 levels, all 5 levels have to be inserted. In case for linear coded
 price for \code{method = "ACBC"}, specify both lower bound and upper
 bound and code as piecewise in \code{coding}.
 For piecewise coded price, specify each breakpoint.

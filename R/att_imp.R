@@ -1,4 +1,4 @@
-#' Title
+#' Attribue Importance for (A)CBC
 #'
 #' @param data data frame with all relevant variables
 #' @param group optional column name(s) to specify grouping variable(s)
@@ -8,79 +8,103 @@
 #' @param interpolate.levels a list of the attribute levels that should
 #' be interpolated. These have to be the same as provided to Sawtooth Software.
 #' Please make sure to provide the whole list. Only has to be specified for the
-#' variables that are coded as '1' (linear)
+#' variables that are coded as '1' (linear).
+#'
+#' @details
+#' \code{att_imp} converts raw utilities of a CBC or an ACBC to relative importance
+#' scores.
+#'
+#' \code{data} has to be a data frame with the attributes. Attribute levels need
+#' to be the raw utilities.
+#'
+#' \code{group} optional grouping variable, if results should be displayed by
+#' different groups. Has to be column name of variables in \code{data}.
+#'
+#' \code{attrib} specifies the attribute levels for each alternative.
+#' Input for \code{attrib} has to be a list. Needs to specify the column names
+#' of the attribute levels.
+#'
+#' \code{coding} has to be specified  to indicate the attribute coding. \code{0}
+#' to indicated parth-worth #' coding, \code{1} for linear coding.
+#'
+#' \code{interpolate.levels} has to be specified for linear coded variables.
+#' If scaled or centered values were used for hierarchical bayes (HB)
+#' estimation, these have to be specified in this case.
+#' All values have to be specified. For example, if one linear coded attribute
+#' had 5 levels, all 5 levels have to be inserted.
+#'
+#'
+#' @seealso {
+#' \code{\link[=prob_scores]{prob_scores}} for probability scores for MaxDiff
+#' }
 #'
 #' @return a tibble
 #'
 #' @examples
 #' \dontrun{
-#' att_imp(data = CBC,
-#' attrib = list(c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
-#' c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
-#' c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")),
-#' coding = c(0, 0, 0))
+#' att_imp(
+#'   data = CBC,
+#'   attrib = list(
+#'     c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+#'     c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+#'     c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
+#'   ),
+#'   coding = c(0, 0, 0)
+#' )
 #'
-#' att_imp(data = CBC_lin,
-#' attrib = list(c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
-#' c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
-#' c("Att3_Lin")),
-#' coding = c(0, 0, 1),
-#' interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)))
-#'
+#' att_imp(
+#'   data = CBC_lin,
+#'   attrib = list(
+#'     c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+#'     c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+#'     c("Att3_Lin")
+#'   ),
+#'   coding = c(0, 0, 1),
+#'   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70))
+#' )
 #' }
 #'
 #' @export
-att_imp <- function(data, group = NULL, attrib, coding, interpolate.levels = NULL){
-
-  att <- length(attrib)
+att_imp <- function(data, group = NULL, attrib, coding, interpolate.levels = NULL) {
+  att <- base::length(attrib)
 
   new <- c()
 
-  for (i in 1:att){
-
+  for (i in 1:att) {
     helper <- 1
 
-    data[[paste0("att_imp", i)]] <- 0
+    data[[base::paste0("att_imp", i)]] <- 0
 
     vars <- attrib[[i]]
 
-    new <- c(new, paste0("att_imp", i))
+    new <- c(new, base::paste0("att_imp", i))
 
-    for (j in 1:nrow(data)){
-
-      if (coding[i] == 0){
-
-        data[j, paste0("att_imp", i)] <- abs(diff(range(data[j, vars])))
-
+    for (j in 1:base::nrow(data)) {
+      if (coding[i] == 0) {
+        data[j, base::paste0("att_imp", i)] <- base::abs(base::diff(base::range(data[j, vars])))
       }
 
       if (coding[i] == 1) {
-
-
-        data[j, paste0("att_imp", i)] <- abs(data[j, vars] * abs(diff(range(interpolate.levels[[helper]]))))
+        data[j, base::paste0("att_imp", i)] <- base::abs(data[j, vars] * base::abs(base::diff(base::range(interpolate.levels[[helper]]))))
 
         helper
-
       }
-
     }
 
-    if (coding[i] == 1){
+    if (coding[i] == 1) {
       helper <- helper + 1
     }
-
   }
 
   return(data %>%
-           mutate(across(all_of(new), ~ .x / rowSums(data[new]))) %>%
-           dplyr::group_by(dplyr::pick({{ group }})) %>%
-           summarise(across(all_of(new), c(mw = base::mean, std = stats::sd),
-                            .names = "{.col}.{.fn}"
-           )) %>%
-           tidyr::pivot_longer(.,
-                               cols = tidyselect::ends_with(c(".mw", ".std")),
-                               names_to = c("Option", ".value"), names_sep = "\\."
-           ) %>%
-           mutate_at(vars(mw, std), ~ .x * 100)
-  )
+    dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x / base::rowSums(data[new]))) %>%
+    dplyr::group_by(dplyr::pick({{ group }})) %>%
+    dplyr::summarise(dplyr::across(tidyselect::all_of(new), c(mw = base::mean, std = stats::sd),
+      .names = "{.col}.{.fn}"
+    )) %>%
+    tidyr::pivot_longer(.,
+      cols = tidyselect::ends_with(c(".mw", ".std")),
+      names_to = c("Option", ".value"), names_sep = "\\."
+    ) %>%
+    dplyr::mutate_at(dplyr::vars(mw, std), ~ .x * 100))
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/att_imp.R
 \name{att_imp}
 \alias{att_imp}
-\title{Title}
+\title{Attribue Importance for (A)CBC}
 \usage{
 att_imp(data, group = NULL, attrib, coding, interpolate.levels = NULL)
 }
@@ -19,29 +19,64 @@ coding, '1' = linear coding}
 \item{interpolate.levels}{a list of the attribute levels that should
 be interpolated. These have to be the same as provided to Sawtooth Software.
 Please make sure to provide the whole list. Only has to be specified for the
-variables that are coded as '1' (linear)}
+variables that are coded as '1' (linear).}
 }
 \value{
 a tibble
 }
 \description{
-Title
+Attribue Importance for (A)CBC
+}
+\details{
+\code{att_imp} converts raw utilities of a CBC or an ACBC to relative importance
+scores.
+
+\code{data} has to be a data frame with the attributes. Attribute levels need
+to be the raw utilities.
+
+\code{group} optional grouping variable, if results should be displayed by
+different groups. Has to be column name of variables in \code{data}.
+
+\code{attrib} specifies the attribute levels for each alternative.
+Input for \code{attrib} has to be a list. Needs to specify the column names
+of the attribute levels.
+
+\code{coding} has to be specified  to indicate the attribute coding. \code{0}
+to indicated parth-worth #' coding, \code{1} for linear coding.
+
+\code{interpolate.levels} has to be specified for linear coded variables.
+If scaled or centered values were used for hierarchical bayes (HB)
+estimation, these have to be specified in this case.
+All values have to be specified. For example, if one linear coded attribute
+had 5 levels, all 5 levels have to be inserted.
 }
 \examples{
 \dontrun{
-att_imp(data = CBC,
-attrib = list(c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
-c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
-c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")),
-coding = c(0, 0, 0))
+att_imp(
+  data = CBC,
+  attrib = list(
+    c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+    c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+    c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
+  ),
+  coding = c(0, 0, 0)
+)
 
-att_imp(data = CBC_lin,
-attrib = list(c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
-c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
-c("Att3_Lin")),
-coding = c(0, 0, 1),
-interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)))
-
+att_imp(
+  data = CBC_lin,
+  attrib = list(
+    c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+    c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+    c("Att3_Lin")
+  ),
+  coding = c(0, 0, 1),
+  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70))
+)
 }
 
+}
+\seealso{
+{
+\code{\link[=prob_scores]{prob_scores}} for probability scores for MaxDiff
+}
 }
