@@ -1,5 +1,3 @@
-library(validateHOT)
-
 test_that("wrong input", {
   expect_error(createHOT(
     data = MaxDiff,

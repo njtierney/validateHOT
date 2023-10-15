@@ -1,15 +1,22 @@
-#' Title
+#' Probability Scores for (anchored) MaxDiff
 #'
-#' @param data a
-#' @param group v
-#' @param items v
-#' @param set.size c
-#' @param anchor c
+#' @param data data frame with all relevant variables
+#' @param group optional column name(s) to specify grouping variable(s)
+#' @param items specifies the items
+#' @param set.size size of the choice sets
+#' @param anchor optional variable to specify anchor variable
 #'
 #' @return a tibble
 #'
 #' @examples
 #' \dontrun{
+#'
+#' prob_scores(data = MaxDiff,
+#'             items = c(Option_01:Option_16),
+#'             set.size = 4,
+#'             anchor = "none"
+#')
+#'
 #' prob_scores(data = MaxDiff,
 #'             items = c(Option_01:Option_16),
 #'             set.size = 4,
@@ -18,6 +25,9 @@
 #' }
 #' @export
 prob_scores <- function(data, group = NULL, items, set.size, anchor = NULL){
+
+
+
 
   if (base::is.null(anchor)){
     data %>%

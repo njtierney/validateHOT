@@ -21,11 +21,11 @@
 #' different groups. Has to be column name of variables in \code{data}.
 #'
 #' \code{attrib} specifies the attribute levels for each alternative.
-#' Input for \code{attrib} has to be a list. Needs to specify the column names
-#' of the attribute levels.
+#' Input for \code{attrib} has to be a list. Needs to specify the column names or
+#' column indexes of the attribute levels.
 #'
 #' \code{coding} has to be specified  to indicate the attribute coding. \code{0}
-#' to indicated parth-worth #' coding, \code{1} for linear coding.
+#' to indicated part-worth #' coding, \code{1} for linear coding.
 #'
 #' \code{interpolate.levels} has to be specified for linear coded variables.
 #' If scaled or centered values were used for hierarchical bayes (HB)
@@ -66,6 +66,105 @@
 #'
 #' @export
 att_imp <- function(data, group = NULL, attrib, coding, interpolate.levels = NULL) {
+
+
+
+  # grouping variable
+  ## check for missings
+  if (base::anyNA(data %>% dplyr::select(., {{ group }}))) {
+    warning("Warning: 'group' contains NAs!")
+  }
+
+
+  # test numeric input for coding
+  if (!(base::is.null(coding))) {
+    for (i in 1:base::length(coding)) {
+      if (!(base::is.numeric(coding[i]))) {
+        base::stop("Error: 'coding' only can have numeric input!")
+      }
+    }
+  }
+
+  # test whether coding only includes 0, 1
+  if (base::any(coding != 0 & coding != 1)) {
+    base::stop(
+      "Error: Please only use '0' (for part-worth) or '1' (for linear)!"
+    )
+  }
+
+
+  # test input of interpolate levels
+  if (!(base::is.list(interpolate.levels)) &
+    !(base::is.null(interpolate.levels))) {
+    base::stop("Error: Input of 'interpolate.levels' has to be a list!")
+  }
+
+  # test variables of interpolate.levels
+  if (!(base::is.null(interpolate.levels))) {
+    for (tt in 1:base::length(interpolate.levels)) {
+      lng <- base::length(interpolate.levels[[tt]])
+
+      for (lng_lev in 1:lng) {
+        if (!(base::is.numeric(interpolate.levels[[tt]][lng_lev]))) {
+          base::stop(
+            "Error: Input of 'interpolate.levels' has to be a list ",
+            "with only numeric values!"
+          )
+        }
+      }
+    }
+  }
+
+  # interpolate.levels can not be larger than number of attributes
+  if (!base::is.null(interpolate.levels) &
+    (base::length(interpolate.levels) > base::length(attrib))) {
+    base::stop(
+      "Error: List of 'interpolate.levels' can not be larger than list of 'attrib'!"
+    )
+  }
+
+  # check length of 'attrib' and coding
+  # test input of list in prod.levels
+  if (!(base::is.null(attrib))) {
+    for (tt in 1:base::length(attrib)) {
+      if (base::length(attrib[[tt]]) == 1 & coding[tt] == 0) {
+        base::stop(
+          "Error: If attribute is part-worth coded at least 2 attribute levels need to be specified!"
+        )
+      }
+
+      if (base::length(attrib[[tt]]) > 1 & coding[tt] == 1) {
+        base::stop(
+          "Error: If attribute is linear coded only one attribute level needs to be specified!"
+        )
+      }
+    }
+  }
+
+  # if 1 is coded, interpolate.levels needs to be specified
+  if (base::any(coding == 1) & base::is.null(interpolate.levels)) {
+    base::stop(
+      "Error: 'interpolate.levels' is missing!"
+    )
+  }
+
+  # if no 1 coded interpolate.levels is not needed
+  if (!base::any(coding == 1) & !base::is.null(interpolate.levels)) {
+    base::stop(
+      "Error: 'interpolate.levels' only needs to be specified for linear coded variables!"
+    )
+  }
+
+  # number of coding larger than length of interpolate levels
+
+  if (!base::is.null(interpolate.levels) & (base::sum(coding == 1) != base::length(interpolate.levels))){
+    base::stop(
+      "Error: Number of linear coded variables is not equal to length of 'interpolate.levels'!"
+    )
+  }
+
+  ############################################################################
+
   att <- base::length(attrib)
 
   new <- c()

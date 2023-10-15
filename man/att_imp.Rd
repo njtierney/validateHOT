@@ -38,11 +38,11 @@ to be the raw utilities.
 different groups. Has to be column name of variables in \code{data}.
 
 \code{attrib} specifies the attribute levels for each alternative.
-Input for \code{attrib} has to be a list. Needs to specify the column names
-of the attribute levels.
+Input for \code{attrib} has to be a list. Needs to specify the column names or
+column indexes of the attribute levels.
 
 \code{coding} has to be specified  to indicate the attribute coding. \code{0}
-to indicated parth-worth #' coding, \code{1} for linear coding.
+to indicated part-worth #' coding, \code{1} for linear coding.
 
 \code{interpolate.levels} has to be specified for linear coded variables.
 If scaled or centered values were used for hierarchical bayes (HB)

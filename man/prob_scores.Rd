@@ -2,29 +2,36 @@
 % Please edit documentation in R/prob_scores.R
 \name{prob_scores}
 \alias{prob_scores}
-\title{Title}
+\title{Probability Scores for (anchored) MaxDiff}
 \usage{
 prob_scores(data, group = NULL, items, set.size, anchor = NULL)
 }
 \arguments{
-\item{data}{a}
+\item{data}{data frame with all relevant variables}
 
-\item{group}{v}
+\item{group}{optional column name(s) to specify grouping variable(s)}
 
-\item{items}{v}
+\item{items}{specifies the items}
 
-\item{set.size}{c}
+\item{set.size}{size of the choice sets}
 
-\item{anchor}{c}
+\item{anchor}{optional variable to specify anchor variable}
 }
 \value{
 a tibble
 }
 \description{
-Title
+Probability Scores for (anchored) MaxDiff
 }
 \examples{
 \dontrun{
+
+prob_scores(data = MaxDiff,
+            items = c(Option_01:Option_16),
+            set.size = 4,
+            anchor = "none"
+)
+
 prob_scores(data = MaxDiff,
             items = c(Option_01:Option_16),
             set.size = 4,
