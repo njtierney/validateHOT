@@ -10,6 +10,12 @@
 #'
 #' @details
 #' \code{prob_scores} converts raw utilities of a MaxDiff to probability scores.
+#' Probability scores for the unanchored MaxDiff are calculated according to the formula provided by
+#' Chrzan & Orme (2019, p. 56): \eqn{\frac{e^U}{(e^U + (a - 1)}}, where \emph{U} is the
+#' raw utility of the item and \emph{a} is the number of items shown per choice task.
+#'
+#' For anchored MaxDiff the following formula is applied \eqn{\frac{e^U}{(e^U + (a - 1)} * 100 / (1 / a)}
+#' (Chrzan & Orme, 2019, pp. 59-60).
 #'
 #' \code{data} has to be a data frame with the attributes. Items need
 #' to be the raw utilities.
@@ -32,6 +38,12 @@
 #' \code{\link[=att_imp]{att_imp}} for attribute importance scores for (A)CBC
 #' }
 #'
+#' @references {
+#'
+#' Chrzan, K., & Orme, B. K. (2019). \emph{Applied MaxDiff: A Practitioner’s
+#' Guide to Best-Worst Scaling} Provo, UT: Sawtooth Software.
+#'
+#'}
 #'
 #' @examples
 #' \dontrun{

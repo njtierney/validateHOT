@@ -29,7 +29,7 @@ Attribue Importance for (A)CBC
 }
 \details{
 \code{att_imp} converts raw utilities of a CBC or an ACBC to relative importance
-scores.
+scores (see, Orme, 2020, p. 80, for more information).
 
 \code{data} has to be a data frame with the attributes. Attribute levels need
 to be the raw utilities.
@@ -74,6 +74,14 @@ att_imp(
 )
 }
 
+}
+\references{
+{
+
+Orme, B. K. (2020). \emph{Getting Started with Conjoint Analysis: Strategies for Product Design and Pricing Research}.
+4th edition. Manhattan Beach, CA: Research Publishers LLC.
+
+}
 }
 \seealso{
 {
