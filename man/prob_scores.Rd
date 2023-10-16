@@ -23,19 +23,61 @@ a tibble
 \description{
 Probability Scores for (anchored) MaxDiff
 }
+\details{
+\code{prob_scores} converts raw utilities of a MaxDiff to probability scores.
+
+\code{data} has to be a data frame with the attributes. Items need
+to be the raw utilities.
+
+\code{group} optional grouping variable, if results should be displayed by
+different groups. Has to be column name of variables in \code{data}.
+
+\code{items} specifies the items of the MaxDiff.
+Input for \code{items} has to be variable names.
+
+\code{set.size} specifies the size of the choice sets (how many items were
+shown in one task). Input needs to be a whole number.
+
+\code{anchor} only needs to be specified if anchored MaxDiff is applied. Input
+needs to be variable name or column index of anchor variable.
+}
 \examples{
 \dontrun{
 
+# probability scores for unanchored MaxDiff - without Group defined
+prob_scores(data = MaxDiff,
+            items = c(Option_01:Option_16),
+            set.size = 4
+)
+
+# probability scores for unanchored MaxDiff - with Group defined
+prob_scores(data = MaxDiff,
+            group = Group,
+            items = c(Option_01:Option_16),
+            set.size = 4
+)
+
+
+# probability scores for anchored MaxDiff - without Group defined
 prob_scores(data = MaxDiff,
             items = c(Option_01:Option_16),
             set.size = 4,
             anchor = "none"
 )
 
+# probability scores for anchored MaxDiff - with Group defined
 prob_scores(data = MaxDiff,
+            group = Group,
             items = c(Option_01:Option_16),
             set.size = 4,
             anchor = "none"
 )
+}
+
+
+}
+\seealso{
+{
+\code{\link[=att_imp]{att_imp}} for attribute importance scores for (A)CBC
 }
 }
