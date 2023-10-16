@@ -45,35 +45,38 @@ needs to be variable name or column index of anchor variable.
 \dontrun{
 
 # probability scores for unanchored MaxDiff - without Group defined
-prob_scores(data = MaxDiff,
-            items = c(Option_01:Option_16),
-            set.size = 4
+prob_scores(
+  data = MaxDiff,
+  items = c(Option_01:Option_16),
+  set.size = 4
 )
 
 # probability scores for unanchored MaxDiff - with Group defined
-prob_scores(data = MaxDiff,
-            group = Group,
-            items = c(Option_01:Option_16),
-            set.size = 4
+prob_scores(
+  data = MaxDiff,
+  group = Group,
+  items = c(Option_01:Option_16),
+  set.size = 4
 )
 
 
 # probability scores for anchored MaxDiff - without Group defined
-prob_scores(data = MaxDiff,
-            items = c(Option_01:Option_16),
-            set.size = 4,
-            anchor = "none"
+prob_scores(
+  data = MaxDiff,
+  items = c(Option_01:Option_16),
+  set.size = 4,
+  anchor = "none"
 )
 
 # probability scores for anchored MaxDiff - with Group defined
-prob_scores(data = MaxDiff,
-            group = Group,
-            items = c(Option_01:Option_16),
-            set.size = 4,
-            anchor = "none"
+prob_scores(
+  data = MaxDiff,
+  group = Group,
+  items = c(Option_01:Option_16),
+  set.size = 4,
+  anchor = "none"
 )
 }
-
 
 }
 \seealso{

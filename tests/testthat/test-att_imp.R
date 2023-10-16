@@ -124,10 +124,12 @@ test_that("Input for interpolate.levels can not be larger than 'attrib' ", {
       c("Att3_Lin")
     ),
     coding = c(1, 1, 1),
-    interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70),
-                              c(10, 20, 30, 40, 50, 60, 70),
-                              c(10, 20, 30, 40, 50, 60, 70),
-                              c(10, 20, 30, 40, 50, 60, 70))
+    interpolate.levels = list(
+      c(10, 20, 30, 40, 50, 60, 70),
+      c(10, 20, 30, 40, 50, 60, 70),
+      c(10, 20, 30, 40, 50, 60, 70),
+      c(10, 20, 30, 40, 50, 60, 70)
+    )
   ))
 })
 
@@ -197,7 +199,8 @@ test_that("group output equals group input ", {
       ),
       coding = c(0, 0, 0),
       group = Group
-    )[[1]]), utils::str(CBC$Group))
+    )[[1]]
+  ), utils::str(CBC$Group))
 })
 
 test_that("group output equals group input - character input ", {
@@ -217,7 +220,7 @@ test_that("group output equals group input - character input ", {
 test_that("group output equals group input - labelled input ", {
   CBC$Group2 <- rep(c(1:2), length.out = nrow(CBC))
   CBC$Group2 <- labelled::labelled(CBC$Group2,
-                                   labels = c("Group 1" = 1, "Group 2" = 2)
+    labels = c("Group 1" = 1, "Group 2" = 2)
   )
   expect_true(labelled::is.labelled(att_imp(
     data = CBC,
@@ -261,5 +264,4 @@ test_that("check whether examples are correct ", {
     ),
     coding = c(0, 0, 0)
   )[[3]]), 1), c(11.3, 10.0, 9.3))
-
 })

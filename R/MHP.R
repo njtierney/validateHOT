@@ -150,6 +150,8 @@ mhp <- function(data, group, opts, choice) {
   # calculate MHP
   return(suppressMessages(data %>%
     dplyr::group_by(dplyr::pick({{ group }})) %>%
-    dplyr::summarise(MHP = base::mean(mhp),
-                     se = (stats::sd(mhp) / base::sqrt(dplyr::n())))))
+    dplyr::summarise(
+      MHP = base::mean(mhp),
+      se = (stats::sd(mhp) / base::sqrt(dplyr::n()))
+    )))
 }

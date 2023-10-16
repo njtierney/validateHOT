@@ -66,9 +66,6 @@
 #'
 #' @export
 att_imp <- function(data, group = NULL, attrib, coding, interpolate.levels = NULL) {
-
-
-
   # grouping variable
   ## check for missings
   if (base::anyNA(data %>% dplyr::select(., {{ group }}))) {
@@ -157,7 +154,7 @@ att_imp <- function(data, group = NULL, attrib, coding, interpolate.levels = NUL
 
   # number of coding larger than length of interpolate levels
 
-  if (!base::is.null(interpolate.levels) & (base::sum(coding == 1) != base::length(interpolate.levels))){
+  if (!base::is.null(interpolate.levels) & (base::sum(coding == 1) != base::length(interpolate.levels))) {
     base::stop(
       "Error: Number of linear coded variables is not equal to length of 'interpolate.levels'!"
     )

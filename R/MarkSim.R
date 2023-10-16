@@ -150,7 +150,7 @@ marksim <- function(data, group, opts,
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::count()
 
-  if (method == "shareofpref"){
+  if (method == "shareofpref") {
     return(data %>%
       # exponentiate all alternatives
       dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>%
@@ -184,46 +184,48 @@ marksim <- function(data, group, opts,
       tibble::as_tibble())
   }
 
-  if (method == "firstchoice"){
+  if (method == "firstchoice") {
     return(data %>%
-
-             dplyr::mutate(pred = base::max.col(dplyr::across({{ opts }}))) %>%
-             mutate(pred = factor(pred,
-                                  levels = c(1:base::length(dplyr::select(., {{ opts }}))),
-                                  labels = c(data %>% dplyr::select({{ opts }}) %>%
-                                               base::colnames())
-             ))
-           %>%
-             dplyr::select({{ group }}, pred) %>%
-             fastDummies::dummy_cols(., select_columns = "pred",
-                                     remove_selected_columns = T,
-                                     omit_colname_prefix = T)
-           %>%
-             dplyr::group_by(dplyr::pick({{ group }})) %>%
-             dplyr::mutate(dplyr::across({{ opts }},
-                                         ~ .x * 100)) %>%
-             dplyr::summarise(dplyr::across({{ opts }},
-                                            c(mw = base::mean, std = stats::sd),
-                                            .names = "{.col}.{.fn}"
-             )) %>%
-             tidyr::pivot_longer(.,
-                                 cols = tidyselect::ends_with(c(".mw", ".std")),
-                                 names_to = c("Option", ".value"), names_sep = "\\."
-             ) %>% # change to longer format
-             base::merge(
-               x = .,
-               y = WS1,
-               by = c(data %>% dplyr::select(., {{ group }}) %>%
-                        base::colnames())
-             ) %>% # merge
-             dplyr::mutate(
-               se = std / sqrt(n), # calculate standard error
-               lo.ci = mw - (1.96 * se), # lower ci
-               up.ci = mw + (1.96 * se) # upper ci
-             ) %>%
-             # delete irrelevant variables
-             dplyr::select(!tidyselect::all_of(c("std", "n"))) %>%
-             tibble::as_tibble()
-    )
+      dplyr::mutate(pred = base::max.col(dplyr::across({{ opts }}))) %>%
+      mutate(pred = factor(pred,
+        levels = c(1:base::length(dplyr::select(., {{ opts }}))),
+        labels = c(data %>% dplyr::select({{ opts }}) %>%
+          base::colnames())
+      ))
+      %>%
+      dplyr::select({{ group }}, pred) %>%
+      fastDummies::dummy_cols(.,
+        select_columns = "pred",
+        remove_selected_columns = T,
+        omit_colname_prefix = T
+      )
+      %>%
+      dplyr::group_by(dplyr::pick({{ group }})) %>%
+      dplyr::mutate(dplyr::across(
+        {{ opts }},
+        ~ .x * 100
+      )) %>%
+      dplyr::summarise(dplyr::across({{ opts }},
+        c(mw = base::mean, std = stats::sd),
+        .names = "{.col}.{.fn}"
+      )) %>%
+      tidyr::pivot_longer(.,
+        cols = tidyselect::ends_with(c(".mw", ".std")),
+        names_to = c("Option", ".value"), names_sep = "\\."
+      ) %>% # change to longer format
+      base::merge(
+        x = .,
+        y = WS1,
+        by = c(data %>% dplyr::select(., {{ group }}) %>%
+          base::colnames())
+      ) %>% # merge
+      dplyr::mutate(
+        se = std / sqrt(n), # calculate standard error
+        lo.ci = mw - (1.96 * se), # lower ci
+        up.ci = mw + (1.96 * se) # upper ci
+      ) %>%
+      # delete irrelevant variables
+      dplyr::select(!tidyselect::all_of(c("std", "n"))) %>%
+      tibble::as_tibble())
   }
 }
