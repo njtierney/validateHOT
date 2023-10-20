@@ -16,30 +16,30 @@ price (if included).
 }
 \details{
 \itemize{
-  \item ID. \code{ID} of participants
+  \item ID. Participants' ID.
   \item RLH. Root likelihood.
-  \item NumParameters. Number of parameters per respondent
-  \item Att1_Lev1. part-worth utility of Level 1 of Attribute 1
-  \item Att1_Lev2. part-worth utility of Level 2 of Attribute 1
-  \item Att1_Lev3. part-worth utility of Level 3 of Attribute 1
-  \item Att1_Lev4. part-worth utility of Level 4 of Attribute 1
-  \item Att1_Lev5. part-worth utility of Level 5 of Attribute 1
-  \item Att2_Lev1. part-worth utility of Level 1 of Attribute 2
-  \item Att2_Lev2. part-worth utility of Level 2 of Attribute 2
-  \item Att2_Lev3. part-worth utility of Level 3 of Attribute 2
-  \item Att2_Lev4. part-worth utility of Level 4 of Attribute 2
-  \item Att2_Lev5. part-worth utility of Level 5 of Attribute 2
-  \item Att2_Lev6. part-worth utility of Level 6 of Attribute 2
-  \item Att3_Lev1. part-worth utility of Level 1 of Attribute 3
-  \item Att3_Lev2. part-worth utility of Level 2 of Attribute 3
-  \item Att3_Lev3. part-worth utility of Level 3 of Attribute 3
-  \item Att3_Lev4. part-worth utility of Level 4 of Attribute 3
-  \item Att3_Lev5. part-worth utility of Level 5 of Attribute 3
-  \item Att3_Lev6. part-worth utility of Level 6 of Attribute 3
-  \item Att3_Lev7. part-worth utility of Level 7 of Attribute 3
-  \item none. part-worth utility of none parameter
-  \item HOT. actual choice in the Holdout task
-  \item Group. Grouping variable
+  \item NumParameters. Number of parameters per respondent.
+  \item Att1_Lev1. Part-worth utility of Level 1 of Attribute 1.
+  \item Att1_Lev2. Part-worth utility of Level 2 of Attribute 1.
+  \item Att1_Lev3. Part-worth utility of Level 3 of Attribute 1.
+  \item Att1_Lev4. Part-worth utility of Level 4 of Attribute 1.
+  \item Att1_Lev5. Part-worth utility of Level 5 of Attribute 1.
+  \item Att2_Lev1. Part-worth utility of Level 1 of Attribute 2.
+  \item Att2_Lev2. Part-worth utility of Level 2 of Attribute 2.
+  \item Att2_Lev3. Part-worth utility of Level 3 of Attribute 2.
+  \item Att2_Lev4. Part-worth utility of Level 4 of Attribute 2.
+  \item Att2_Lev5. Part-worth utility of Level 5 of Attribute 2.
+  \item Att2_Lev6. Part-worth utility of Level 6 of Attribute 2.
+  \item Att3_Lev1. Part-worth utility of Level 1 of Attribute 3.
+  \item Att3_Lev2. Part-worth utility of Level 2 of Attribute 3.
+  \item Att3_Lev3. Part-worth utility of Level 3 of Attribute 3.
+  \item Att3_Lev4. Part-worth utility of Level 4 of Attribute 3.
+  \item Att3_Lev5. Part-worth utility of Level 5 of Attribute 3.
+  \item Att3_Lev6. Part-worth utility of Level 6 of Attribute 3.
+  \item Att3_Lev7. Part-worth utility of Level 7 of Attribute 3.
+  \item none. Part-worth utility of none parameter.
+  \item HOT. Actual choice in the Holdout task.
+  \item Group. Grouping variable.
 }
 }
 \keyword{datasets}

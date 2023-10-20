@@ -9,14 +9,16 @@
 #' higher utility than \code{none}.
 #'
 #'
-#' @param data data frame with all relevant variables
-#' @param opts column names of the alternatives included in the assortment
-#' @param none column name of none / threshold alternative
-#' @param size numeric vector to determine size of the assortment
-#' @param fixed optional vector to determine alternatives that have to be
-#' included in the assortment
-#' @param approach character whether to run First Choice approach ('fc') or
-#' Threshold approach ('thres')
+#' @param data A data frame with all relevant variables.
+#' @param opts Column names of the alternatives included in the assortment.
+#' @param none Column name of none / threshold alternative.
+#' @param size A numeric vector to determine size of the assortment.
+#' @param fixed An optional vector to determine alternatives that have to be
+#' included in the assortment.
+#' @param prohib An optional vector to determine prohibitions, i.e.,
+#' alternatives that are not allowed to be together in one assortment.
+#' @param approach A character whether to run First Choice approach ('fc') or
+#' Threshold approach ('thres').
 #'
 #' \code{data} has to be a data frame including the alternatives that should be
 #' tested
@@ -32,6 +34,10 @@
 #'
 #' \code{fixed} has to be a vector of variables that are fixed in the
 #' assortment, i.e., they have to be part of the assortment
+#'
+#' \code{prohib} has to be a vector of variables that are prohibited in the
+#' assortment, i.e., alternatives that are not allowed to be together in one
+#' assortment.
 #'
 #' \code{approach} character defining whether first
 #' choice \code{approach = 'fc'} or threshold \code{approach = 'thres'}.
@@ -69,7 +75,7 @@
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
-#'   None = 19,
+#'   none = 19,
 #'   prod = 16,
 #'   prod.levels = list(
 #'     3, 4, 5, 6, 7, 8, 9, 10, 11,
@@ -101,10 +107,23 @@
 #' )
 #'
 #' head(t2)
+#'
+#' #' # turf alternative 4 and 5 fixed, 2 and 9 not allowed together
+#' t3 <- turf(
+#'   data = HOT,
+#'   opts = c(Option_1:Option_16),
+#'   none = None,
+#'   size = 4,
+#'   fixed = c("Option_4", "Option_5"),
+#'   prohib = list(c("Option_2", "Option_9")),
+#'   approach = "thres"
+#' )
+#'
+#'
 #' }
 #'
 #' @export
-turf <- function(data, opts, none, size, fixed = NULL,
+turf <- function(data, opts, none, size, fixed = NULL, prohib = NULL,
                  approach = c("thres", "fc")) {
   # check for wrong / missing input
   if (base::length(data %>% dplyr::select(., {{ none }})) == 0) {
@@ -144,15 +163,16 @@ turf <- function(data, opts, none, size, fixed = NULL,
 
   # fixed has to be part of opts
   if (!base::is.null(fixed)) {
-    fixed <- data %>%
+    fix_ones <- data %>%
       dplyr::select(tidyselect::all_of(fixed)) %>%
       base::colnames()
 
-    if (!base::all(fixed %in% (data %>% dplyr::select(., {{ opts }}) %>%
+    if (!base::all(fix_ones %in% (data %>% dplyr::select(., {{ opts }}) %>%
       base::colnames()))) {
       base::stop("Error: 'fixed' has to be part of 'opts'!")
     }
   }
+
 
   # fixed can not be larger than size
   if (!base::is.null(fixed)) {
@@ -161,6 +181,46 @@ turf <- function(data, opts, none, size, fixed = NULL,
     }
   }
 
+  # prohib has to be part of opts
+  if (!base::is.null(prohib)) {
+    for (i in 1:base::length(prohib)){
+
+      if (!base::all(prohib[[i]] %in% (data %>% dplyr::select(., {{ opts }}) %>%
+                                 base::colnames()))) {
+        base::stop("Error: 'prohib' has to be part of 'opts'!")
+      }
+    }
+  }
+
+  # fixed can not be larger than size
+  if (!base::is.null(prohib)) {
+
+    for (i in 1:base::length(prohib)){
+
+      if (length(prohib[[i]]) > size) {
+        stop("Error: 'prohib' can not be larger than 'size'!")
+      }
+    }
+  }
+
+  if (!base::is.null(prohib)) {
+
+    if (!base::is.list(prohib)) {
+
+      base::stop("Error: 'prohib' has to be a list!")
+
+    }
+
+  }
+
+  # error if prohib and fixed are exactly the same
+  if (!base::is.null(prohib) & !base::is.null(fixed)){
+    for (i in 1:base::length(prohib)){
+      if (base::all(prohib[[i]] %in% fixed)){
+        base::stop("Error: 'prohib' and 'fixed' have to be different!")
+      }
+    }
+  }
 
   # alternatives
   ## store names of alternatives
@@ -261,8 +321,8 @@ turf <- function(data, opts, none, size, fixed = NULL,
     # create all possible combinations
 
     fixies <- data %>%
-      dplyr::select(., {{ fixed }}) %>% # store the fixed values
-      colnames() # store the column names
+      dplyr::select(tidyselect::all_of(fixed)) %>% # store the fixed values
+      base::colnames() # store the column names
 
     combos <- combos %>%
       # check for each combo whether the fixed ones are included
@@ -272,6 +332,26 @@ turf <- function(data, opts, none, size, fixed = NULL,
       # only choose those that have the fixed options
       dplyr::filter(must == 1) %>%
       dplyr::select(-must) # delete must variable
+  }
+
+  if (!base::is.null(prohib)) {
+
+    for (i in 1:length(prohib)) {
+
+      prohibitions <- data %>%
+        dplyr::select(tidyselect::all_of(prohib[[i]])) %>%
+        base::colnames()
+
+      combos <- combos %>%
+        # check for each combo whether the fixed ones are included
+        dplyr::mutate(not = base::apply(., 1, function(x) {
+          base::as.integer(base::all(prohibitions %in% x))
+        })) %>%
+        # only choose those that have the fixed options
+        dplyr::filter(not == 0) %>%
+        dplyr::select(-not) # delete must variable
+
+    }
   }
 
   # count reach and frequency for each

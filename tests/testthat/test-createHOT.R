@@ -13,7 +13,7 @@ test_that("wrong input", {
   expect_error(createHOT(
     data = MaxDiff,
     id = 1,
-    None = "none",
+    none = "none",
     prod = 7,
     prod.levels = list(3, 10, 11, 15, 16, 17, 18),
     choice = 20,
@@ -21,11 +21,11 @@ test_that("wrong input", {
   ))
 })
 
-test_that("With None one columns more", {
+test_that("With none one column more", {
   expect_equal((base::length(createHOT(
     data = MaxDiff,
     id = 1,
-    None = 19,
+    none = 19,
     prod = 7,
     prod.levels = list(3, 10, 11, 15, 16, 17, 18),
     choice = 20,
@@ -46,7 +46,7 @@ test_that("Coding not needed for MaxDiff", {
   expect_error(createHOT(
     data = MaxDiff,
     id = 1,
-    None = 19,
+    none = 19,
     prod = 7,
     prod.levels = list(3, 10, 11, 15, 16, 17, 18),
     choice = 20,
@@ -59,7 +59,7 @@ test_that("interpolate.leves not needed for MaxDiff", {
   expect_error(createHOT(
     data = MaxDiff,
     id = 1,
-    None = 19,
+    none = 19,
     prod = 7,
     prod.levels = list(3, 10, 11, 15, 16, 17, 18),
     choice = 20,
@@ -72,7 +72,7 @@ test_that("piece.p not needed for MaxDiff", {
   expect_error(createHOT(
     data = MaxDiff,
     id = 1,
-    None = 19,
+    none = 19,
     prod = 7,
     prod.levels = list(3, 10, 11, 15, 16, 17, 18),
     choice = 20,
@@ -85,7 +85,7 @@ test_that("lin.p not needed for MaxDiff", {
   expect_error(createHOT(
     data = MaxDiff,
     id = 1,
-    None = 19,
+    none = 19,
     prod = 7,
     prod.levels = list(3, 10, 11, 15, 16, 17, 18),
     choice = 20,
@@ -99,7 +99,7 @@ test_that("prod.levels not a list", {
   expect_error(createHOT(
     data = MaxDiff,
     id = 1,
-    None = 19,
+    none = 19,
     prod = 7,
     prod.levels = c(3, 10, 11, 15, 16, 17, 18),
     choice = 20,
@@ -111,7 +111,7 @@ test_that("coding missed CBC", {
   expect_error(createHOT(
     data = CBC,
     id = 1,
-    None = 21,
+    none = 21,
     prod = 3,
     prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
     method = "CBC",
@@ -123,7 +123,7 @@ test_that("No piecewise coding for CBC", {
   expect_error(createHOT(
     data = CBC,
     id = 1,
-    None = 21,
+    none = 21,
     prod = 3,
     prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
     coding = c(0, 0, 2),
@@ -137,7 +137,7 @@ test_that("No piecewise coding for CBC", {
   expect_error(createHOT(
     data = CBC,
     id = 1,
-    None = 21,
+    none = 21,
     prod = 3,
     prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
     coding = c(0, 0, 1),
@@ -150,7 +150,7 @@ test_that("lin.p missing although coding states linear", {
   expect_error(createHOT(
     data = CBC_lin,
     id = 1,
-    None = 15,
+    none = 15,
     prod = 3,
     prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
     coding = c(0, 0, 1),
@@ -163,7 +163,7 @@ test_that("coding missed ACBC", {
   expect_error(createHOT(
     data = ACBC,
     id = 1,
-    None = 37,
+    none = 37,
     prod = 6,
     prod.levels = list(
       c(5, 11, 15, 17, 21, 25, 32, 34, 15.99),
@@ -184,7 +184,7 @@ test_that("piece.p missed ACBC", {
   expect_error(createHOT(
     data = ACBC,
     id = 1,
-    None = 37,
+    none = 37,
     prod = 6,
     prod.levels = list(
       c(5, 11, 15, 17, 21, 25, 32, 34, 15.99),
@@ -205,7 +205,7 @@ test_that("lin.p missed ACBC", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -228,7 +228,7 @@ test_that("lin.p specfied but no 1 in coding ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -251,7 +251,7 @@ test_that("piece.p specfied but no 2 in coding ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -274,7 +274,7 @@ test_that("lin.p specified but missing 1 in coding", {
   expect_error(createHOT(
     data = CBC_lin,
     id = 1,
-    None = 15,
+    none = 15,
     prod = 3,
     prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
     coding = c(0, 0, 0),
@@ -289,7 +289,7 @@ test_that("Different numbers for coding not working", {
   expect_error(createHOT(
     data = CBC_lin,
     id = 1,
-    None = 15,
+    none = 15,
     prod = 3,
     prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
     coding = c(0, 0, 3),
@@ -304,7 +304,7 @@ test_that("Different numbers for coding not working ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -331,7 +331,7 @@ test_that("variable of type character within prod.levels ", {
   expect_error(createHOT(
     data = MaxDiff2,
     id = 1,
-    None = 19,
+    none = 19,
     prod = 7,
     prod.levels = list(3, 10, 11, 15, 16, 17, 18),
     choice = 20,
@@ -346,7 +346,7 @@ test_that("CBC test - variable of type character within prod.levels ", {
   expect_error(createHOT(
     data = CBC2,
     id = 1,
-    None = 21,
+    none = 21,
     prod = 3,
     prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
     choice = 22,
@@ -360,7 +360,7 @@ test_that("MaxDiff - no character input in prod.levels ", {
   expect_error(createHOT(
     data = MaxDiff,
     id = 1,
-    None = 19,
+    none = 19,
     prod = 7,
     prod.levels = list(3, 10, "11", 15, 16, 17, 18),
     choice = 20,
@@ -372,7 +372,7 @@ test_that("CBC test - no character input in prod.levels ", {
   expect_error(createHOT(
     data = CBC,
     id = 1,
-    None = 21,
+    none = 21,
     prod = 3,
     prod.levels = list(c(4, 9, 19), c(8, 12, "17"), c(5, 10, 17)),
     choice = 22,
@@ -387,7 +387,7 @@ test_that("Interpolate levels needs to be a list ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -411,7 +411,7 @@ test_that("Interpolate levels needs to be a list with numeric input ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -434,7 +434,7 @@ test_that("Needs to specify correct method ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -457,7 +457,7 @@ test_that("Method needs to be specified ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -479,7 +479,7 @@ test_that("Coding only can have numeric input ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -503,7 +503,7 @@ test_that("length of prod.levels and prod must be equal ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 5,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -526,7 +526,7 @@ test_that("lin. p needs to be a vector ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -549,7 +549,7 @@ test_that("lin. p needs to be a vector with numeric input ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -575,7 +575,7 @@ test_that("lin. p needs to be a vector with numeric variables ", {
   expect_error(createHOT(
     data = ACBC_interpolate2,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -599,7 +599,7 @@ test_that("lin. p needs to be specified ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -623,7 +623,7 @@ test_that("piece.p needs to be a list ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -647,7 +647,7 @@ test_that("piece.p needs to be a list with numeric input ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -673,7 +673,7 @@ test_that("piece.p needs to be a list with numeric input ", {
   expect_error(createHOT(
     data = ACBC_interpolate2,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -699,7 +699,7 @@ test_that("Number of products equals number of output starting with Option_", {
   HOT <- createHOT(
     data = MaxDiff,
     id = 1,
-    None = 19,
+    none = 19,
     prod = prod,
     prod.levels = list(3, 10, 11, 15, 16, 17, 18),
     choice = 20,
@@ -714,7 +714,7 @@ test_that("ACBC - Number of products equals number of output starting with Optio
   HOT <- createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = prod,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -739,7 +739,7 @@ test_that("First column id", {
   HOT <- createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -765,7 +765,7 @@ test_that("Extrapolation not possible for piecewise ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -788,7 +788,7 @@ test_that("Extrapolation not possible for linear ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 12, 12, 14, 18, 22, 29, 31, 15.99),
@@ -811,7 +811,7 @@ test_that("if none specified also named in the output ", {
   HOT <- createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(
       c(5, 5, 12, 14, 18, 22, 29, 31, 15.99),
@@ -853,7 +853,7 @@ test_that("if none not specified also not named in the output ", {
     choice = 40
   )
 
-  expect_false(base::any(base::colnames(HOT) == "None"))
+  expect_false(base::any(base::colnames(HOT) == "none"))
 })
 
 test_that("varskeep counted corectly ", {
@@ -905,7 +905,7 @@ test_that("Make sure varskeep is working ", {
   expect_no_error(createHOT(
     data = MaxDiff,
     id = 1,
-    None = 19,
+    none = 19,
     prod = 7,
     prod.levels = list(3, 10, 11, 15, 16, 17, 18),
     method = "MaxDiff",
@@ -918,7 +918,7 @@ test_that("Make sure varskeep is working ", {
   expect_no_error(createHOT(
     data = CBC,
     id = 1,
-    None = 21,
+    none = 21,
     prod = 3,
     prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
     coding = c(0, 0, 0),
@@ -933,7 +933,7 @@ test_that("Make sure varskeep is working ", {
   expect_no_error(createHOT(
     data = CBC_lin,
     id = 1,
-    None = 15,
+    none = 15,
     prod = 3,
     prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
     interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
@@ -957,7 +957,7 @@ test_that("Make sure varskeep is working ", {
   expect_no_error(createHOT(
     data = ACBC,
     id = 1,
-    None = 37,
+    none = 37,
     prod = 6,
     prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
     interpolate.levels = list(c(2.093, 27.287)),
@@ -982,7 +982,7 @@ test_that("Make sure varskeep is working ", {
   expect_no_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
     interpolate.levels = list(c(3, 5, 8, 10), c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)),
@@ -1008,7 +1008,7 @@ test_that("piece.p only takes numeric values ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
     interpolate.levels = list(c(3, 5, 8, 10), c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)),
@@ -1035,7 +1035,7 @@ test_that("Variables in piece.p only have to be numeric ", {
   expect_error(createHOT(
     data = ACBC_interpolate,
     id = 1,
-    None = 39,
+    none = 39,
     prod = 6,
     prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
     interpolate.levels = list(c(3, 5, 8, 10), c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)),

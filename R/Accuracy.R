@@ -1,19 +1,19 @@
 #' Accuracy
 #'
-#' @description accuracy is one of the 5 metrics of the confusion matrix
+#' @description \code{accuracy} is one of the 5 metrics of the confusion matrix
 #' and is defined as number of correctly predicted participants divided by
 #' the total number of predictions. See, for example, Burger (2018):
 #' \eqn{\frac{TP + TN}{TP + FP + TN + FN}}, where TP =
 #' True Positives, TN = True Negatives, FP = False Positives, and FN =
 #' False Negatives.
 #'
-#' @param data data frame with all relevant variables
-#' @param group optional column name(s) to specify grouping variable(s)
-#' to get \code{"accuracy"} by group(s)
-#' @param opts column names of the alternatives included in the
-#' validation/holdout task
-#' @param choice column name of the actual choice
-#' @param none column name of none alternative
+#' @param data A data frame with all relevant variables.
+#' @param group Optional column name(s) to specify grouping variable(s)
+#' to get \code{"accuracy"} by group(s).
+#' @param opts Column names of the alternatives included in the
+#' validation/holdout task.
+#' @param choice Column name of the actual choice.
+#' @param none Column name of none alternative.
 #'
 #' @details
 #' The current logic of \code{"accuracy"} is to determine whether a binary coded
@@ -69,7 +69,7 @@
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
-#'   None = 19,
+#'   none = 19,
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",

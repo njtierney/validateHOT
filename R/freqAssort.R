@@ -9,11 +9,11 @@
 #' each alternative that exceeds utility of \code{none} alternative is
 #' considered as, for example, purchase option.
 #'
-#' @param data data frame with all relevant variables
-#' @param group optional column name(s) to specify grouping variable(s)
-#' to get \code{"freqassort"} by group(s)
-#' @param opts column names of the alternatives included in the assortment
-#' @param none column name of none / threshold alternative
+#' @param data A data frame with all relevant variables.
+#' @param group Optional column name(s) to specify grouping variable(s)
+#' to get \code{"freqassort"} by group(s).
+#' @param opts Column names of the alternatives included in the assortment.
+#' @param none Column name of none / threshold alternative.
 #'
 #' @details
 #' Frequency calculates the average times a consumer would be reached with the
@@ -47,7 +47,7 @@
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
-#'   None = 19,
+#'   none = 19,
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",

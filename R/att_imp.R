@@ -1,11 +1,11 @@
 #' Attribue Importance for (A)CBC
 #'
-#' @param data data frame with all relevant variables
-#' @param group optional column name(s) to specify grouping variable(s)
-#' @param attrib specifies the attribute levels for each attribute
-#' @param coding a vector of the coding of each attribute, '0' = part-worth
-#' coding, '1' = linear coding
-#' @param interpolate.levels a list of the attribute levels that should
+#' @param data A data frame with all relevant variables.
+#' @param group Optional column name(s) to specify grouping variable(s).
+#' @param attrib A list that specifies the attribute levels for each attribute.
+#' @param coding A vector of the coding of each attribute, '0' = part-worth
+#' coding, '1' = linear coding.
+#' @param interpolate.levels A list of the attribute levels that should
 #' be interpolated. These have to be the same as provided to Sawtooth Software.
 #' Please make sure to provide the whole list. Only has to be specified for the
 #' variables that are coded as '1' (linear).

@@ -16,6 +16,7 @@ utils::globalVariables(
     "combo",
     "must",
     "maximum",
-    "thres"
+    "thres",
+    "not"
   )
 )

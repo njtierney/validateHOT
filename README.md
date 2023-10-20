@@ -278,7 +278,7 @@ Now imagine you included a validation/ holdout task with three
 alternatives as well as an no-buy option. We specify the
 <code>data</code> argument and the column index of <code>id</code>.
 Since we also have a *no-buy* alternative in our validation task, we
-next specify the <code>None</code> argument, otherwise we would have
+next specify the <code>none</code> argument, otherwise we would have
 left it empty. Afterwards, we specify the number of products
 (<code>prod</code>) we include (excluding the *no-buy* alternative),
 which we define in the next step with the argument
@@ -307,7 +307,7 @@ will be returned to the global environment.
 HOT <- createHOT(
   data = CBC, # data frame
   id = 1, # column index of the id
-  None = 21, # column index of none alternative
+  none = 21, # column index of none alternative
   prod = 3, # number of alternatives in validation task (excluding none)
   prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)), # column index of the attribute levels for each alternative
   coding = c(0, 0, 0), # how the attributes were coded
@@ -423,7 +423,7 @@ difference to the previous example is that for our model estimation, the
 third attribute (<code>Att3_Lin</code>) was coded as linear.
 
 Again, we first define <code>data</code>. The <code>id</code> is saved
-in the first column. The utilities for the <code>None</code> parameter
+in the first column. The utilities for the <code>none</code> parameter
 are stored in the 15th column, and we again set <code>prod</code> to 3
 (**excluding** the *no-buy* alternative). Next, we define the
 <code>prod.levels</code> for each alternative. For example, we can see
@@ -458,7 +458,7 @@ like to display results per group. Finally, we just tell
 CBC <- createHOT(
   data = CBC_lin, # data frame
   id = 1, # column index of the id
-  None = 15, # column index of none alternative
+  none = 15, # column index of none alternative
   prod = 3, # number of alternatives in validation task (excluding none)
   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)), # column index of the attribute levels for each alternative (for linear coded we specify value to be interpolated)
   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)), # actual values for the levels that should be interpolated

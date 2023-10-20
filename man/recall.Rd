@@ -7,17 +7,17 @@
 recall(data, group, opts, choice, none)
 }
 \arguments{
-\item{data}{data frame with all relevant variables}
+\item{data}{A data frame with all relevant variables.}
 
-\item{group}{optional column name(s) to specify grouping variable(s)
-to get \code{"recall"} by group(s)}
+\item{group}{Optional column name(s) to specify grouping variable(s)
+to get \code{"recall"} by group(s).}
 
-\item{opts}{column names of the alternatives included in the
-validation/holdout task}
+\item{opts}{Column names of the alternatives included in the
+validation/holdout task.}
 
-\item{choice}{column name of the actual choice}
+\item{choice}{Column name of the actual choice.}
 
-\item{none}{column name of none alternative}
+\item{none}{Column name of none alternative.}
 }
 \value{
 a tibble
@@ -61,7 +61,7 @@ validation/holdout task.
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
-  None = 19,
+  none = 19,
   prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",

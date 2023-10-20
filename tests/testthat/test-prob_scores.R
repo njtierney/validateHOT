@@ -47,7 +47,6 @@ test_that("Items no NAs ", {
 
 test_that("set.size missing ", {
   expect_error(prob_scores(
-    data = MaxDiff,
     items = c(Option_01:Option_16)
   ))
 })

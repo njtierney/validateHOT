@@ -7,21 +7,21 @@
 kl(data, group, opts, choice, epsilon = NULL, base = NULL)
 }
 \arguments{
-\item{data}{data frame with all relevant variables}
+\item{data}{A data frame with all relevant variables.}
 
-\item{group}{optional column name(s) to specify grouping variable(s)
-to get \code{"kl"} by group(s)}
+\item{group}{Optional column name(s) to specify grouping variable(s)
+to get \code{"kl"} by group(s).}
 
-\item{opts}{column names of the alternatives included in the
-validation/holdout task}
+\item{opts}{Column names of the alternatives included in the
+validation/holdout task.}
 
-\item{choice}{column name of the actual choice}
+\item{choice}{Column name of the actual choice.}
 
-\item{epsilon}{vector of noise that should be added to 0 values, per
-default set to 1e-05}
+\item{epsilon}{A vector of noise that should be added to 0 values, per
+default set to 1e-05.}
 
-\item{base}{character string to define the logarithm base, currently choice
-between \code{log} (default) and \code{log2}}
+\item{base}{A character string to define the logarithm base, currently choice
+between \code{log} (default) and \code{log2}.}
 }
 \value{
 a tibble
@@ -68,7 +68,7 @@ between \eqn{log} and \eqn{log{_2}}. Default set to \eqn{log}.
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
-  None = 19,
+  none = 19,
   prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",

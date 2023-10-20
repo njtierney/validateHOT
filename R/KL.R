@@ -2,16 +2,16 @@
 #'
 #' @description Function to measure the Kullback-Leibler Divergence of a
 #' validation/holdout task.
-#' @param data data frame with all relevant variables
-#' @param group optional column name(s) to specify grouping variable(s)
-#' to get \code{"kl"} by group(s)
-#' @param opts column names of the alternatives included in the
-#' validation/holdout task
-#' @param choice column name of the actual choice
-#' @param epsilon vector of noise that should be added to 0 values, per
-#' default set to 1e-05
-#' @param base character string to define the logarithm base, currently choice
-#' between \code{log} (default) and \code{log2}
+#' @param data A data frame with all relevant variables.
+#' @param group Optional column name(s) to specify grouping variable(s)
+#' to get \code{"kl"} by group(s).
+#' @param opts Column names of the alternatives included in the
+#' validation/holdout task.
+#' @param choice Column name of the actual choice.
+#' @param epsilon A vector of noise that should be added to 0 values, per
+#' default set to 1e-05.
+#' @param base A character string to define the logarithm base, currently choice
+#' between \code{log} (default) and \code{log2}.
 #'
 #' @return a tibble
 #' @importFrom dplyr select mutate group_by pick count summarise
@@ -69,7 +69,7 @@
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
-#'   None = 19,
+#'   none = 19,
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",

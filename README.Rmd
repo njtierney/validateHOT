@@ -247,7 +247,7 @@ data("CBC")
 The data frame has a total of `r nrow(CBC)` participants and `r ncol(CBC)` columns.
 
 Now imagine you included a validation/ holdout task with three
-alternatives as well as an no-buy option. We specify the <code>data</code> argument and the column index of <code>id</code>. Since we also have a *no-buy* alternative in our validation task, we next specify the <code>None</code> argument, otherwise we would have left it empty. Afterwards, we specify the number of products (<code>prod</code>) we include (excluding the *no-buy* alternative), which we define in the next step with the argument <code>prod.levels</code>. If we look back at the data frame, we can see that the first alternative in the holdout task <code>c(4, 9, 19)</code> is composed of the following attribute levels <code>Att1_Lev1</code>, <code>Att2_Lev1</code>, and <code>Att3_Lev5</code>. 
+alternatives as well as an no-buy option. We specify the <code>data</code> argument and the column index of <code>id</code>. Since we also have a *no-buy* alternative in our validation task, we next specify the <code>none</code> argument, otherwise we would have left it empty. Afterwards, we specify the number of products (<code>prod</code>) we include (excluding the *no-buy* alternative), which we define in the next step with the argument <code>prod.levels</code>. If we look back at the data frame, we can see that the first alternative in the holdout task <code>c(4, 9, 19)</code> is composed of the following attribute levels <code>Att1_Lev1</code>, <code>Att2_Lev1</code>, and <code>Att3_Lev5</code>. 
 
 As mentioned above, all the attributes are part-worth coded, therefore, we set <code>coding = c(0, 0, 0)</code>. Finally, we specify the method of preference measurement technique, which is <code>method = "CBC"</code> in our case and the column index of the actual participant's choice (<code>choice</code>). If you run the code, a data frame called <code>HOT</code> (short form of **H**old**o**ut **t**ask) will be returned to the global environment. 
 
@@ -257,7 +257,7 @@ As mentioned above, all the attributes are part-worth coded, therefore, we set <
 HOT <- createHOT(
   data = CBC, # data frame
   id = 1, # column index of the id
-  None = 21, # column index of none alternative
+  none = 21, # column index of none alternative
   prod = 3, # number of alternatives in validation task (excluding none)
   prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)), # column index of the attribute levels for each alternative
   coding = c(0, 0, 0), # how the attributes were coded
@@ -328,7 +328,7 @@ data("CBC_lin")
 
 Next, we create the validation/holdout task to evaluate it in the next step. We use a validation/holdout task with three alternatives plus the *no-buy* alternative, just as we did in the previous example. The only difference to the previous example is that for our model estimation, the third attribute (<code>Att3_Lin</code>) was coded as linear. 
 
-Again, we first define <code>data</code>. The <code>id</code> is saved in the first column. The utilities for the <code>None</code> parameter are stored in the 15th column, and we again set <code>prod</code> to 3 (**excluding** the *no-buy* alternative). Next, we define the <code>prod.levels</code> for each alternative. For example, we can see that the second see that the second alternative is composed of <code>Att1_Lev5</code>, <code>Att2_Lev4</code>, and <code>60</code> which is the value that should be interpolated. We can see that this value is the one that needs to be interpolated if we take a closer look at the <code>coding</code> argument. This tells us that the first two attributes (<code>Att1_Lev5</code>, <code>Att2_Lev4</code> in the case of alternative 2) are part-worth coded (<code>0</code>) while the third attribute is linear coded (<code>1</code>). 
+Again, we first define <code>data</code>. The <code>id</code> is saved in the first column. The utilities for the <code>none</code> parameter are stored in the 15th column, and we again set <code>prod</code> to 3 (**excluding** the *no-buy* alternative). Next, we define the <code>prod.levels</code> for each alternative. For example, we can see that the second see that the second alternative is composed of <code>Att1_Lev5</code>, <code>Att2_Lev4</code>, and <code>60</code> which is the value that should be interpolated. We can see that this value is the one that needs to be interpolated if we take a closer look at the <code>coding</code> argument. This tells us that the first two attributes (<code>Att1_Lev5</code>, <code>Att2_Lev4</code> in the case of alternative 2) are part-worth coded (<code>0</code>) while the third attribute is linear coded (<code>1</code>). 
 
 To interpolate the value, we have to provide <code>validateHOT</code> the <code>interpolate.levels</code>. These **need** to be the same as provided to Sawtooth as levels. Moreover, it is important that the value that should be interpolated needs to lie within the lower and upper bound of <code>interpolate.levels</code>. In our case, we had 7 levels that range from 10 to 70. 
 
@@ -338,7 +338,7 @@ Next, we define the column index of the linear coded variable (<code>lin.p</code
 CBC <- createHOT(
   data = CBC_lin, # data frame
   id = 1, # column index of the id
-  None = 15, # column index of none alternative
+  none = 15, # column index of none alternative
   prod = 3, # number of alternatives in validation task (excluding none)
   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)), # column index of the attribute levels for each alternative (for linear coded we specify value to be interpolated)
   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)), # actual values for the levels that should be interpolated

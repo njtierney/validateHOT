@@ -12,8 +12,8 @@ Description: validateHOT is a package that validates validation/holdout
     tasks (HOTs) in (adaptive) Conjoint analysis as well as MaxDiff. You
     define the validation/holdout task and afterwards, choose different
     validation metrics. validateHOT is a user-friendly tool to help you
-    test the predictive validity of your data. validateHOT currently only works
-    for hierarichal bayes raw data estimated with Sawtooth Software.
+    test the predictive validity of your data. validateHOT currently only
+    works for hierarichal bayes raw data estimated with Sawtooth Software.
 License: GPL (>= 3)
 URL: https://github.com/JoshSchramm94/validateHOT
 BugReports: https://github.com/JoshSchramm94/validateHOT/issues

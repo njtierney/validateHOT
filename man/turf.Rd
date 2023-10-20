@@ -4,22 +4,33 @@
 \alias{turf}
 \title{Total Unduplicated Reach and Frequency}
 \usage{
-turf(data, opts, none, size, fixed = NULL, approach = c("thres", "fc"))
+turf(
+  data,
+  opts,
+  none,
+  size,
+  fixed = NULL,
+  prohib = NULL,
+  approach = c("thres", "fc")
+)
 }
 \arguments{
-\item{data}{data frame with all relevant variables}
+\item{data}{A data frame with all relevant variables.}
 
-\item{opts}{column names of the alternatives included in the assortment}
+\item{opts}{Column names of the alternatives included in the assortment.}
 
-\item{none}{column name of none / threshold alternative}
+\item{none}{Column name of none / threshold alternative.}
 
-\item{size}{numeric vector to determine size of the assortment}
+\item{size}{A numeric vector to determine size of the assortment.}
 
-\item{fixed}{optional vector to determine alternatives that have to be
-included in the assortment}
+\item{fixed}{An optional vector to determine alternatives that have to be
+included in the assortment.}
 
-\item{approach}{character whether to run First Choice approach ('fc') or
-Threshold approach ('thres')
+\item{prohib}{An optional vector to determine prohibitions, i.e.,
+alternatives that are not allowed to be together in one assortment.}
+
+\item{approach}{A character whether to run First Choice approach ('fc') or
+Threshold approach ('thres').
 
 \code{data} has to be a data frame including the alternatives that should be
 tested
@@ -35,6 +46,10 @@ validation/holdout task.
 
 \code{fixed} has to be a vector of variables that are fixed in the
 assortment, i.e., they have to be part of the assortment
+
+\code{prohib} has to be a vector of variables that are prohibited in the
+assortment, i.e., alternatives that are not allowed to be together in one
+assortment.
 
 \code{approach} character defining whether first
 choice \code{approach = 'fc'} or threshold \code{approach = 'thres'}.
@@ -65,7 +80,7 @@ higher utility than \code{none}.
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
-  None = 19,
+  none = 19,
   prod = 16,
   prod.levels = list(
     3, 4, 5, 6, 7, 8, 9, 10, 11,
@@ -97,6 +112,19 @@ t2 <- turf(
 )
 
 head(t2)
+
+#' # turf alternative 4 and 5 fixed, 2 and 9 not allowed together
+t3 <- turf(
+  data = HOT,
+  opts = c(Option_1:Option_16),
+  none = None,
+  size = 4,
+  fixed = c("Option_4", "Option_5"),
+  prohib = list(c("Option_2", "Option_9")),
+  approach = "thres"
+)
+
+
 }
 
 }

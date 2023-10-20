@@ -3,12 +3,12 @@
 #' @description \code{hitrate} measures number of times a choice was correctly
 #' predicted in a validation/holdout task.
 #'
-#' @param data data frame with all relevant variables
-#' @param group optional column name(s) to specify grouping variable(s)
-#' to get \code{"hitrate"} by group(s)
-#' @param opts column names of the alternatives included in the
-#' validation/holdout task
-#' @param choice column name of the actual choice
+#' @param data A data frame with all relevant variables.
+#' @param group Optional column name(s) to specify grouping variable(s)
+#' to get \code{"hitrate"} by group(s).
+#' @param opts Column names of the alternatives included in the
+#' validation/holdout task.
+#' @param choice Column name of the actual choice.
 #'
 #' @details
 #' \code{hitrate} measures number of times a participant's choice was correctly
@@ -48,7 +48,7 @@
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
-#'   None = 19,
+#'   none = 19,
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",

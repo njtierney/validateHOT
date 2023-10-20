@@ -73,7 +73,7 @@ At first, we have to create the validation/holdout task, which means that we nee
 
 ### MaxDiff
 
-However, let us begin easy with the `MaxDiff`. We use the data set `MaxDiff` that comes with the package and store the utilities in the data set `HOT`. In this example, we assume that we have a validation task with 7 alternatives (`prod = 7`) plus a no-buy option (`None = 19`), so a total of 8 alternatives a participant can choose from. As already mentioned, it is a *MaxDiff* study (`method = "MaxDiff"`). Furthermore, we specify the column index of both the `id` (unique identifier) and `choice` (the actual choice in the validation/holdout task). To specify the 7 alternatives in the validation/holdout task, we use `prod.levels` and specify their column indexes in a `list`. In case we wanted to keep further variables from our original data set, we could use the argument `varskeep` and specify their column index.
+However, let us begin easy with the `MaxDiff`. We use the data set `MaxDiff` that comes with the package and store the utilities in the data set `HOT`. In this example, we assume that we have a validation task with 7 alternatives (`prod = 7`) plus a no-buy option (`none = 19`), so a total of 8 alternatives a participant can choose from. As already mentioned, it is a *MaxDiff* study (`method = "MaxDiff"`). Furthermore, we specify the column index of both the `id` (unique identifier) and `choice` (the actual choice in the validation/holdout task). To specify the 7 alternatives in the validation/holdout task, we use `prod.levels` and specify their column indexes in a `list`. In case we wanted to keep further variables from our original data set, we could use the argument `varskeep` and specify their column index.
 
 **Please you need to specify the column index and not the column names for `validateHOT`!**
 
@@ -81,7 +81,7 @@ However, let us begin easy with the `MaxDiff`. We use the data set `MaxDiff` tha
 HOT <- createHOT(
   data = MaxDiff, # data frame
   id = 1, # column index of unique identifier
-  None = 19, # column index of none alternative
+  none = 19, # column index of none alternative
   prod = 7, # no of alternatives in HOT excluding none
   prod.levels = list(3, 10, 11, 15, 16, 17, 18), # column index of alternatives
   method = "MaxDiff", # method applied
@@ -89,13 +89,13 @@ HOT <- createHOT(
 )
 ```
 
-> In case you have a forced-choice validation/holdout task, do not specify the `None` argument.
+> In case you have a forced-choice validation/holdout task, do not specify the `none` argument.
 
 ### Choice-Based Conjoint
 
 #### Part-Worth utilities only
 
-In case, you conduct a *CBC* (`method = "CBC"`) and all attributes are coded as part-worth, the following example will help you to create the total utilities for your alternatives. We use the `CBC` data set, which comes with `validateHOT`. This example shows a *CBC* with 3 alternatives (`prod = 3`) plus the none alternative, whose utility is stored in column index 21 (`None = 21`). We again specify the column index of `id` and the actual choice, `choice`, in the validation/holdout task.
+In case, you conduct a *CBC* (`method = "CBC"`) and all attributes are coded as part-worth, the following example will help you to create the total utilities for your alternatives. We use the `CBC` data set, which comes with `validateHOT`. This example shows a *CBC* with 3 alternatives (`prod = 3`) plus the none alternative, whose utility is stored in column index 21 (`none = 21`). We again specify the column index of `id` and the actual choice, `choice`, in the validation/holdout task.
 
 When using *CBC* or *ACBC*, we need to specify the coding, where `0` stands for part-worth coding, `1` for linear coding, and `2` for piecewise coding. Since we only have part-worth coding we set `coding = c(0, 0, 0)`.
 
@@ -105,7 +105,7 @@ Finally, we specify the attribute levels for each alternative. For example, the 
 createHOT(
   data = CBC, # data frame
   id = 1, # column index of unique identifier
-  None = 21, # column index of none alternative
+  none = 21, # column index of none alternative
   prod = 3, # no of alternatives in HOT excluding none
   prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)), # column index of the attribute levels for each alternative
   coding = c(0, 0, 0), # coding of the 3 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
@@ -130,7 +130,7 @@ Finally, in our example, we would also like to keep some variables that should b
 HOT <- createHOT(
   data = CBC_lin, # data frame
   id = 1, # column index of unique identifier
-  None = 15, # column index of none alternative
+  none = 15, # column index of none alternative
   prod = 3, # no of alternatives in HOT excluding none
   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)), # column index of the attribute levels for each alternative (for linear coded we specify value to be interpolated)
   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)), # actual values for the levels that should be interpolated
@@ -154,7 +154,7 @@ For our example, we will use the `ACBC` data set, which is also provided by `val
 
 For our example, we use a validation/holdout task with 6 alternatives plus a no-buy alternative. First, we define the 6 alternatives. We can see that for `prod1`, we again indicate the column index for the eight different attributes. Finally, the price (last element of the vector, e.g., `prod1` has a price of `15.99`) is linear-coded.
 
-After defining each alternative in the validation/holdout task, let us look at the `createHOT()` function. We specify our `data`, the column index of `id`, the column index of the no-buy alternative (`None`), the number of alternatives in the validation/holdout task (`prod = 6`), the products, which we have defined before, the method (`ACBC`), and the column index of the actual choice (`choice`). We specify the coding (`c(0, 0, 0, 0, 0, 0, 0, 0, 2)`). Remember that in `validateHOT` we specify a linear-coded price in an ACBC as piecewise in the createHOT() function, which is why we set the last attribute to `2`. For `interpolate.levels`, we specify the lower bound of our price (`2.093`) and the upper bound of price (`27.287`). Finally, we specify `piece.p`, which is equivalent to `lin.p`, however, we specify the position of the lower and the upper bound of the value we would like to interpolate. Since we only have two values if we have a linear-coded price, i.e., the lower and the upper bound, we specify the position of them. Please be aware that you have to specify the position for each alternative in the validation/holdout task, which is why you have to specify the position `c(35, 36)` for each of the 6 alternatives.
+After defining each alternative in the validation/holdout task, let us look at the `createHOT()` function. We specify our `data`, the column index of `id`, the column index of the no-buy alternative (`none`), the number of alternatives in the validation/holdout task (`prod = 6`), the products, which we have defined before, the method (`ACBC`), and the column index of the actual choice (`choice`). We specify the coding (`c(0, 0, 0, 0, 0, 0, 0, 0, 2)`). Remember that in `validateHOT` we specify a linear-coded price in an ACBC as piecewise in the createHOT() function, which is why we set the last attribute to `2`. For `interpolate.levels`, we specify the lower bound of our price (`2.093`) and the upper bound of price (`27.287`). Finally, we specify `piece.p`, which is equivalent to `lin.p`, however, we specify the position of the lower and the upper bound of the value we would like to interpolate. Since we only have two values if we have a linear-coded price, i.e., the lower and the upper bound, we specify the position of them. Please be aware that you have to specify the position for each alternative in the validation/holdout task, which is why you have to specify the position `c(35, 36)` for each of the 6 alternatives.
 
 ```{r, eval = F}
 # define alternatives, for each attribute we specify the column index except for the last one we specify the price to be interpolated.
@@ -169,7 +169,7 @@ prod6 <- c(5, 9, 14, 17, 23, 27, 29, 33, 9.99)
 HOT <- createHOT(
   data = ACBC, # data frame
   id = 1, # column index of the id
-  None = 37, # column index of none alternative
+  none = 37, # column index of none alternative
   prod = 6, # number of alternatives in validation task (excluding none)
   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6), # products specified above
   interpolate.levels = list(c(2.093, 27.287)), # actual values for the levels that should be interpolated, for linear coded price in ACBC this is just the lower bound and the upper bound
@@ -192,7 +192,7 @@ For `interpolate.levels`, we have to specify two vectors. The first vector conta
 HOT <- createHOT(
   data = ACBC_interpolate, # data frame
   id = 1, # column index of the id
-  None = 39, # column index of none alternative
+  none = 39, # column index of none alternative
   prod = 6, # number of alternatives in validation task (excluding none)
   prod.levels = list(
     c(5, 5, 12, 14, 18, 22, 29, 31, 15.99), # column index of the attribute levels for each alternative (for linear coded and piecewise coded we specify value to be interpolated)
@@ -230,7 +230,7 @@ Once the validation/holdout task is created using `createHOT()`, the setup is si
 HOT <- createHOT(
   data = MaxDiff, # data frame
   id = 1, # column index of unique identifier
-  None = 19, # column index of none alternative
+  none = 19, # column index of none alternative
   prod = 7, # no of alternatives in HOT excluding none
   prod.levels = list(3, 10, 11, 15, 16, 17, 18), # column index of alternatives
   method = "MaxDiff", # method applied
@@ -239,7 +239,7 @@ HOT <- createHOT(
 )
 ```
 
-What we can see from the `createHOT()` function above is that we have 7 alternatives `prod = 7` plus a no-buy alternative since we specified the column index of `None = 19`.
+What we can see from the `createHOT()` function above is that we have 7 alternatives `prod = 7` plus a no-buy alternative since we specified the column index of `none = 19`.
 
 For `hitrate()`, we specify our data (`HOT` in our case), the column names of alternatives (this includes the no-buy alternative; `opts`), and finally, the actual choice in the holdout task (`choice`).
 

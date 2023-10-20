@@ -3,15 +3,15 @@
 #' @description
 #' Function to run market simulations with options in a validation/holdout task.
 #'
-#' @param data data frame with all relevant variables
-#' @param group optional column name(s) to specify grouping variable(s)
-#' to get \code{"marksim"} by group(s)
-#' @param opts column names of the alternatives included in the
-#' validation/holdout task
-#' @param method name of the market simulation method that should be conducted.
+#' @param data A data frame with all relevant variables.
+#' @param group Optional column name(s) to specify grouping variable(s)
+#' to get \code{"marksim"} by group(s).
+#' @param opts Column names of the alternatives included in the
+#' validation/holdout task.
+#' @param method Name of the market simulation method that should be conducted.
 #' Either needs to be \code{method = "shareofpref"} to run share of preference
 #' as method or \code{method = "firstchoice"} to run first choice rule. Default
-#' set to \code{"shareofpref"}
+#' set to \code{"shareofpref"}.
 #'
 #' @return a tibble
 #' @importFrom dplyr select pick mutate across ungroup group_by summarise count
@@ -57,7 +57,7 @@
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
-#'   None = 19,
+#'   none = 19,
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",

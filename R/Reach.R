@@ -6,11 +6,11 @@
 #' many participants you can reach (at least one of the products resemble
 #' a purchase option) is reached with a specific product bundle assortment.
 #'
-#' @param data data frame with all relevant variables
-#' @param group optional column name(s) to specify grouping variable(s)
-#' to get \code{"reach"} by group(s)
-#' @param opts column names of the alternatives included in the assortment
-#' @param none column name of none / threshold alternative
+#' @param data A data frame with all relevant variables.
+#' @param group Optional column name(s) to specify grouping variable(s)
+#' to get \code{"reach"} by group(s).
+#' @param opts Column names of the alternatives included in the assortment.
+#' @param none Column name of none / threshold alternative.
 #'
 #' @details
 #' \code{"reach"} calculates the the percentage of consumers that would be
@@ -45,7 +45,7 @@
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
-#'   None = 19,
+#'   none = 19,
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",

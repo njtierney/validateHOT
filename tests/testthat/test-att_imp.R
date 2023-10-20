@@ -265,3 +265,39 @@ test_that("check whether examples are correct ", {
     coding = c(0, 0, 0)
   )[[3]]), 1), c(11.3, 10.0, 9.3))
 })
+
+
+test_that("check whether examples are correct - CBC_lin ", {
+  expect_equal(base::round(base::as.numeric(att_imp(
+    data = CBC_lin,
+    attrib = list(
+      c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+      c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+      c("Att3_Lin")
+    ),
+    coding = c(0, 0, 1),
+    interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70))
+  )[[2]]), 1), c(36.9, 31.9, 31.3))
+
+  expect_equal(att_imp(
+    data = CBC_lin,
+    attrib = list(
+      c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+      c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+      c("Att3_Lin")
+    ),
+    coding = c(0, 0, 1),
+    interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70))
+  )[[1]], c("att_imp1", "att_imp2", "att_imp3"))
+
+  expect_equal(base::round(base::as.numeric(att_imp(
+    data = CBC_lin,
+    attrib = list(
+      c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+      c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+      c("Att3_Lin")
+    ),
+    coding = c(0, 0, 1),
+    interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70))
+  )[[3]]), 1), c(12.4, 13.4, 16.4))
+})

@@ -1,5 +1,5 @@
 HOT <- createHOT(
-  data = MaxDiff, None = 19,
+  data = MaxDiff, none = 19,
   id = 1, prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   choice = 20, method = "MaxDiff", varskeep = 21

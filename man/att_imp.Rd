@@ -7,16 +7,16 @@
 att_imp(data, group = NULL, attrib, coding, interpolate.levels = NULL)
 }
 \arguments{
-\item{data}{data frame with all relevant variables}
+\item{data}{A data frame with all relevant variables.}
 
-\item{group}{optional column name(s) to specify grouping variable(s)}
+\item{group}{Optional column name(s) to specify grouping variable(s).}
 
-\item{attrib}{specifies the attribute levels for each attribute}
+\item{attrib}{A list that specifies the attribute levels for each attribute.}
 
-\item{coding}{a vector of the coding of each attribute, '0' = part-worth
-coding, '1' = linear coding}
+\item{coding}{A vector of the coding of each attribute, '0' = part-worth
+coding, '1' = linear coding.}
 
-\item{interpolate.levels}{a list of the attribute levels that should
+\item{interpolate.levels}{A list of the attribute levels that should
 be interpolated. These have to be the same as provided to Sawtooth Software.
 Please make sure to provide the whole list. Only has to be specified for the
 variables that are coded as '1' (linear).}

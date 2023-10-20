@@ -7,18 +7,18 @@
 marksim(data, group, opts, method = c("shareofpref", "firstchoice"))
 }
 \arguments{
-\item{data}{data frame with all relevant variables}
+\item{data}{A data frame with all relevant variables.}
 
-\item{group}{optional column name(s) to specify grouping variable(s)
-to get \code{"marksim"} by group(s)}
+\item{group}{Optional column name(s) to specify grouping variable(s)
+to get \code{"marksim"} by group(s).}
 
-\item{opts}{column names of the alternatives included in the
-validation/holdout task}
+\item{opts}{Column names of the alternatives included in the
+validation/holdout task.}
 
-\item{method}{name of the market simulation method that should be conducted.
+\item{method}{Name of the market simulation method that should be conducted.
 Either needs to be \code{method = "shareofpref"} to run share of preference
 as method or \code{method = "firstchoice"} to run first choice rule. Default
-set to \code{"shareofpref"}}
+set to \code{"shareofpref"}.}
 }
 \value{
 a tibble
@@ -55,7 +55,7 @@ set to \code{method = "shareofpref"}.
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
-  None = 19,
+  none = 19,
   prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",

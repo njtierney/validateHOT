@@ -7,15 +7,15 @@
 prob_scores(data, group = NULL, items, set.size, anchor = NULL)
 }
 \arguments{
-\item{data}{data frame with all relevant variables}
+\item{data}{A data frame with all relevant variables.}
 
-\item{group}{optional column name(s) to specify grouping variable(s)}
+\item{group}{Optional column name(s) to specify grouping variable(s).}
 
-\item{items}{specifies the items}
+\item{items}{Vector that specifies the items.}
 
-\item{set.size}{size of the choice sets}
+\item{set.size}{A vector that specifies size of the choice set.}
 
-\item{anchor}{optional variable to specify anchor variable}
+\item{anchor}{An optional variable to specify anchor variable.}
 }
 \value{
 a tibble

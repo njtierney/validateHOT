@@ -1,10 +1,10 @@
 #' Probability Scores for (anchored) MaxDiff
 #'
-#' @param data data frame with all relevant variables
-#' @param group optional column name(s) to specify grouping variable(s)
-#' @param items specifies the items
-#' @param set.size size of the choice sets
-#' @param anchor optional variable to specify anchor variable
+#' @param data A data frame with all relevant variables.
+#' @param group Optional column name(s) to specify grouping variable(s).
+#' @param items Vector that specifies the items.
+#' @param set.size A vector that specifies size of the choice set.
+#' @param anchor An optional variable to specify anchor variable.
 #'
 #' @return a tibble
 #'
@@ -108,11 +108,6 @@ prob_scores <- function(data, group = NULL, items, set.size, anchor = NULL) {
   ## check for missings
   if (base::anyNA(data %>% dplyr::select(., {{ items }}))) {
     base::stop("Error: 'items' contains NAs!")
-  }
-
-  # check set.size
-  if (base::is.null(set.size)) {
-    base::stop("Error: 'set.size' is missing!")
   }
 
   if (!base::is.numeric(set.size)) {

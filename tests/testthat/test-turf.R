@@ -1,6 +1,6 @@
 HOT <- createHOT(
   data = MaxDiff,
-  None = 19,
+  none = 19,
   id = 1,
   prod = 16,
   prod.levels = list(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18),
@@ -246,3 +246,26 @@ test_that("turf also working with Likert scale ", {
   expect_no_error(turf(data = df, opts = c(Option_1:Option_5), none = thres, size = 3, approach = "thres"))
   expect_no_error(turf(data = df, opts = c(Option_1:Option_5), none = thres, size = 3, approach = "fc"))
 })
+
+
+# prohib
+test_that("Error if prohib is not part of opts ", {
+  expect_error(turf(data = HOT, opts = c(Option_1:Option_16), size = 3, none = None, prohib = list(c("Option_xy")), approach = "thres"))
+})
+
+test_that("Error if prohib is not a list ", {
+  expect_error(turf(data = HOT, opts = c(Option_1:Option_16), size = 3, none = None, prohib = c("Option_2", "Option_4", "Option_7", "Option_8"), approach = "thres"))
+})
+
+test_that("Error if prohib is  a list ", {
+  expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16), size = 3, none = None, prohib = list(c("Option_2", "Option_4", "Option_7")), approach = "thres"))
+})
+
+test_that("Error if all of 'prohib' in 'fixed' ", {
+  expect_error(turf(data = HOT, opts = c(Option_1:Option_16), size = 3, none = None, fixed = c("Option_2", "Option_4"), prohib = list(c("Option_2", "Option_4")), approach = "thres"))
+})
+
+test_that("No Error if all of 'fixed' are in 'prohib', as long as size is different ", {
+  expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16), size = 3, none = None, fixed = c("Option_2", "Option_4"), prohib = list(c("Option_2", "Option_4", "Option_5")), approach = "thres"))
+})
+

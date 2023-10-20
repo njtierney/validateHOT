@@ -2,29 +2,30 @@
 #'
 #' @description Function used to create utilities for validation task.
 #'
-#' @param data data frame with all relevant variables.
-#' @param id vector of column index of unique identifier in \code{data}.
-#' @param None optional column index to specify \code{None}
+#' @param data A data frame with all relevant variables.
+#' @param id A vector of column index of unique identifier in \code{data}.
+#' @param none An optional column index to specify \code{none}
 #' alternative in \code{data}.
-#' @param prod number of alternatives in the holdout/validation task
-#' (does not count the \code{None} alternative); input has to be numeric
-#' @param prod.levels a list to define the attribute levels of the
-#' alternatives (\code{prod})
-#' @param interpolate.levels a list of the levels of the variables that should
+#' @param prod A vector that specifies the number of alternatives in the
+#' holdout/validation task (does not count the \code{none} alternative). The
+#' input of \code{prod} has to be numeric.
+#' @param prod.levels A list to define the attribute levels of the
+#' alternatives (\code{prod}).
+#' @param interpolate.levels A list of the levels of the variables that should
 #' be interpolated. These have to be the same as provided to Sawtooth Software.
 #' Please make sure to provide the whole list. Only has to be specified for the
-#' variables that are coded as '1' (linear) or '2' (piecewise)
-#' @param piece.p a list of the column indexes of the lower level and the upper
-#' level that should be used for interpolating
-#' @param lin.p vector of the column indexes of the linear variables
-#' @param coding vector of the coding of each attribute, '0' = part-worth
+#' variables that are coded as '1' (linear) or '2' (piecewise).
+#' @param piece.p A list of the column indexes of the lower level and the upper
+#' level that should be used for interpolating.
+#' @param lin.p A vector of the column indexes of the linear variables.
+#' @param coding A vector of the coding of each attribute, '0' = part-worth
 #' coding,'1' = linear coding, '2' = piecewise coding; please make sure to code
-#' linear price of ACBC as piecewise since you have two values to interpolate
-#' @param method specify the \code{method} your study; has to be one of the
-#' following three: MaxDiff, CBC, or ACBC
-#' @param varskeep vector of column index(es) of variables that should be kept
-#' in the data frame
-#' @param choice actual choice in the holdout/validation task
+#' linear price of ACBC as piecewise since you have two values to interpolate.
+#' @param method A character to specify the \code{method} of your study.
+#' \code{method} has to be one of the following three: "MaxDiff", "CBC", or "ACBC".
+#' @param varskeep A vector of column index(es) of variables that should be kept
+#' in the data frame.
+#' @param choice Actual choice in the holdout/validation task.
 #'
 #' @details
 #' In order to test validation metrics of a holdout/validation task, the
@@ -40,12 +41,12 @@
 #' \code{id} has to be the column index of the id (unique for each participant)
 #' in data frame.
 #'
-#' \code{None} has to be specified in case a \code{None} alternative is
+#' \code{none} has to be specified in case a \code{none} alternative is
 #' included in holdout/validation task, please specify this by specifying the
-#' column index of \code{None} alternative, otherwise leave it empty.
+#' column index of \code{none} alternative, otherwise leave it empty.
 #'
 #' \code{prod} should specify the total number of alternatives included in your
-#' holdout/validation task (excluding the \code{None} alternative).
+#' holdout/validation task (excluding the \code{none} alternative).
 #'
 #' \code{prod.levels} specifies the attribute levels for each alternative.
 #' Input for \code{prod.levels} has to be a list. In case
@@ -117,7 +118,7 @@
 #' HOT_MD <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
-#'   None = 19,
+#'   none = 19,
 #'   prod = 7,
 #'   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
 #'   method = "MaxDiff",
@@ -128,7 +129,7 @@
 #' HOT_CBC <- createHOT(
 #'   data = CBC,
 #'   id = 1,
-#'   None = 21,
+#'   none = 21,
 #'   prod = 3,
 #'   prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
 #'   coding = c(0, 0, 0),
@@ -140,7 +141,7 @@
 #' HOT_CBC_lin <- createHOT(
 #'   data = CBC_lin,
 #'   id = 1,
-#'   None = 15,
+#'   none = 15,
 #'   prod = 3,
 #'   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
 #'   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
@@ -162,7 +163,7 @@
 #' HOT_ACBC <- createHOT(
 #'   data = ACBC,
 #'   id = 1,
-#'   None = 37,
+#'   none = 37,
 #'   prod = 6,
 #'   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
 #'   interpolate.levels = list(c(2.093, 27.287)),
@@ -185,7 +186,7 @@
 #' HOT_ACBC_inter <- createHOT(
 #'   data = ACBC_interpolate,
 #'   id = 1,
-#'   None = 39,
+#'   none = 39,
 #'   prod = 6,
 #'   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
 #'   interpolate.levels = list(
@@ -203,14 +204,14 @@
 #' )
 #' }
 #' @export
-createHOT <- function(data, id, None = NULL, prod,
+createHOT <- function(data, id, none = NULL, prod,
                       prod.levels, interpolate.levels = NULL,
                       piece.p = NULL, lin.p = NULL, coding = NULL,
                       method = c("ACBC", "CBC", "MaxDiff"),
                       varskeep = NULL, choice) {
   # test whether input is numeric
   if (!(base::is.numeric(id)) |
-    (!(base::is.numeric(None)) & !(base::is.null(None))) |
+    (!(base::is.numeric(none)) & !(base::is.null(none))) |
     !(base::is.numeric(prod)) |
     (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
     base::stop("Error: Please insert column index (numeric inpute)!")
@@ -442,16 +443,16 @@ createHOT <- function(data, id, None = NULL, prod,
   # store the input
   Input <- data
 
-  # create empty data frame to store - None alternative specified
-  if (!(base::is.null(None))) {
+  # create empty data frame to store - none alternative specified
+  if (!(base::is.null(none))) {
     df <- base::data.frame(base::matrix(
       nrow = base::nrow(Input),
       ncol = (prod + 1 + 1)
     ))
   }
 
-  # create empty data frame to store - no None alternative specified
-  if (base::is.null(None)) {
+  # create empty data frame to store - no none alternative specified
+  if (base::is.null(none)) {
     df <- base::data.frame(base::matrix(
       nrow = base::nrow(Input),
       ncol = (prod + 1)
@@ -466,7 +467,7 @@ createHOT <- function(data, id, None = NULL, prod,
     names <- c(names, Prod)
   }
 
-  if (!(base::is.null(None))) {
+  if (!(base::is.null(none))) {
     names <- c(names, "None")
   }
 
@@ -573,8 +574,8 @@ createHOT <- function(data, id, None = NULL, prod,
   }
 
   # finally add none utility
-  if (!(base::is.null(None))) {
-    df[, base::ncol(df)] <- Input[, None]
+  if (!(base::is.null(none))) {
+    df[, base::ncol(df)] <- Input[, none]
   }
 
   # in case varskeep specified
