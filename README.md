@@ -10,11 +10,19 @@
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 <!-- badges: end -->
 
-The goal of validateHOT is to validate the results of your validation
-task (also known as holdout task). A validation task is essential to
-make sure that your collected data of a MaxDiff, CBC, or ACBC is valid
-and can also predict outside tasks that were not included in estimating
-your utility scores. Although commercial studies often do not include a
+The goal of `validateHOT` is to validate the results of your validation
+task (also known as holdout task) as well as a tool for simulating
+markets with the results of your MaxDiff, CBC, and ACBC. This package is
+especially relevant for the [Sawtooth
+Software](https://sawtoothsoftware.com/) community who would like to
+report their analysis in *R* for open science purposes. Of course, this
+package is also useful for practitioners, who would like to run the
+analyses in an open source software. The ultimate goal of these
+preference measurement techniques is to predict future behavior (Green &
+Srinivasan, 1990). A validation task is essential to ensure that your
+collected data of a MaxDiff, CBC, or ACBC is valid and can also predict
+outside tasks that were not included in estimating your utility scores.
+The main goal Although commercial studies often do not include a
 validation/holdout task (Yang et al., 2018), it is highly recommended to
 do so (Orme, 2015; Rao, 2014). This validation/holdout task does not
 only help to check whether everything went right during data collection
@@ -529,7 +537,7 @@ For more examples, please see the accompanied vignette.
 Burger, Scott V. 2018. <em>Introduction to Machine Learning with R:
 Rigorous Mathematical Analysis</em>. O’Reilly.
 
-Chrzan, K., & Orme, B. K. (2019). <em>Applied MaxDiff: A Practitioner’s
+Chrzan, K., & Orme, B. K. 2019. <em>Applied MaxDiff: A Practitioner’s
 Guide to Best-Worst Scaling</em> Provo, UT: Sawtooth Software.
 
 Ding, Min, John R. Hauser, Songting Dong, Daria Dzyabura, Zhilin Yang,
@@ -541,10 +549,15 @@ Drost, Hajk-Georg. 2018. “Philentropy: Information Theory and Distance
 Quantification with R” <em>Journal of Open Source Software 3</em>(26),
 765, <https://joss.theoj.org/papers/10.21105/joss.00765>.
 
+Green, Paul E., and Srinivasan, V. 1990. “Conjoint Analysis in
+Marketing: New Developments with Implications for Research and
+Practice.” <em>Journal of Marketing 54</em>(4):
+3-19.<https://doi.org/10.1177/002224299005400402>.
+
 Hamner, Ben, and Michael Frasco. 2018. “Metrics: Evaluation Metrics for
 Machine Learning.” <https://CRAN.R-project.org/package=Metrics>.
 
-Miaoulis, G., Parsons, H., & Free, V. (1990). Turf: A New Planning
+Miaoulis, G., Parsons, H., & Free, V. 1990. Turf: A New Planning
 Approach for Product Line Extensions. <em>Marketing Research 2</em> (1):
 28-40.
 

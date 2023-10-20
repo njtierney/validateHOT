@@ -2,7 +2,7 @@ Type: Package
 Package: validateHOT
 Title: validateHOT - Package to Validate Holdout Tasks in Conjoint
     Analysis & MaxDiff
-Version: 1.0.0
+Version: 0.0.0.9000
 Authors@R: c(
     person("Joshua", "Schramm", , "schramm94@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5602-4632")),
