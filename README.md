@@ -174,49 +174,53 @@ output split by group(s).
 
 <ul>
 <li>
-`turf()`: <b>T</b>(otal) <b>U</b>(nduplicated) <b>R</b>(each) and
-<b>F</b>(requency) is a “product line extension model” (Miaoulis et al.,
-1990, p. 29) that helps to find the perfect product bundle based on the
-reach (e.g., how many participants consider buying at least one product
-of that assortment) and the frequency (how many products are on average
-a purchase option). `turf()` currently provides both the *threshold*
-approach (`approach = 'thres'`; all products that exceed a threshold are
-considered, e.g., a purchase option; Chrzan & Orme, 2019, p. 112) and
-the *first choice* approach (`approach = 'fc'`; only product with
-highest utility is considered as purchase option; Chrzan & Orme, 2019,
-p. 111).
+<code>turf()</code>: <b>T</b>(otal) <b>U</b>(nduplicated) <b>R</b>(each)
+and <b>F</b>(requency) is a “product line extension model” (Miaoulis et
+al., 1990, p. 29) that helps to find the perfect product bundle based on
+the reach (e.g., how many participants consider buying at least one
+product of that assortment) and the frequency (how many products are on
+average a purchase option). <code>turf()</code> currently provides both
+the *threshold* approach (<code>approach = ‘thres’</code>; all products
+that exceed a threshold are considered, e.g., a purchase option; Chrzan
+& Orme, 2019, p. 112) and the *first choice* approach (<code>approach =
+‘thres’</code>; only product with highest utility is considered as
+purchase option; Chrzan & Orme, 2019, p. 111).
 </li>
 <li>
-`freqassort()`: Similar to `turf()`, `freqassort()` will give you the
-averaged frequency, how many products the participants will choose from
-your in the function determined potential assortment. Again, you have to
-define a `none` alternative, because `freqassort()` uses the
-<i>threshold</i> approach, meaning if the utility of one product is
-above the utility of `none`, it is marked as potential purchase option.
-While `turf()` calculates the reach and frequency for <b>all</b>
-combinations, you specify the combination you are interested in
-`freqassort()`.
+<code>freqassort()</code>: Similar to <code>turf()</code>,
+<code>freqassort()</code> will give you the averaged frequency, how many
+products the participants will choose from your in the function
+determined potential assortment. Again, you have to define a
+<code>none</code> alternative, because <code>freqassort()</code> uses
+the <i>threshold</i> approach, meaning if the utility of one product is
+above the utility of <code>none</code>, it is marked as potential
+purchase option. While <code>turf()</code> calculates the reach and
+frequency for <b>all</b> combinations, you specify the combination you
+are interested in <code>freqassort()</code>.
 </li>
 <li>
-`reach()`: Similar to `turf()`, `reach()` will give you the averaged
-percentage of how many participants you can reach (at least one of the
-products resemble a purchase option) with your in the function
-determined potential assortment. `reach()` also uses the
-<i>threshold</i> approach (see above). While `turf()` calculates the
-reach and frequency for <b>all</b> combinations, you specify the
-combination you are interested in `reach()`.
+<code>reach()</code>: Similar to <code>turf()</code>,
+<code>reach()</code> will give you the averaged percentage of how many
+participants you can reach (at least one of the products resemble a
+purchase option) with your in the function determined potential
+assortment. <code>reach()</code> also uses the <i>threshold</i> approach
+(see above). While <code>turf()</code> calculates the reach and
+frequency for <b>all</b> combinations, you specify the combination you
+are interested in <code>reach()</code>.
 </li>
 <li>
-`marksim()`: runs market simulations (either share of preference or
-first choice rule), including the standard error, as well as the lower
-and upper confidence interval, which is calculated according to the
-$mean +/- 1.96 x \frac{sd}{\sqrt(n)}$ (Orme, 2020, p. 94).
+<code>marksim()</code>: runs market simulations (either share of
+preference or first choice rule), including the standard error, as well
+as the lower and upper confidence interval, which is calculated
+according to the $mean +/- 1.96 x \frac{sd}{\sqrt(n)}$ (Orme, 2020,
+p. 94).
 </li>
 </ul>
 
-> <b>Important</b>: For both `reach()` and `freqassort()`, `none` does
-> not necessarily have to be the no-buy alternative but can be another
-> alternative that should be exceeded.
+> <b>Important</b>: For both <code>reach()</code> and
+> <code>freqassort()</code>, <code>noen</code> does not necessarily have
+> to be the no-buy alternative but can be another alternative that
+> should be exceeded.
 
 ### Data Frames provided by <code>validateHOT</code>
 
@@ -226,28 +230,28 @@ defined, especially for the `createHOT()` function.
 
 <ul>
 <li>
-
-`ACBC`: Example data set with raw utilities of an ACBC study conducted
-in Sawtooth. Price was linear-coded while the other attributes were
-coded as part-worths.
-
-<li>
-`ACBC_interpolate`: Example data set with raw utilities of an ACBC study
-conducted in Sawtooth. Price was piecewise-coded, another attribute was
-linear-coded while the other attributes were coded as part-worths.
+<code>ACBC</code>: Example data set with raw utilities of an ACBC study
+conducted in Sawtooth. Price was linear-coded while the other attributes
+were coded as part-worths.
 </li>
 <li>
-`CBC`: Example data set with raw utilities of a CBC study conducted in
-Sawtooth. All attributes were coded as part-worth.
+<code>ACBC_interpolate</code>: Example data set with raw utilities of an
+ACBC study conducted in Sawtooth. Price was piecewise-coded, another
+attribute was linear-coded while the other attributes were coded as
+part-worths.
 </li>
 <li>
-`CBC_lin`: Example data set with raw utilities of a CBC study conducted
-in Sawtooth. One attribute was linear coded while the other attributes
-are part-worth coded.
+<code>CBC</code>: Example data set with raw utilities of a CBC study
+conducted in Sawtooth. All attributes were coded as part-worth.
 </li>
 <li>
-`MaxDiff`: Example data set with raw utilities of a MaxDiff study
-conducted in Sawtooth.
+<code>CBC_lin</code>: Example data set with raw utilities of a CBC study
+conducted in Sawtooth. One attribute was linear coded while the other
+attributes are part-worth coded.
+</li>
+<li>
+<code>MaxDiff</code>: Example data set with raw utilities of a MaxDiff
+study conducted in Sawtooth.
 </li>
 </ul>
 
