@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.10.10)  10 OCT 2023 12:04
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.10.10)  22 OCT 2023 13:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -832,36 +832,39 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \FrameRule=\dimen290
 \FrameSep=\dimen291
 )
+\cslhangindent=\skip93
+\csllabelwidth=\skip94
+\cslentryspacingunit=\skip95
 \@quotelevel=\count466
 \@quotereset=\count467
 (./paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 238.
-LaTeX Font Info:    ... okay on input line 238.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 238.
-LaTeX Font Info:    ... okay on input line 238.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 238.
-LaTeX Font Info:    ... okay on input line 238.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 238.
-LaTeX Font Info:    ... okay on input line 238.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 238.
-LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 238.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 269.
+LaTeX Font Info:    ... okay on input line 269.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 269.
+LaTeX Font Info:    ... okay on input line 269.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 269.
+LaTeX Font Info:    ... okay on input line 269.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 269.
+LaTeX Font Info:    ... okay on input line 269.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 269.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 269.
 (c:/Users/Joshua/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 238.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 238.
-LaTeX Font Info:    ... okay on input line 238.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 238.
-LaTeX Font Info:    ... okay on input line 238.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 238.
-LaTeX Font Info:    ... okay on input line 238.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 238.
-LaTeX Font Info:    ... okay on input line 238.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 238.
-LaTeX Font Info:    ... okay on input line 238.
-Package hyperref Info: Link coloring ON on input line 238.
+LaTeX Font Info:    ... okay on input line 269.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 269.
+LaTeX Font Info:    ... okay on input line 269.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 269.
+LaTeX Font Info:    ... okay on input line 269.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 269.
+LaTeX Font Info:    ... okay on input line 269.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 269.
+LaTeX Font Info:    ... okay on input line 269.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 269.
+LaTeX Font Info:    ... okay on input line 269.
+Package hyperref Info: Link coloring ON on input line 269.
 (./paper.out) (./paper.out)
 \@outlinefile=\write6
 \openout6 = `paper.out'.
@@ -882,8 +885,8 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'paper.bbl' not found.
 No file paper.bbl.
-Package biblatex Info: Reference section=0 on input line 238.
-Package biblatex Info: Reference segment=0 on input line 238.
+Package biblatex Info: Reference section=0 on input line 269.
+Package biblatex Info: Reference segment=0 on input line 269.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -918,25 +921,25 @@ Package biblatex Info: Reference segment=0 on input line 238.
 * \@reversemargintrue
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 239.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 270.
 (c:/Users/Joshua/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 239.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 270.
 (c:/Users/Joshua/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
-Package hyperref Warning: Suppressing link with empty target on input line 265.
+Package hyperref Warning: Suppressing link with empty target on input line 296.
 
 
-Package hyperref Warning: Suppressing link with empty target on input line 265.
+Package hyperref Warning: Suppressing link with empty target on input line 296.
 
 
-Package hyperref Warning: Suppressing link with empty target on input line 265.
+Package hyperref Warning: Suppressing link with empty target on input line 296.
 
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 286.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 335.
 File: C:/Users/Joshua/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/Joshua/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -947,37 +950,42 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 329.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 357.
 [1
 
 ]
-Overfull \hbox (1.16139pt too wide) in paragraph at lines 338--338
+Overfull \hbox (1.16139pt too wide) in paragraph at lines 387--387
 []\TU/lmtt/m/n/10 ##   Option_06 Option_07 Option_08 Option_09 Option_10 Option_11 Option_12[] 
  []
 
 
-Overfull \hbox (1.16139pt too wide) in paragraph at lines 339--339
+Overfull \hbox (1.16139pt too wide) in paragraph at lines 388--388
 []\TU/lmtt/m/n/10 ## 1         0         0         0         0         0         0         0[] 
  []
 
 
-Overfull \hbox (1.16139pt too wide) in paragraph at lines 340--340
+Overfull \hbox (1.16139pt too wide) in paragraph at lines 389--389
 []\TU/lmtt/m/n/10 ## 2         0         0         0         0         0         0         0[] 
  []
 
 
-Overfull \hbox (1.16139pt too wide) in paragraph at lines 341--341
+Overfull \hbox (1.16139pt too wide) in paragraph at lines 390--390
 []\TU/lmtt/m/n/10 ## 3         1         0         0         0         0         0         0[] 
  []
 
 
-Overfull \hbox (1.16139pt too wide) in paragraph at lines 342--342
+Overfull \hbox (1.16139pt too wide) in paragraph at lines 391--391
 []\TU/lmtt/m/n/10 ## 4         1         0         0         0         0         0         0[] 
  []
 
 
-Overfull \hbox (1.16139pt too wide) in paragraph at lines 343--343
+Overfull \hbox (1.16139pt too wide) in paragraph at lines 392--392
 []\TU/lmtt/m/n/10 ## 5         0         0         1         0         0         0         0[] 
+ []
+
+
+Overfull \hbox (71.50139pt too wide) in paragraph at lines 419--423
+[][][][][][][][][][][][][][][][] [] [][][] [] [][][][][][][][][] [] [][][][][][][][][][][][][][][][][] [] [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]$[][]\TU/lmr/m/n/10 . 
  []
 
 File: C:/Users/Joshua/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
@@ -989,24 +997,34 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
-[2] (./paper.aux)
+[2]
+File: C:/Users/Joshua/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
+<C:/Users/Joshua/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
+
+Package fancyhdr Warning: \headheight is too small (62.59596pt): 
+(fancyhdr)                Make it at least 63.55022pt, for example:
+(fancyhdr)                \setlength{\headheight}{63.55022pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
+
+[3] (./paper.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-08-29>
  ***********
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 4F54B2A8122B70FDBF0F41AF990EBAD0;567.
+(rerunfilecheck)             Checksum: 2FB6AE97BB8360A1FF8E53AD4336A3A1;567.
 Package logreq Info: Writing requests to 'paper.run.xml'.
 \openout1 = `paper.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 34752 strings out of 477583
- 714921 string characters out of 5816310
- 1934416 words of memory out of 5000000
- 55458 multiletter control sequences out of 15000+600000
- 563234 words of font info for 75 fonts, out of 8000000 for 9000
+ 34781 strings out of 477583
+ 715365 string characters out of 5816310
+ 1937416 words of memory out of 5000000
+ 55483 multiletter control sequences out of 15000+600000
+ 564941 words of font info for 84 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  84i,12n,87p,678b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on paper.pdf (2 pages).
+Output written on paper.pdf (3 pages).

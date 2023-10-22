@@ -1,13 +1,12 @@
 Type: Package
 Package: validateHOT
-Title: validateHOT - Package to Validate Holdout Tasks in Conjoint
-    Analysis & MaxDiff
+Title: validateHOT - An R Package to Validate Holdout Tasks
 Version: 0.0.0.9000
-Authors@R: c(
-    person("Joshua", "Schramm", , "schramm94@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-5602-4632")),
-    person("Marcel", "Lichters", , "test@123.com", role = "ctb")
-  )
+Authors@R: c(person("Joshua", "Schramm", email = "schramm94@gmail.com", role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0001-5602-4632")),
+    person("Marcel", "Lichers", role = "ctb",
+    comment = c(ORCID = "0000-0002-3710-2292"))
+    )
 Description: validateHOT is a package that validates validation/holdout
     tasks (HOTs) in (adaptive) Conjoint analysis as well as MaxDiff. You
     define the validation/holdout task and afterwards, choose different
@@ -34,7 +33,9 @@ Suggests:
     rmarkdown (>= 2.24),
     testthat (>= 3.0.0)
 VignetteBuilder: 
-    knitr
+    knitr,
+    dplyr,
+    magrittr
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true

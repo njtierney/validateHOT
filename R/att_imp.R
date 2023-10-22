@@ -79,6 +79,14 @@ att_imp <- function(data, group = NULL, attrib, coding, interpolate.levels = NUL
     warning("Warning: 'group' contains NAs!")
   }
 
+  if (base::is.null(coding)){
+    base::stop("Error: 'coding' has to be specified!")
+  }
+
+  if (base::length(attrib) != base::length(coding)){
+    base::stop("Error: 'coding' and 'attrib' have to have the same length!")
+  }
+
 
   # test numeric input for coding
   if (!(base::is.null(coding))) {

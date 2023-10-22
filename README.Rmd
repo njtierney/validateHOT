@@ -182,7 +182,22 @@ calculated according to the $mean +/- 1.96 x \frac{sd}{\sqrt(n)}$ (Orme, 2020, p
 
 </ul>
 
-> <b>Important</b>: For both <code>reach()</code> and <code>freqassort()</code>, <code>noen</code> does not necessarily have to be the no-buy alternative but can be another alternative that should be exceeded. 
+> <b>Important</b>: For both <code>reach()</code> and <code>freqassort()</code>, <code>noen</code> does not necessarily have to be the no-buy alternative but can be another alternative that should be exceeded.
+
+### Reestimating raw utilities
+
+<code>validateHOT</code> also provides 2 functions to better interpret the scores of both (A)CBC and MaxDiff. Currently, two functions are provided, namely:
+
+<ul>
+<li><code>att_imp()</code>: converts the raw utilities of either an ACBC or CBC into importance scores for each attribute (see, Orme, 2020, pp. 79-81)</li>
+
+
+<li><code>prob_scores()</code>converts the raw utilities of a MaxDiff to choice probabilities by applying the following procedures:
+<ul><li>For unanchored MaxDiff: First, the scores are zero-centered, afterwards they are transformed by the following formula $\frac{exp^{U_i}}{(exp^{U_i} + a - 1)}$ (Chrzan & Orme, 2019, p. 56), where *$U_i$* is the raw utility of item *i* and <code>a</code> is the number of items shown simultaneously per MaxDiff task. Finally, the scores are normalized.</li>
+<li>For anchored MaxDiff: $\frac{exp^{U_i}}{(exp^{U_i} + a - 1)} * 100 * \frac{1}{a}$ (Chrzan & Orme, 2019, p. 59).</li>
+</ul>
+</li>
+</ul>
 
 ### Data Frames provided by <code>validateHOT</code>
 
@@ -424,7 +439,7 @@ Miaoulis, G., Parsons, H., & Free, V. 1990. Turf: A New Planning Approach for Pr
 
 Orme, Bryan K. 2015. “Including Holdout Choice Tasks in Conjoint Studies.” [https://sawtoothsoftware.com/resources/technical-papers/including-holdout-choice-tasks-in-conjoint-studies](https://sawtoothsoftware.com/resources/technical-papers/including-holdout-choice-tasks-in-conjoint-studies).
 
-Orme, B. K. (2020). <em>Getting Started with Conjoint Analysis: Strategies for Product Design and Pricing Research</em>. 4th edition. Manhattan Beach, CA: Research Publishers LLC.
+Orme, B. K. 2020. <em>Getting Started with Conjoint Analysis: Strategies for Product Design and Pricing Research</em>. 4th edition. Manhattan Beach, CA: Research Publishers LLC.
 
 R Core Team. 2023. “R: A Language and Environment for Statistical Computing.” [https://www.R-project.org/](https://www.R-project.org/).
 
