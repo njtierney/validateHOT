@@ -137,3 +137,16 @@ test_that("check whether examples are correct ", {
   expect_equal(base::round(base::as.numeric(accuracy(data = HOT, opts = c(Option_1:None), choice = choice, none = None)), 0), 70)
   expect_equal(base::round(base::as.numeric(accuracy(data = HOT, opts = c(Option_1:None), choice = choice, none = None, group = Group)[[2]]), 0), c(74, 72, 64))
 })
+
+test_that("Test whether results equals Metrics::accuracy ", {
+  metr <- HOT %>%
+    mutate(pred = max.col(.[c(2:9)]),
+           pred = ifelse(pred == 8, 2, 1),
+           choice = ifelse(choice == 8, 2, 1)) %>%
+    select(pred, choice)
+
+  actual <- c(unname(unlist(metr$choice)))
+  predicted <- c(unname(unlist(metr$pred)))
+
+  expect_equal(base::round(base::as.numeric(accuracy(data = HOT, opts = c(Option_1:None), choice = choice, none = None)), digits = 2), round(Metrics::accuracy(actual, predicted) * 100, digits = 2))
+})

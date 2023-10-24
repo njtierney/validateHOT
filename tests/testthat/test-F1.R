@@ -137,3 +137,4 @@ test_that("check whether examples are correct ", {
   expect_equal(base::round(base::as.numeric(f1(data = HOT, opts = c(Option_1:None), choice = choice, none = None)), 0), 80)
   expect_equal(base::round(base::as.numeric(f1(data = HOT, opts = c(Option_1:None), choice = choice, none = None, group = Group)[[2]]), 0), c(84, 77, 76))
 })
+

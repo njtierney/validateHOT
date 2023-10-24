@@ -129,3 +129,16 @@ test_that("check whether examples are correct ", {
   expect_equal(base::round(base::as.numeric(mae(data = HOT, opts = c(Option_1:None), choice = choice)), 2), 4.93)
   expect_equal(base::round(base::as.numeric(mae(data = HOT, opts = c(Option_1:None), choice = choice, group = Group)[[2]]), 2), c(4.02, 6.37, 7.97))
 })
+
+
+test_that("Test whether results equals Metrics::mae ", {
+  actual <- HOT %>%
+    dplyr::mutate(dplyr::across(Option_1:None, function(x) (base::exp(x)/base::rowSums(base::exp(.[c(2:9)]))))) %>%
+    dplyr::summarise(dplyr::across(Option_1:None, ~ mean(.x))) %>%
+    base::unlist() %>%
+    base::unname()
+
+  predicted <- base::unname(c(base::prop.table(base::table(HOT$choice))))
+
+  expect_equal(base::round(base::as.numeric(mae(data = HOT, opts = c(Option_1:None), choice = choice)), digits = 2), round(Metrics::mae(actual, predicted) * 100, digits = 2))
+})

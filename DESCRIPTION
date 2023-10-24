@@ -30,6 +30,7 @@ Imports:
 Suggests: 
     knitr (>= 1.43),
     labelled (>= 2.12.0),
+    Metrics (>= 0.1.4),
     rmarkdown (>= 2.24),
     testthat (>= 3.0.0)
 VignetteBuilder: 
