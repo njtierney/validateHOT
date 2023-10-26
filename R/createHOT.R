@@ -1,6 +1,7 @@
 #' @title  Preparing holdout/validation task and creating utilities
 #'
 #' @description Function used to create utilities for validation task.
+#' Currently not working with alternative-specific designs.
 #'
 #' @param data A data frame with all relevant variables.
 #' @param id A vector of column index of unique identifier in \code{data}.

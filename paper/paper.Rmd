@@ -20,7 +20,7 @@ affiliations:
    index: 1
  - name: Otto von Guericke University of Magdeburg, Germany
    index: 2
-citation_author: Schramm & Lichters.
+citation_author: Schramm & Lichters
 date: 22 October 2023
 year: 2023
 bibliography: paper.bib
@@ -29,10 +29,11 @@ output: rticles::joss_article
 journal: JOSS
 ---
 
+```{=tex}
 \setlength{\headheight}{63.55022pt}
 \addtolength{\topmargin}{-0.95425pt}
 \newcommand{\colcod}[1]{\texttt{\color{purple}#1}}
-
+```
 ```{r include=FALSE}
 library(validateHOT)
 library(tidyverse)
@@ -40,13 +41,15 @@ library(tidyverse)
 
 # Summary
 
-validateHOT is a package that provides functions to both validate a validation/holdout task and run market simulations for results obtained in a (adaptive) choice-based conjoint analysis (hereafter ACBC and CBC, respectively) and maximum difference scaling (hereafter MaxDiff) using [Sawtooth Software](https://sawtoothsoftware.com/). The ultimate goal of preference measurement techniques such as (A)CBC or MaxDiff is to predict future behavior [@green1990]. Therefore, it is essential for both academics and practitioners to ensure that the collected data is valid and can also predict outside tasks. The easiest way to test this is to include so-called holdout or validation task [@Orme2015]. Despite the important role of validation tasks, most of the conjoint studies done in practice do not include them [@yang2018], which is unsatisfactory, given the fact that the model is used to estimate market shares which is the basis for relevant marketing decisions.
+validateHOT is a package that provides functions to both validate a validation/holdout task and run market simulations for results obtained in a (adaptive) choice-based conjoint analysis (hereafter ACBC and CBC, respectively) and maximum difference scaling (hereafter MaxDiff) using [Sawtooth Software](https://sawtoothsoftware.com/).
+
+Preference measurement techniques', such as (A)CBC or MaxDiff, ultimate goal is to predict future behavior [@green1990]. Hence, it is essential for both academics and practitioners to ensure that the collected data is valid and can also predict outside tasks. The easiest way to test this is to include so-called holdout or validation task [@Orme2015]. Despite the important role of validation tasks, practictioners often do not include them [@yang2018], which is unsatisfactory, given the fact that the model is used to estimate market shares which is the basis for relevant marketing decisions.
 
 validateHOT combines both validation and market simulation in one package. validateHOT's advantages are the following: a) it helps you to decide which is the best model to proceed by validating it, b) it runs relevant market simulations that help to find the right product combinations, and finally, c) it is open source tool for functions that are usually implemented in Sawtooth Software and are often a black-box for researchers and practitioners.
 
 # Statement of need
 
-validateHOT is a practical tool for Sawtooth Software users in industry as well as academia. It provides an open source solution for a) validating a validation/holdout task and therefore ensuring that the model has predictive validity; b) running market simulations. Other packages, for example, Metrics [@Metrics] provide functions to run validation metrics such as *mean absolute error*, *root mean squared error*, or the five metrics of the confusion matrix (see \autoref{tab:table1}). However, to put the Sawtooth export into the right format, the user needs some data wrangling which can be a barrier. Other packages mainly focus on the analysis of conjoint analysis (e.g., ChoiceModelR [@ChoiceModelR], choicetools [@choicetools], logitR [@logitr], bayesm [@bayesm] etc.). To the best of our knowledge, a package that converts raw utility scores into validation metrics or running a variety of marketing simulations is still missing. The goal of validateHOT is still to fill this research gap. validateHOT creates market shares based on *share of preferences* or *first choice rule*, which can be helpful to report results for research articles according to open science standards. In addition, it also provides the function \colcod{turf}, which was offered formerly by the turfR package, which is no longer available on the Comprehensive R Archive Network (see [CRAN](https://cran.r-project.org/web/packages/turfR/index.html)). So, currently practitioners and academics mainly have to stick to paid solutions, for example, Sawtooth Software.
+validateHOT is a practical tool for Sawtooth Software users in industry as well as academia. It provides an open source solution for a) validating a validation/holdout task and therefore ensuring that the model has predictive validity; b) running market simulations. Other packages, for example, Metrics [@Metrics] provide functions to run validation metrics such as *mean absolute error*, *root mean squared error*, or the five metrics of the confusion matrix (see \autoref{tab:table1}). However, to put the Sawtooth export into the right format, the user needs some data wrangling which can be a barrier. Other packages mainly focus on the analysis of conjoint analysis (e.g., ChoiceModelR [@ChoiceModelR], choicetools [@choicetools], logitR [@logitr], bayesm [@bayesm] etc.). To the best of our knowledge, a package that converts raw utility scores into validation metrics or running a variety of marketing simulations is still missing. The goal of validateHOT is still to fill this research gap. validateHOT creates market shares based on *share of preferences* or *first choice rule*, which can be helpful to report results for research articles according to open science standards. In addition, it also provides the function \texttt{\color{purple}turf}, which was offered formerly by the turfR package, which is no longer available on the Comprehensive R Archive Network (see [CRAN](https://cran.r-project.org/web/packages/turfR/index.html)). So, currently practitioners and academics mainly have to stick to paid solutions, for example, Sawtooth Software.
 
 # Key functions
 
@@ -65,9 +68,11 @@ The main function that creates the validation/holdout task is the \texttt{\color
 
 # Typical workflow
 
-After running the Hierarchical Bayes estimation in Sawtooth Software, the raw utility scores should be exported. Both the raw utilities and the actual choice in the validation/holdout task needs be read into *R* (please see the vignette for more advice). In the following, we provide the workflow for a MaxDiff study (the vignette also provides detailed examples for a CBC as well as an ACBC). 
+In the following, we provide the workflow for a MaxDiff study (the vignette also provides detailed examples for a CBC as well as an ACBC).
 
-We create the validation/holdout task, which has a total of 7 items (\texttt{\color{purple}prod}) plus the no-buy alternative (\texttt{\color{purple}none}). Moreover, we also define the method, the actual choice in the validation/holdout task as well as the column indexes of the alternatives in the validation/holdout task. Finally, we define variables that we would like to keep in the data frame (\colcod{varskeep}). \texttt{\color{purple}createHOT} returns a data frame which we need for subsequent analyses.
+After running the Hierarchical Bayes estimation in Sawtooth Software, the **raw** utility scores have to be exported and afterwards read into *R* including the actual choice in the validation/holdout task.
+
+To define the validation/holdout task, which has a total of 7 items (\texttt{\color{purple}prod}) plus the no-buy alternative (\texttt{\color{purple}none}), we use the \texttt{\color{purple}createHOT} function. Here, the user can define the attributes as well as the method (in this case \texttt{\color{purple}MaxDiff}).
 
 ```{r}
 data("MaxDiff") # read in the data
@@ -92,11 +97,11 @@ hitrate(
   data = HOT, # data frame
   opts = c(Option_1:None), # column names of alternatives
   choice = choice # column name of choice
-) %>% 
+) %>%
   round(3)
 ```
 
-Next, validateHOT also provides the five metrics for the confusion matrix. The underlying logic hereby is that the user has to provide a no-buy alternative (\texttt{\color{purple}none}). validateHOT calculates, for example, how often a buy or no-buy was correctly predicted, therefore, it is testing whether the model correctly predicts general demand (exemplary showed by applying the \texttt{\color{purple}accuracy} function and results split by \texttt{\color{purple}Group}).
+validateHOT also provides the five metrics for the confusion matrix. The underlying logic hereby is that the user has to provide a no-buy alternative (\texttt{\color{purple}none}). validateHOT calculates, for example, how often a buy or no-buy was correctly predicted, therefore, it is testing whether the model correctly predicts general demand (exemplary showed by applying the \texttt{\color{purple}accuracy} function and results split by \texttt{\color{purple}Group}).
 
 ```{r}
 accuracy(
@@ -104,7 +109,7 @@ accuracy(
   group = Group, # optional grouping variable
   opts = c(Option_1:None), # column names of alternatives
   choice = choice, # column name of choice
-  none = None # column name 
+  none = None # column name
 )
 ```
 
@@ -120,21 +125,21 @@ marksim(
 
 \texttt{\color{purple}turf}, a "product line extension model" [@miaoulis1990, p. 29] is a tool to find the perfect assortment that creates the highest reach and a powerful tool for MaxDiff studies [@chrzan2019, p. 108]. To optimize the search for the optimal bundle, we could include as well the arguments \texttt{\color{purple}fixed}, to define alternatives that have to be part of the assortment, as well as \texttt{\color{purple}prohib}, to define prohibitions of combinations of items that should not be part of the assortment (please see the vignette for more details and also to see how to apply \texttt{\color{purple}turf} with data obtained by a likert scale).
 
-For the following example, let us assume that you conducted an anchored MaxDiff analysis with 10 items (\colcod{opts}) and you want to find the best assortment with a size of 3 (\colcod{size = 3}). As a threshold (\colcod{none}) you use the anchor (no-buy alternative). Finally, you apply the threshold approach, that is that each alternative with a utility above the threshold (in our case \colcod{none}) is marked as purchase option. We reduce the output to the Top 5 combos based on the reach (a \colcod{1} indicates present in this assortment while \colcod{0} means not present).
+For the following example, let us assume that you conducted an anchored MaxDiff analysis with 10 items (\texttt{\color{purple}opts}) and you want to find the best assortment with a size of 3 (\texttt{\color{purple}size = 3}). As a threshold (\texttt{\color{purple}none}) you use the anchor (no-buy alternative).
 
 ```{r}
 turf(
-  data = MaxDiff,
-  opts = c(Option_01:Option_10),
-  none = none,
-  size = 3,
-  approach = "thres"
-) %>% 
-  head(., n = 5) %>% 
-  mutate_if(is.numeric, round, 2) %>% 
-  t() %>% 
-  as.data.frame() %>% 
-  slice(-1) %>% 
+  data = MaxDiff, # define data
+  opts = c(Option_01:Option_10), # define items
+  none = none, # define threshold variable
+  size = 3, # define size of assortment
+  approach = "thres" # define approach
+) %>%
+  head(., n = 5) %>%
+  mutate_if(is.numeric, round, 2) %>%
+  t() %>%
+  as.data.frame() %>%
+  slice(-1) %>%
   rename_all(., ~ paste0("Combo ", c(1:5)))
 ```
 
