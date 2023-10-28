@@ -54,6 +54,16 @@ Input of opts \code{choice} has to be column name of actual choice.
 
 \code{none} to specify column name of the \code{none} alternative in the
 validation/holdout task.
+
+Please be aware about the following 2x2 table regarding coding of buy and
+no-buy choice
+
+\tabular{crcc}{
+   \tab \tab  Predicted           \tab    \cr
+Observed \tab \tab  Buy \tab No-buy  \cr
+ \tab Buy \tab A \tab B  \cr
+ \tab No-Buy \tab C \tab D  \cr
+}
 }
 \examples{
 \dontrun{

@@ -64,7 +64,7 @@ no-buy choice
 
 \tabular{crcc}{
    \tab \tab  Predicted           \tab    \cr
-Observed \tab \tab  Buy \tab No_buy  \cr
+Observed \tab \tab  Buy \tab No-buy  \cr
  \tab Buy \tab A \tab B  \cr
  \tab No-Buy \tab C \tab D  \cr
 }

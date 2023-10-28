@@ -232,6 +232,11 @@ createHOT <- function(data, id, none = NULL, prod,
     base::stop("Error: 'method' is not defined!")
   }
 
+  # test whether choice is specified
+  if (base::missing(choice)) {
+    base::stop("Error: 'choice' is not defined!")
+  }
+
   # test whether method is correctly specified
   if ((method != "ACBC") & (method != "CBC") & (method != "MaxDiff")) {
     base::stop(

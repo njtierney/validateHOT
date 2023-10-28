@@ -9,9 +9,9 @@
 #' @param opts Column names of the alternatives included in the
 #' validation/holdout task.
 #' @param method Name of the market simulation method that should be conducted.
-#' Either needs to be \code{method = "shareofpref"} to run share of preference
-#' as method or \code{method = "firstchoice"} to run first choice rule. Default
-#' set to \code{"shareofpref"}.
+#' Either needs to be \code{method = "sop"} to run share of preference
+#' as method or \code{method = "fc"} to run first choice rule. Default
+#' set to \code{"sop"}.
 #'
 #' @return a tibble
 #' @importFrom dplyr select pick mutate across ungroup group_by summarise count
@@ -25,8 +25,8 @@
 #'  alternative in the validation/holdout task as well as its standard error
 #'  and the lower and upper confidence interval which is calculated according
 #'  to the following formula \eqn{mean +/- 1.96 x \frac{sd}{\sqrt(n)}}
-#'  (Orme, 2020, p. 94). \code{method} can either be set to \code{method = "shareofpref"}
-#'  to run share of preference rule or to \code{method = "firstchoice"} to run
+#'  (Orme, 2020, p. 94). \code{method} can either be set to \code{method = "sop"}
+#'  to run share of preference rule or to \code{method = "fc"} to run
 #'  first choice rule to simulate market shares.
 #'
 #' \code{data} has to be a data frame including the alternatives shown in
@@ -40,9 +40,9 @@
 #' task.
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
-#' \code{method} can either be set to \code{method = "shareofpref"} to run share of preference
-#' as method or \code{method = "firstchoice"} to run first choice rule. Default
-#' set to \code{method = "shareofpref"}.
+#' \code{method} can either be set to \code{method = "sop"} to run share of preference
+#' as method or \code{method = "fc"} to run first choice rule. Default
+#' set to \code{method = "sop"}.
 #'
 #' @references {
 #'
@@ -69,14 +69,14 @@
 #' marksim(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
-#'   method = "shareofpref"
+#'   method = "sop"
 #' )
 #'
 #' # marksim ungrouped first choice
 #' marksim(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
-#'   method = "firstchoice"
+#'   method = "fc"
 #' )
 #'
 #' # marksim grouped share of preference
@@ -97,7 +97,7 @@
 #' @export
 
 marksim <- function(data, group, opts,
-                    method = c("shareofpref", "firstchoice")) {
+                    method = c("sop", "fc")) {
   if (base::length(data %>% dplyr::select(., {{ opts }})) == 0) {
     stop("Error: argument 'opts' is missing!")
   }
@@ -132,14 +132,14 @@ marksim <- function(data, group, opts,
 
   # approach needs to be specified
   if (base::missing(method)) {
-    method <- "shareofpref"
+    method <- "sop"
   }
 
-  # method can only be 'shareofpref' or 'firstchoice'
-  if ((method != "shareofpref") & (method != "firstchoice")) {
+  # method can only be 'sop' or 'fc'
+  if ((method != "sop") & (method != "fc")) {
     base::stop(
       "Error: 'method' is wrong, please choose between",
-      " 'shareofpref' and 'firstchoice'!"
+      " 'sop' and 'fc'!"
     )
   }
 
@@ -150,7 +150,7 @@ marksim <- function(data, group, opts,
     dplyr::group_by(dplyr::pick({{ group }})) %>%
     dplyr::count()
 
-  if (method == "shareofpref") {
+  if (method == "sop") {
     return(data %>%
       # exponentiate all alternatives
       dplyr::mutate(dplyr::across({{ opts }}, ~ exp(.x))) %>%
@@ -184,7 +184,7 @@ marksim <- function(data, group, opts,
       tibble::as_tibble())
   }
 
-  if (method == "firstchoice") {
+  if (method == "fc") {
     return(data %>%
       dplyr::mutate(pred = base::max.col(dplyr::across({{ opts }}))) %>%
       mutate(pred = factor(pred,

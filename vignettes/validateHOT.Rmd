@@ -606,7 +606,7 @@ HOT %>%
   marksim(
     data = ., # data frame
     opts = c(Option_1:None), # column names of alternatives
-    method = "shareofpref" # market simulation method
+    method = "sop" # market simulation method
   )
 ```
 
@@ -617,7 +617,7 @@ HOT %>%
   marksim(
     data = ., # data frame
     opts = c(Option_1:None), # column names of alternatives
-    method = "firstchoice" # market simulation method
+    method = "fc" # market simulation method
   )
 ```
 

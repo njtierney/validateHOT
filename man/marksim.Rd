@@ -4,7 +4,7 @@
 \alias{marksim}
 \title{Market Simulation of Options included in HOT}
 \usage{
-marksim(data, group, opts, method = c("shareofpref", "firstchoice"))
+marksim(data, group, opts, method = c("sop", "fc"))
 }
 \arguments{
 \item{data}{A data frame with all relevant variables.}
@@ -16,9 +16,9 @@ to get \code{"marksim"} by group(s).}
 validation/holdout task.}
 
 \item{method}{Name of the market simulation method that should be conducted.
-Either needs to be \code{method = "shareofpref"} to run share of preference
-as method or \code{method = "firstchoice"} to run first choice rule. Default
-set to \code{"shareofpref"}.}
+Either needs to be \code{method = "sop"} to run share of preference
+as method or \code{method = "fc"} to run first choice rule. Default
+set to \code{"sop"}.}
 }
 \value{
 a tibble
@@ -31,8 +31,8 @@ Market simulation provides the expected aggregated market shares of each
  alternative in the validation/holdout task as well as its standard error
  and the lower and upper confidence interval which is calculated according
  to the following formula \eqn{mean +/- 1.96 x \frac{sd}{\sqrt(n)}}
- (Orme, 2020, p. 94). \code{method} can either be set to \code{method = "shareofpref"}
- to run share of preference rule or to \code{method = "firstchoice"} to run
+ (Orme, 2020, p. 94). \code{method} can either be set to \code{method = "sop"}
+ to run share of preference rule or to \code{method = "fc"} to run
  first choice rule to simulate market shares.
 
 \code{data} has to be a data frame including the alternatives shown in
@@ -46,9 +46,9 @@ different groups. Has to be column name of variables in \code{data}.
 task.
 Input of \code{opts} has to be column names of variables in \code{data}.
 
-\code{method} can either be set to \code{method = "shareofpref"} to run share of preference
-as method or \code{method = "firstchoice"} to run first choice rule. Default
-set to \code{method = "shareofpref"}.
+\code{method} can either be set to \code{method = "sop"} to run share of preference
+as method or \code{method = "fc"} to run first choice rule. Default
+set to \code{method = "sop"}.
 }
 \examples{
 \dontrun{
@@ -67,14 +67,14 @@ HOT <- createHOT(
 marksim(
   data = HOT,
   opts = c(Option_1:None),
-  method = "shareofpref"
+  method = "sop"
 )
 
 # marksim ungrouped first choice
 marksim(
   data = HOT,
   opts = c(Option_1:None),
-  method = "firstchoice"
+  method = "fc"
 )
 
 # marksim grouped share of preference

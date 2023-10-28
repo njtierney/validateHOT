@@ -11,11 +11,11 @@ test_that("Error if opts is missing", {
 
 ##
 test_that("Error if opts has just length 1 ", {
-  expect_error(marksim(data = HOT, opts = Option_1, method = "shareofpref"))
+  expect_error(marksim(data = HOT, opts = Option_1, method = "sop"))
 })
 
 test_that("Error if opts has just length 1 ", {
-  expect_error(marksim(data = HOT, opts = Option_1, method = "firstchoice"))
+  expect_error(marksim(data = HOT, opts = Option_1, method = "fc"))
 })
 ##
 
@@ -27,7 +27,7 @@ test_that("Warning if group contains NA ", {
 
   expect_warning(marksim(
     data = HOT2, opts = c(Option_1:None), group = Group,
-    method = "shareofpref"
+    method = "sop"
   ))
 })
 
@@ -38,7 +38,7 @@ test_that("Warning if group contains NA ", {
 
   expect_warning(marksim(
     data = HOT2, opts = c(Option_1:None), group = Group,
-    method = "firstchoice"
+    method = "fc"
   ))
 })
 ##
@@ -51,7 +51,7 @@ test_that("Error if alternatives contains NA ", {
 
   expect_error(marksim(
     data = HOT2, opts = c(Option_1:None), group = Group,
-    method = "shareofpref"
+    method = "sop"
   ))
 })
 
@@ -62,7 +62,7 @@ test_that("Error if alternatives contains NA ", {
 
   expect_error(marksim(
     data = HOT2, opts = c(Option_1:None), group = Group,
-    method = "firstchoice"
+    method = "fc"
   ))
 })
 ##
@@ -75,7 +75,7 @@ test_that("Error if alternatives is not numeric ", {
 
   expect_error(marksim(
     data = HOT2, opts = c(Option_1:None), group = Group,
-    method = "shareofpreference"
+    method = "sop"
   ))
 })
 
@@ -86,7 +86,7 @@ test_that("Error if alternatives is not numeric ", {
 
   expect_error(marksim(
     data = HOT2, opts = c(Option_1:None), group = Group,
-    method = "firstchoice"
+    method = "fc"
   ))
 })
 
@@ -108,14 +108,14 @@ test_that("No error if no method specified ", {
 test_that("Structure of Output data.frame ", {
   expect_true(base::is.data.frame(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )))
 })
 
 test_that("Structure of Output data.frame ", {
   expect_true(base::is.data.frame(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )))
 })
 ##
@@ -125,14 +125,14 @@ test_that("Structure of Output data.frame ", {
 test_that("Structure of Output tibble ", {
   expect_true(tibble::is_tibble(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )))
 })
 
 test_that("Structure of Output tibble ", {
   expect_true(tibble::is_tibble(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )))
 })
 ##
@@ -142,7 +142,7 @@ test_that("Length of output equals number of alternatives ", {
   expect_equal(
     base::nrow(marksim(
       data = HOT, opts = c(Option_1:None),
-      method = "shareofpref"
+      method = "sop"
     )),
     base::length(HOT %>% dplyr::select(c(Option_1:None)))
   )
@@ -152,7 +152,7 @@ test_that("Length of output equals number of alternatives ", {
   expect_equal(
     base::nrow(marksim(
       data = HOT, opts = c(Option_1:None),
-      method = "firstchoice"
+      method = "fc"
     )),
     base::length(HOT %>% dplyr::select(c(Option_1:None)))
   )
@@ -165,7 +165,7 @@ test_that("Length of output equals number of groups - 1 group ", {
   expect_equal(
     base::nrow(marksim(
       data = HOT, opts = c(Option_1:None),
-      group = Group, method = "shareofpref"
+      group = Group, method = "sop"
     )),
     (base::length(base::unique(HOT$Group)) * base::length(HOT %>% dplyr::select(c(Option_1:None))))
   )
@@ -175,7 +175,7 @@ test_that("Length of output equals number of groups - 1 group ", {
   expect_equal(
     base::nrow(marksim(
       data = HOT, opts = c(Option_1:None),
-      group = Group, method = "firstchoice"
+      group = Group, method = "fc"
     )),
     (base::length(base::unique(HOT$Group)) * base::length(HOT %>% dplyr::select(c(Option_1:None))))
   )
@@ -190,7 +190,7 @@ test_that("Length of output equals number of groups - 2 group ", {
     base::nrow(marksim(
       data = HOT, opts = c(Option_1:None),
       group = c(Group, Group2),
-      method = "shareofpref"
+      method = "sop"
     )),
     (base::length(base::unique(HOT$Group)) * base::length(base::unique(HOT$Group2)) * base::length(HOT %>% dplyr::select(c(Option_1:None))))
   )
@@ -202,7 +202,7 @@ test_that("Length of output equals number of groups - 2 group ", {
     base::nrow(marksim(
       data = HOT, opts = c(Option_1:None),
       group = c(Group, Group2),
-      method = "firstchoice"
+      method = "fc"
     )),
     (base::length(base::unique(HOT$Group)) * base::length(base::unique(HOT$Group2)) * base::length(HOT %>% dplyr::select(c(Option_1:None))))
   )
@@ -213,44 +213,44 @@ test_that("Length of output equals number of groups - 2 group ", {
 test_that("Check output format ", {
   expect_true(base::is.character(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[1]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[2]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[3]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[4]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[5]]))
 
   expect_true(base::is.character(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[1]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[2]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[3]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[4]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[5]]))
 })
 
@@ -258,45 +258,45 @@ test_that("Check output format ", {
 test_that("Check output - 1 group ", {
   expect_true(base::is.character(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "shareofpref"
+    method = "sop"
   )[[2]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "shareofpref"
+    method = "sop"
   )[[3]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "shareofpref"
+    method = "sop"
   )[[4]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "shareofpref"
+    method = "sop"
   )[[5]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "shareofpref"
+    method = "sop"
   )[[6]]))
 
 
   expect_true(base::is.character(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "firstchoice"
+    method = "fc"
   )[[2]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "firstchoice"
+    method = "fc"
   )[[3]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "firstchoice"
+    method = "fc"
   )[[4]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "firstchoice"
+    method = "fc"
   )[[5]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "firstchoice"
+    method = "fc"
   )[[6]]))
 })
 
@@ -304,12 +304,12 @@ test_that("Check output - 1 group ", {
 test_that("group output equals group input ", {
   expect_equal(utils::str(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "shareofpref"
+    method = "sop"
   )[[1]]), utils::str(HOT$Group))
 
   expect_equal(utils::str(marksim(
     data = HOT, opts = c(Option_1:None), group = Group,
-    method = "firstchoice"
+    method = "fc"
   )[[1]]), utils::str(HOT$Group))
 })
 ##
@@ -319,12 +319,12 @@ test_that("group output equals group input - character input ", {
   HOT$Group2 <- c("Group 1", "Group 2")
   expect_equal(utils::str(marksim(
     data = HOT, opts = c(Option_1:None), group = Group2,
-    method = "shareofpref"
+    method = "sop"
   )[[1]]), utils::str(HOT$Group2))
 
   expect_equal(utils::str(marksim(
     data = HOT, opts = c(Option_1:None), group = Group2,
-    method = "firstchoice"
+    method = "fc"
   )[[1]]), utils::str(HOT$Group2))
 })
 
@@ -338,12 +338,12 @@ test_that("group output equals group input - labelled input ", {
   )
   expect_true(labelled::is.labelled(marksim(
     data = HOT, opts = c(Option_1:None), group = Group2,
-    method = "shareofpref"
+    method = "sop"
   )[[1]]))
 
   expect_true(labelled::is.labelled(marksim(
     data = HOT, opts = c(Option_1:None), group = Group2,
-    method = "firstchoice"
+    method = "fc"
   )[[1]]))
 })
 ##
@@ -356,61 +356,61 @@ test_that("group output equals group input - multiple grouping variables ", {
   )
   expect_equal(utils::str(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "shareofpref"
+    method = "sop"
   )[[1]]), utils::str(HOT$Group))
   expect_true(labelled::is.labelled(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "shareofpref"
+    method = "sop"
   )[[2]]))
   expect_true(base::is.character(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "shareofpref"
+    method = "sop"
   )[[3]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "shareofpref"
+    method = "sop"
   )[[4]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "shareofpref"
+    method = "sop"
   )[[5]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "shareofpref"
+    method = "sop"
   )[[6]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "shareofpref"
+    method = "sop"
   )[[7]]))
 
 
   expect_equal(utils::str(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "firstchoice"
+    method = "fc"
   )[[1]]), utils::str(HOT$Group))
   expect_true(labelled::is.labelled(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "firstchoice"
+    method = "fc"
   )[[2]]))
   expect_true(base::is.character(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "firstchoice"
+    method = "fc"
   )[[3]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "firstchoice"
+    method = "fc"
   )[[4]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "firstchoice"
+    method = "fc"
   )[[5]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "firstchoice"
+    method = "fc"
   )[[6]]))
   expect_true(base::is.numeric(marksim(
     data = HOT, opts = c(Option_1:None), group = c(Group, Group2),
-    method = "firstchoice"
+    method = "fc"
   )[[7]]))
 })
 ##
@@ -429,68 +429,68 @@ test_that("marksim() also working with data.frame not created with createHOT()",
   )
   expect_true(base::is.character(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "shareofpref"
+    method = "sop"
   )[[1]]))
   expect_true(base::is.numeric(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "shareofpref"
+    method = "sop"
   )[[2]]))
   expect_true(base::is.numeric(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "shareofpref"
+    method = "sop"
   )[[3]]))
   expect_true(base::is.numeric(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "shareofpref"
+    method = "sop"
   )[[4]]))
   expect_true(base::is.numeric(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "shareofpref"
+    method = "sop"
   )[[5]]))
   expect_true(tibble::is_tibble(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "shareofpref"
+    method = "sop"
   )))
   expect_false(base::anyNA(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "shareofpref"
+    method = "sop"
   )))
   expect_equal(base::sum(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "shareofpref"
+    method = "sop"
   )[[2]]), 100)
 
   expect_true(base::is.character(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "firstchoice"
+    method = "fc"
   )[[1]]))
   expect_true(base::is.numeric(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "firstchoice"
+    method = "fc"
   )[[2]]))
   expect_true(base::is.numeric(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "firstchoice"
+    method = "fc"
   )[[3]]))
   expect_true(base::is.numeric(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "firstchoice"
+    method = "fc"
   )[[4]]))
   expect_true(base::is.numeric(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "firstchoice"
+    method = "fc"
   )[[5]]))
   expect_true(tibble::is_tibble(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "firstchoice"
+    method = "fc"
   )))
   expect_false(base::anyNA(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "firstchoice"
+    method = "fc"
   )))
   expect_equal(base::sum(marksim(
     data = newHOT, opts = c(Option_1:Option_5),
-    method = "firstchoice"
+    method = "fc"
   )[[2]]), 100)
 })
 ##
@@ -499,79 +499,79 @@ test_that("marksim() also working with data.frame not created with createHOT()",
 test_that("check whether examples are correct ", {
   expect_equal(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[1]], HOT %>% dplyr::select(c(Option_1:None)) %>% base::colnames())
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[2]], 1), c(18.3, 11.3, 4.1, 32.5, 1.9, 10.4, 5.6, 16.0))
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[3]], 1), c(4.1, 2.7, 1.5, 4.4, 0.9, 2.7, 1.7, 3.3))
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[4]], 1), c(10.2, 6.0, 1.2, 23.8, 0.1, 5.1, 2.1, 9.5))
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[5]], 1), c(26.3, 16.6, 7.0, 41.2, 3.7, 15.6, 9.0, 22.4))
 
   expect_equal(base::sum(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[2]]), 100)
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[4]], 1) < base::round(marksim(data = HOT, opts = c(Option_1:None))[[5]], 1), rep(TRUE, 8))
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[2]], 1) < base::round(marksim(data = HOT, opts = c(Option_1:None))[[5]], 1), rep(TRUE, 8))
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "shareofpref"
+    method = "sop"
   )[[2]], 1) > base::round(marksim(data = HOT, opts = c(Option_1:None))[[4]], 1), rep(TRUE, 8))
 
 
   expect_equal(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[1]], HOT %>% dplyr::select(c(Option_1:None)) %>% base::colnames())
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[2]], 1), c(18.6, 10.0, 2.9, 38.6, 1.4, 8.6, 2.9, 17.1))
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[3]], 1), c(4.7, 3.6, 2.0, 5.9, 1.4, 3.4, 2.0, 4.5))
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[4]], 1), c(9.4, 2.9, -1.1, 27.1, -1.4, 2.0, -1.1, 8.3))
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[5]], 1), c(27.7, 17.1, 6.8, 50.1, 4.2, 15.2, 6.8, 26.0))
 
   expect_equal(base::sum(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[2]]), 100)
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[4]], 1) < base::round(marksim(data = HOT, opts = c(Option_1:None))[[5]], 1), rep(TRUE, 8))
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[2]], 1) < base::round(marksim(data = HOT, opts = c(Option_1:None))[[5]], 1), rep(TRUE, 8))
   expect_equal(base::round(marksim(
     data = HOT, opts = c(Option_1:None),
-    method = "firstchoice"
+    method = "fc"
   )[[2]], 1) > base::round(marksim(data = HOT, opts = c(Option_1:None))[[4]], 1), rep(TRUE, 8))
 })
 ##
@@ -581,7 +581,7 @@ test_that("if no method specified, share of preference should be used ", {
   expect_equal(
     marksim(
       data = HOT, opts = c(Option_1:None),
-      method = "shareofpref"
+      method = "sop"
     ),
     marksim(data = HOT, opts = c(Option_1:None))
   )
@@ -591,7 +591,7 @@ test_that("if no method specified, share of preference should be used ", {
   expect_equal(
     marksim(
       data = HOT, opts = c(Option_1:None),
-      method = "firstchoice"
+      method = "fc"
     )[[2]] ==
       marksim(data = HOT, opts = c(Option_1:None))[[2]],
     rep(FALSE, 8)
@@ -604,11 +604,11 @@ test_that("first choice and share of preference different results (at least for
   expect_equal(
     marksim(
       data = HOT, opts = c(Option_1:None),
-      method = "firstchoice"
+      method = "fc"
     )[[2]] ==
       marksim(
         data = HOT, opts = c(Option_1:None),
-        method = "shareofpref"
+        method = "sop"
       )[[2]],
     rep(FALSE, 8)
   )

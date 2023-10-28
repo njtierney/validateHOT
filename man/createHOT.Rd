@@ -61,6 +61,7 @@ a data frame
 }
 \description{
 Function used to create utilities for validation task.
+Currently not working with alternative-specific designs.
 }
 \details{
 In order to test validation metrics of a holdout/validation task, the
