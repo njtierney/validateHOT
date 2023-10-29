@@ -10,10 +10,10 @@ createHOT(
   none = NULL,
   prod,
   prod.levels,
-  interpolate.levels = NULL,
-  piece.p = NULL,
-  lin.p = NULL,
   coding = NULL,
+  interpolate.levels = NULL,
+  lin.p = NULL,
+  piece.p = NULL,
   method = c("ACBC", "CBC", "MaxDiff"),
   varskeep = NULL,
   choice
@@ -34,19 +34,19 @@ input of \code{prod} has to be numeric.}
 \item{prod.levels}{A list to define the attribute levels of the
 alternatives (\code{prod}).}
 
+\item{coding}{A vector of the coding of each attribute, '0' = part-worth
+coding,'1' = linear coding, '2' = piecewise coding; please make sure to code
+linear price of ACBC as piecewise since you have two values to interpolate.}
+
 \item{interpolate.levels}{A list of the levels of the variables that should
 be interpolated. These have to be the same as provided to Sawtooth Software.
 Please make sure to provide the whole list. Only has to be specified for the
 variables that are coded as '1' (linear) or '2' (piecewise).}
 
-\item{piece.p}{A list of the column indexes of the lower level and the upper
-level that should be used for interpolating.}
-
 \item{lin.p}{A vector of the column indexes of the linear variables.}
 
-\item{coding}{A vector of the coding of each attribute, '0' = part-worth
-coding,'1' = linear coding, '2' = piecewise coding; please make sure to code
-linear price of ACBC as piecewise since you have two values to interpolate.}
+\item{piece.p}{A list of the column indexes of the lower level and the upper
+level that should be used for interpolating.}
 
 \item{method}{A character to specify the \code{method} of your study.
 \code{method} has to be one of the following three: "MaxDiff", "CBC", or "ACBC".}
@@ -170,9 +170,9 @@ HOT_CBC_lin <- createHOT(
   none = 15,
   prod = 3,
   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
+  coding = c(0, 0, 1),
   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
   lin.p = 14,
-  coding = c(0, 0, 1),
   method = "CBC",
   varskeep = 17,
   choice = 16
@@ -192,12 +192,12 @@ HOT_ACBC <- createHOT(
   none = 37,
   prod = 6,
   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
+  coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
   interpolate.levels = list(c(2.093, 27.287)),
   piece.p = list(
     c(35, 36), c(35, 36), c(35, 36),
     c(35, 36), c(35, 36), c(35, 36)
   ),
-  coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
   method = "ACBC",
   choice = 38
 )
@@ -215,16 +215,16 @@ HOT_ACBC_inter <- createHOT(
   none = 39,
   prod = 6,
   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
-  interpolate.levels = list(
-    c(3, 5, 8, 10),
-    c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)
-  ),
+  coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
+  lin.p = 9,
   piece.p = list(
     c(36, 37), c(35, 36), c(35, 36),
     c(33, 34), c(33, 34), c(33, 34)
   ),
-  lin.p = 9,
-  coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
+  interpolate.levels = list(
+    c(3, 5, 8, 10),
+    c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)
+  ),
   method = "ACBC",
   choice = 40
 )

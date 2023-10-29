@@ -524,9 +524,9 @@ CBC <- createHOT(
   none = 15, # column index of none alternative
   prod = 3, # number of alternatives in validation task (excluding none)
   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)), # column index of the attribute levels for each attribute (for linear coded we specify value to be interpolated)
+  coding = c(0, 0, 1), # coding of the 3 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)), # actual values for the levels that should be interpolated
   lin.p = 14, # column index of the linear coded variable
-  coding = c(0, 0, 1), # coding of the 3 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
   method = "CBC", # method
   varskeep = 17, # column index of variables that should be kept in the dataframe
   choice = 16 # column index of choice

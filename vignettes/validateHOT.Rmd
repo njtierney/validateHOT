@@ -110,8 +110,8 @@ createHOT(
   id = 1, # column index of unique identifier
   none = 21, # column index of none alternative
   prod = 3, # no of alternatives in HOT excluding none
-  prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)), # column index of the attribute levels for each alternative
   coding = c(0, 0, 0), # coding of the 3 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
+  prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)), # column index of the attribute levels for each alternative
   method = "CBC", # method
   choice = 22 # column index of choice
 )
@@ -135,10 +135,10 @@ HOT <- createHOT(
   id = 1, # column index of unique identifier
   none = 15, # column index of none alternative
   prod = 3, # no of alternatives in HOT excluding none
+  coding = c(0, 0, 1), # coding of the 3 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)), # column index of the attribute levels for each alternative (for linear coded we specify the value to be interpolated)
   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)), # actual values for the levels that should be interpolated
   lin.p = 14, # column index of the linear coded variable
-  coding = c(0, 0, 1), # coding of the 3 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
   method = "CBC", # method
   varskeep = 17, # column index of variables that should be kept in the data frame
   choice = 16 # column index of choice
@@ -175,9 +175,9 @@ HOT <- createHOT(
   none = 37, # column index of none alternative
   prod = 6, # number of alternatives in validation task (excluding none)
   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6), # products specified above
+  coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2), # coding of the 9 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
   interpolate.levels = list(c(2.093, 27.287)), # actual values for the levels that should be interpolated, for linear coded price in ACBC this is just the lower bound and the upper bound
   piece.p = list(c(35, 36), c(35, 36), c(35, 36), c(35, 36), c(35, 36), c(35, 36)), # position of the piecewise coded variable
-  coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2), # coding of the 9 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
   method = "ACBC", # method
   choice = 38 # column index of choice
 )
@@ -205,10 +205,10 @@ HOT <- createHOT(
     c(4, 9, 10, 14, 20, 24, 25, 31, 7.99), # column index of the attribute levels for each alternative (for linear coded and piecewise coded we specify value to be interpolated)
     c(5, 8, 11, 14, 20, 24, 26, 30, 9.99) # column index of the attribute levels for each alternative (for linear coded and piecewise coded we specify value to be interpolated)
   ),
+  coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2), # coding of the 9 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
   interpolate.levels = list(c(3, 5, 8, 10), c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)), # actual values for the levels that should be interpolated (first entry refers to the linear coded variable, second entry refers to the piecewise coded variable)
   piece.p = list(c(36, 37), c(35, 36), c(35, 36), c(33, 34), c(33, 34), c(33, 34)), # position of the piecewise coded variable
   lin.p = 9, # position of the linear coded variable
-  coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2), # coding of the 9 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
   method = "ACBC", # method
   choice = 40 # column index of choice
 )

@@ -145,9 +145,9 @@
 #'   none = 15,
 #'   prod = 3,
 #'   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
+#'   coding = c(0, 0, 1),
 #'   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
 #'   lin.p = 14,
-#'   coding = c(0, 0, 1),
 #'   method = "CBC",
 #'   varskeep = 17,
 #'   choice = 16
@@ -167,12 +167,12 @@
 #'   none = 37,
 #'   prod = 6,
 #'   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
+#'   coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
 #'   interpolate.levels = list(c(2.093, 27.287)),
 #'   piece.p = list(
 #'     c(35, 36), c(35, 36), c(35, 36),
 #'     c(35, 36), c(35, 36), c(35, 36)
 #'   ),
-#'   coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
 #'   method = "ACBC",
 #'   choice = 38
 #' )
@@ -190,24 +190,26 @@
 #'   none = 39,
 #'   prod = 6,
 #'   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
-#'   interpolate.levels = list(
-#'     c(3, 5, 8, 10),
-#'     c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)
-#'   ),
+#'   coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
+#'   lin.p = 9,
 #'   piece.p = list(
 #'     c(36, 37), c(35, 36), c(35, 36),
 #'     c(33, 34), c(33, 34), c(33, 34)
 #'   ),
-#'   lin.p = 9,
-#'   coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
+#'   interpolate.levels = list(
+#'     c(3, 5, 8, 10),
+#'     c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)
+#'   ),
 #'   method = "ACBC",
 #'   choice = 40
 #' )
 #' }
 #' @export
 createHOT <- function(data, id, none = NULL, prod,
-                      prod.levels, interpolate.levels = NULL,
-                      piece.p = NULL, lin.p = NULL, coding = NULL,
+                      prod.levels, coding = NULL,
+                      interpolate.levels = NULL,
+                      lin.p = NULL,
+                      piece.p = NULL,
                       method = c("ACBC", "CBC", "MaxDiff"),
                       varskeep = NULL, choice) {
   # test whether input is numeric
