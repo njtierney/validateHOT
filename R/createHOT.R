@@ -276,6 +276,14 @@ createHOT <- function(data, id, none = NULL, prod,
     )
   }
 
+  if (!is.null(coding)){
+    for (i in 1:prod){
+      if (base::length(prod.levels[[i]]) != length(coding)) {
+        stop("Error: 'coding' and number of attributes must have the same length!")
+      }
+    }
+  }
+
   # test whether CBC is specified and no coding equal to 2
   if (method == "CBC" & base::any(coding == 2)) {
     base::stop("Error: Piecewise coding not possible for ", method, "!")

@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The functions of <code>validateHOT</code> are twofold: First, <code>validateHOT</code> provides functions to validate a validation/holdout task and ensure whether the model is valid in terms of predicting outside choice sets (i.e., choices that were not included in the model's estimation); second, <code>validateHOT</code> provides functions to run market simulations. Both components are key functions for preference measurement techniques such as CBC, ACBC, or MaxDiff.
+<code>validateHOT</code> is a package for conjoint and MaxDiff users. The functions of <code>validateHOT</code> are twofold: First, <code>validateHOT</code> provides functions to validate a validation/holdout task and ensure whether the model is valid in terms of predicting outside choice sets (i.e., choices that were not included in the model's estimation); second, <code>validateHOT</code> provides functions to run market simulations. Both components are key functions for preference measurement techniques such as CBC, ACBC, or MaxDiff.
 
 We created <code>validateHOT</code> to support students and practitioners who are less familiar with *R*. Moreover, we would also like to provide an easy and convenient way to validate a validation/holdout task for all the [Sawtooth Software](https://sawtoothsoftware.com/) users, who would like to validate their validation/holdout task in *R* for open-science purposes. Finally, the package has expanded in the past years, so `validateHOT` also offers some convenient functions to do some other fun stuff, e.g., running some simulations (e.g., TURF analysis or market simulations).
 
