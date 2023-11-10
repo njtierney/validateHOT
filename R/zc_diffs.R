@@ -1,4 +1,4 @@
-#' Attribute Importance for (A)CBC
+#' Zero-Centered Diffs for (A)CBC
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s).
@@ -9,12 +9,14 @@
 #' be interpolated. These have to be the same as provided to Sawtooth Software.
 #' Please make sure to provide the whole list. Only has to be specified for the
 #' variables that are coded as '1' (linear).
-#' @param res A vector indicating whether individual shares (\code{ind}) or
-#' aggregated (\code{agg}) shares should be returned.
+#' @param res A vector indicating whether individual zero-centered diffs (\code{ind}) or
+#' aggregated (\code{agg}) zero-centered diffs should be returned.
+#' @param none A vector whether \code{none} option was included.
 #'
 #' @details
-#' \code{att_imp} converts raw utilities of a CBC or an ACBC to relative importance
-#' scores (see, Orme, 2020, p. 80, for more information).
+#' \code{zc_diffs} converts raw utilities of a CBC or an ACBC to
+#' zero-centered diffs (Orme, 2020, p. 78). This allows for comparison between
+#' the attributes.
 #'
 #' \code{data} has to be a data frame with the attributes. Attribute levels need
 #' to be the raw utilities.
@@ -39,11 +41,14 @@
 #' or across \code{group} (\code{res} needs to be set to {agg}) or if it scores
 #' should be converted for individuals only
 #'
+#' \code{none} specifies whether none option was included or not, if yes,
+#' column name or column index of \code{none} needs to be specified. If no
+#' \code{none} option was included, leave it empty.
 #'
 #'
 #' @seealso {
+#' \code{\link[=att_imp]{att_imp}} for attribute importance scores for (A)CBC
 #' \code{\link[=prob_scores]{prob_scores}} for probability scores for MaxDiff
-#' \code{\link[=zc_diffs]{zc_diffs}} for zero-center diff scores for (A)CBC
 #' }
 #'
 #' @references {
@@ -57,17 +62,18 @@
 #'
 #' @examples
 #' \dontrun{
-#' att_imp(
+#' zc_diffs(
 #'   data = CBC,
 #'   attrib = list(
 #'     c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
 #'     c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
 #'     c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
 #'   ),
-#'   coding = c(0, 0, 0)
+#'   coding = c(0, 0, 0),
+#'   none = "none"
 #' )
 #'
-#' att_imp(
+#' zc_diffs(
 #'   data = CBC_lin,
 #'   attrib = list(
 #'     c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -75,13 +81,14 @@
 #'     c("Att3_Lin")
 #'   ),
 #'   coding = c(0, 0, 1),
-#'   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70))
+#'   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+#'   none = "none"
 #' )
 #' }
 #'
 #' @export
-att_imp <- function(data, group = NULL, attrib, coding,
-                    interpolate.levels = NULL, res = c("agg", "ind")) {
+zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NULL,
+                     res = c("agg", "ind"), none = NULL) {
   # grouping variable
   ## check for missings
   if (base::anyNA(data %>% dplyr::select(., {{ group }}))) {
@@ -116,7 +123,7 @@ att_imp <- function(data, group = NULL, attrib, coding,
 
   # test input of interpolate levels
   if (!(base::is.list(interpolate.levels)) &
-    !(base::is.null(interpolate.levels))) {
+      !(base::is.null(interpolate.levels))) {
     base::stop("Error: Input of 'interpolate.levels' has to be a list!")
   }
 
@@ -138,7 +145,7 @@ att_imp <- function(data, group = NULL, attrib, coding,
 
   # interpolate.levels can not be larger than number of attributes
   if (!base::is.null(interpolate.levels) &
-    (base::length(interpolate.levels) > base::length(attrib))) {
+      (base::length(interpolate.levels) > base::length(attrib))) {
     base::stop(
       "Error: List of 'interpolate.levels' can not be larger than list of 'attrib'!"
     )
@@ -205,26 +212,30 @@ att_imp <- function(data, group = NULL, attrib, coding,
 
   att <- base::length(attrib)
 
+  attrib_all <- c()
+  for (i in 1:base::length(attrib)){
+    attrib_all <- c(attrib_all, base::colnames(data[ , attrib[[i]]]))
+  }
+
   new <- c()
 
   for (i in 1:att) {
     helper <- 1
 
-    data[[base::paste0("att_imp", i)]] <- 0
+    data[[base::paste0("range_att_", i)]] <- 0
 
     vars <- attrib[[i]]
 
-    new <- c(new, base::paste0("att_imp", i))
+    new <- c(new, base::paste0("range_att_", i))
 
     for (j in 1:base::nrow(data)) {
       if (coding[i] == 0) {
-        data[j, base::paste0("att_imp", i)] <- base::abs(base::diff(base::range(data[j, vars])))
+        data[j, base::paste0("range_att_", i)] <- base::abs(base::diff(base::range(data[j, vars])))
       }
 
       if (coding[i] == 1) {
-        data[j, base::paste0("att_imp", i)] <- base::abs(data[j, vars] * base::abs(base::diff(base::range(interpolate.levels[[helper]]))))
+        data[j, base::paste0("range_att_", i)] <- base::abs(data[j, vars] * base::abs(base::diff(base::range(interpolate.levels[[helper]]))))
 
-        helper
       }
     }
 
@@ -233,25 +244,29 @@ att_imp <- function(data, group = NULL, attrib, coding,
     }
   }
 
+  if (!base::is.null(none)){
+    attrib_all <- c(attrib_all, (data %>% dplyr::select(none) %>% base::colnames(.)))
+  }
+
   if (res == "agg"){
     return(data %>%
-             dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x / base::rowSums(data[new]))) %>%
+             dplyr::mutate(factor = (att * 100) / base::rowSums(data[new])) %>%
+             dplyr::mutate(dplyr::across(tidyselect::all_of(attrib_all), ~ .x * factor)) %>%
              dplyr::group_by(dplyr::pick({{ group }})) %>%
-             dplyr::summarise(dplyr::across(tidyselect::all_of(new), c(mw = base::mean, std = stats::sd),
+             dplyr::summarise(dplyr::across(tidyselect::all_of(attrib_all), c(mw = base::mean, std = stats::sd),
                                             .names = "{.col}.{.fn}"
              )) %>%
              tidyr::pivot_longer(.,
                                  cols = tidyselect::ends_with(c(".mw", ".std")),
                                  names_to = c("Option", ".value"), names_sep = "\\."
-             ) %>%
-             dplyr::mutate_at(dplyr::vars(mw, std), ~ .x * 100))
+             )
+    )
   }
 
   if (res == "ind"){
     return(data %>%
-             dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x / base::rowSums(data[new]))) %>%
-             dplyr::select({{ group }}, tidyselect::all_of(new)) %>%
-             dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x * 100))
+             dplyr::mutate(factor = (att * 100) / base::rowSums(data[new])) %>%
+             dplyr::mutate(dplyr::across(tidyselect::all_of(attrib_all), ~ .x * factor))
     )
   }
 }

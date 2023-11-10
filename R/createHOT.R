@@ -217,7 +217,7 @@ createHOT <- function(data, id, none = NULL, prod,
     (!(base::is.numeric(none)) & !(base::is.null(none))) |
     !(base::is.numeric(prod)) |
     (!(base::is.numeric(varskeep)) & !(base::is.null(varskeep)))) {
-    base::stop("Error: Please insert column index (numeric inpute)!")
+    base::stop("Error: Please insert column index (numeric input)!")
   }
 
   # test numeric input for coding

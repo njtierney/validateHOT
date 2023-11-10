@@ -644,7 +644,8 @@ att_imp(
     c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
     c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
   ),
-  coding = c(0, 0, 0)
+  coding = c(0, 0, 0),
+  res = "agg"
 )
 ```
 
@@ -661,7 +662,8 @@ att_imp(
     c("Att3_Lin")
   ),
   coding = c(0, 0, 1),
-  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70))
+  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+  res = "agg"
 )
 ```
 
@@ -683,7 +685,8 @@ att_imp(
     c("Att8_Lev1", "Att8_Lev2"),
     c("Price_2.093", "Price_27.287")
   ),
-  coding = c(rep(0, 9))
+  coding = c(rep(0, 9)),
+  res = "agg"
 )
 ```
 
@@ -708,7 +711,8 @@ att_imp(
       "Price_17.99", "Price_25.99")
   ),
   coding = c(0, 1, rep(0, 7)),
-  interpolate.levels = list(c(3, 5, 8, 10))
+  interpolate.levels = list(c(3, 5, 8, 10)),
+  res = "agg"
 )
 ```
 
@@ -722,7 +726,8 @@ Finally, we will introduce `prob_scores()` which calculates the choice probabili
 prob_scores(
   data = MaxDiff,
   items = c(Option_01:Option_16),
-  set.size = 4
+  set.size = 4,
+  res = "agg"
 )
 ```
 
@@ -733,6 +738,7 @@ prob_scores(
   data = MaxDiff,
   items = c(Option_01:Option_16),
   set.size = 4,
+  res = "agg",
   anchor = "none"
 )
 ```

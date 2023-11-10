@@ -4,7 +4,10 @@
 #' @param group Optional column name(s) to specify grouping variable(s).
 #' @param items Vector that specifies the items.
 #' @param set.size A vector that specifies size of the choice set.
+#' @param res A vector indicating whether individual shares (\code{ind}) or
+#' aggregated (\code{agg}) shares should be returned.
 #' @param anchor An optional variable to specify anchor variable.
+#'
 #'
 #' @return a tibble
 #'
@@ -28,6 +31,10 @@
 #'
 #' \code{set.size} specifies the size of the choice sets (how many items were
 #' shown in one task). Input needs to be a whole number.
+#'
+#' \code{res} specifies whether results should be aggregated across all participants
+#' or across \code{group} (\code{res} needs to be set to {agg}) or if it scores
+#' should be converted for individuals only
 #'
 #' \code{anchor} only needs to be specified if anchored MaxDiff is applied. Input
 #' needs to be variable name or column index of anchor variable.
@@ -83,7 +90,8 @@
 #' }
 #'
 #' @export
-prob_scores <- function(data, group = NULL, items, set.size, anchor = NULL) {
+prob_scores <- function(data, group = NULL, items, set.size,
+                        res = c("agg", "ind"), anchor = NULL) {
   if (base::length(data %>% dplyr::select(., {{ items }})) < 2) {
     base::stop("Error: specify at least 2 items in 'items'!")
   }
@@ -131,8 +139,28 @@ prob_scores <- function(data, group = NULL, items, set.size, anchor = NULL) {
     }
   }
 
+  # test whether res is specified
+  if (base::missing(res)) {
+    base::stop("Error: 'res' is not defined!")
+  }
 
+  # test whether res is correctly specified
+  if ((res != "agg") & (res != "ind")) {
+    base::stop(
+      "Error: 'res' can only be set to 'agg' or 'ind'!"
+    )
+  }
+
+  # can not specify res to 'ind' and specify group
+  if ((res == "ind") & !base::missing(group)){
+    stop("Error: Can not speficy 'group' if 'res' is set to 'ind'!")
+  }
+
+
+
+  #######################################################
   if (base::is.null(anchor)) {
+    if (res == "agg"){
     return(data %>%
       dplyr::mutate(dplyr::across({{ items }}, ~ (base::exp(.x) / (base::exp(.x) + (set.size - 1))))) %>%
       dplyr::rowwise() %>%
@@ -148,14 +176,27 @@ prob_scores <- function(data, group = NULL, items, set.size, anchor = NULL) {
         cols = tidyselect::ends_with(c(".mw", ".std")),
         names_to = c("Option", ".value"), names_sep = "\\."
       ))
+    }
+
+
+    if (res == "ind"){
+      return(data %>%
+               dplyr::mutate(dplyr::across({{ items }}, ~ (base::exp(.x) / (base::exp(.x) + (set.size - 1))))) %>%
+               dplyr::rowwise() %>%
+               dplyr::mutate(Summe = base::sum(dplyr::pick({{ items }}))) %>% # sum up
+               dplyr::ungroup() %>%
+               dplyr::mutate(dplyr::across({{ items }}, ~ .x / Summe * 100))
+      )
+    }
   }
 
   if (!base::is.null(anchor)) {
+    if (res == "agg"){
     return(
       data %>%
-        dplyr::mutate(across(c({{ items }}, anchor), ~ (base::exp(.x) / (base::exp(.x) + (set.size - 1))) * 100 / (1 / set.size))) %>%
+        dplyr::mutate(across(c({{ items }}, tidyselect::all_of(anchor)), ~ (base::exp(.x) / (base::exp(.x) + (set.size - 1))) * 100 / (1 / set.size))) %>%
         dplyr::group_by(dplyr::pick({{ group }})) %>%
-        dplyr::summarise(dplyr::across(c({{ items }}, anchor),
+        dplyr::summarise(dplyr::across(c({{ items }}, tidyselect::all_of(anchor)),
           c(mw = base::mean, std = stats::sd),
           .names = "{.col}.{.fn}"
         )) %>%
@@ -164,5 +205,16 @@ prob_scores <- function(data, group = NULL, items, set.size, anchor = NULL) {
           names_to = c("Option", ".value"), names_sep = "\\."
         )
     )
+
+    }
+
+    if (res == "ind"){
+      return(
+        data %>%
+          dplyr::mutate(across(c({{ items }}, tidyselect::all_of(anchor)), ~ (base::exp(.x) / (base::exp(.x) + (set.size - 1))) * 100 / (1 / set.size)))
+      )
+
+
+    }
   }
 }

@@ -1,7 +1,8 @@
 test_that("items missing ", {
   expect_error(prob_scores(
     data = MaxDiff,
-    set.size = 4
+    set.size = 4,
+    res = "agg"
   ))
 })
 
@@ -9,7 +10,8 @@ test_that("Only 1 item ", {
   expect_error(prob_scores(
     data = MaxDiff,
     item = Option_01,
-    set.size = 4
+    set.size = 4,
+    res = "agg"
   ))
 })
 
@@ -19,7 +21,8 @@ test_that("Item not numeric ", {
   expect_error(prob_scores(
     data = data2,
     items = c(Option_01:Option_16),
-    set.size = 4
+    set.size = 4,
+    res = "agg"
   ))
 })
 
@@ -30,7 +33,8 @@ test_that("Group contains NAs - warning ", {
     data = data2,
     items = c(Option_01:Option_16),
     set.size = 4,
-    group = Group
+    group = Group,
+    res = "agg"
   ))
 })
 
@@ -40,14 +44,16 @@ test_that("Items no NAs ", {
   expect_error(prob_scores(
     data = data2,
     items = c(Option_01:Option_16),
-    set.size = 4
+    set.size = 4,
+    res = "agg"
   ))
 })
 
 
 test_that("set.size missing ", {
   expect_error(prob_scores(
-    items = c(Option_01:Option_16)
+    items = c(Option_01:Option_16),
+    res = "agg"
   ))
 })
 
@@ -55,7 +61,8 @@ test_that("set.size not numeric ", {
   expect_error(prob_scores(
     data = MaxDiff,
     items = c(Option_01:Option_16),
-    set.size = "a"
+    set.size = "a",
+    res = "agg"
   ))
 })
 
@@ -63,7 +70,8 @@ test_that("set.size larger than items ", {
   expect_error(prob_scores(
     data = MaxDiff,
     items = c(Option_01:Option_16),
-    set.size = 17
+    set.size = 17,
+    res = "agg"
   ))
 })
 
@@ -74,7 +82,8 @@ test_that("anchor needs to be numeric ", {
     data = data2,
     items = c(Option_01:Option_16),
     set.size = 4,
-    anchor = "none"
+    anchor = "none",
+    res = "agg"
   ))
 })
 
@@ -85,7 +94,8 @@ test_that("anchor contains NAs ", {
     data = data2,
     items = c(Option_01:Option_16),
     set.size = 4,
-    anchor = "none"
+    anchor = "none",
+    res = "agg"
   ))
 })
 
@@ -94,7 +104,8 @@ test_that("group output equals group input ", {
     data = MaxDiff,
     items = c(Option_01:Option_16),
     set.size = 4,
-    group = Group
+    group = Group,
+    res = "agg"
   )[[1]]), utils::str(MaxDiff$Group))
 })
 
@@ -104,7 +115,8 @@ test_that("group output equals group input - character input ", {
     data = MaxDiff,
     items = c(Option_01:Option_16),
     set.size = 4,
-    group = Group2
+    group = Group2,
+    res = "agg"
   )[[1]]), utils::str(MaxDiff$Group2))
 })
 
@@ -117,7 +129,8 @@ test_that("group output equals group input - labelled input ", {
     data = MaxDiff,
     items = c(Option_01:Option_16),
     set.size = 4,
-    group = Group2
+    group = Group2,
+    res = "agg"
   )[[1]]), labelled::is.labelled(MaxDiff$Group2))
 })
 
@@ -127,7 +140,8 @@ test_that("Structure of Output data.frame ", {
     prob_scores(
       data = MaxDiff,
       items = c(Option_01:Option_16),
-      set.size = 4
+      set.size = 4,
+      res = "agg"
     )
   ))
 })
@@ -137,7 +151,8 @@ test_that("Structure of Output tibble ", {
     prob_scores(
       data = MaxDiff,
       items = c(Option_01:Option_16),
-      set.size = 4
+      set.size = 4,
+      res = "agg"
     )
   ))
 })
@@ -147,7 +162,8 @@ test_that("check whether examples are correct ", {
   expect_equal(base::round(base::as.numeric(prob_scores(
     data = MaxDiff,
     items = c(Option_01:Option_16),
-    set.size = 4
+    set.size = 4,
+    res = "agg"
   )[[2]]), 1), c(7.2, 5.9, 6.4, 7.2, 6.1, 9.9, 5.8, 5.7, 5.6, 6.0, 5.9, 5.9, 7.4, 2.8, 6.6, 5.7))
 })
 
@@ -155,7 +171,8 @@ test_that("check whether examples are correct ", {
   expect_equal(prob_scores(
     data = MaxDiff,
     items = c(Option_01:Option_16),
-    set.size = 4
+    set.size = 4,
+    res = "agg"
   )[[1]], c(base::paste0("Option_0", c(1:9)), base::paste0("Option_", c(10:16))))
 })
 
@@ -163,7 +180,8 @@ test_that("check whether examples are correct ", {
   expect_equal(base::round(base::as.numeric(prob_scores(
     data = MaxDiff,
     items = c(Option_01:Option_16),
-    set.size = 4
+    set.size = 4,
+    res = "agg"
   )[[3]]), 1), c(11.5, 5.9, 6.7, 12.7, 8.5, 15.0, 7.7, 8.0, 8.9, 7.0, 8.5, 7.2, 6.3, 4.6, 8.2, 9.7))
 })
 
@@ -172,7 +190,8 @@ test_that("anchor set to 100 ", {
     data = MaxDiff,
     items = c(Option_01:Option_16),
     set.size = 4,
-    anchor = "none"
+    anchor = "none",
+    res = "agg"
   )[[17, 2]], 100)
 })
 
@@ -181,7 +200,8 @@ test_that("anchor also working with column index ", {
     data = MaxDiff,
     items = c(Option_01:Option_16),
     set.size = 4,
-    anchor = which(colnames(MaxDiff) == "none")
+    anchor = which(colnames(MaxDiff) == "none"),
+    res = "agg"
   )[[17, 2]], 100)
 })
 
@@ -191,13 +211,57 @@ test_that("anchor also working with column index ", {
       data = MaxDiff,
       items = c(Option_01:Option_16),
       set.size = 4,
-      anchor = which(colnames(MaxDiff) == "none")
+      anchor = which(colnames(MaxDiff) == "none"),
+      res = "agg"
     ),
     prob_scores(
       data = MaxDiff,
       items = c(Option_01:Option_16),
       set.size = 4,
-      anchor = "none"
+      anchor = "none",
+      res = "agg"
     )
   )
 })
+
+test_that("res missing ", {
+  expect_error(prob_scores(
+    data = MaxDiff,
+    items = c(Option_01:Option_16),
+    set.size = 4,
+    anchor = which(colnames(MaxDiff) == "none")
+  ))
+})
+
+test_that("res noz specified to ind or agg ", {
+  expect_error(prob_scores(
+    data = MaxDiff,
+    items = c(Option_01:Option_16),
+    set.size = 4,
+    anchor = which(colnames(MaxDiff) == "none"),
+    res = "xyz"
+  ))
+})
+
+test_that("group can not be specified when res set to ind ", {
+  expect_error(prob_scores(
+    data = MaxDiff,
+    items = c(Option_01:Option_16),
+    set.size = 4,
+    anchor = which(colnames(MaxDiff) == "none"),
+    res = "ind",
+    group = "Group"
+  ))
+})
+
+
+test_that("rows of inputs equals rows of output ", {
+  expect_equal(nrow(prob_scores(
+    data = MaxDiff,
+    items = c(Option_01:Option_16),
+    set.size = 4,
+    anchor = which(colnames(MaxDiff) == "none"),
+    res = "ind")), nrow(MaxDiff))
+})
+
+

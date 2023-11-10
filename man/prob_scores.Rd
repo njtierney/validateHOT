@@ -4,7 +4,14 @@
 \alias{prob_scores}
 \title{Probability Scores for (anchored) MaxDiff}
 \usage{
-prob_scores(data, group = NULL, items, set.size, anchor = NULL)
+prob_scores(
+  data,
+  group = NULL,
+  items,
+  set.size,
+  res = c("agg", "ind"),
+  anchor = NULL
+)
 }
 \arguments{
 \item{data}{A data frame with all relevant variables.}
@@ -14,6 +21,9 @@ prob_scores(data, group = NULL, items, set.size, anchor = NULL)
 \item{items}{Vector that specifies the items.}
 
 \item{set.size}{A vector that specifies size of the choice set.}
+
+\item{res}{A vector indicating whether individual shares (\code{ind}) or
+aggregated (\code{agg}) shares should be returned.}
 
 \item{anchor}{An optional variable to specify anchor variable.}
 }
@@ -43,6 +53,10 @@ Input for \code{items} has to be variable names.
 
 \code{set.size} specifies the size of the choice sets (how many items were
 shown in one task). Input needs to be a whole number.
+
+\code{res} specifies whether results should be aggregated across all participants
+or across \code{group} (\code{res} needs to be set to {agg}) or if it scores
+should be converted for individuals only
 
 \code{anchor} only needs to be specified if anchored MaxDiff is applied. Input
 needs to be variable name or column index of anchor variable.
