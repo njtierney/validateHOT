@@ -38,7 +38,7 @@ journal: JOSS
 
 # Summary
 
-validateHOT is a package that provides functions to both validate a validation/holdout task and run market simulations for results obtained in a (adaptive) choice-based conjoint analysis (hereafter ACBC and CBC, respectively) and maximum difference scaling (hereafter MaxDiff) using `ChoiceModelR`[@ChoiceModelR] or [Sawtooth Software](https://sawtoothsoftware.com/).
+validateHOT is a package that provides functions to both validate a validation/holdout task and run market simulations for results obtained in a (adaptive) choice-based conjoint analysis (hereafter ACBC and CBC, respectively) and maximum difference scaling (hereafter MaxDiff) using `ChoiceModelR` [@ChoiceModelR] or [Sawtooth Software](https://sawtoothsoftware.com/).
 
 Preference measurement techniques', such as (A)CBC or MaxDiff, ultimate goal is to predict future behavior [@green1990]. Hence, it is essential for both academics and practitioners to ensure that the collected data is valid and predicts outside tasks (i.e., the model has external validity) well.[^1] The easiest way to test it is to include so-called validation or holdout tasks [@Orme2015], which are tasks that are fixed (i.e., same across participant) and are usually not used for estimating the part-worth utilities in hierarchical Bayes estimation. Practitioners often do not include them [@yang2018], which is unsatisfactory given the fact that the model is used to estimate market shares which poses the basis for relevant marketing decisions.
 
@@ -58,7 +58,7 @@ validateHOT's functions can be categorized into four main components, see \autor
 |:----------------:|:----------------:|:----------------:|:----------------:|
 |     hitrate()      |    accuracy()    |    freqassort()    |    att_imp()     |
 |        kl()        |       f1()       |     marksim()      |  prob_scores()   |
-|       mae()        |   precision()    |      reach()       |    zc-diffs()    |
+|       mae()        |   precision()    |      reach()       |    zc_diffs()    |
 |      medae()       |     recall()     |       turf()       |                  |
 |       mhp()        |  specificity()   |                    |                  |
 |       rmse()       |                  |                    |                  |
@@ -75,7 +75,6 @@ Assuming you included a validation/holdout task with a total of 7 alternatives p
 
 
 ```r
-# create holdout task and define relevant column indexes
 HOT <- createHOT(
   data = MaxDiff, 
   id = "ID", 

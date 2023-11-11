@@ -61,7 +61,7 @@ validateHOT's functions can be categorized into four main components, see \autor
 |:----------------:|:----------------:|:----------------:|:----------------:|
 |     hitrate()      |    accuracy()    |    freqassort()    |    att_imp()     |
 |        kl()        |       f1()       |     marksim()      |  prob_scores()   |
-|       mae()        |   precision()    |      reach()       |    zc-diffs()    |
+|       mae()        |   precision()    |      reach()       |    zc_diffs()    |
 |      medae()       |     recall()     |       turf()       |                  |
 |       mhp()        |  specificity()   |                    |                  |
 |       rmse()       |                  |                    |                  |
@@ -77,7 +77,6 @@ After running the Hierarchical Bayes estimation, the **raw** utility scores have
 Assuming you included a validation/holdout task with a total of 7 alternatives plus the no-buy alternative (\texttt{\color{purple}none}). To create this validation task in *R*, we use the \texttt{\color{purple}createHOT} function.
 
 ```{r}
-# create holdout task and define relevant column indexes
 HOT <- createHOT(
   data = MaxDiff, 
   id = "ID", 
