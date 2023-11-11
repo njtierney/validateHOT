@@ -8,6 +8,7 @@
 [![R-CMD-check](https://github.com/JoshSchramm94/validateHOT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JoshSchramm94/validateHOT/actions/workflows/R-CMD-check.yaml)
 
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+
 <!-- badges: end -->
 
 The goal of `validateHOT` is to validate the results of your validation
@@ -15,9 +16,10 @@ task (also known as holdout task) as well as a tool for simulating
 markets with the results of your MaxDiff, CBC, and ACBC. This package is
 especially relevant for the [Sawtooth
 Software](https://sawtoothsoftware.com/) community who would like to
-report their analysis in *R* for open science purposes. Of course, this
-package is also useful for practitioners, who would like to run the
-analyses in an open source software. The ultimate goal of these
+report their analysis in *R* for open science purposes. However, it also
+works perfectly with the great package `ChoiceModelR`(Sermas, 2022). Of
+course, this package is also useful for practitioners, who would like to
+run the analyses in an open source software. The ultimate goal of these
 preference measurement techniques is to predict future behavior (Green &
 Srinivasan, 1990). Therefore, it is essential for both academics and
 practitioners to ensure that the collected data is valid and can also
@@ -37,9 +39,9 @@ simulate or predict markets (Gilbride, Lenk, & Brazell, 2008).
 `validateHOT` provides key functions for an easy implementation to
 simulate markets for both (A)CBC and MaxDiff.
 
-> `validateHOT` was developed to work with Sawtooth Software. Please be
-> cautious about using it with different platforms (especially for
-> linear and piecewise-coded variables).
+> `validateHOT` was developed to work with Sawtooth Software and
+> `ChoiceModelR`. Please be cautious about using it with different
+> platforms (especially for linear and piecewise-coded variables).
 
 👉🏾 <u>**What you need to provide**</u>: <br> After collecting your data,
 and running your initial Hierarchical Bayes models, you can turn to
@@ -53,7 +55,7 @@ markdown, for a more detailed tutorial, please see the vignette that
 comes along with `validateHOT`.
 
 👈🏾 <u>**What you get**</u>:<br> At the moment, `validateHOT` provides
-functions for 3 key areas:
+functions for 4 key areas:
 
 <ul>
 <li>
@@ -67,22 +69,18 @@ matrix)
 simulation methods, for example, to determine optimal product
 combinations
 </li>
+<li>
+converting raw logit utilities in scores that are easier to interpret
+</li>
 </ul>
 
-For all 3 key areas, the `createHOT()` function is essential. This
+For all 4 key areas, the `createHOT()` function is essential. This
 function creates the total utilities for each alternative in the
 validation/holdout task and also in the simulation method, respectively.
 Rao (2014, p. 82) mentions the additive utility model stating that the
 total utility of a profile or conjoint model is the sum of its attribute
 levels. `createHOT()` will calculate the total utility of each
 alternative you specify.
-
-> We are planning to expand the functions of the package by also
-> providing functions to convert the raw utilities into scores that are
-> easier to interpretate, for example, `prob_scores()` to calculate
-> choice probabilities of both unanchored and anchored MaxDiff or
-> `att_imp()` to calculate the importance of the attributes included in
-> an ACBC or CBC.
 
 ### Classical validation metrics
 
@@ -143,6 +141,16 @@ chosen. `validateHOT` now measures whether or not a buy (participant
 opts for one of the 5 alternatives) or a no-buy (participant opts for
 the no-buy alternative), respectively, is correctly predicted.
 
+Please be aware that for coding, `validateHOT` applies the following
+coding of the *buy* and *no-buy* alternatives. Rows refer to the
+observed decisions while columns refer to the predicted ones.
+
+|        |     |        |
+|--------|:---:|:------:|
+|        | Buy | No-buy |
+| Buy    | TP  |   FN   |
+| No-buy | FP  |   TN   |
+
 <ul>
 <li>
 <code>accuracy()</code>: calculates the number of correctly predicted
@@ -181,7 +189,7 @@ the reach (e.g., how many participants consider buying at least one
 product of that assortment) and the frequency (how many products are on
 average a purchase option). <code>turf()</code> currently provides both
 the *threshold* approach (<code>approach = ‘thres’</code>; all products
-that exceed a threshold are considered, e.g., a purchase option; Chrzan
+that exceed a threshold are considered, e.g., as purchase option; Chrzan
 & Orme, 2019, p. 112) and the *first choice* approach (<code>approach =
 ‘thres’</code>; only product with highest utility is considered as
 purchase option; Chrzan & Orme, 2019, p. 111).
@@ -212,37 +220,39 @@ are interested in <code>reach()</code>.
 <code>marksim()</code>: runs market simulations (either share of
 preference or first choice rule), including the standard error, as well
 as the lower and upper confidence interval, which is calculated
-according to the $mean +/- 1.96 x \frac{sd}{\sqrt(n)}$ (Orme, 2020,
-p. 94).
+according to the $mean +/- 1.96 x \frac{sd}{\sqrt(n)}$ (Orme, 2020, p.
+94).
 </li>
 </ul>
 
 > <b>Important</b>: For both <code>reach()</code> and
-> <code>freqassort()</code>, <code>noen</code> does not necessarily have
+> <code>freqassort()</code>, <code>none</code> does not necessarily have
 > to be the no-buy alternative but can be another alternative that
 > should be exceeded.
 
 ### Reestimating raw utilities
 
-<code>validateHOT</code> also provides 2 functions to better interpret
-the scores of both (A)CBC and MaxDiff. Currently, two functions are
+<code>validateHOT</code> also provides 3 functions to better interpret
+the scores of both (A)CBC and MaxDiff. Currently, 3 functions are
 provided, namely:
 
 <ul>
 <li>
 <code>att_imp()</code>: converts the raw utilities of either an ACBC or
-CBC into importance scores for each attribute (see, Orme, 2020,
-pp. 79-81)
+CBC into importance scores for each attribute (see, Orme, 2020, pp.
+79-81)
 </li>
 <li>
+
 <code>prob_scores()</code>converts the raw utilities of a MaxDiff to
 choice probabilities by applying the following procedures:
+
 <ul>
 <li>
 For unanchored MaxDiff: First, the scores are zero-centered, afterwards
 they are transformed by the following formula
 $\frac{exp^{U_i}}{(exp^{U_i} + a - 1)}$ (Chrzan & Orme, 2019, p. 56),
-where *$U_i$* is the raw utility of item *i* and <code>a</code> is the
+where $U_i$ is the raw utility of item *i* and <code>a</code> is the
 number of items shown simultaneously per MaxDiff task. Finally, the
 scores are normalized.
 </li>
@@ -253,12 +263,16 @@ Orme, 2019, p. 59).
 </li>
 </ul>
 </li>
+<li>
+<code>zc_diffs()</code>: rescales the raw logit utilities to make them
+comparable across participants (Sawtooth Software Inc, 2023, p. 343).
+</li>
 </ul>
 
 ### Data Frames provided by <code>validateHOT</code>
 
-`validaeHOT` provides 5 data sets that come with the package. These
-datasets should help to better understand the way the data needs to be
+`validaeHOT` provides 5 data sets that come with the package. These data
+sets should help to better understand the way the data needs to be
 defined, especially for the `createHOT()` function.
 
 <ul>
@@ -342,17 +356,14 @@ data("CBC")
 
 The data frame has a total of 79 participants and 23 columns.
 
-Now imagine you included a validation/holdout task with three
-alternatives plus a no-buy alternative. We specify the `data` argument
-and the column index of `id`. Since we also have a *no-buy* alternative
-in our validation task, we next specify the `none` argument, otherwise
-we would have left it empty. Afterwards, we specify the number of
-alternatives (`prod`) in our validation/holdout task (excluding the
-*no-buy* alternative). Next, we define each alternative with the
-argument `prod.levels`. If we look back at the data frame, we can see
-that the first alternative in the holdout task (`c(4, 9, 19)`) is
-composed of the following attribute levels `Att1_Lev1`, `Att2_Lev1`, and
-`Att3_Lev5`.
+Now imagine you included a validation/holdout task with 3 alternatives
+plus a no-buy alternative. We specify the `data` argument and as well as
+the `id`. Since we also have a *no-buy* alternative in our validation
+task, we next specify the `none` argument, otherwise we would have left
+it empty. Afterwards, we define each alternative with the argument
+`prod.levels`. If we look back at the data frame, we can see that the
+first alternative in the holdout task (`c(4, 9, 19)`) is composed of the
+following attribute levels `Att1_Lev1`, `Att2_Lev1`, and `Att3_Lev5`.
 
 As mentioned above, all the attributes are part-worth coded, therefore,
 we set `coding = c(0, 0, 0)`. Finally, we specify the method, which is
@@ -361,25 +372,26 @@ participant’s choice (`choice`). If you run the code, a data frame
 called `HOT` (short form of **H**old**o**ut **t**ask) will be returned
 to the global environment.
 
-> ❗ `createHOT()` is currently just taking indexes instead of column
-> names, please be aware of this. However, you can easily find out the
-> index by either using the `names()` function to see all names of the
-> dataframe, or if you already know the name of the variable, you can
-> use `which()` and `colnames()`, both functions are provided by the
-> base package (R Core Team, 2023). For example, if you want to find out
-> the column index of `ID`, you could run `which(colnames(CBC) == "ID")`
-> to determine the column index of `ID`.
+> ❗ `createHOT()` takes both column names and column indexes. However,
+> please be aware, if you include linear coding or piecewise coding, you
+> **have** to provide the column indexes for the input in prod.levels.,
+> please be aware of this. However, you can easily find out the index by
+> either using the `names()` function to see all names of the data
+> frame, or if you already know the name of the variable, you can use
+> `which()` and `colnames()`, both functions are provided by the base
+> package (R Core Team, 2023). For example, if you want to find out the
+> column index of `ID`, you could run `which(colnames(CBC) == "ID")` to
+> determine the column index of `ID`.
 
 ``` r
 HOT <- createHOT(
-  data = CBC, # data frame
-  id = 1, # column index of the id
-  none = 21, # column index of none alternative
-  prod = 3, # number of alternatives in validation task (excluding none)
-  prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)), # column index of the attribute levels for each attribute
-  coding = c(0, 0, 0), # how the attributes were coded
-  method = "CBC", # method
-  choice = 22 # column index of choice
+  data = CBC,
+  id = "ID",
+  none = 21,
+  prod.levels = list(c("Att1_Lev1", "Att2_Lev1", "Att3_Lev5"), c(8, 12, 17), c(5, 10, 17)),
+  coding = c(0, 0, 0),
+  method = "CBC",
+  choice = "HOT"
 )
 ```
 
@@ -390,19 +402,19 @@ validation/holdout task.
 ``` r
 head(HOT)
 #>   ID   Option_1   Option_2   Option_3       None choice
-#> 1  1 -0.2029166  0.5851903  1.3231991 -3.2921817      1
-#> 2  2 -0.1431625 -0.7186898 -1.7759660 -0.9123018      1
-#> 3  3 -0.5995552 -0.4783988 -2.2596407 -0.7447178      1
-#> 4  4 -1.3542603 -1.8028929 -0.9638149  2.5995588      4
-#> 5  5 -0.1875285 -0.6541611 -0.9273235 -2.8965076      2
-#> 6  6  1.1212906 -0.9250507 -1.3261888 -1.0404554      2
+#> 1  1  0.5613133  0.5851903  1.3231991 -3.2921817      1
+#> 2  2 -1.8143533 -0.7186898 -1.7759660 -0.9123018      1
+#> 3  3 -0.1217458 -0.4783988 -2.2596407 -0.7447178      1
+#> 4  4 -0.6333181 -1.8028929 -0.9638149  2.5995588      4
+#> 5  5  1.3698645 -0.6541611 -0.9273235 -2.8965076      2
+#> 6  6 -0.6231678 -0.9250507 -1.3261888 -1.0404554      2
 ```
 
 In the next step, we would like to see how well our model (from which we
 took the raw utilities) predicts the actual choices in the
 validation/holdout task. First, we will run the `hitrate()` function. We
 specify the `data`, the column names of the alternatives (`opts`;
-remember there are three alternatives + the *no-buy* alternative), and
+remember there are 3 alternatives + the *no-buy* alternative), and
 finally the actual choice (`choice`).
 
 ``` r
@@ -414,7 +426,7 @@ hitrate(
 #> # A tibble: 1 × 5
 #>      HR    se chance   cor     n
 #>   <dbl> <dbl>  <dbl> <int> <int>
-#> 1  48.1  5.66     25    38    79
+#> 1  46.8  5.65     25    37    79
 ```
 
 Next, we look at the magnitude of the mean absolute error by running the
@@ -430,7 +442,7 @@ mae(
 #> # A tibble: 1 × 1
 #>     mae
 #>   <dbl>
-#> 1  13.1
+#> 1  10.1
 ```
 
 To cover also one example on how to use the metrics of the confusion
@@ -468,7 +480,7 @@ reach(
 #> # A tibble: 1 × 1
 #>   reach
 #>   <dbl>
-#> 1  88.6
+#> 1  86.1
 ```
 
 ### Example II - CBC with linear coding
@@ -485,28 +497,28 @@ data("CBC_lin")
 ```
 
 Next, we create the validation/holdout task to evaluate it in the next
-step. We use a validation/holdout task with three alternatives plus the
+step. We use a validation/holdout task with 3 alternatives plus the
 *no-buy* alternative, just as we did in the previous example. The only
 difference to the previous example is that for our model estimation, the
 third attribute (`Att3_Lin`) was coded as linear.
 
-Again, we first define data. The `id` is saved in the first column. The
-utilities for the `none` parameter are stored in the 15th column, and we
-again set `prod` to 3 (**excluding** the *no-buy* alternative). Next, we
-define the `prod.levels` for each alternative. For example, we can see
-that the second alternative is composed of `Att1_Lev5`, `Att2_Lev4`, and
-`60` which is the value that should be interpolated. We tell
-`createHOT()` that this value needs to be interpolated by specifying the
-`coding` argument. This tells us that the first two attributes
-(`Att1_Lev5`, `Att2_Lev4` in the case of alternative 2) are part-worth
-coded (`0`) while the third attribute is linear coded (`1`).
+Again, we first define data, namely the `id` as well as the `none`
+alternative. Next, we define the `prod.levels` for each alternative.
+Since we have one linear coded attribute, we have to specify the column
+indexes instead of the column names. For example, for the second
+alternative which is composed of `Att1_Lev5`, `Att2_Lev4`, and `60`
+which is the value that should be interpolated. We tell `createHOT()`
+that this value needs to be interpolated by specifying the `coding`
+argument. This tells us that the first two attributes (`Att1_Lev5`,
+`Att2_Lev4` in the case of alternative 2) are part-worth coded (`0`)
+while the third attribute is linear coded (`1`).
 
 To interpolate the value, we have to provide `createHOT()` the
 `interpolate.levels`. These **need** to be the same as provided to
-Sawtooth as levels. Moreover, it is important that the value that should
-be interpolated needs to lie within the lower and upper bound of
-`interpolate.levels`. In our case, we had 7 levels that range from 10 to
-70.
+Sawtooth or `ChoiceModelR` as levels. Moreover, it is important that the
+value that should be interpolated needs to lie within the lower and
+upper bound of `interpolate.levels`. In our case, we had 7 levels that
+range from 10 to 70.
 
 Next, we define the column index of the linear coded variable (`lin.p`)
 and specify the `coding` we talked about above. Again, we are running a
@@ -514,22 +526,21 @@ and specify the `coding` we talked about above. Again, we are running a
 keep some of the variables in the data frame, which we specify in
 `varskeep`. We only keep one further variable, however, you can specify
 as many as you want. This could be relevant if you would like to display
-results per group. Finally, we just tell `createHOT()` the column index
-of the final choice (`choice`) and we are all set.
+results per group. Finally, we define the actual choice (`choice`) in
+the holdout/validation task and we are all set.
 
 ``` r
 CBC <- createHOT(
   data = CBC_lin, # data frame
-  id = 1, # column index of the id
-  none = 15, # column index of none alternative
-  prod = 3, # number of alternatives in validation task (excluding none)
-  prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)), # column index of the attribute levels for each attribute (for linear coded we specify value to be interpolated)
-  coding = c(0, 0, 1), # coding of the 3 attributes; 0 = part-worth, 1 = linear, 2 = piecewise
-  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)), # actual values for the levels that should be interpolated
-  lin.p = 14, # column index of the linear coded variable
-  method = "CBC", # method
-  varskeep = 17, # column index of variables that should be kept in the dataframe
-  choice = 16 # column index of choice
+  id = 1,
+  none = 15,
+  prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
+  coding = c(0, 0, 1),
+  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+  lin.p = 14,
+  method = "CBC",
+  varskeep = "Group",
+  choice = "HOT"
 )
 ```
 
@@ -613,6 +624,9 @@ Marketing: New Developments with Implications for Research and
 Practice.” <em>Journal of Marketing 54</em>(4):
 3-19.<https://doi.org/10.1177/002224299005400402>.
 
+Sawtooth Software Inc. 2023. <em>Lighthouse Studio 9. Version
+9.15.2.</em> Sequim, WA.: Sawtooth Software Inc.
+
 Hamner, Ben, and Michael Frasco. 2018. “Metrics: Evaluation Metrics for
 Machine Learning.” <https://CRAN.R-project.org/package=Metrics>.
 
@@ -633,6 +647,9 @@ Computing.” <https://www.R-project.org/>.
 
 Rao, Vithala R. 2014. <em>Applied Conjoint Analysis.</em> Springer
 Berlin Heidelberg. <https://doi.org/10.1007/978-3-540-87753-0>.
+
+Sermas R (2022). *ChoiceModelR: Choice Modeling in R*. R package version
+1.3.0, <https://CRAN.R-project.org/package=ChoiceModelR>.
 
 Yang, Liu (Cathy), Olivier Toubia, and Martijn G. de Jong. 2018.
 “Attention, Information Processing, and Choice in Incentive-Aligned

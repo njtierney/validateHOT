@@ -1,6 +1,6 @@
 HOT <- createHOT(
   data = MaxDiff, none = 19,
-  id = 1, prod = 7,
+  id = 1,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   choice = 20, method = "MaxDiff", varskeep = 21
 )
@@ -133,7 +133,7 @@ test_that("check whether examples are correct ", {
 
 test_that("Test whether results equals Metrics::mae ", {
   actual <- HOT %>%
-    dplyr::mutate(dplyr::across(Option_1:None, function(x) (base::exp(x)/base::rowSums(base::exp(.[c(2:9)]))))) %>%
+    dplyr::mutate(dplyr::across(Option_1:None, function(x) (base::exp(x) / base::rowSums(base::exp(.[c(2:9)]))))) %>%
     dplyr::summarise(dplyr::across(Option_1:None, ~ mean(.x))) %>%
     base::unlist() %>%
     base::unname()

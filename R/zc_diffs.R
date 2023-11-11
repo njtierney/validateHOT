@@ -95,11 +95,11 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
     warning("Warning: 'group' contains NAs!")
   }
 
-  if (base::is.null(coding)){
+  if (base::is.null(coding)) {
     base::stop("Error: 'coding' has to be specified!")
   }
 
-  if (base::length(attrib) != base::length(coding)){
+  if (base::length(attrib) != base::length(coding)) {
     base::stop("Error: 'coding' and 'attrib' have to have the same length!")
   }
 
@@ -123,7 +123,7 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
 
   # test input of interpolate levels
   if (!(base::is.list(interpolate.levels)) &
-      !(base::is.null(interpolate.levels))) {
+    !(base::is.null(interpolate.levels))) {
     base::stop("Error: Input of 'interpolate.levels' has to be a list!")
   }
 
@@ -145,7 +145,7 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
 
   # interpolate.levels can not be larger than number of attributes
   if (!base::is.null(interpolate.levels) &
-      (base::length(interpolate.levels) > base::length(attrib))) {
+    (base::length(interpolate.levels) > base::length(attrib))) {
     base::stop(
       "Error: List of 'interpolate.levels' can not be larger than list of 'attrib'!"
     )
@@ -204,7 +204,7 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
   }
 
   # can not specify res to 'ind' and specify group
-  if ((res == "ind") & !base::missing(group)){
+  if ((res == "ind") & !base::missing(group)) {
     stop("Error: Can not speficy 'group' if 'res' is set to 'ind'!")
   }
 
@@ -213,8 +213,8 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
   att <- base::length(attrib)
 
   attrib_all <- c()
-  for (i in 1:base::length(attrib)){
-    attrib_all <- c(attrib_all, base::colnames(data[ , attrib[[i]]]))
+  for (i in 1:base::length(attrib)) {
+    attrib_all <- c(attrib_all, base::colnames(data[, attrib[[i]]]))
   }
 
   new <- c()
@@ -235,7 +235,6 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
 
       if (coding[i] == 1) {
         data[j, base::paste0("range_att_", i)] <- base::abs(data[j, vars] * base::abs(base::diff(base::range(interpolate.levels[[helper]]))))
-
       }
     }
 
@@ -244,29 +243,27 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
     }
   }
 
-  if (!base::is.null(none)){
+  if (!base::is.null(none)) {
     attrib_all <- c(attrib_all, (data %>% dplyr::select(none) %>% base::colnames(.)))
   }
 
-  if (res == "agg"){
+  if (res == "agg") {
     return(data %>%
-             dplyr::mutate(factor = (att * 100) / base::rowSums(data[new])) %>%
-             dplyr::mutate(dplyr::across(tidyselect::all_of(attrib_all), ~ .x * factor)) %>%
-             dplyr::group_by(dplyr::pick({{ group }})) %>%
-             dplyr::summarise(dplyr::across(tidyselect::all_of(attrib_all), c(mw = base::mean, std = stats::sd),
-                                            .names = "{.col}.{.fn}"
-             )) %>%
-             tidyr::pivot_longer(.,
-                                 cols = tidyselect::ends_with(c(".mw", ".std")),
-                                 names_to = c("Option", ".value"), names_sep = "\\."
-             )
-    )
+      dplyr::mutate(factor = (att * 100) / base::rowSums(data[new])) %>%
+      dplyr::mutate(dplyr::across(tidyselect::all_of(attrib_all), ~ .x * factor)) %>%
+      dplyr::group_by(dplyr::pick({{ group }})) %>%
+      dplyr::summarise(dplyr::across(tidyselect::all_of(attrib_all), c(mw = base::mean, std = stats::sd),
+        .names = "{.col}.{.fn}"
+      )) %>%
+      tidyr::pivot_longer(.,
+        cols = tidyselect::ends_with(c(".mw", ".std")),
+        names_to = c("Option", ".value"), names_sep = "\\."
+      ))
   }
 
-  if (res == "ind"){
+  if (res == "ind") {
     return(data %>%
-             dplyr::mutate(factor = (att * 100) / base::rowSums(data[new])) %>%
-             dplyr::mutate(dplyr::across(tidyselect::all_of(attrib_all), ~ .x * factor))
-    )
+      dplyr::mutate(factor = (att * 100) / base::rowSums(data[new])) %>%
+      dplyr::mutate(dplyr::across(tidyselect::all_of(attrib_all), ~ .x * factor)))
   }
 }

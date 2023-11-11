@@ -88,11 +88,11 @@ att_imp <- function(data, group = NULL, attrib, coding,
     warning("Warning: 'group' contains NAs!")
   }
 
-  if (base::is.null(coding)){
+  if (base::is.null(coding)) {
     base::stop("Error: 'coding' has to be specified!")
   }
 
-  if (base::length(attrib) != base::length(coding)){
+  if (base::length(attrib) != base::length(coding)) {
     base::stop("Error: 'coding' and 'attrib' have to have the same length!")
   }
 
@@ -197,7 +197,7 @@ att_imp <- function(data, group = NULL, attrib, coding,
   }
 
   # can not specify res to 'ind' and specify group
-  if ((res == "ind") & !base::missing(group)){
+  if ((res == "ind") & !base::missing(group)) {
     stop("Error: Can not speficy 'group' if 'res' is set to 'ind'!")
   }
 
@@ -233,25 +233,24 @@ att_imp <- function(data, group = NULL, attrib, coding,
     }
   }
 
-  if (res == "agg"){
+  if (res == "agg") {
     return(data %>%
-             dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x / base::rowSums(data[new]))) %>%
-             dplyr::group_by(dplyr::pick({{ group }})) %>%
-             dplyr::summarise(dplyr::across(tidyselect::all_of(new), c(mw = base::mean, std = stats::sd),
-                                            .names = "{.col}.{.fn}"
-             )) %>%
-             tidyr::pivot_longer(.,
-                                 cols = tidyselect::ends_with(c(".mw", ".std")),
-                                 names_to = c("Option", ".value"), names_sep = "\\."
-             ) %>%
-             dplyr::mutate_at(dplyr::vars(mw, std), ~ .x * 100))
+      dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x / base::rowSums(data[new]))) %>%
+      dplyr::group_by(dplyr::pick({{ group }})) %>%
+      dplyr::summarise(dplyr::across(tidyselect::all_of(new), c(mw = base::mean, std = stats::sd),
+        .names = "{.col}.{.fn}"
+      )) %>%
+      tidyr::pivot_longer(.,
+        cols = tidyselect::ends_with(c(".mw", ".std")),
+        names_to = c("Option", ".value"), names_sep = "\\."
+      ) %>%
+      dplyr::mutate_at(dplyr::vars(mw, std), ~ .x * 100))
   }
 
-  if (res == "ind"){
+  if (res == "ind") {
     return(data %>%
-             dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x / base::rowSums(data[new]))) %>%
-             dplyr::select({{ group }}, tidyselect::all_of(new)) %>%
-             dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x * 100))
-    )
+      dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x / base::rowSums(data[new]))) %>%
+      dplyr::select({{ group }}, tidyselect::all_of(new)) %>%
+      dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x * 100)))
   }
 }

@@ -59,7 +59,6 @@ or across \code{group} (\code{res} needs to be set to {agg}) or if it scores
 should be converted for individuals only
 
 \code{anchor} only needs to be specified if anchored MaxDiff is applied. Input
-needs to be variable name or column index of anchor variable.
 }
 \examples{
 \dontrun{

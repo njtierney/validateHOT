@@ -261,7 +261,6 @@ test_that("rows of inputs equals rows of output ", {
     items = c(Option_01:Option_16),
     set.size = 4,
     anchor = which(colnames(MaxDiff) == "none"),
-    res = "ind")), nrow(MaxDiff))
+    res = "ind"
+  )), nrow(MaxDiff))
 })
-
-

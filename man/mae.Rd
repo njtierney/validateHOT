@@ -51,7 +51,6 @@ HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   none = 19,
-  prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",
   choice = 20,

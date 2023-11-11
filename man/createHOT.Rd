@@ -8,7 +8,6 @@ createHOT(
   data,
   id,
   none = NULL,
-  prod,
   prod.levels,
   coding = NULL,
   interpolate.levels = NULL,
@@ -22,14 +21,10 @@ createHOT(
 \arguments{
 \item{data}{A data frame with all relevant variables.}
 
-\item{id}{A vector of column index of unique identifier in \code{data}.}
+\item{id}{A vector of unique identifier in \code{data}.}
 
-\item{none}{An optional column index to specify \code{none}
+\item{none}{An optionalvector to specify \code{none}
 alternative in \code{data}.}
-
-\item{prod}{A vector that specifies the number of alternatives in the
-holdout/validation task (does not count the \code{none} alternative). The
-input of \code{prod} has to be numeric.}
 
 \item{prod.levels}{A list to define the attribute levels of the
 alternatives (\code{prod}).}
@@ -39,19 +34,20 @@ coding,'1' = linear coding, '2' = piecewise coding; please make sure to code
 linear price of ACBC as piecewise since you have two values to interpolate.}
 
 \item{interpolate.levels}{A list of the levels of the variables that should
-be interpolated. These have to be the same as provided to Sawtooth Software.
+be interpolated. These have to be the same as provided to Sawtooth Software
+or ChoiceModelR (Sermas, 2022).
 Please make sure to provide the whole list. Only has to be specified for the
 variables that are coded as '1' (linear) or '2' (piecewise).}
 
-\item{lin.p}{A vector of the column indexes of the linear variables.}
+\item{lin.p}{A vector to specify linear coded variables.}
 
-\item{piece.p}{A list of the column indexes of the lower level and the upper
+\item{piece.p}{A list of the lower level and the upper
 level that should be used for interpolating.}
 
 \item{method}{A character to specify the \code{method} of your study.
 \code{method} has to be one of the following three: "MaxDiff", "CBC", or "ACBC".}
 
-\item{varskeep}{A vector of column index(es) of variables that should be kept
+\item{varskeep}{A vector specifying variables that should be kept
 in the data frame.}
 
 \item{choice}{Actual choice in the holdout/validation task.}
@@ -67,33 +63,33 @@ Currently not working with alternative-specific designs.
 In order to test validation metrics of a holdout/validation task, the
 holdout/validation task first has to be created.
 This is done by the function \code{createHOT}.
-Make sure to upload the raw utilities of your study.
+Make sure to upload the raw utilities of your study (either from Sawtooth Software
+or ChoiceModelR, Sermas, 2022).
 Afterwards, the function will create the utilities based on the additive
 utility model (Rao, 2014, p. 82).
 
 \code{data} has to be a data frame with **raw** scores of the attribute
 levels.
 
-\code{id} has to be the column index of the id (unique for each participant)
+\code{id} has to be the column index or column name of the id (unique for each participant)
 in data frame.
 
 \code{none} has to be specified in case a \code{none} alternative is
 included in holdout/validation task, please specify this by specifying the
-column index of \code{none} alternative, otherwise leave it empty.
+column index or column name of \code{none} alternative, otherwise leave it empty.
 
-\code{prod} should specify the total number of alternatives included in your
-holdout/validation task (excluding the \code{none} alternative).
 
 \code{prod.levels} specifies the attribute levels for each alternative.
 Input for \code{prod.levels} has to be a list. In case
-\code{method = "MaxDiff"} this will only be a list of the column indexes of
-the alternatives in the holdout/validation task. If \code{method = "CBC"} or
-\code{method = "ACBC"} use a vector to specify the attribute levels for each
-alternative. For \code{method = "CBC"} and \code{method = "ACBC"}
-also the column index(es) of the attribute level has to be specified.
+\code{method = "MaxDiff"} this will only be a list of the column indexes or
+column names of the alternatives in the holdout/validation task.
+If \code{method = "CBC"} or \code{method = "ACBC"} use a vector to specify
+the attribute levels for each alternative. If you only use part-worth coded attributes,
+you can also specify the column names, otherwise specify the column indexes
+of the attribute levels.
 In case values for one attribute are interpolated (assuming linear or
-piecewise coding), the value to be interpolated has to be specified.
-In addition, \code{lin.p} and/or \code{piece.p}, \code{interpolate.levels}
+piecewise coding), the value to be interpolated has to be specified (numeric
+input). In addition, \code{lin.p} and/or \code{piece.p}, \code{interpolate.levels}
 as well as \code{coding} have to be specified.
 
 \code{interpolate.levels} has to be specified in case interpolating is used
@@ -116,14 +112,13 @@ either as lower or upper bound. Input for \code{piece.p} has to be a list.
 \code{lin.p} has to be specified in case a variable is coded as linear
 (see coding). Since for linear coding (except for price
 in \code{method = "ACBC"}) only one coefficient is provided in the output,
-just this column index has to be specified, consequently, input
-for \code{piece.p} has to be a vector.
+just this column index or column name has to be specified.
 
 \code{coding} has to be specified for if \code{method = "CBC"}
-or \code{method = "ACBC"}. \code{0} has to be used for parth-worth
+or \code{method = "ACBC"}. \code{0} has to be used for part-worth
 coding, \code{1} for linear coding, and \code{2} for piecewise coding.
 In case \code{method = "ACBC"} and linear price function is used, this
-variable has to be coded as piecewise (\code{2}) in this case. In
+variable has to be coded as piecewise (\code{2}). In
 case \code{method} is set to \code{"MaxDiff"}, leave
 \code{coding} empty. Input for \code{coding} has to be a vector.
 
@@ -132,11 +127,11 @@ case \code{method} is set to \code{"MaxDiff"}, leave
 
 \code{varskeep} has to be specified in case other variables should be kept
 in the data frame (for example, a grouping variable). Input
-for \code{varskeep} has to be a vector with the column index(es) of the
+for \code{varskeep} has to be a vector with the column index(es) or names of the
 variable(s) that should be kept.
 
-\code{choice} specifies the column index of the acutal choice in the
-holdout/validation task.
+\code{choice} specifies the column index or column name of the actual choice
+in the #' holdout/validation task.
 }
 \examples{
 \dontrun{
@@ -145,7 +140,6 @@ HOT_MD <- createHOT(
   data = MaxDiff,
   id = 1,
   none = 19,
-  prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",
   choice = 20
@@ -156,7 +150,6 @@ HOT_CBC <- createHOT(
   data = CBC,
   id = 1,
   none = 21,
-  prod = 3,
   prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
   coding = c(0, 0, 0),
   method = "CBC",
@@ -168,7 +161,6 @@ HOT_CBC_lin <- createHOT(
   data = CBC_lin,
   id = 1,
   none = 15,
-  prod = 3,
   prod.levels = list(c(4, 9, 60), c(8, 12, 40), c(5, 10, 45)),
   coding = c(0, 0, 1),
   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
@@ -190,7 +182,6 @@ HOT_ACBC <- createHOT(
   data = ACBC,
   id = 1,
   none = 37,
-  prod = 6,
   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
   coding = c(0, 0, 0, 0, 0, 0, 0, 0, 2),
   interpolate.levels = list(c(2.093, 27.287)),
@@ -213,7 +204,6 @@ HOT_ACBC_inter <- createHOT(
   data = ACBC_interpolate,
   id = 1,
   none = 39,
-  prod = 6,
   prod.levels = list(prod1, prod2, prod3, prod4, prod5, prod6),
   coding = c(0, 1, 0, 0, 0, 0, 0, 0, 2),
   lin.p = 9,
@@ -235,6 +225,9 @@ HOT_ACBC_inter <- createHOT(
 
 Rao, V. R. (2014). \emph{Applied Conjoint Analysis}. Heidelberg: Springer
 Berlin. \verb{https://doi.org/10.1007/978-3-540-87753-0}
+
+Sermas R (2022). \emph{ChoiceModelR: Choice Modeling in R}. R package version 1.3.0,
+\verb{https://CRAN.R-project.org/package=ChoiceModelR}.
 
 }
 }

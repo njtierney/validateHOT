@@ -1,6 +1,6 @@
 HOT <- createHOT(
   data = MaxDiff, none = 19,
-  id = 1, prod = 7,
+  id = 1,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   choice = 20, method = "MaxDiff", varskeep = 21
 )
@@ -137,4 +137,3 @@ test_that("check whether examples are correct ", {
   expect_equal(base::round(base::as.numeric(f1(data = HOT, opts = c(Option_1:None), choice = choice, none = None)), 0), 80)
   expect_equal(base::round(base::as.numeric(f1(data = HOT, opts = c(Option_1:None), choice = choice, none = None, group = Group)[[2]]), 0), c(84, 77, 76))
 })
-

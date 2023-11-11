@@ -61,7 +61,7 @@ no-buy choice
 
 \tabular{crcc}{
    \tab \tab  Predicted           \tab    \cr
-Observed \tab \tab  Buy \tab No-buy  \cr
+Observed \tab \tab  Buy \tab No-Buy  \cr
  \tab Buy \tab A \tab B  \cr
  \tab No-Buy \tab C \tab D  \cr
 }
@@ -72,7 +72,6 @@ HOT <- createHOT(
   data = MaxDiff,
   id = 1,
   none = 19,
-  prod = 7,
   prod.levels = list(3, 10, 11, 15, 16, 17, 18),
   method = "MaxDiff",
   choice = 20, varskeep = 21

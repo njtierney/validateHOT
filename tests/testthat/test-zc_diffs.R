@@ -1,5 +1,5 @@
 test_that("Coding missing ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -11,7 +11,7 @@ test_that("Coding missing ", {
 })
 
 test_that("Coding not 1 or 0 ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -24,7 +24,7 @@ test_that("Coding not 1 or 0 ", {
 })
 
 test_that("Coding not 1 or 0 ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -37,7 +37,7 @@ test_that("Coding not 1 or 0 ", {
 })
 
 test_that("Coding 1 and interpolate.levels is missing ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC_lin,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -50,7 +50,7 @@ test_that("Coding 1 and interpolate.levels is missing ", {
 })
 
 test_that("Linear coded variables not equal to length of interpolate.levels ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC_lin,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -64,7 +64,7 @@ test_that("Linear coded variables not equal to length of interpolate.levels ", {
 })
 
 test_that("Linear coded variables has more than 1 level ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -83,7 +83,7 @@ test_that("Warning if group contains NA ", {
 
   CBC2$Group[34] <- NA
 
-  expect_warning(att_imp(
+  expect_warning(zc_diffs(
     data = CBC2,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -97,7 +97,7 @@ test_that("Warning if group contains NA ", {
 })
 
 test_that("Test input for interpolate.levels ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC_lin,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -111,7 +111,7 @@ test_that("Test input for interpolate.levels ", {
 })
 
 test_that("Test input for interpolate.levels ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC_lin,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -125,7 +125,7 @@ test_that("Test input for interpolate.levels ", {
 })
 
 test_that("Input for interpolate.levels can not be larger than 'attrib' ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC_lin,
     attrib = list(
       c("Att1_Lev1"),
@@ -144,7 +144,7 @@ test_that("Input for interpolate.levels can not be larger than 'attrib' ", {
 })
 
 test_that("Interpolate.levels only for linear coded variables ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -158,7 +158,7 @@ test_that("Interpolate.levels only for linear coded variables ", {
 })
 
 test_that("Interpolate.levels only for linear coded variables ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -174,7 +174,7 @@ test_that("Interpolate.levels only for linear coded variables ", {
 
 test_that("Structure of Output data.frame ", {
   expect_true(base::is.data.frame(
-    att_imp(
+    zc_diffs(
       data = CBC,
       attrib = list(
         c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -189,7 +189,7 @@ test_that("Structure of Output data.frame ", {
 
 test_that("Structure of Output tibble ", {
   expect_true(tibble::is_tibble(
-    att_imp(
+    zc_diffs(
       data = CBC,
       attrib = list(
         c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -204,7 +204,7 @@ test_that("Structure of Output tibble ", {
 
 test_that("group output equals group input ", {
   expect_equal(utils::str(
-    att_imp(
+    zc_diffs(
       data = CBC,
       attrib = list(
         c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -220,7 +220,7 @@ test_that("group output equals group input ", {
 
 test_that("group output equals group input - character input ", {
   CBC$Group2 <- rep(c("Group 1", "Group 2"), length.out = nrow(CBC))
-  expect_equal(utils::str(att_imp(
+  expect_equal(utils::str(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -238,7 +238,7 @@ test_that("group output equals group input - labelled input ", {
   CBC$Group2 <- labelled::labelled(CBC$Group2,
     labels = c("Group 1" = 1, "Group 2" = 2)
   )
-  expect_true(labelled::is.labelled(att_imp(
+  expect_true(labelled::is.labelled(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -252,7 +252,7 @@ test_that("group output equals group input - labelled input ", {
 })
 
 test_that("check whether examples are correct ", {
-  expect_equal(base::round(base::as.numeric(att_imp(
+  expect_equal(base::round(base::as.numeric(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -261,9 +261,12 @@ test_that("check whether examples are correct ", {
     ),
     coding = c(0, 0, 0),
     res = "agg"
-  )[[2]]), 1), c(35.7, 27.7, 36.6))
+  )[[2]]), 1), c(
+    -12.8, -5.6, 7.6, 23.4, -12.7, 0.4, 12.5, -1.4, -4.6, -6.8,
+    9.3, -16.4, -4.5, -3.1, 15.9, -0.1, -1.1
+  ))
 
-  expect_equal(att_imp(
+  expect_equal(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -272,62 +275,37 @@ test_that("check whether examples are correct ", {
     ),
     coding = c(0, 0, 0),
     res = "agg"
-  )[[1]], c("att_imp1", "att_imp2", "att_imp3"))
-
-  expect_equal(base::round(base::as.numeric(att_imp(
-    data = CBC,
-    attrib = list(
-      c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
-      c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
-      c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
-    ),
-    coding = c(0, 0, 0),
-    res = "agg"
-  )[[3]]), 1), c(11.3, 10.0, 9.3))
+  )[[1]], colnames(CBC)[4:20])
 })
 
 
-test_that("check whether examples are correct - CBC_lin ", {
-  expect_equal(base::round(base::as.numeric(att_imp(
-    data = CBC_lin,
+test_that("none one more row vs no none ", {
+  expect_equal(nrow(zc_diffs(
+    data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
       c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
-      c("Att3_Lin")
+      c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
     ),
-    coding = c(0, 0, 1),
-    interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
-    res = "agg"
-  )[[2]]), 1), c(36.9, 31.9, 31.3))
-
-  expect_equal(att_imp(
-    data = CBC_lin,
-    attrib = list(
-      c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
-      c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
-      c("Att3_Lin")
-    ),
-    coding = c(0, 0, 1),
-    interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
-    res = "agg"
-  )[[1]], c("att_imp1", "att_imp2", "att_imp3"))
-
-  expect_equal(base::round(base::as.numeric(att_imp(
-    data = CBC_lin,
-    attrib = list(
-      c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
-      c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
-      c("Att3_Lin")
-    ),
-    coding = c(0, 0, 1),
-    interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
-    res = "agg"
-  )[[3]]), 1), c(12.4, 13.4, 16.4))
+    coding = c(0, 0, 0),
+    res = "agg",
+    none = "none"
+  )) -
+    nrow(zc_diffs(
+      data = CBC,
+      attrib = list(
+        c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+        c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+        c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
+      ),
+      coding = c(0, 0, 0),
+      res = "agg"
+    )), 1)
 })
 
 
 test_that("res missing ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -339,7 +317,7 @@ test_that("res missing ", {
 })
 
 test_that("res noz specified to ind or agg ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -352,7 +330,7 @@ test_that("res noz specified to ind or agg ", {
 })
 
 test_that("group can not be specified when res set to ind ", {
-  expect_error(att_imp(
+  expect_error(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -366,7 +344,7 @@ test_that("group can not be specified when res set to ind ", {
 
 
 test_that("rows of inputs equals rows of output ", {
-  expect_equal(nrow(att_imp(
+  expect_equal(nrow(zc_diffs(
     data = CBC,
     attrib = list(
       c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -379,9 +357,9 @@ test_that("rows of inputs equals rows of output ", {
 })
 
 
-test_that("each row equals 100 ", {
+test_that("length of input equals length of output ", {
   expect_equal(
-    rowSums(att_imp(
+    nrow(zc_diffs(
       data = CBC,
       attrib = list(
         c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
@@ -389,8 +367,25 @@ test_that("each row equals 100 ", {
         c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
       ),
       coding = c(0, 0, 0),
-      res = "ind"
+      res = "agg"
     )),
-    rep(100, nrow(CBC))
+    sum(length(c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5")), length(c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5")), length(c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")))
+  )
+})
+
+test_that("length of input equals length of output ", {
+  expect_equal(
+    nrow(zc_diffs(
+      data = CBC,
+      attrib = list(
+        c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+        c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+        c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
+      ),
+      coding = c(0, 0, 0),
+      res = "agg",
+      none = "none"
+    )),
+    sum(1, length(c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5")), length(c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5")), length(c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")))
   )
 })

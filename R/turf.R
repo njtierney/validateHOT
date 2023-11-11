@@ -76,7 +76,6 @@
 #'   data = MaxDiff,
 #'   id = 1,
 #'   none = 19,
-#'   prod = 16,
 #'   prod.levels = list(
 #'     3, 4, 5, 6, 7, 8, 9, 10, 11,
 #'     12, 13, 14, 15, 16, 17, 18
@@ -118,8 +117,6 @@
 #'   prohib = list(c("Option_2", "Option_9")),
 #'   approach = "thres"
 #' )
-#'
-#'
 #' }
 #'
 #' @export
@@ -183,10 +180,9 @@ turf <- function(data, opts, none, size, fixed = NULL, prohib = NULL,
 
   # prohib has to be part of opts
   if (!base::is.null(prohib)) {
-    for (i in 1:base::length(prohib)){
-
+    for (i in 1:base::length(prohib)) {
       if (!base::all(prohib[[i]] %in% (data %>% dplyr::select(., {{ opts }}) %>%
-                                 base::colnames()))) {
+        base::colnames()))) {
         base::stop("Error: 'prohib' has to be part of 'opts'!")
       }
     }
@@ -194,9 +190,7 @@ turf <- function(data, opts, none, size, fixed = NULL, prohib = NULL,
 
   # fixed can not be larger than size
   if (!base::is.null(prohib)) {
-
-    for (i in 1:base::length(prohib)){
-
+    for (i in 1:base::length(prohib)) {
       if (length(prohib[[i]]) > size) {
         stop("Error: 'prohib' can not be larger than 'size'!")
       }
@@ -204,19 +198,15 @@ turf <- function(data, opts, none, size, fixed = NULL, prohib = NULL,
   }
 
   if (!base::is.null(prohib)) {
-
     if (!base::is.list(prohib)) {
-
       base::stop("Error: 'prohib' has to be a list!")
-
     }
-
   }
 
   # error if prohib and fixed are exactly the same
-  if (!base::is.null(prohib) & !base::is.null(fixed)){
-    for (i in 1:base::length(prohib)){
-      if (base::all(prohib[[i]] %in% fixed)){
+  if (!base::is.null(prohib) & !base::is.null(fixed)) {
+    for (i in 1:base::length(prohib)) {
+      if (base::all(prohib[[i]] %in% fixed)) {
         base::stop("Error: 'prohib' and 'fixed' have to be different!")
       }
     }
@@ -335,9 +325,7 @@ turf <- function(data, opts, none, size, fixed = NULL, prohib = NULL,
   }
 
   if (!base::is.null(prohib)) {
-
     for (i in 1:length(prohib)) {
-
       prohibitions <- data %>%
         dplyr::select(tidyselect::all_of(prohib[[i]])) %>%
         base::colnames()
@@ -350,7 +338,6 @@ turf <- function(data, opts, none, size, fixed = NULL, prohib = NULL,
         # only choose those that have the fixed options
         dplyr::filter(not == 0) %>%
         dplyr::select(-not) # delete must variable
-
     }
   }
 

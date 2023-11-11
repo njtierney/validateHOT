@@ -17,6 +17,7 @@ utils::globalVariables(
     "must",
     "maximum",
     "thres",
-    "not"
+    "not",
+    "prod"
   )
 )

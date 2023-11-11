@@ -2,7 +2,6 @@ HOT <- createHOT(
   data = MaxDiff,
   none = 19,
   id = 1,
-  prod = 16,
   prod.levels = list(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18),
   choice = 20,
   method = "MaxDiff"
@@ -268,4 +267,3 @@ test_that("Error if all of 'prohib' in 'fixed' ", {
 test_that("No Error if all of 'fixed' are in 'prohib', as long as size is different ", {
   expect_no_error(turf(data = HOT, opts = c(Option_1:Option_16), size = 3, none = None, fixed = c("Option_2", "Option_4"), prohib = list(c("Option_2", "Option_4", "Option_5")), approach = "thres"))
 })
-
