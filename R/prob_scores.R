@@ -33,7 +33,7 @@
 #' shown in one task). Input needs to be a whole number.
 #'
 #' \code{res} specifies whether results should be aggregated across all participants
-#' or across \code{group} (\code{res} needs to be set to {agg}) or if it scores
+#' or across \code{group} (\code{res} needs to be set to \code{agg}) or if it scores
 #' should be converted for individuals only
 #'
 #' \code{anchor} only needs to be specified if anchored MaxDiff is applied. Input

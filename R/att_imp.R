@@ -36,7 +36,7 @@
 #' had 5 levels, all 5 levels have to be inserted.
 #'
 #' \code{res} specifies whether results should be aggregated across all participants
-#' or across \code{group} (\code{res} needs to be set to {agg}) or if it scores
+#' or across \code{group} (\code{res} needs to be set to \code{agg}) or if it scores
 #' should be converted for individuals only
 #'
 #'

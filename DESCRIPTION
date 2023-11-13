@@ -26,7 +26,7 @@ Imports:
     tibble (>= 3.2.1),
     tidyr (>= 1.3.0),
     tidyselect (>= 1.2.0),
-    utils (>= 4.3.0)
+    utils (>= 4.2.3)
 Suggests: 
     knitr (>= 1.43),
     labelled (>= 2.12.0),
