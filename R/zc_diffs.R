@@ -214,7 +214,7 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
 
   attrib_all <- c()
   for (i in 1:base::length(attrib)) {
-    attrib_all <- c(attrib_all, base::colnames(data[, attrib[[i]]]))
+    attrib_all <- c(attrib_all, base::colnames(data[attrib[[i]]]))
   }
 
   new <- c()
