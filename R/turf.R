@@ -117,6 +117,8 @@
 #'   prohib = list(c("Option_2", "Option_9")),
 #'   approach = "thres"
 #' )
+#'
+#' head(t3)
 #' }
 #'
 #' @export
@@ -250,6 +252,9 @@ turf <- function(data, opts, none, size, fixed = NULL, prohib = NULL,
     (data %>% dplyr::select(., {{ opts }}) %>% base::colnames())) {
     stop("Error: 'none' can not be part of 'opts'!")
   }
+
+  if (base::length(Noo) > 1)
+    base::stop("Error: 'none' can only be one variable!")
 
 
   # prepare data frame and threshold approach

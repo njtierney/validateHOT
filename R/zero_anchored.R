@@ -1,24 +1,26 @@
-#' Probability Scores for (anchored) MaxDiff
+#' Zero-Anchored Interval Scores for (anchored) MaxDiff
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s).
 #' @param items Vector that specifies the items.
-#' @param set.size A vector that specifies size of the choice set.
 #' @param res A vector indicating whether individual shares (\code{ind}) or
 #' aggregated (\code{agg}) shares should be returned.
 #' @param anchor An optional variable to specify anchor variable.
 #'
 #'
+#' @importFrom dplyr select mutate_at vars summarise_at group_by_at
+#' @importFrom magrittr "%>%"
+#' @importFrom tidyselect all_of ends_with
+#' @importFrom tidyr pivot_longer
+#' @importFrom scales rescale
+#' @importFrom tibble as_tibble is_tibble
+#'
 #' @return a tibble
 #'
 #' @details
-#' \code{prob_scores} converts raw utilities of a MaxDiff to probability scores.
-#' Probability scores for the unanchored MaxDiff are calculated according to the formula provided by
-#' Chrzan & Orme (2019, p. 56): \eqn{\frac{e^U}{(e^U + (a - 1)}}, where \emph{U} is the
-#' raw utility of the item and \emph{a} is the number of items shown per choice task.
+#' \code{zero_anchored} converts raw utilities of a MaxDiff to zero-anchored interval scores that have a range of 100.
 #'
-#' For anchored MaxDiff the following formula is applied \eqn{\frac{e^U}{(e^U + (a - 1)} * 100 / (1 / a)}
-#' (Chrzan & Orme, 2019, pp. 59-60).
+#' For anchored MaxDiff the anchor is set to 0. More information can be obtained here: https://sawtoothsoftware.com/help/lighthouse-studio/manual/analysis-manager-maxdiff-export-settings.html
 #'
 #' \code{data} has to be a data frame with the attributes. Items need
 #' to be the raw utilities.
@@ -29,23 +31,18 @@
 #' \code{items} specifies the items of the MaxDiff.
 #' Input for \code{items} has to be variable names.
 #'
-#' \code{set.size} specifies the size of the choice sets (how many items were
-#' shown in one task). Input needs to be a whole number.
-#'
 #' \code{res} specifies whether results should be aggregated across all participants
 #' or across \code{group} (\code{res} needs to be set to \code{agg}) or if it scores
 #' should be converted for individuals only
 #'
-#' \code{anchor} only needs to be specified if anchored MaxDiff is applied. Input
+#' \code{anchor} only needs to be specified if anchored MaxDiff is applied.
+#' Input for \code{anchor} has to be variable names.
 #'
-#' @importFrom dplyr select across pick group_by ungroup rowwise
-#' @importFrom magrittr "%>%"
-#' @importFrom tidyr pivot_longer
-#' @importFrom tidyselect ends_with
+#'
 #'
 #' @seealso {
-#' \code{\link[=zero_anchored]{zero_anchored}} for zero-anchored interval scores for MaxDiff
 #' \code{\link[=att_imp]{att_imp}} for attribute importance scores for (A)CBC
+#' \code{\link[=prob_scores]{prob_scores}} for probability scores for MaxDiff
 #' \code{\link[=zc_diffs]{zc_diffs}} for zero-center diff scores for (A)CBC
 #' }
 #'
@@ -59,47 +56,51 @@
 #' @examples
 #' \dontrun{
 #'
-#' # probability scores for unanchored MaxDiff - without Group defined
-#' prob_scores(
+#' # zero-anchored interval scores for unanchored MaxDiff - without Group defined
+#' zero_anchored(
 #'   data = MaxDiff,
 #'   items = c(Option_01:Option_16),
-#'   set.size = 4,
 #'   res = "agg"
 #' )
 #'
-#' # probability scores for unanchored MaxDiff - with Group defined
-#' prob_scores(
+#' # zero-anchored interval scores for unanchored MaxDiff - with Group defined
+#' zero_anchored(
 #'   data = MaxDiff,
 #'   group = Group,
 #'   items = c(Option_01:Option_16),
-#'   set.size = 4,
 #'   res = "agg"
 #' )
 #'
 #'
-#' # probability scores for anchored MaxDiff - without Group defined
-#' prob_scores(
+#' # zero-anchored interval scores for anchored MaxDiff - without Group defined
+#' zero_anchored(
 #'   data = MaxDiff,
 #'   items = c(Option_01:none),
-#'   set.size = 4,
 #'   anchor = none,
 #'   res = "agg"
 #' )
 #'
-#' # probability scores for anchored MaxDiff - with Group defined
-#' prob_scores(
+#' # zero-anchored interval scores for anchored MaxDiff - with Group defined
+#' zero_anchored(
 #'   data = MaxDiff,
 #'   group = Group,
 #'   items = c(Option_01:none),
-#'   set.size = 4,
 #'   anchor = none,
 #'   res = "agg"
 #' )
 #' }
 #'
 #' @export
-prob_scores <- function(data, group = NULL, items, set.size,
-                        res = c("agg", "ind"), anchor = NULL) {
+zero_anchored <- function(data, group = NULL, items,
+                          res = c("agg", "ind"), anchor = NULL) {
+  if (base::missing(items)) {
+    stop("Error: 'items' is missing!")
+  }
+
+  if (isTRUE(tibble::is_tibble(data))){
+    stop("Error: 'data' has to be a data frame!")
+  }
+
   if (base::length(data %>% dplyr::select(., {{ items }})) < 2) {
     base::stop("Error: specify at least 2 items in 'items'!")
   }
@@ -126,13 +127,6 @@ prob_scores <- function(data, group = NULL, items, set.size,
     base::stop("Error: 'items' contains NAs!")
   }
 
-  if (!base::is.numeric(set.size)) {
-    base::stop("Error: 'set.size' has to be numeric!")
-  }
-
-  if (set.size > length(data %>% dplyr::select(., {{ items }}))) {
-    base::stop("Error: 'set.size' cannot be larger than number of items!")
-  }
 
 
   # test whether res is specified
@@ -165,23 +159,44 @@ prob_scores <- function(data, group = NULL, items, set.size,
 
   if (!base::missing(anchor)) {
     if (!(data %>% dplyr::select(., {{ anchor }}) %>% base::colnames()) %in%
-        (data %>% dplyr::select(., {{ items }}) %>% base::colnames())) {
+      (data %>% dplyr::select(., {{ items }}) %>% base::colnames())) {
       stop("Error: 'anchor' has to be part of 'items'!")
     }
   }
 
+
+
+
   #######################################################
-  if (base::missing(anchor)) {
-    if (res == "agg") {
+
+  var_items <- data %>%
+    dplyr::select(., {{ items }}) %>%
+    base::colnames(.)
+
+
+  for (i in 1:base::nrow(data)) {
+
+    vec <- base::unname(base::unlist(c(data[i, var_items])))
+
+    #data[i, var_items] <- NA
+
+    vec <- scales::rescale(vec, to = c(0, 100)) - base::mean(scales::rescale(vec, to = c(0, 100)))
+
+    if (!(base::missing(anchor))) {
+      vec <- vec - vec[match(
+        (data %>% dplyr::select(., {{ anchor }}) %>% colnames()),
+        var_items
+      )]
+    }
+
+    data[i, var_items] <- vec
+
+  }
+
+  if (res == "agg") {
+    if (base::missing(group)) {
       return(data %>%
-        dplyr::mutate(dplyr::across({{ items }}, ~ (base::exp(.x) / (base::exp(.x) + (set.size - 1))))) %>%
-        dplyr::rowwise() %>%
-        dplyr::mutate(Summe = base::sum(dplyr::pick({{ items }}))) %>% # sum up
-        dplyr::ungroup() %>%
-        dplyr::mutate(dplyr::across({{ items }}, ~ .x / Summe * 100)) %>%
-        dplyr::group_by(dplyr::pick({{ group }})) %>%
-        dplyr::summarise(dplyr::across({{ items }},
-          c(mw = base::mean, std = stats::sd),
+        dplyr::summarise(dplyr::across(tidyselect::all_of(var_items), c(mw = base::mean, std = stats::sd),
           .names = "{.col}.{.fn}"
         )) %>%
         tidyr::pivot_longer(.,
@@ -190,39 +205,21 @@ prob_scores <- function(data, group = NULL, items, set.size,
         ))
     }
 
-
-    if (res == "ind") {
+    if (!(base::missing(group))) {
       return(data %>%
-        dplyr::mutate(dplyr::across({{ items }}, ~ (base::exp(.x) / (base::exp(.x) + (set.size - 1))))) %>%
-        dplyr::rowwise() %>%
-        dplyr::mutate(Summe = base::sum(dplyr::pick({{ items }}))) %>% # sum up
-        dplyr::ungroup() %>%
-        dplyr::mutate(dplyr::across({{ items }}, ~ .x / Summe * 100)))
+        dplyr::group_by(dplyr::pick ({{group}})) %>%
+        dplyr::summarise(dplyr::across(tidyselect::all_of(var_items), c(mw = base::mean, std = stats::sd),
+          .names = "{.col}.{.fn}"
+        )) %>%
+        tidyr::pivot_longer(.,
+          cols = tidyselect::ends_with(c(".mw", ".std")),
+          names_to = c("Option", ".value"), names_sep = "\\."
+        ))
     }
   }
 
-  if (!base::missing(anchor)) {
-    if (res == "agg") {
-      return(
-        data %>%
-          dplyr::mutate(dplyr::across({{ items }}, ~ (base::exp(.x) / (base::exp(.x) + (set.size - 1))) * 100 / (1 / set.size))) %>%
-          dplyr::group_by(dplyr::pick({{ group }})) %>%
-          dplyr::summarise(dplyr::across({{ items }},
-            c(mw = base::mean, std = stats::sd),
-            .names = "{.col}.{.fn}"
-          )) %>%
-          tidyr::pivot_longer(.,
-            cols = tidyselect::ends_with(c(".mw", ".std")),
-            names_to = c("Option", ".value"), names_sep = "\\."
-          )
-      )
-    }
-
-    if (res == "ind") {
-      return(
-        data %>%
-          dplyr::mutate(dplyr::across({{ items }}, ~ (base::exp(.x) / (base::exp(.x) + (set.size - 1))) * 100 / (1 / set.size)))
-      )
-    }
+  if (res == "ind") {
+    return(data)
   }
 }
+

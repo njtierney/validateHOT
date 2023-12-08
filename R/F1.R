@@ -161,6 +161,13 @@ f1 <- function(data, group, opts, choice, none) {
     stop("Error: 'choice' has to be numeric!")
   }
 
+  # test length of none
+  if (!base::missing(none)) {
+    anc <- data %>% dplyr::select(., {{ none }}) %>% base::colnames(.)
+    if (length(anc) > 1)
+      base::stop("Error: 'none' can only be one variable!")
+  }
+
   return(data %>%
     dplyr::mutate(
       # store column index with highest utility

@@ -18,6 +18,7 @@ utils::globalVariables(
     "maximum",
     "thres",
     "not",
-    "prod"
+    "prod",
+    "vec"
   )
 )

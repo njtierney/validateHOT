@@ -45,10 +45,16 @@
 #' column name or column index of \code{none} needs to be specified. If no
 #' \code{none} option was included, leave it empty.
 #'
+#' @importFrom dplyr select mutate across summarise pick
+#' @importFrom tidyr pivot_longer
+#' @importFrom tidyselect all_of ends_with
+#' @importFrom magrittr "%>%"
+#'
 #'
 #' @seealso {
 #' \code{\link[=att_imp]{att_imp}} for attribute importance scores for (A)CBC
 #' \code{\link[=prob_scores]{prob_scores}} for probability scores for MaxDiff
+#' \code{\link[=zero_anchored]{zero_anchored}} for zero-anchored interval scores for MaxDiff
 #' }
 #'
 #' @references {
@@ -70,7 +76,8 @@
 #'     c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
 #'   ),
 #'   coding = c(0, 0, 0),
-#'   none = "none"
+#'   none = "none",
+#'   res = "agg"
 #' )
 #'
 #' zc_diffs(
@@ -82,7 +89,8 @@
 #'   ),
 #'   coding = c(0, 0, 1),
 #'   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
-#'   none = "none"
+#'   none = "none",
+#'   res = "agg"
 #' )
 #' }
 #'

@@ -73,7 +73,8 @@ att_imp(
     c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
     c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
   ),
-  coding = c(0, 0, 0)
+  coding = c(0, 0, 0),
+  res = "agg"
 )
 
 att_imp(
@@ -84,7 +85,8 @@ att_imp(
     c("Att3_Lin")
   ),
   coding = c(0, 0, 1),
-  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70))
+  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+  res = "agg"
 )
 }
 
@@ -100,6 +102,7 @@ Orme, B. K. (2020). \emph{Getting Started with Conjoint Analysis: Strategies for
 \seealso{
 {
 \code{\link[=prob_scores]{prob_scores}} for probability scores for MaxDiff
+\code{\link[=zero_anchored]{zero_anchored}} for zero-anchored interval scores for MaxDiff
 \code{\link[=zc_diffs]{zc_diffs}} for zero-center diff scores for (A)CBC
 }
 }

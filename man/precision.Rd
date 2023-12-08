@@ -21,8 +21,6 @@ validation/holdout task.}
 }
 \value{
 a tibble
-
-a data frame
 }
 \description{
 precision is one of the 5 metrics of the confusion matrix

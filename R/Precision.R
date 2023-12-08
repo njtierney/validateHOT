@@ -55,8 +55,6 @@
 #' @return a tibble
 #'
 #'
-#' @return a data frame
-#'
 #' @seealso {
 #' \code{\link[=accuracy]{accuracy}}
 #' \code{\link[=f1]{f1}}

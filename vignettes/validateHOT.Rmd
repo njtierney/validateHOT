@@ -47,6 +47,7 @@ In this vignette we would like to present to you ...
     -   <code>att_imp()</code> (attribute importance for CBC and ACBC)
     -   <code>prob_scores()</code> (probability scores for (unanchored) MaxDiff)
     -   <code>zc_diffs()</code> (zero-centered diffs for CBC and ACBC)
+    -   <code>zero_anchored()</code> (zero-anchored interval scores for (unanchored) MaxDiff)
 
 ## Installation
 
@@ -745,10 +746,10 @@ The code for the anchored MaxDiff is the same, only that we also have to specify
 ```{r}
 prob_scores(
   data = MaxDiff,
-  items = c(Option_01:Option_16),
+  items = c(Option_01:none),
   set.size = 4,
   res = "agg",
-  anchor = "none"
+  anchor = none
 )
 ```
 
@@ -789,6 +790,30 @@ zc_diffs(
 )
 ```
 
+### `zero_anchored`
+
+`zero_anchored()` converts raw utilities of a (unanchored) MaxDiff into zero anchored interval scores.
+
+The analysis is almost identical to `prob_scores()` introduced above.
+
+```{r}
+zero_anchored(
+  data = MaxDiff,
+  items = c(Option_01:Option_16),
+  res = "agg"
+)
+```
+
+The code for the anchored MaxDiff is the same, only that we also have to specify the `anchor` argument, which is the the `none` alternative, however, can also be another threshold variable.
+
+```{r}
+zero_anchored(
+  data = MaxDiff,
+  items = c(Option_01:none),
+  res = "agg",
+  anchor = none
+)
+```
 
 ## References
 

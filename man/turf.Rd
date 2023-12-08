@@ -122,6 +122,8 @@ t3 <- turf(
   prohib = list(c("Option_2", "Option_9")),
   approach = "thres"
 )
+
+head(t3)
 }
 
 }
