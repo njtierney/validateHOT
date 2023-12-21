@@ -1,13 +1,13 @@
 #' MHP
 #'
 #' @description
-#' Function to measure the mean hit probability of a validation/holdout
-#' task. Calculates the hit/ choice probability of the actual choice
+#' \code{mhp} measures the mean hit probability of a validation/holdout
+#' task. Calculates the hit/choice probability of the actual choice
 #' in the validation/holdout task.
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s)
-#' to get \code{"mhp"} by group(s).
+#' to get \code{mhp} by group(s).
 #' @param opts Column names of the alternatives included in the
 #' validation/holdout task.
 #' @param choice Column name of the actual choice.

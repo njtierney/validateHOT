@@ -5,7 +5,7 @@
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s)
-#' to get \code{"hitrate"} by group(s).
+#' to get \code{hitrate} by group(s).
 #' @param opts Column names of the alternatives included in the
 #' validation/holdout task.
 #' @param choice Column name of the actual choice.
@@ -15,13 +15,13 @@
 #' predicted by the model.
 #' Output contains the following 4 metrics:
 #' \itemize{
-#' \item \code{"HR"} hit rate (number of correctly predicted
+#' \item \code{HR} hit rate (number of correctly predicted
 #' choices) in percentages
-#' \item \code{"se"} standard error in percentages
-#' \item \code{"chance"} chance level of correctly predicted choices by simply
+#' \item \code{se} standard error in percentages
+#' \item \code{chance} chance level of correctly predicted choices by simply
 #' guessing
-#' \item \code{"cor"} absolute number of correctly predicted choices
-#' \item \code{"n"} total number of choices
+#' \item \code{cor} absolute number of correctly predicted choices
+#' \item \code{n} total number of choices
 #' }
 #'
 #' \code{data} has to be a data frame including the alternatives shown in
@@ -32,7 +32,7 @@
 #' different groups. Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the
-#' validation/holdout task (also includes the \code{none} alternative).
+#' validation/holdout task.
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
 #' \code{choice} to specify column of actual choice.

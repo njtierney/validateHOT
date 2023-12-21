@@ -1,25 +1,18 @@
 #' Median Absolute Error
 #'
 #' @description
-#' Function to measure the median absolute error (MedAE) of a validation/holdout
+#' \code{medae} measures the median absolute error (MedAE) of a validation/holdout
 #' task.
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s)
-#' to get \code{"medae"} by group(s).
+#' to get \code{medae} by group(s).
 #' @param opts Column names of the alternatives included in the
 #' validation/holdout task.
 #' @param choice Column name of the actual choice.
 #'
-#' @return a tibble
-#' @importFrom dplyr select mutate group_by pick count ungroup across summarise
-#' @importFrom magrittr "%>%"
-#' @importFrom stats median
-#' @importFrom tidyr pivot_longer
-#' @importFrom tidyselect ends_with
-#'
 #' @details
-#' Median absolute error (MedAE) calculates the deviation between predicted and
+#' \code{medae} calculates the deviation between predicted and
 #' stated (actual) choice share and returns the median error in the
 #' validation/holdout task, which is less likely to be influenced by outliers.
 #'
@@ -28,7 +21,7 @@
 #' function.
 #'
 #' \code{group} optional grouping variable, if results should be displayed by
-#' different groups.Has to be column name of variables in \code{data}.
+#' different groups. Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} is needed to specify the different alternatives in the
 #' validation/holdout task. Input of \code{opts} has to be column names
@@ -37,6 +30,12 @@
 #' \code{choice} to specify column of actual choice.
 #' Input of opts \code{choice} has to be column name of actual choice.
 #'
+#' @return a tibble
+#' @importFrom dplyr select mutate group_by pick count ungroup across summarise
+#' @importFrom magrittr "%>%"
+#' @importFrom stats median
+#' @importFrom tidyr pivot_longer
+#' @importFrom tidyselect ends_with
 #'
 #' @examples
 #' \dontrun{

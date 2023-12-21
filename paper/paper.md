@@ -7,7 +7,7 @@ tags:
   - Market Simulations
   - Predictive Validity
 authors:
-  - name: Joshua Schramm
+  - name: Joshua Benjamin Schramm
     orcid: 0000-0001-5602-4632
     corresponding: True
     affiliation: 1, 2
@@ -40,26 +40,26 @@ journal: JOSS
 
 validateHOT is a package that provides functions to both validate a validation/holdout task and run market simulations for results obtained in a (adaptive) choice-based conjoint analysis (hereafter ACBC and CBC, respectively) and maximum difference scaling (hereafter MaxDiff) using, for example, `ChoiceModelR` [@ChoiceModelR] or Sawtooth's Lighthouse Studio.
 
-Preference measurement techniques', such as (A)CBC or MaxDiff, ultimate goal is to predict behavior [@green1990]. Hence, it is essential for both academics and practitioners to ensure that the collected data is valid and predicts outside tasks (i.e., the model has external validity) well.[^1] The easiest way to test it is to include so-called validation or holdout tasks [@Orme2015], which are tasks that are fixed (i.e., same across participants) and are usually not used for estimating the part-worth utilities in hierarchical Bayes estimation. Practitioners often do not include them [@yang2018], which is unsatisfactory given the fact that the model is used to estimate market shares which poses the basis for relevant marketing decisions.
+Preference measurement techniques', such as (A)CBC or MaxDiff, aim is to predict behavior [@green1990]. Hence, it is essential for both academics and practitioners to ensure that the collected data is valid and predicts outside tasks (i.e., the model has external validity) well.[^1] The easiest way to test it is to include so-called validation or holdout tasks [@Orme2015], which are tasks that are fixed (i.e., same across participants) and are usually not used for estimating the part-worth utilities in hierarchical Bayes estimation. Practitioners often do not include them [@yang2018], which is unsatisfactory given the fact that the model is used to estimate market shares which poses the basis for relevant marketing decisions.
 
 [^1]: In terms of external validity, we refer to the generalizations to different settings [see, @calder1982, p.240].
 
-validateHOT combines both validation and market simulation in one package and has three key advantages, it a) helps to opt for the best model, b) runs relevant market simulations that help to find the right product combinations or assortments, and finally, c) is an open source tool including functions that are usually implemented in property commercial, and therefore, remain a black-box for researchers and practitioners.
+validateHOT combines both validation and market simulation in one package and has three key advantages, it (1) helps to opt for the best model, (2) runs relevant market simulations that help to find the right product combinations or assortments, and finally, (3) is an open source tool including functions that are usually implemented in property commercial, and therefore, remain a black-box for researchers and practitioners.
 
 # Statement of need
 
-validateHOT is a practical tool for Sawtooth Software users in industry as well as academia. It provides an open source solution for a) validating a validation/holdout task and ensuring that the model has predictive validity; b) running market simulations (e.g., **T**otal **U**nduplicated **R**each and **F**requency, hereafter TURF). Other packages, for example, Metrics [@Metrics] provide functions to run validation metrics such as *mean absolute error*, *root mean squared error*, or the five metrics of the confusion matrix. However, to put the Sawtooth export into the right format, the user needs some data wrangling which could pose a barrier. Moreover, there are also packages that however mainly focus on the analysis of conjoint analysis (e.g., ChoiceModelR [@ChoiceModelR], choicetools [@choicetools], logitR [@logitr], bayesm [@bayesm] etc.). To the best of our knowledge, a package that converts raw utility scores into validation metrics or running a variety of marketing simulations (especially TURF) is missing.
+validateHOT is a practical tool for Sawtooth Software users in industry as well as academia. It provides an open source solution for a) validating a validation/holdout task and ensuring that the model has predictive validity; b) running market simulations (e.g., Total Unduplicated Reach and Frequency, hereafter TURF). Other packages, for example, Metrics [@Metrics] provide functions to run validation metrics such as *mean absolute error*, *root mean squared error*, or the five metrics of the confusion matrix. However, to put the Sawtooth export into the right format, the user needs some data wrangling which could pose a barrier. Moreover, there are also packages that however mainly focus on the analysis of conjoint analysis (e.g., ChoiceModelR, @ChoiceModelR, choicetools, @choicetools, logitR, @logitr, bayesm, @bayesm, etc.). To the best of our knowledge, a package that converts raw utility scores into validation metrics or running a variety of marketing simulations (especially TURF) is missing.
 
 # Key functions
 
-validateHOT's functions can be categorized into four main areas, see \autoref{tab:table1}. To bring the data into the right format, users can run the \texttt{\color{purple}createHOT()} function, which creates the total utility of each alternative by applying the additive utility model [@rao2014, p. 82]. \colcod{turf()} as well as the 3 rescaling functions, however, are not dependent on \texttt{\color{purple}createHOT()}, and can be run using the raw logit scores.
+validateHOT's functions can be categorized into four main areas, see \autoref{tab:table1}. To bring the data into the right format, users can run the \texttt{\color{purple}createHOT()} function, which creates the total utility of each alternative by applying the additive utility model [@rao2014, p. 82]. \colcod{turf()} as well as the four rescaling functions, however, are not dependent on \texttt{\color{purple}createHOT()}, and can be run using the raw logit scores.
 
 | Validation metrics | Confusion matrix | Market simulations | Rescaling scores |
 |:----------------:|:----------------:|:----------------:|:----------------:|
 |     hitrate()      |    accuracy()    |    freqassort()    |    att_imp()     |
 |        kl()        |       f1()       |     marksim()      |  prob_scores()   |
 |       mae()        |   precision()    |      reach()       |    zc_diffs()    |
-|      medae()       |     recall()     |       turf()       |                  |
+|      medae()       |     recall()     |       turf()       | zero_anchored()  |
 |       mhp()        |  specificity()   |                    |                  |
 |       rmse()       |                  |                    |                  |
 
@@ -69,7 +69,7 @@ validateHOT's functions can be categorized into four main areas, see \autoref{ta
 
 In the following, we provide the workflow for a MaxDiff study (the vignette also provides detailed examples for a CBC as well as an ACBC).
 
-After running the Hierarchical Bayes estimation [@allenby1995; @lenk1996], the **raw** utility scores have to be exported and read into an *R* data frame. This data frame has to include the actual choice in the validation/holdout task.
+After running the hierarchical Bayes estimation [@allenby1995; @lenk1996], the **raw** utility scores have to be exported and read into an *R* data frame. This data frame has to include the actual choice in the validation/holdout task.
 
 Assuming you included a validation/holdout task with a total of 7 alternatives plus the no-buy alternative (\texttt{\color{purple}none}). To create this validation task in *R*, we use the \texttt{\color{purple}createHOT()} function.
 

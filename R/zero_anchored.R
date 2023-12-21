@@ -8,21 +8,12 @@
 #' @param anchor An optional variable to specify anchor variable.
 #'
 #'
-#' @importFrom dplyr select mutate_at vars summarise_at group_by_at
-#' @importFrom magrittr "%>%"
-#' @importFrom tidyselect all_of ends_with
-#' @importFrom tidyr pivot_longer
-#' @importFrom scales rescale
-#' @importFrom tibble as_tibble is_tibble
-#'
-#' @return a tibble
-#'
 #' @details
 #' \code{zero_anchored} converts raw utilities of a MaxDiff to zero-anchored interval scores that have a range of 100.
 #'
 #' For anchored MaxDiff the anchor is set to 0. More information can be obtained here: https://sawtoothsoftware.com/help/lighthouse-studio/manual/analysis-manager-maxdiff-export-settings.html
 #'
-#' \code{data} has to be a data frame with the attributes. Items need
+#' \code{data} has to be a data frame with the attributes. Items have
 #' to be the raw utilities.
 #'
 #' \code{group} optional grouping variable, if results should be displayed by
@@ -32,12 +23,20 @@
 #' Input for \code{items} has to be variable names.
 #'
 #' \code{res} specifies whether results should be aggregated across all participants
-#' or across \code{group} (\code{res} needs to be set to \code{agg}) or if it scores
-#' should be converted for individuals only
+#' or across \code{group} (\code{res} needs to be set to \code{agg}) or if scores
+#' should be converted for individuals only.
 #'
 #' \code{anchor} only needs to be specified if anchored MaxDiff is applied.
 #' Input for \code{anchor} has to be variable names.
 #'
+#' @importFrom dplyr select mutate_at vars summarise_at group_by_at
+#' @importFrom magrittr "%>%"
+#' @importFrom tidyselect all_of ends_with
+#' @importFrom tidyr pivot_longer
+#' @importFrom scales rescale
+#' @importFrom tibble as_tibble is_tibble
+#'
+#' @return a tibble
 #'
 #'
 #' @seealso {

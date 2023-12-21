@@ -1,24 +1,24 @@
 #' Precision
 #'
-#' @description precision is one of the 5 metrics of the confusion matrix
+#' @description \code{precision} is one of the 5 metrics of the confusion matrix
 #' and is defined as \eqn{\frac{TP}{TP + FP}}, where TP =
 #' True Positives, FP = False Positives (see, e.g., Burger, 2018).
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s)
-#' to get \code{"precision"} by group(s).
+#' to get \code{precision} by group(s).
 #' @param opts Column names of the alternatives included in the
 #' validation/holdout task.
 #' @param choice Column name of the actual choice.
 #' @param none Column name of none alternative.
 #'
 #' @details
-#' The current logic of \code{"precision"} is to determine whether a binary
+#' The current logic of \code{precision} is to determine whether a binary
 #' coded is correctly predicted by the model.
-#' To use the function a \code{"none"} alternative has to be included in the
+#' To use the function a \code{none} alternative has to be included in the
 #' validation/holdout task. One potential usage is, for example, whether a
 #' buy or a no-buy condition was predicted correctly. For example,
-#' you have three alternatives plus a \code{"none"} alternative and you
+#' you have three alternatives plus a \code{none} alternative and you
 #' want to check whether a buy or no-buy was correctly predicted. This function
 #' can be helpful when you test, for example, if your model significantly
 #' overestimates or underestimates, for example, a purchase likelihood.
@@ -40,7 +40,7 @@
 #' validation/holdout task.
 #'
 #' Please be aware about the following 2x2 table regarding coding of buy and
-#' no-buy choice
+#' no-buy choice:
 #'
 #' \tabular{crcc}{
 #'    \tab \tab  Predicted           \tab    \cr

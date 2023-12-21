@@ -1,25 +1,17 @@
 #' Root Mean Square Error
 #'
-#' @description Function to measure the root mean square error
-#'  of a validation/holdout task. Calculates the averaged
-#'  root mean square error of the stated and predicted share of alternatives
-#'  in the validation/holdout task.
+#' @description \code{rmse} measures the root mean square error
+#' of a validation/holdout task. Calculates the averaged
+#' root mean square error of the stated and predicted share of alternatives
+#' in the validation/holdout task.
 #'
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s)
-#' to get \code{"rmse"} by group(s).
+#' to get \code{rmse} by group(s).
 #' @param opts Column names of the alternatives included in the
 #' validation/holdout task.
 #' @param choice Column name of the actual choice.
-#'
-#' @return a tibble
-#' @importFrom dplyr select mutate group_by pick count rowwise ungroup across
-#' summarise
-#' @importFrom magrittr %>%
-#' @importFrom tidyr pivot_longer
-#' @importFrom tidyselect ends_with
-#'
 #'
 #' @details
 #' Root mean square error (RMSE) calculates the root mean square error when
@@ -41,6 +33,13 @@
 #' \code{choice} to specify column of actual choice.
 #' Input of opts \code{choice} has to be column name of actual choice.
 #'
+#'
+#' @return a tibble
+#' @importFrom dplyr select mutate group_by pick count rowwise ungroup across
+#' summarise
+#' @importFrom magrittr %>%
+#' @importFrom tidyr pivot_longer
+#' @importFrom tidyselect ends_with#'
 #'
 #'
 #' @examples
