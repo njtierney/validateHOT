@@ -10,7 +10,7 @@ f1(data, group, opts, choice, none)
 \item{data}{A data frame with all relevant variables.}
 
 \item{group}{Optional column name(s) to specify grouping variable(s)
-to get \code{"f1"} by group(s).}
+to get \code{f1} by group(s).}
 
 \item{opts}{Column names of the alternatives included in the
 validation/holdout task.}
@@ -23,18 +23,18 @@ validation/holdout task.}
 a tibble
 }
 \description{
-F1 is one of the 5 metrics of the confusion matrix
+F1-Score is one of the 5 metrics of the confusion matrix
 and is defined as \eqn{\frac{2 * precision * recall}{precision + recall}} or
 stated differently by Burger (2018) \eqn{\frac{2TP}{2TP + FP + FN}},
 where TP = True Positives, FP = False Positives, and FN = False Negatives.
 }
 \details{
-The current logic of \code{"f1"} is to determine whether a binary coded is
+The current logic of \code{f1} is to determine whether a binary coded is
 correctly predicted by the model. To use the function a \code{"none"}
 alternative has to be included in the validation/holdout task.
 One potential usage is, for example, whether a buy or a no-buy condition
 was predicted correctly. For example, you have three alternatives plus
-a \code{"none"} alternative and you want to check whether a buy or no-buy was
+a \code{none} alternative and you want to check whether a buy or no-buy was
 correctly predicted. This function can be helpful when you test, for example,
 if your model significantly overestimates or underestimates, for example,
 a purchase likelihood.
@@ -45,7 +45,7 @@ the validation/holdout task. Can be created using the \code{createHOT()}
 function.
 
 \code{group} optional grouping variable, if results should be displayed by
-different conditions. #' Has to be column name of variables in \code{data}.
+different conditions. Has to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the
 validation/holdout task (also includes the \code{none} alternative).
@@ -57,7 +57,7 @@ Input of \code{opts} has to be column names of variables in \code{data}.
 validation/holdout task.
 
 Please be aware about the following 2x2 table regarding coding of buy and
-no-buy choice
+no-buy choice:
 
 \tabular{crcc}{
    \tab \tab  Predicted           \tab    \cr

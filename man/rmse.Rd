@@ -10,7 +10,7 @@ rmse(data, group, opts, choice)
 \item{data}{A data frame with all relevant variables.}
 
 \item{group}{Optional column name(s) to specify grouping variable(s)
-to get \code{"rmse"} by group(s).}
+to get \code{rmse} by group(s).}
 
 \item{opts}{Column names of the alternatives included in the
 validation/holdout task.}
@@ -21,10 +21,10 @@ validation/holdout task.}
 a tibble
 }
 \description{
-Function to measure the root mean square error
- of a validation/holdout task. Calculates the averaged
- root mean square error of the stated and predicted share of alternatives
- in the validation/holdout task.
+\code{rmse} measures the root mean square error
+of a validation/holdout task. Calculates the averaged
+root mean square error of the stated and predicted share of alternatives
+in the validation/holdout task.
 }
 \details{
 Root mean square error (RMSE) calculates the root mean square error when

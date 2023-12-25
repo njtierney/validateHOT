@@ -29,7 +29,7 @@ Zero-Anchored Interval Scores for (anchored) MaxDiff
 
 For anchored MaxDiff the anchor is set to 0. More information can be obtained here: https://sawtoothsoftware.com/help/lighthouse-studio/manual/analysis-manager-maxdiff-export-settings.html
 
-\code{data} has to be a data frame with the attributes. Items need
+\code{data} has to be a data frame with the attributes. Items have
 to be the raw utilities.
 
 \code{group} optional grouping variable, if results should be displayed by
@@ -39,8 +39,8 @@ different groups. Has to be column name of variables in \code{data}.
 Input for \code{items} has to be variable names.
 
 \code{res} specifies whether results should be aggregated across all participants
-or across \code{group} (\code{res} needs to be set to \code{agg}) or if it scores
-should be converted for individuals only
+or across \code{group} (\code{res} needs to be set to \code{agg}) or if scores
+should be converted for individuals only.
 
 \code{anchor} only needs to be specified if anchored MaxDiff is applied.
 Input for \code{anchor} has to be variable names.

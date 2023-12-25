@@ -19,7 +19,7 @@
 #' Frequency calculates the average times a consumer would be reached with the
 #' product assortment you are testing. The current logic of \code{freqassort}
 #' is that the utility of an alternative has to exceed a threshold. In the case
-#' of \code{freqassort} this threshold is referred to the \code{none} argument 
+#' of \code{freqassort} this threshold is referred to the \code{none} argument
 #' in \code{data}.
 #'
 #' \code{data} has to be a data frame including the alternatives that should

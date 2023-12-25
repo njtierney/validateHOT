@@ -24,7 +24,8 @@ att_imp(
 coding, '1' = linear coding.}
 
 \item{interpolate.levels}{A list of the attribute levels that should
-be interpolated. These have to be the same as provided to Sawtooth Software.
+be interpolated. These have to be the same as specified in model estimation
+(e.g., if you center attribute levels before estimation, insert the centered levels).
 Please make sure to provide the whole list. Only has to be specified for the
 variables that are coded as '1' (linear).}
 
@@ -58,11 +59,11 @@ to indicated part-worth coding, \code{1} for linear coding.
 If scaled or centered values were used for hierarchical bayes (HB)
 estimation, these have to be specified in this case.
 All values have to be specified. For example, if one linear coded attribute
-had 5 levels, all 5 levels have to be inserted.
+has 5 levels, all 5 levels have to be inserted.
 
 \code{res} specifies whether results should be aggregated across all participants
-or across \code{group} (\code{res} needs to be set to \code{agg}) or if it scores
-should be converted for individuals only
+or across \code{group} (\code{res} needs to be set to \code{agg}) or if scores
+should be converted for individuals only.
 }
 \examples{
 \dontrun{

@@ -39,7 +39,7 @@
 #' summarise
 #' @importFrom magrittr %>%
 #' @importFrom tidyr pivot_longer
-#' @importFrom tidyselect ends_with#'
+#' @importFrom tidyselect ends_with
 #'
 #'
 #' @examples

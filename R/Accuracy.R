@@ -167,9 +167,12 @@ accuracy <- function(data, group, opts, choice, none) {
 
   # test length of none
   if (!base::missing(none)) {
-    anc <- data %>% dplyr::select(., {{ none }}) %>% base::colnames(.)
-    if (length(anc) > 1)
+    anc <- data %>%
+      dplyr::select(., {{ none }}) %>%
+      base::colnames(.)
+    if (length(anc) > 1) {
       base::stop("Error: 'none' can only be one variable!")
+    }
   }
 
   return(data %>%

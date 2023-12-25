@@ -78,7 +78,7 @@ test_that("group output equals group input - character input ", {
 test_that("group output equals group input - labelled input ", {
   MaxDiff$Group2 <- rep(c(1:2), length.out = nrow(MaxDiff))
   MaxDiff$Group2 <- labelled::labelled(MaxDiff$Group2,
-                                       labels = c("Group 1" = 1, "Group 2" = 2)
+    labels = c("Group 1" = 1, "Group 2" = 2)
   )
   expect_equal(labelled::is.labelled(zero_anchored(
     data = MaxDiff,
@@ -226,4 +226,3 @@ test_that("none not larger than 1 ", {
     res = "agg"
   ))
 })
-

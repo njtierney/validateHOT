@@ -10,7 +10,7 @@ mae(data, group, opts, choice)
 \item{data}{A data frame with all relevant variables.}
 
 \item{group}{Optional column name(s) to specify grouping variable(s)
-to get \code{"mae"} by group(s).}
+to get \code{mae} by group(s).}
 
 \item{opts}{Column names of the alternatives included in the
 validation/holdout task.}
@@ -21,8 +21,8 @@ validation/holdout task.}
 a tibble
 }
 \description{
-Function to measure the mean absolute error of a
-validation/holdout task.Calculates the averaged absolute error, i.e.,
+\code{mae} measures the mean absolute error of a
+validation/holdout task. Calculates the averaged absolute error, i.e.,
 deviation between predicted and stated share of alternatives in the
 validation/holdout task.
 }

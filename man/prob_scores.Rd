@@ -42,7 +42,7 @@ raw utility of the item and \emph{a} is the number of items shown per choice tas
 For anchored MaxDiff the following formula is applied \eqn{\frac{e^U}{(e^U + (a - 1)} * 100 / (1 / a)}
 (Chrzan & Orme, 2019, pp. 59-60).
 
-\code{data} has to be a data frame with the attributes. Items need
+\code{data} has to be a data frame with the attributes. Items have
 to be the raw utilities.
 
 \code{group} optional grouping variable, if results should be displayed by

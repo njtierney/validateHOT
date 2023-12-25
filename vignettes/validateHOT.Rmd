@@ -692,7 +692,7 @@ att_imp(
     c("Att7_Lev1", "Att7_Lev2", "Att7_Lev3", "Att7_Lev4", "Att7_Lev5"),
     c("Att8_Lev1", "Att8_Lev2"),
     c(
-      "Price_1.99", "Price_6.99", "Price_9.99", "Price_9.99", "Price_12.99",
+      "Price_1.99", "Price_6.99", "Price_9.99", "Price_10.99", "Price_12.99",
       "Price_17.99", "Price_25.99"
     )
   ),
@@ -731,7 +731,7 @@ prob_scores(
 
 ### `zc_diffs`
 
-The input is almost identical to `att_imp()`, the only difference in case you included a `none` option in your study, you need to specify it here by defining the `none` argument. 
+The input is almost identical to `att_imp()`, the only difference in case you included a `none` option in your study, you need to specify it here by defining the `none` argument. Moreover, piecewise-coded attributes need to be specified.
 
 #### CBC
 
@@ -763,6 +763,58 @@ zc_diffs(
   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
   res = "agg",
   none = "none"
+)
+```
+
+#### `ACBC`
+
+Above, we explained how to address a piecewise-coded ACBC in `createHOT()`. As you probably realized there is no `2` in coding. If a variable is piecewise-coded, you treat it as it would be part-worth coded. Different than for \code{createHOT}, linear-coded price in ACBC is coded as '0' in `zc_diffs()`. 
+
+```{r}
+zc_diffs(
+  data = ACBC,
+  attrib = list(
+    c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+    c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4"),
+    c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4"),
+    c("Att4_Lev1", "Att4_Lev2", "Att4_Lev3"),
+    c("Att5_Lev1", "Att5_Lev2", "Att5_Lev3", "Att5_Lev4"),
+    c("Att6_Lev1", "Att6_Lev2", "Att6_Lev3", "Att6_Lev4"),
+    c("Att7_Lev1", "Att7_Lev2", "Att7_Lev3", "Att7_Lev4", "Att7_Lev5"),
+    c("Att8_Lev1", "Att8_Lev2"),
+    c("Price_2.093", "Price_27.287")
+  ),
+  coding = c(rep(0, 9)),
+  res = "agg",
+  none = "none"
+)
+```
+
+
+#### `ACBC_interpolate`
+
+Finally, in `ACBC_interpolate` we had both one linear-coded and one piecewise-coded attribute. 
+
+```{r}
+zc_diffs(
+  data = ACBC_interpolate,
+  attrib = list(
+    c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+    c("Att2_Lin"),
+    c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4"),
+    c("Att4_Lev1", "Att4_Lev2", "Att4_Lev3"),
+    c("Att5_Lev1", "Att5_Lev2", "Att5_Lev3", "Att5_Lev4"),
+    c("Att6_Lev1", "Att6_Lev2", "Att6_Lev3", "Att6_Lev4"),
+    c("Att7_Lev1", "Att7_Lev2", "Att7_Lev3", "Att7_Lev4", "Att7_Lev5"),
+    c("Att8_Lev1", "Att8_Lev2"),
+    c(
+      "Price_1.99", "Price_6.99", "Price_9.99", "Price_10.99", "Price_12.99",
+      "Price_17.99", "Price_25.99"
+    )
+  ),
+  coding = c(0, 1, rep(0, 6), 2),
+  interpolate.levels = list(c(3, 5, 8, 10)),
+  res = "agg"
 )
 ```
 

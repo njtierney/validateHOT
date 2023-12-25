@@ -23,19 +23,20 @@ createHOT(
 
 \item{id}{A vector of unique identifier in \code{data}.}
 
-\item{none}{An optionalvector to specify \code{none}
+\item{none}{An optional vector to specify \code{none}
 alternative in \code{data}.}
 
 \item{prod.levels}{A list to define the attribute levels of the
-alternatives (\code{prod}).}
+alternatives (\code{prod}). If include linear-coded or piecewise-coded
+attributes are included, column indexes are needed for the input.}
 
 \item{coding}{A vector of the coding of each attribute, '0' = part-worth
 coding,'1' = linear coding, '2' = piecewise coding; please make sure to code
 linear price of ACBC as piecewise since you have two values to interpolate.}
 
 \item{interpolate.levels}{A list of the levels of the variables that should
-be interpolated. These have to be the same as provided to Sawtooth Software
-or ChoiceModelR (Sermas, 2022).
+be interpolated. These have to be the same as specified in model estimation
+(e.g., if you center attribute levels before estimation, insert the centered levels).
 Please make sure to provide the whole list. Only has to be specified for the
 variables that are coded as '1' (linear) or '2' (piecewise).}
 
@@ -57,7 +58,6 @@ a data frame
 }
 \description{
 Function used to create utilities for validation task.
-Currently not working with alternative-specific designs.
 }
 \details{
 In order to test validation metrics of a holdout/validation task, the
@@ -66,27 +66,24 @@ This is done by the function \code{createHOT}.
 Make sure to upload the raw utilities of your study (either from Sawtooth Software
 or ChoiceModelR, Sermas, 2022).
 Afterwards, the function will create the utilities based on the additive
-utility model (Rao, 2014, p. 82).
+utility model (Rao, 2014, p. 82). If working with alternative specific-designs,
+insert \code{NA} if attribute is not specified.
 
-\code{data} has to be a data frame with **raw** scores of the attribute
+\code{data} has to be a data frame with raw scores of the attribute
 levels.
 
 \code{id} has to be the column index or column name of the id (unique for each participant)
 in data frame.
 
 \code{none} has to be specified in case a \code{none} alternative is
-included in holdout/validation task, please specify this by specifying the
+included in holdout/validation task, specify
 column index or column name of \code{none} alternative, otherwise leave it empty.
 
 
 \code{prod.levels} specifies the attribute levels for each alternative.
 Input for \code{prod.levels} has to be a list. In case
-\code{method = "MaxDiff"} this will only be a list of the column indexes or
+\code{method = "MaxDiff"}, list should only contain column indexes or
 column names of the alternatives in the holdout/validation task.
-If \code{method = "CBC"} or \code{method = "ACBC"} use a vector to specify
-the attribute levels for each alternative. If you only use part-worth coded attributes,
-you can also specify the column names, otherwise specify the column indexes
-of the attribute levels.
 In case values for one attribute are interpolated (assuming linear or
 piecewise coding), the value to be interpolated has to be specified (numeric
 input). In addition, \code{lin.p} and/or \code{piece.p}, \code{interpolate.levels}
@@ -106,7 +103,7 @@ Input for \code{interpolate.levels} has to be a list.
 \code{piece.p} has to be specified in case a variable is coded as
 piecewise (see coding). Positions of both lower and upper bound have to
 be specified. In case interpolated values (see
-prod.levels) is equal to a lower or upper bound, this can be specified
+\code{prod.levels}) is equal to a lower or upper bound, this can be specified
 either as lower or upper bound. Input for \code{piece.p} has to be a list.
 
 \code{lin.p} has to be specified in case a variable is coded as linear
@@ -115,7 +112,7 @@ in \code{method = "ACBC"}) only one coefficient is provided in the output,
 just this column index or column name has to be specified.
 
 \code{coding} has to be specified for if \code{method = "CBC"}
-or \code{method = "ACBC"}. \code{0} has to be used for part-worth
+or \code{method = "ACBC"}. Use \code{0} for part-worth
 coding, \code{1} for linear coding, and \code{2} for piecewise coding.
 In case \code{method = "ACBC"} and linear price function is used, this
 variable has to be coded as piecewise (\code{2}). In
@@ -131,7 +128,7 @@ for \code{varskeep} has to be a vector with the column index(es) or names of the
 variable(s) that should be kept.
 
 \code{choice} specifies the column index or column name of the actual choice
-in the #' holdout/validation task.
+in the holdout/validation task.
 }
 \examples{
 \dontrun{

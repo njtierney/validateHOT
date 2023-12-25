@@ -160,11 +160,11 @@ marksim <- function(data, group, opts,
       # calculate mean and sd
       dplyr::summarise(dplyr::across({{ opts }},
         c(mw = base::mean, std = stats::sd),
-        .names = "{.col}.{.fn}"
+        .names = "{.col}...{.fn}"
       )) %>%
       tidyr::pivot_longer(.,
-        cols = tidyselect::ends_with(c(".mw", ".std")),
-        names_to = c("Option", ".value"), names_sep = "\\."
+        cols = tidyselect::ends_with(c("...mw", "...std")),
+        names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
       ) %>% # change to longer format
       base::merge(
         x = .,
@@ -205,11 +205,11 @@ marksim <- function(data, group, opts,
       )) %>%
       dplyr::summarise(dplyr::across({{ opts }},
         c(mw = base::mean, std = stats::sd),
-        .names = "{.col}.{.fn}"
+        .names = "{.col}...{.fn}"
       )) %>%
       tidyr::pivot_longer(.,
-        cols = tidyselect::ends_with(c(".mw", ".std")),
-        names_to = c("Option", ".value"), names_sep = "\\."
+        cols = tidyselect::ends_with(c("...mw", "...std")),
+        names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
       ) %>% # change to longer format
       base::merge(
         x = .,

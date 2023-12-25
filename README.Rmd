@@ -245,8 +245,10 @@ interpret the scores of both (A)CBC and MaxDiff, namely:
 or CBC into importance scores for each attribute (see, Orme, 2020, pp.
 79-81)</li>
 
-<li><code>prob_scores()</code>: Converts the raw utilities of a MaxDiff
-to choice probabilities by applying the following procedures:
+<li>
+
+<code>prob_scores()</code>: Converts the raw utilities of a MaxDiff to
+choice probabilities by applying the following procedures:
 
 <ul>
 
@@ -269,8 +271,10 @@ Orme, 2019, p. 59).</li>
 them comparable across participants (Sawtooth Software Inc, 2023, p.
 343).</li>
 
-<li><code>zero_anchored()</code></li>: Rescales the raw logits of a
-MaxDiff to zero-centered diffs (Chrzan & Orme, 2019, p. 64).
+<li><code>zero_anchored()</code></li>
+
+: Rescales the raw logits of a MaxDiff to zero-centered diffs (Chrzan &
+Orme, 2019, p. 64).
 
 </ul>
 

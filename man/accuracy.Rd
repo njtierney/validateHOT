@@ -10,7 +10,7 @@ accuracy(data, group, opts, choice, none)
 \item{data}{A data frame with all relevant variables.}
 
 \item{group}{Optional column name(s) to specify grouping variable(s)
-to get \code{"accuracy"} by group(s).}
+to get \code{accuracy} by group(s).}
 
 \item{opts}{Column names of the alternatives included in the
 validation/holdout task.}
@@ -31,12 +31,12 @@ True Positives, TN = True Negatives, FP = False Positives, and FN =
 False Negatives.
 }
 \details{
-The current logic of \code{"accuracy"} is to determine whether a binary coded
-is correctly predicted by the model. To use the function a \code{"none"}
+The current logic of \code{accuracy} is to determine whether a binary coded
+is correctly predicted by the model. To use the function a \code{none}
 alternative has to be included in the validation/holdout task.
 One potential usage is, for example, whether a buy or a no-buy condition
 was predicted correctly. For example, assume you have three alternatives plus
-a \code{"none"} alternative and you want to check whether a buy or no-buy was
+a \code{none} alternative and you want to check whether a buy or no-buy was
 correctly predicted. This function can be helpful when you test, for example,
 if your model significantly overestimates or underestimates, for
 example, a purchase likelihood.
@@ -60,7 +60,7 @@ Input of \code{choice} has to be column name of actual choice.
 validation/holdout task.
 
 Please be aware about the following 2x2 table regarding coding of buy and
-no-buy choice
+no-buy choice:
 
 \tabular{crcc}{
    \tab \tab  Predicted           \tab    \cr

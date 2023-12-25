@@ -96,7 +96,7 @@ zero_anchored <- function(data, group = NULL, items,
     stop("Error: 'items' is missing!")
   }
 
-  if (isTRUE(tibble::is_tibble(data))){
+  if (isTRUE(tibble::is_tibble(data))) {
     stop("Error: 'data' has to be a data frame!")
   }
 
@@ -174,10 +174,9 @@ zero_anchored <- function(data, group = NULL, items,
 
 
   for (i in 1:base::nrow(data)) {
-
     vec <- base::unname(base::unlist(c(data[i, var_items])))
 
-    #data[i, var_items] <- NA
+    # data[i, var_items] <- NA
 
     vec <- scales::rescale(vec, to = c(0, 100)) - base::mean(scales::rescale(vec, to = c(0, 100)))
 
@@ -189,30 +188,29 @@ zero_anchored <- function(data, group = NULL, items,
     }
 
     data[i, var_items] <- vec
-
   }
 
   if (res == "agg") {
     if (base::missing(group)) {
       return(data %>%
         dplyr::summarise(dplyr::across(tidyselect::all_of(var_items), c(mw = base::mean, std = stats::sd),
-          .names = "{.col}.{.fn}"
+          .names = "{.col}...{.fn}"
         )) %>%
         tidyr::pivot_longer(.,
           cols = tidyselect::ends_with(c(".mw", ".std")),
-          names_to = c("Option", ".value"), names_sep = "\\."
+          names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
         ))
     }
 
     if (!(base::missing(group))) {
       return(data %>%
-        dplyr::group_by(dplyr::pick ({{group}})) %>%
+        dplyr::group_by(dplyr::pick({{ group }})) %>%
         dplyr::summarise(dplyr::across(tidyselect::all_of(var_items), c(mw = base::mean, std = stats::sd),
-          .names = "{.col}.{.fn}"
+          .names = "{.col}...{.fn}"
         )) %>%
         tidyr::pivot_longer(.,
           cols = tidyselect::ends_with(c(".mw", ".std")),
-          names_to = c("Option", ".value"), names_sep = "\\."
+          names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
         ))
     }
   }
@@ -221,4 +219,3 @@ zero_anchored <- function(data, group = NULL, items,
     return(data)
   }
 }
-

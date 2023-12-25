@@ -272,7 +272,7 @@ test_that("check whether examples are correct ", {
     ),
     coding = c(0, 0, 0),
     res = "agg"
-  )[[1]], c("att_imp1", "att_imp2", "att_imp3"))
+  )[[1]], c("att_imp_1", "att_imp_2", "att_imp_3"))
 
   expect_equal(base::round(base::as.numeric(att_imp(
     data = CBC,
@@ -310,7 +310,7 @@ test_that("check whether examples are correct - CBC_lin ", {
     coding = c(0, 0, 1),
     interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
     res = "agg"
-  )[[1]], c("att_imp1", "att_imp2", "att_imp3"))
+  )[[1]], c("att_imp_1", "att_imp_2", "att_imp_3"))
 
   expect_equal(base::round(base::as.numeric(att_imp(
     data = CBC_lin,

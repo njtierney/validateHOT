@@ -10,7 +10,7 @@ reach(data, group, none, opts)
 \item{data}{A data frame with all relevant variables.}
 
 \item{group}{Optional column name(s) to specify grouping variable(s)
-to get \code{"reach"} by group(s).}
+to get \code{reach} by group(s).}
 
 \item{none}{Column name of none / threshold alternative.}
 
@@ -26,20 +26,21 @@ many participants you can reach (at least one of the products resemble
 a purchase option) is reached with a specific product bundle assortment.
 }
 \details{
-\code{"reach"} calculates the the percentage of consumers that would be
-reached with the product assortment you are testing. The current
-logic of \code{reach()} is that the utility of an alternative has to
-exceed a threshold. In the case of \code{reach()} this threshold is referred
-to the \code{none} argument in \code{data}.
+\code{reach} calculates the the percentage of consumers that are
+reached with the product assortment specified. The current
+logic of \code{reach} is that the utility of an alternative has to
+exceed a threshold. In the case of \code{reach} this threshold is referred
+to the \code{none} argument in \code{data}, however, could also be, e.g., a current
+product.
 
 
 \code{data} has to be a data frame including the alternatives that
-should be tested
+should be tested.
 
-\code{group} optional Grouping variable, if results should be displayed
-by different conditions. Has to be column name of variables in \code{data}.
+\code{group} optional grouping variable, if results should be displayed
+by different groups. Has to be column name of variables in \code{data}.
 
-\code{opts} is needed to specify the different alternatives in the
+\code{opts} specifies the different alternatives in the
 product assortment that should be considered.
 Input of \code{opts} has to be column names of variables in \code{data}.
 

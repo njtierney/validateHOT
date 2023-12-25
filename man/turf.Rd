@@ -33,7 +33,7 @@ alternatives that are not allowed to be together in one assortment.}
 Threshold approach ('thres').
 
 \code{data} has to be a data frame including the alternatives that should be
-tested
+tested.
 
 \code{opts} is needed to specify the different alternatives in the
 product assortment that should be considered.
@@ -45,7 +45,7 @@ validation/holdout task.
 \code{size} has to be a whole number determining the size of the assortment.
 
 \code{fixed} has to be a vector of variables that are fixed in the
-assortment, i.e., they have to be part of the assortment
+assortment, i.e., they have to be part of the assortment.
 
 \code{prohib} has to be a vector of variables that are prohibited in the
 assortment, i.e., alternatives that are not allowed to be together in one
@@ -54,14 +54,14 @@ assortment.
 \code{approach} character defining whether first
 choice \code{approach = 'fc'} or threshold \code{approach = 'thres'}.
 If \code{approach = 'fc'}, participants are considered being reached, if
-there alternative with highest utility is included in the assortment
-(Chrzan & Orme, 2019, p. 111).
- On the contrary, if \code{approach = 'thres'}, participants are considered
- being reached, if utility of one product is higher than the one of
- the \code{none} alternative (Chrzan & Orme, 2019, p. 112).
- If \code{approach = 'fc'}, \code{reach} equals \code{freq} since
- participants have at maximum their most preferred alternative that
- exceeds the \code{none} alternative.}
+their alternative with the highest utility is included in the assortment
+and larger than the threshold's utility (Chrzan & Orme, 2019, p. 111).
+On the contrary, if \code{approach = 'thres'}, participants are considered
+being reached, if utility of one product is higher than the one of
+the \code{none} alternative (Chrzan & Orme, 2019, p. 112).
+If \code{approach = 'fc'}, \code{reach} equals \code{freq} since
+participants have at maximum their most preferred alternative that
+exceeds the \code{none} alternative.}
 }
 \value{
 data frame

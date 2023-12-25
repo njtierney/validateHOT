@@ -165,7 +165,7 @@ prob_scores <- function(data, group = NULL, items, set.size,
 
   if (!base::missing(anchor)) {
     if (!(data %>% dplyr::select(., {{ anchor }}) %>% base::colnames()) %in%
-        (data %>% dplyr::select(., {{ items }}) %>% base::colnames())) {
+      (data %>% dplyr::select(., {{ items }}) %>% base::colnames())) {
       stop("Error: 'anchor' has to be part of 'items'!")
     }
   }
@@ -182,11 +182,11 @@ prob_scores <- function(data, group = NULL, items, set.size,
         dplyr::group_by(dplyr::pick({{ group }})) %>%
         dplyr::summarise(dplyr::across({{ items }},
           c(mw = base::mean, std = stats::sd),
-          .names = "{.col}.{.fn}"
+          .names = "{.col}...{.fn}"
         )) %>%
         tidyr::pivot_longer(.,
           cols = tidyselect::ends_with(c(".mw", ".std")),
-          names_to = c("Option", ".value"), names_sep = "\\."
+          names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
         ))
     }
 
@@ -209,11 +209,11 @@ prob_scores <- function(data, group = NULL, items, set.size,
           dplyr::group_by(dplyr::pick({{ group }})) %>%
           dplyr::summarise(dplyr::across({{ items }},
             c(mw = base::mean, std = stats::sd),
-            .names = "{.col}.{.fn}"
+            .names = "{.col}...{.fn}"
           )) %>%
           tidyr::pivot_longer(.,
             cols = tidyselect::ends_with(c(".mw", ".std")),
-            names_to = c("Option", ".value"), names_sep = "\\."
+            names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
           )
       )
     }

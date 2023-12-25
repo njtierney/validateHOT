@@ -10,7 +10,7 @@ medae(data, group, opts, choice)
 \item{data}{A data frame with all relevant variables.}
 
 \item{group}{Optional column name(s) to specify grouping variable(s)
-to get \code{"medae"} by group(s).}
+to get \code{medae} by group(s).}
 
 \item{opts}{Column names of the alternatives included in the
 validation/holdout task.}
@@ -21,11 +21,11 @@ validation/holdout task.}
 a tibble
 }
 \description{
-Function to measure the median absolute error (MedAE) of a validation/holdout
+\code{medae} measures the median absolute error (MedAE) of a validation/holdout
 task.
 }
 \details{
-Median absolute error (MedAE) calculates the deviation between predicted and
+\code{medae} calculates the deviation between predicted and
 stated (actual) choice share and returns the median error in the
 validation/holdout task, which is less likely to be influenced by outliers.
 
@@ -34,7 +34,7 @@ the validation/holdout task. Can be created using the \code{createHOT()}
 function.
 
 \code{group} optional grouping variable, if results should be displayed by
-different groups.Has to be column name of variables in \code{data}.
+different groups. Has to be column name of variables in \code{data}.
 
 \code{opts} is needed to specify the different alternatives in the
 validation/holdout task. Input of \code{opts} has to be column names

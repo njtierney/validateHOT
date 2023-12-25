@@ -265,10 +265,9 @@ Orme, 2019, p. 59).
 comparable across participants (Sawtooth Software Inc, 2023, p. 343).
 </li>
 <li>
-<code>zero_anchored()</code>
-</li>
 
-: Rescales the raw logits of a MaxDiff to zero-centered diffs (Chrzan &
+<code>zero_anchored()</code>  
+Rescales the raw logits of a MaxDiff to zero-centered diffs (Chrzan &
 Orme, 2019, p. 64).
 
 </ul>

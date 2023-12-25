@@ -6,7 +6,7 @@
 #' @param coding A vector of the coding of each attribute, '0' = part-worth
 #' coding, '1' = linear coding.
 #' @param interpolate.levels A list of the attribute levels that should
-#' be interpolated. These have to be the same as specified in model estimation 
+#' be interpolated. These have to be the same as specified in model estimation
 #' (e.g., if you center attribute levels before estimation, insert the centered levels).
 #' Please make sure to provide the whole list. Only has to be specified for the
 #' variables that are coded as '1' (linear).
@@ -214,19 +214,19 @@ att_imp <- function(data, group = NULL, attrib, coding,
   for (i in 1:att) {
     helper <- 1
 
-    data[[base::paste0("att_imp", i)]] <- 0
+    data[[base::paste0("att_imp_", i)]] <- 0
 
     vars <- attrib[[i]]
 
-    new <- c(new, base::paste0("att_imp", i))
+    new <- c(new, base::paste0("att_imp_", i))
 
     for (j in 1:base::nrow(data)) {
       if (coding[i] == 0) {
-        data[j, base::paste0("att_imp", i)] <- base::abs(base::diff(base::range(data[j, vars])))
+        data[j, base::paste0("att_imp_", i)] <- base::abs(base::diff(base::range(data[j, vars])))
       }
 
       if (coding[i] == 1) {
-        data[j, base::paste0("att_imp", i)] <- base::abs(data[j, vars] * base::abs(base::diff(base::range(interpolate.levels[[helper]]))))
+        data[j, base::paste0("att_imp_", i)] <- base::abs(data[j, vars] * base::abs(base::diff(base::range(interpolate.levels[[helper]]))))
 
         helper
       }
@@ -242,11 +242,11 @@ att_imp <- function(data, group = NULL, attrib, coding,
       dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x / base::rowSums(data[new]))) %>%
       dplyr::group_by(dplyr::pick({{ group }})) %>%
       dplyr::summarise(dplyr::across(tidyselect::all_of(new), c(mw = base::mean, std = stats::sd),
-        .names = "{.col}.{.fn}"
+        .names = "{.col}...{.fn}"
       )) %>%
       tidyr::pivot_longer(.,
         cols = tidyselect::ends_with(c(".mw", ".std")),
-        names_to = c("Option", ".value"), names_sep = "\\."
+        names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
       ) %>%
       dplyr::mutate_at(dplyr::vars(mw, std), ~ .x * 100))
   }

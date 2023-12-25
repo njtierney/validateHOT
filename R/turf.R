@@ -253,8 +253,9 @@ turf <- function(data, opts, none, size, fixed = NULL, prohib = NULL,
     stop("Error: 'none' can not be part of 'opts'!")
   }
 
-  if (base::length(Noo) > 1)
+  if (base::length(Noo) > 1) {
     base::stop("Error: 'none' can only be one variable!")
+  }
 
 
   # prepare data frame and threshold approach

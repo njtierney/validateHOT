@@ -10,7 +10,7 @@ kl(data, group, opts, choice, epsilon = NULL, base = NULL)
 \item{data}{A data frame with all relevant variables.}
 
 \item{group}{Optional column name(s) to specify grouping variable(s)
-to get \code{"kl"} by group(s).}
+to get \code{kl} by group(s).}
 
 \item{opts}{Column names of the alternatives included in the
 validation/holdout task.}
@@ -57,11 +57,11 @@ Input of opts \code{choice} has to be column name of actual choice.
 
 \code{epsilon} has to be a numeric input in case of 0 in the numerator or
 denominator. 0 then will be replaced by \code{epsilon}. Default value
-is \code{epsilon = 1e-5}, however, can be adopted.
+is \code{epsilon = 1e-5}, however, can be adopted (Drost, 2018).
 
 \code{base} has to be a character string, deciding which logarithm base
 you want to apply to calculate Kullback-Leibler. You can choose
-between \eqn{log} and \eqn{log{_2}}. Default set to \eqn{log}.
+between \eqn{log} and \eqn{log{_2}}. Default is set to \eqn{log}.
 }
 \examples{
 \dontrun{
