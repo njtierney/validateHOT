@@ -4,7 +4,7 @@
 #' @param group Optional column name(s) to specify grouping variable(s).
 #' @param attrib A list that specifies the attribute levels for each attribute.
 #' @param coding A vector of the coding of each attribute, '0' = part-worth
-#' coding, '1' = linear coding.
+#' coding, '1' = linear coding, or '2' = piecewise coding.
 #' @param interpolate.levels A list of the attribute levels that should
 #' be interpolated. These have to be the same as specified in model estimation
 #' (e.g., if you center attribute levels before estimation, insert the centered levels).
@@ -27,8 +27,9 @@
 #' Input for \code{attrib} has to be a list. Needs to specify the column names or
 #' column indexes of the attribute levels.
 #'
-#' \code{coding} has to be specified  to indicate the attribute coding. \code{0}
-#' to indicated part-worth coding, \code{1} for linear coding.
+#' \code{coding} has to be specified to indicate the attribute coding. \code{0}
+#' to indicated part-worth coding, \code{1} for linear coding, or \code{2} for
+#' piecewise coding.
 #'
 #' \code{interpolate.levels} has to be specified for linear coded variables.
 #' If scaled or centered values were used for hierarchical bayes (HB)
@@ -111,9 +112,9 @@ att_imp <- function(data, group = NULL, attrib, coding,
   }
 
   # test whether coding only includes 0, 1
-  if (base::any(coding != 0 & coding != 1)) {
+  if (base::any(coding != 0 & coding != 1 & coding != 2)) {
     base::stop(
-      "Error: Please only use '0' (for part-worth) or '1' (for linear)!"
+      "Error: Please only use '0' (for part-worth), '1' (for linear), or '2' (for piecewise)!"
     )
   }
 
@@ -163,6 +164,12 @@ att_imp <- function(data, group = NULL, attrib, coding,
           "Error: If attribute is linear coded only one attribute level needs to be specified!"
         )
       }
+
+      if (base::length(attrib[[tt]]) == 1 & coding[tt] == 2) {
+        base::stop(
+          "Error: If attribute is piecewise coded at least 2 attribute levels need to be specified!"
+        )
+      }
     }
   }
 
@@ -200,6 +207,14 @@ att_imp <- function(data, group = NULL, attrib, coding,
     )
   }
 
+  # number of coding larger than length of interpolate levels
+
+  if (base::any(coding == 2)) {
+    if (base::sum(coding == 2) > 1) {
+      base::stop("Error: Only one attribute can be piecewise-coded!")
+    }
+  }
+
   # can not specify res to 'ind' and specify group
   if ((res == "ind") & !base::missing(group)) {
     stop("Error: Can not speficy 'group' if 'res' is set to 'ind'!")
@@ -221,7 +236,7 @@ att_imp <- function(data, group = NULL, attrib, coding,
     new <- c(new, base::paste0("att_imp_", i))
 
     for (j in 1:base::nrow(data)) {
-      if (coding[i] == 0) {
+      if (coding[i] == 0 | coding[i] == 2) {
         data[j, base::paste0("att_imp_", i)] <- base::abs(base::diff(base::range(data[j, vars])))
       }
 

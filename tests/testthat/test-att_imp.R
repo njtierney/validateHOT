@@ -10,7 +10,7 @@ test_that("Coding missing ", {
   ))
 })
 
-test_that("Coding not 1 or 0 ", {
+test_that("Coding not 0, 1, or 2 ", {
   expect_error(att_imp(
     data = CBC,
     attrib = list(
@@ -18,12 +18,12 @@ test_that("Coding not 1 or 0 ", {
       c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
       c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
     ),
-    coding = c(0, 0, 2),
+    coding = c(0, 0, 3),
     res = "agg"
   ))
 })
 
-test_that("Coding not 1 or 0 ", {
+test_that("Coding not 0, 1, or 2 ", {
   expect_error(att_imp(
     data = CBC,
     attrib = list(
@@ -73,6 +73,19 @@ test_that("Linear coded variables has more than 1 level ", {
     ),
     coding = c(0, 0, 1),
     interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+    res = "agg"
+  ))
+})
+
+test_that("More than 1 variables code 2 ", {
+  expect_error(att_imp(
+    data = CBC,
+    attrib = list(
+      c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+      c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+      c("Att3_Lev1", "Att3_Lev2")
+    ),
+    coding = c(0, 2, 2),
     res = "agg"
   ))
 })

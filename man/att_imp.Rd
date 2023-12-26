@@ -21,7 +21,7 @@ att_imp(
 \item{attrib}{A list that specifies the attribute levels for each attribute.}
 
 \item{coding}{A vector of the coding of each attribute, '0' = part-worth
-coding, '1' = linear coding.}
+coding, '1' = linear coding, or '2' = piecewise coding.}
 
 \item{interpolate.levels}{A list of the attribute levels that should
 be interpolated. These have to be the same as specified in model estimation
@@ -52,8 +52,9 @@ different groups. Has to be column name of variables in \code{data}.
 Input for \code{attrib} has to be a list. Needs to specify the column names or
 column indexes of the attribute levels.
 
-\code{coding} has to be specified  to indicate the attribute coding. \code{0}
-to indicated part-worth coding, \code{1} for linear coding.
+\code{coding} has to be specified to indicate the attribute coding. \code{0}
+to indicated part-worth coding, \code{1} for linear coding, or \code{2} for
+piecewise coding.
 
 \code{interpolate.levels} has to be specified for linear coded variables.
 If scaled or centered values were used for hierarchical bayes (HB)
