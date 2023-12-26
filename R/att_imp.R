@@ -226,8 +226,8 @@ att_imp <- function(data, group = NULL, attrib, coding,
 
   new <- c()
 
+  helper <- 1
   for (i in 1:att) {
-    helper <- 1
 
     data[[base::paste0("att_imp_", i)]] <- 0
 
@@ -242,8 +242,6 @@ att_imp <- function(data, group = NULL, attrib, coding,
 
       if (coding[i] == 1) {
         data[j, base::paste0("att_imp_", i)] <- base::abs(data[j, vars] * base::abs(base::diff(base::range(interpolate.levels[[helper]]))))
-
-        helper
       }
     }
 

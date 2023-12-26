@@ -266,8 +266,10 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
 
   new <- c()
 
+  helper <- 1
+
   for (i in 1:att) {
-    helper <- 1
+
 
     data[[base::paste0("range_att_", i)]] <- 0
 
