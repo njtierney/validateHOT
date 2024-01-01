@@ -1,4 +1,4 @@
-#' @title  Preparing holdout/validation task and creating utilities
+#' @title  Function to create total utilities for validation task alternatives / market scenario
 #'
 #' @description Function used to create utilities for validation task.
 #'

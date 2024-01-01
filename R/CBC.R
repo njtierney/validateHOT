@@ -1,4 +1,4 @@
-#' CBC example dataset
+#' CBC data set with part-worth coded attributes
 #'
 #' A data set with raw scores export for an CBC, assuming part-worth coding for
 #' price (if included).

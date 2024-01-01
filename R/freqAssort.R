@@ -1,5 +1,4 @@
-#' Averaged number of times a person is reached by a specific assortment of
-#' bundles
+#' Function to calculate averaged number of times a participant is reached by assortment
 #'
 #' @description
 #' Frequency function of T(otal) U(nduplicated) R(each) and F(requency)

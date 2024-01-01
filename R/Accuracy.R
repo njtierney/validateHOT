@@ -1,4 +1,4 @@
-#' Accuracy
+#' Function to calculate accuracy of confusion matrix for general product demand
 #'
 #' @description \code{accuracy} is one of the 5 metrics of the confusion matrix
 #' and is defined as number of correctly predicted participants divided by

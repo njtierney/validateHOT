@@ -1,4 +1,4 @@
-#' MHP
+#' Function to calculate Mean Hit Probability (MHP) of validation task
 #'
 #' @description
 #' \code{mhp} measures the mean hit probability of a validation/holdout

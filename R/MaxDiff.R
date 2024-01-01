@@ -1,4 +1,4 @@
-#' MaxDiff example dataset
+#' MaxDiff data set with raw logit utilities
 #'
 #' A data set with raw scores export for a MaxDiff (Best-Worst Scaling case 1).
 #'

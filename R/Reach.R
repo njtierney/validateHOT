@@ -1,4 +1,4 @@
-#' Percentage of participants that are reached by assortment
+#' Function to calculate percentage of participants that are reached by assortment
 #'
 #' @description
 #' Reach function of T(otal) U(nduplicated) R(each) and F(requency)

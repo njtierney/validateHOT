@@ -1,4 +1,4 @@
-#' F1-Score
+#' Function to calculate F1-Score of confusion matrix for general product demand
 #'
 #' @description F1-Score is one of the 5 metrics of the confusion matrix
 #' and is defined as \eqn{\frac{2 * precision * recall}{precision + recall}} or

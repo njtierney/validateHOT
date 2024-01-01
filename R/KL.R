@@ -1,4 +1,4 @@
-#' Kullback-Leibler Divergence
+#' Function to calculate Kullback-Leibler divergence of validation/holdout task
 #'
 #' @description Function to measure the Kullback-Leibler Divergence of a
 #' validation/holdout task.

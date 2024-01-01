@@ -1,4 +1,4 @@
-#' Attribute Importance for (A)CBC
+#' Function to calculate attributes' importance score of (A)CBCs
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s).

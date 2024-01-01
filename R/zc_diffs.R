@@ -1,4 +1,4 @@
-#' Zero-Centered Diffs for (A)CBC
+#' Function to calculate zero-centered diffs for (A)CBCs
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s).

@@ -1,4 +1,4 @@
-#' Specificity
+#' Function to calculate specificity of confusion matrix for general product demand
 #'
 #' @description \code{specificity} is one of the 5 metrics of the confusion matrix
 #' and is defined as \eqn{\frac{TN}{TN + FP}}, where TN =

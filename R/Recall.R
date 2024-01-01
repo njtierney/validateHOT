@@ -1,4 +1,4 @@
-#' Recall
+#' Function to calculate recall of confusion matrix for general product demand
 #'
 #' @description \code{recall} is one of the 5 metrics of the confusion matrix
 #' and is defined as \eqn{\frac{TP}{TP + FN}}, where TP =

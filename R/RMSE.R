@@ -1,4 +1,4 @@
-#' Root Mean Square Error
+#' Function to calcualte Root Mean Square Error of validation/holdout task
 #'
 #' @description \code{rmse} measures the root mean square error
 #' of a validation/holdout task. Calculates the averaged

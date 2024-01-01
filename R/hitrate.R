@@ -1,4 +1,4 @@
-#' Hit Rate
+#' Function to calculate hit rate of validation/holdout task
 #'
 #' @description \code{hitrate} measures number of times a choice was correctly
 #' predicted in a validation/holdout task.

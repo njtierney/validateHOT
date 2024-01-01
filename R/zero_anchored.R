@@ -1,4 +1,4 @@
-#' Zero-Anchored Interval Scores for (anchored) MaxDiff
+#' Function to calculate zero-anchored interval scores for (anchored) MaxDiff
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s).

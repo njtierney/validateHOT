@@ -1,4 +1,4 @@
-#' Mean Absolute Error
+#' Function to calculate mean absolute error of validation/holdout task
 #'
 #' @description \code{mae} measures the mean absolute error of a
 #' validation/holdout task. Calculates the averaged absolute error, i.e.,

@@ -1,4 +1,4 @@
-#' Probability Scores for (anchored) MaxDiff
+#' Function to calculate probability scores for (anchored) MaxDiff
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s).

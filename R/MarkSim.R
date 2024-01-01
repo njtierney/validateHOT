@@ -1,4 +1,4 @@
-#' Market Simulation of Options included in HOT
+#' Function to run market simulations for validation task / market scenario
 #'
 #' @description
 #' \code{marksim} runs market simulations with options in a validation/holdout task.

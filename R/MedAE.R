@@ -1,4 +1,4 @@
-#' Median Absolute Error
+#' Function to calculate median absolute error
 #'
 #' @description
 #' \code{medae} measures the median absolute error (MedAE) of a validation/holdout

@@ -1,4 +1,4 @@
-#' Total Unduplicated Reach and Frequency
+#' Function to run Total Unduplicated Reach and Frequency analysis
 #' @description
 #' T(otal) U(nduplicated) R(each) and F(requency) is
 #' a "product line extension model" (Miaoulis et al., 1990, p. 29). For each
