@@ -2,7 +2,7 @@
 % Please edit documentation in R/MAE.R
 \name{mae}
 \alias{mae}
-\title{Mean Absolute Error}
+\title{Function to calculate mean absolute error of validation/holdout task}
 \usage{
 mae(data, group, opts, choice)
 }

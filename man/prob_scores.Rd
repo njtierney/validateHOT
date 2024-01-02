@@ -2,7 +2,7 @@
 % Please edit documentation in R/prob_scores.R
 \name{prob_scores}
 \alias{prob_scores}
-\title{Probability Scores for (anchored) MaxDiff}
+\title{Function to calculate probability scores for (anchored) MaxDiff}
 \usage{
 prob_scores(
   data,
@@ -31,7 +31,7 @@ aggregated (\code{agg}) shares should be returned.}
 a tibble
 }
 \description{
-Probability Scores for (anchored) MaxDiff
+Function to calculate probability scores for (anchored) MaxDiff
 }
 \details{
 \code{prob_scores} converts raw utilities of a MaxDiff to probability scores.

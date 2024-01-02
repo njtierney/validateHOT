@@ -3,7 +3,7 @@
 \docType{data}
 \name{CBC}
 \alias{CBC}
-\title{CBC example dataset}
+\title{CBC data set with part-worth coded attributes}
 \format{
 A data frame with 79 rows and 23 variables
 }

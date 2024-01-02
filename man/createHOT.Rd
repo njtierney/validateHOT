@@ -2,7 +2,7 @@
 % Please edit documentation in R/createHOT.R
 \name{createHOT}
 \alias{createHOT}
-\title{Preparing holdout/validation task and creating utilities}
+\title{Function to create total utilities for validation task alternatives / market scenario}
 \usage{
 createHOT(
   data,
@@ -15,7 +15,7 @@ createHOT(
   piece.p = NULL,
   method = c("ACBC", "CBC", "MaxDiff"),
   varskeep = NULL,
-  choice
+  choice = NULL
 )
 }
 \arguments{
@@ -51,7 +51,8 @@ level that should be used for interpolating.}
 \item{varskeep}{A vector specifying variables that should be kept
 in the data frame.}
 
-\item{choice}{Actual choice in the holdout/validation task.}
+\item{choice}{Actual choice in the holdout/validation task. Leave empty for
+specifying market scenario.}
 }
 \value{
 a data frame
@@ -128,7 +129,8 @@ for \code{varskeep} has to be a vector with the column index(es) or names of the
 variable(s) that should be kept.
 
 \code{choice} specifies the column index or column name of the actual choice
-in the holdout/validation task.
+in the holdout/validation task. If only a market scenario is specified,
+leave \code{choice} empty.
 }
 \examples{
 \dontrun{

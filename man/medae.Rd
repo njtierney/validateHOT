@@ -2,7 +2,7 @@
 % Please edit documentation in R/MedAE.R
 \name{medae}
 \alias{medae}
-\title{Median Absolute Error}
+\title{Function to calculate median absolute error}
 \usage{
 medae(data, group, opts, choice)
 }

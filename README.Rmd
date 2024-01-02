@@ -34,9 +34,9 @@ and ACBC into scores that are easier to communicate. This package is
 especially relevant for the [Sawtooth
 Software](https://sawtoothsoftware.com/) community who would like to
 report their analysis in *R* for open science purposes. However, it also
-works perfectly with the great package `ChoiceModelR`(Sermas, 2022).
-This package is extremely useful for practitioners, who would like to
-run the analyses in an open source software. The ultimate goal of these
+works perfectly with the package `ChoiceModelR`(Sermas, 2022). This
+package is extremely useful for practitioners, who would like to run the
+analyses in an open source software. The ultimate goal of these
 preference measurement techniques is to predict future behavior (Green &
 Srinivasan, 1990). Therefore, it is essential for both academics and
 practitioners to ensure that the collected data is valid and can also
@@ -271,10 +271,12 @@ Orme, 2019, p. 59).</li>
 them comparable across participants (Sawtooth Software Inc, 2023, p.
 343).</li>
 
-<li><code>zero_anchored()</code></li>
+<li>
 
-: Rescales the raw logits of a MaxDiff to zero-centered diffs (Chrzan &
-Orme, 2019, p. 64).
+<code>zero_anchored()</code>
+
+:   Rescales the raw logits of a MaxDiff to zero-centered diffs (Chrzan
+    & Orme, 2019, p. 64).
 
 </ul>
 

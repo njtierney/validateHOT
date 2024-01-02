@@ -2,7 +2,7 @@
 % Please edit documentation in R/Precision.R
 \name{precision}
 \alias{precision}
-\title{Precision}
+\title{Function to calculate precision of confusion matrix for general product demand}
 \usage{
 precision(data, group, opts, choice, none)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/zc_diffs.R
 \name{zc_diffs}
 \alias{zc_diffs}
-\title{Zero-Centered Diffs for (A)CBC}
+\title{Function to calculate zero-centered diffs for (A)CBCs}
 \usage{
 zc_diffs(
   data,
@@ -40,7 +40,7 @@ aggregated (\code{agg}) zero-centered diffs should be returned.}
 a tibble
 }
 \description{
-Zero-Centered Diffs for (A)CBC
+Function to calculate zero-centered diffs for (A)CBCs
 }
 \details{
 \code{zc_diffs} converts raw utilities of a CBC or an ACBC to

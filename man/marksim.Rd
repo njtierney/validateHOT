@@ -2,7 +2,7 @@
 % Please edit documentation in R/MarkSim.R
 \name{marksim}
 \alias{marksim}
-\title{Market Simulation of Options included in HOT}
+\title{Function to run market simulations for validation task / market scenario}
 \usage{
 marksim(data, group, opts, method = c("sop", "fc"))
 }

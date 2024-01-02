@@ -2,7 +2,7 @@
 % Please edit documentation in R/Specificity.R
 \name{specificity}
 \alias{specificity}
-\title{Specificity}
+\title{Function to calculate specificity of confusion matrix for general product demand}
 \usage{
 specificity(data, group, opts, choice, none)
 }

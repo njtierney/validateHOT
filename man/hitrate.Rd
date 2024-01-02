@@ -2,7 +2,7 @@
 % Please edit documentation in R/hitrate.R
 \name{hitrate}
 \alias{hitrate}
-\title{Hit Rate}
+\title{Function to calculate hit rate of validation/holdout task}
 \usage{
 hitrate(data, group, opts, choice)
 }

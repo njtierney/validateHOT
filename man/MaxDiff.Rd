@@ -3,7 +3,7 @@
 \docType{data}
 \name{MaxDiff}
 \alias{MaxDiff}
-\title{MaxDiff example dataset}
+\title{MaxDiff data set with raw logit utilities}
 \format{
 A data frame with 70 rows and 21 variables
 }

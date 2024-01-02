@@ -2,7 +2,7 @@
 % Please edit documentation in R/KL.R
 \name{kl}
 \alias{kl}
-\title{Kullback-Leibler Divergence}
+\title{Function to calculate Kullback-Leibler divergence of validation/holdout task}
 \usage{
 kl(data, group, opts, choice, epsilon = NULL, base = NULL)
 }

@@ -3,7 +3,7 @@
 \docType{data}
 \name{CBC_lin}
 \alias{CBC_lin}
-\title{CBC example dataset with linear coded variable}
+\title{CBC data set with part-worth coded attributes and linear-coded attribute}
 \format{
 A data frame with 79 rows and 17 variables
 }

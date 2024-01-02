@@ -3,7 +3,7 @@
 \docType{data}
 \name{ACBC}
 \alias{ACBC}
-\title{ACBC example dataset}
+\title{ACBC data set with part-worth coded attributes and linear-coded price}
 \format{
 A data frame with 95 rows and 39 variables
 }

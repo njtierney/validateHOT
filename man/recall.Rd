@@ -2,7 +2,7 @@
 % Please edit documentation in R/Recall.R
 \name{recall}
 \alias{recall}
-\title{Recall}
+\title{Function to calculate recall of confusion matrix for general product demand}
 \usage{
 recall(data, group, opts, choice, none)
 }

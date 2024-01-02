@@ -2,7 +2,7 @@
 % Please edit documentation in R/turf.R
 \name{turf}
 \alias{turf}
-\title{Total Unduplicated Reach and Frequency}
+\title{Function to run Total Unduplicated Reach and Frequency analysis}
 \usage{
 turf(
   data,

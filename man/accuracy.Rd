@@ -2,7 +2,7 @@
 % Please edit documentation in R/Accuracy.R
 \name{accuracy}
 \alias{accuracy}
-\title{Accuracy}
+\title{Function to calculate accuracy of confusion matrix for general product demand}
 \usage{
 accuracy(data, group, opts, choice, none)
 }

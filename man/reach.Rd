@@ -2,7 +2,7 @@
 % Please edit documentation in R/Reach.R
 \name{reach}
 \alias{reach}
-\title{Percentage of participants that are reached by assortment}
+\title{Function to calculate percentage of participants that are reached by assortment}
 \usage{
 reach(data, group, none, opts)
 }

@@ -24,7 +24,8 @@
 #' \code{method} has to be one of the following three: "MaxDiff", "CBC", or "ACBC".
 #' @param varskeep A vector specifying variables that should be kept
 #' in the data frame.
-#' @param choice Actual choice in the holdout/validation task.
+#' @param choice Actual choice in the holdout/validation task. Leave empty for
+#' specifying market scenario.
 #'
 #' @details
 #' In order to test validation metrics of a holdout/validation task, the
@@ -95,7 +96,8 @@
 #' variable(s) that should be kept.
 #'
 #' \code{choice} specifies the column index or column name of the actual choice
-#' in the holdout/validation task.
+#' in the holdout/validation task. If only a market scenario is specified,
+#' leave \code{choice} empty.
 #'
 #' @return a data frame
 #' @importFrom stats approx
@@ -207,7 +209,8 @@ createHOT <- function(data, id, none = NULL,
                       lin.p = NULL,
                       piece.p = NULL,
                       method = c("ACBC", "CBC", "MaxDiff"),
-                      varskeep = NULL, choice) {
+                      varskeep = NULL,
+                      choice = NULL) {
   # define number of alternatives specified
   prod <- base::length(prod.levels)
 
@@ -242,7 +245,7 @@ createHOT <- function(data, id, none = NULL,
 
   # test whether choice is specified
   if (base::missing(choice)) {
-    base::stop("Error: 'choice' is not defined!")
+    base::warning("Warning: 'choice' is not defined!")
   }
 
   # test whether method is correctly specified
@@ -592,14 +595,16 @@ createHOT <- function(data, id, none = NULL,
   }
 
   # store the final choice
-  vars <- c(
+  if (!base::is.null(choice)) {
+    vars <- c(
     (data %>% dplyr::select(tidyselect::all_of(id)) %>% base::colnames(.)),
     (data %>% dplyr::select(tidyselect::all_of(choice)) %>% base::colnames(.))
-  )
-  final_choice <- data[, vars]
-  # rename variables for merging purposes
-  base::colnames(final_choice) <- c("ID", "choice")
-  df <- base::merge(x = df, y = final_choice, by = "ID") # merge
+    )
+    final_choice <- data[, vars]
+    # rename variables for merging purposes
+    base::colnames(final_choice) <- c("ID", "choice")
+    df <- base::merge(x = df, y = final_choice, by = "ID") # merge
+  }
 
   if (base::is.character(data[[id]])) {
     df[["ID"]] <- base::as.character(df[["ID"]])

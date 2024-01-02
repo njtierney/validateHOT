@@ -2,7 +2,7 @@
 % Please edit documentation in R/MHP.R
 \name{mhp}
 \alias{mhp}
-\title{MHP}
+\title{Function to calculate Mean Hit Probability (MHP) of validation task}
 \usage{
 mhp(data, group, opts, choice)
 }

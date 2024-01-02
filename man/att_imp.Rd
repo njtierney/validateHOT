@@ -2,7 +2,7 @@
 % Please edit documentation in R/att_imp.R
 \name{att_imp}
 \alias{att_imp}
-\title{Attribute Importance for (A)CBC}
+\title{Function to calculate attributes' importance score of (A)CBCs}
 \usage{
 att_imp(
   data,
@@ -36,7 +36,7 @@ aggregated (\code{agg}) shares should be returned.}
 a tibble
 }
 \description{
-Attribute Importance for (A)CBC
+Function to calculate attributes' importance score of (A)CBCs
 }
 \details{
 \code{att_imp} converts raw utilities of a CBC or an ACBC to relative importance

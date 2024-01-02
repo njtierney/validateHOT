@@ -2,7 +2,7 @@
 % Please edit documentation in R/RMSE.R
 \name{rmse}
 \alias{rmse}
-\title{Root Mean Square Error}
+\title{Function to calcualte Root Mean Square Error of validation/holdout task}
 \usage{
 rmse(data, group, opts, choice)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/F1.R
 \name{f1}
 \alias{f1}
-\title{F1-Score}
+\title{Function to calculate F1-Score of confusion matrix for general product demand}
 \usage{
 f1(data, group, opts, choice, none)
 }

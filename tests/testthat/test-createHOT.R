@@ -997,3 +997,14 @@ test_that("ID input equals output ", {
 
   expect_equal(str(HOT$ID), str(MaxDiff2$ID))
 })
+
+
+test_that("Warning if 'choice' is not defined ", {
+  expect_warning(createHOT(
+    data = MaxDiff,
+    id = 1,
+    none = 19,
+    prod.levels = list(3, 10, 11, 15, 16, 17, 18),
+    method = "MaxDiff"
+  ))
+})

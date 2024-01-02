@@ -2,7 +2,7 @@
 % Please edit documentation in R/zero_anchored.R
 \name{zero_anchored}
 \alias{zero_anchored}
-\title{Zero-Anchored Interval Scores for (anchored) MaxDiff}
+\title{Function to calculate zero-anchored interval scores for (anchored) MaxDiff}
 \usage{
 zero_anchored(data, group = NULL, items, res = c("agg", "ind"), anchor = NULL)
 }
@@ -22,7 +22,7 @@ aggregated (\code{agg}) shares should be returned.}
 a tibble
 }
 \description{
-Zero-Anchored Interval Scores for (anchored) MaxDiff
+Function to calculate zero-anchored interval scores for (anchored) MaxDiff
 }
 \details{
 \code{zero_anchored} converts raw utilities of a MaxDiff to zero-anchored interval scores that have a range of 100.
