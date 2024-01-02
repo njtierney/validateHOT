@@ -40,7 +40,9 @@
 #' @importFrom stats sd
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -51,21 +53,21 @@
 #'   varskeep = 21
 #' )
 #'
-#' # mhp ungrouped
+#' # mhp - without group argument defined
 #' mhp(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   choice = choice
 #' )
 #'
-#' # mhp grouped
+#' # mhp - with group argument defined
 #' mhp(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   choice = choice,
 #'   group = Group
 #' )
-#' }
+#'
 #'
 #' @export
 mhp <- function(data, group, opts, choice) {

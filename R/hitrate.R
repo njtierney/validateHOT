@@ -44,7 +44,9 @@
 #' @importFrom stats sd
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -54,21 +56,20 @@
 #'   choice = 20,
 #'   varskeep = 21
 #' )
-#' # hit rate ungrouped
+#' # hit rate - without group argument defined
 #' hitrate(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   choice = choice
 #' )
 #'
-#' # hit rate grouped
+#' # hit rate - with group argument defined
 #' hitrate(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   choice = choice,
 #'   group = Group
 #' )
-#' }
 #'
 #' @export
 

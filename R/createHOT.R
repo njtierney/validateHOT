@@ -117,7 +117,12 @@
 #' }
 #'
 #' @examples
+#'
+#'
 #' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' # MaxDiff example
 #' HOT_MD <- createHOT(
 #'   data = MaxDiff,

@@ -52,7 +52,9 @@
 #' }
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -63,28 +65,29 @@
 #'   varskeep = 21
 #' )
 #'
-#' # marksim ungrouped share of preference
+#' # marksim share of preference - without group argument defined
 #' marksim(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   method = "sop"
 #' )
 #'
-#' # marksim ungrouped first choice
+#' # marksim first choice - without group argument defined
 #' marksim(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   method = "fc"
 #' )
 #'
-#' # marksim grouped share of preference
+#' \dontrun{
+#' # marksim share of preference - with group argument defined
 #' marksim(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   group = Group
 #' )
 #'
-#' # marksim grouped first choice
+#' # marksim first choice - with group argument defined
 #' marksim(
 #'   data = HOT,
 #'   opts = c(Option_1:None),

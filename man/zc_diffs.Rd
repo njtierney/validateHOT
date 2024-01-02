@@ -76,7 +76,10 @@ column name or column index of \code{none} needs to be specified. If no
 \code{none} option was included, leave it empty.
 }
 \examples{
-\dontrun{
+
+library(validateHOT)
+
+# zero-centered scores for CBC (only part-worth) - without group argument defined
 zc_diffs(
   data = CBC,
   attrib = list(
@@ -89,6 +92,23 @@ zc_diffs(
   res = "agg"
 )
 
+# zero-centered scores for CBC (only part-worth) - with group argument defined
+\dontrun{
+zc_diffs(
+  data = CBC,
+  attrib = list(
+    c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+    c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+    c("Att3_Lev1", "Att3_Lev2", "Att3_Lev3", "Att3_Lev4", "Att3_Lev5", "Att3_Lev6", "Att3_Lev7")
+  ),
+  coding = c(0, 0, 0),
+  none = "none",
+  group = "Group",
+  res = "agg"
+)
+}
+
+# zero-centered scores for CBC (incl. linear coded attribute) - without group argument defined
 zc_diffs(
   data = CBC_lin,
   attrib = list(
@@ -101,7 +121,24 @@ zc_diffs(
   none = "none",
   res = "agg"
 )
+
+# zero-centered scores for CBC (incl. linear coded attribute) - with group argument defined
+\dontrun{
+zc_diffs(
+  data = CBC_lin,
+  attrib = list(
+    c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+    c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+    c("Att3_Lin")
+  ),
+  coding = c(0, 0, 1),
+  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+  none = "none",
+  group = "Group",
+  res = "agg"
+)
 }
+
 
 }
 \references{

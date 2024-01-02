@@ -40,7 +40,9 @@
 #' @importFrom tidyselect ends_with
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -51,21 +53,22 @@
 #'   varskeep = 21
 #' )
 #'
-#' # mae ungrouped
+#' # mae - without group argument defined
 #' mae(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   choice = choice
 #' )
 #'
-#' # mae grouped
+#' # mae - with group argument defined
 #' mae(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   choice = choice,
 #'   group = Group
 #' )
-#' }
+#'
+#'
 #' @export
 
 mae <- function(data, group, opts, choice) {

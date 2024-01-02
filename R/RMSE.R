@@ -43,7 +43,9 @@
 #'
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -54,21 +56,21 @@
 #'   varskeep = 21
 #' )
 #'
-#' # rmse ungrouped
+#' # rmse - without group argument defined
 #' rmse(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   choice = choice
 #' )
 #'
-#' # rmse grouped
+#' # rmse - with group argument defined
 #' rmse(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
 #'   choice = choice,
 #'   group = Group
 #' )
-#' }
+#'
 #'
 #' @export
 

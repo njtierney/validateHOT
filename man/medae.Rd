@@ -44,7 +44,9 @@ of variables in \code{data}.
 Input of opts \code{choice} has to be column name of actual choice.
 }
 \examples{
-\dontrun{
+
+library(validateHOT)
+
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
@@ -55,20 +57,20 @@ HOT <- createHOT(
   varskeep = 21
 )
 
-# medae ungrouped
+# medae - without group argument defined
 medae(
   data = HOT,
   opts = c(Option_1:None),
   choice = choice
 )
 
-# medae grouped
+# medae - with group argument defined
 medae(
   data = HOT,
   opts = c(Option_1:None),
   choice = choice,
   group = Group
 )
-}
+
 
 }

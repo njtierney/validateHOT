@@ -67,7 +67,9 @@ or across \code{group} (\code{res} needs to be set to \code{agg}) or if scores
 should be converted for individuals only.
 }
 \examples{
-\dontrun{
+
+library(validateHOT)
+
 att_imp(
   data = CBC,
   attrib = list(
@@ -90,7 +92,6 @@ att_imp(
   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
   res = "agg"
 )
-}
 
 }
 \references{

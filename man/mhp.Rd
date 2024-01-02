@@ -47,7 +47,9 @@ Output will display both mean hit probability and its corresponding standard
 error.
 }
 \examples{
-\dontrun{
+
+library(validateHOT)
+
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
@@ -58,20 +60,20 @@ HOT <- createHOT(
   varskeep = 21
 )
 
-# mhp ungrouped
+# mhp - without group argument defined
 mhp(
   data = HOT,
   opts = c(Option_1:None),
   choice = choice
 )
 
-# mhp grouped
+# mhp - with group argument defined
 mhp(
   data = HOT,
   opts = c(Option_1:None),
   choice = choice,
   group = Group
 )
-}
+
 
 }

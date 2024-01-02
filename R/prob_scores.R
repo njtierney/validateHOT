@@ -57,9 +57,10 @@
 #' }
 #'
 #' @examples
-#' \dontrun{
 #'
-#' # probability scores for unanchored MaxDiff - without Group defined
+#' library(validateHOT)
+#'
+#' # probability scores for unanchored MaxDiff - without group argument defined
 #' prob_scores(
 #'   data = MaxDiff,
 #'   items = c(Option_01:Option_16),
@@ -67,7 +68,8 @@
 #'   res = "agg"
 #' )
 #'
-#' # probability scores for unanchored MaxDiff - with Group defined
+#' # probability scores for unanchored MaxDiff - with group argument defined
+#' \dontrun{
 #' prob_scores(
 #'   data = MaxDiff,
 #'   group = Group,
@@ -75,9 +77,9 @@
 #'   set.size = 4,
 #'   res = "agg"
 #' )
+#' }
 #'
-#'
-#' # probability scores for anchored MaxDiff - without Group defined
+#' # probability scores for anchored MaxDiff - without group argument defined
 #' prob_scores(
 #'   data = MaxDiff,
 #'   items = c(Option_01:none),
@@ -85,8 +87,8 @@
 #'   anchor = none,
 #'   res = "agg"
 #' )
-#'
-#' # probability scores for anchored MaxDiff - with Group defined
+#' # probability scores for anchored MaxDiff - with group argument defined
+#' \dontrun{
 #' prob_scores(
 #'   data = MaxDiff,
 #'   group = Group,

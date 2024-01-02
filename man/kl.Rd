@@ -64,7 +64,9 @@ you want to apply to calculate Kullback-Leibler. You can choose
 between \eqn{log} and \eqn{log{_2}}. Default is set to \eqn{log}.
 }
 \examples{
-\dontrun{
+
+library(validateHOT)
+
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
@@ -75,7 +77,7 @@ HOT <- createHOT(
   varskeep = 21
 )
 
-# kl ungrouped - log
+# kl with log base - without group argument defined
 kl(
   data = HOT,
   opts = c(Option_1:None),
@@ -83,7 +85,8 @@ kl(
   base = "log"
 )
 
-# kl ungrouped - log2
+\dontrun{
+# kl with log2 base - without group argument defined
 kl(
   data = HOT,
   opts = c(Option_1:None),

@@ -66,7 +66,9 @@ Observed \tab \tab  Buy \tab No-Buy  \cr
 }
 }
 \examples{
-\dontrun{
+
+library(validateHOT)
+
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
@@ -77,7 +79,7 @@ HOT <- createHOT(
   choice = 20
 )
 
-# specificity ungrouped
+# specificity - without group argument defined
 specificity(
   data = HOT,
   opts = c(Option_1:None),
@@ -85,7 +87,7 @@ specificity(
   none = None
 )
 
-# specificity by group
+# specificity - with group argument defined
 specificity(
   data = HOT,
   opts = c(Option_1:None),
@@ -93,7 +95,6 @@ specificity(
   none = None,
   group = Group
 )
-}
 
 }
 \references{

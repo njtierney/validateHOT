@@ -133,7 +133,12 @@ in the holdout/validation task. If only a market scenario is specified,
 leave \code{choice} empty.
 }
 \examples{
+
+
 \dontrun{
+
+library(validateHOT)
+
 # MaxDiff example
 HOT_MD <- createHOT(
   data = MaxDiff,

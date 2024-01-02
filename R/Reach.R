@@ -42,7 +42,9 @@
 #' @return a tibble
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -52,21 +54,20 @@
 #'   choice = 20, varskeep = 21
 #' )
 #'
-#' # reach ungrouped
+#' # reach - without group argument defined
 #' reach(
 #'   data = HOT,
 #'   opts = c(Option_1, Option_2, Option_6),
 #'   none = None
 #' )
 #'
-#' # reach grouped
+#' # reach - with group argument defined
 #' reach(
 #'   data = HOT,
 #'   opts = c(Option_1, Option_2, Option_6),
 #'   none = None,
 #'   group = Group
 #' )
-#' }
 #'
 #' @export
 

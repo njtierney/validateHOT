@@ -65,7 +65,9 @@ Observed \tab \tab  Buy \tab No-Buy  \cr
 }
 }
 \examples{
-\dontrun{
+
+library(validateHOT)
+
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
@@ -75,7 +77,7 @@ HOT <- createHOT(
   choice = 20, varskeep = 21
 )
 
-# precision ungrouped
+# precision - without group argument defined
 precision(
   data = HOT,
   opts = c(Option_1:None),
@@ -83,7 +85,7 @@ precision(
   none = None
 )
 
-# precision by group
+# precision - with group argument defined
 precision(
   data = HOT,
   opts = c(Option_1:None),
@@ -91,7 +93,6 @@ precision(
   none = None,
   group = Group
 )
-}
 
 }
 \references{

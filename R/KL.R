@@ -65,7 +65,9 @@
 #' }
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -76,7 +78,7 @@
 #'   varskeep = 21
 #' )
 #'
-#' # kl ungrouped - log
+#' # kl with log base - without group argument defined
 #' kl(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
@@ -84,7 +86,8 @@
 #'   base = "log"
 #' )
 #'
-#' # kl ungrouped - log2
+#' \dontrun{
+#' # kl with log2 base - without group argument defined
 #' kl(
 #'   data = HOT,
 #'   opts = c(Option_1:None),

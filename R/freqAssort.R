@@ -41,7 +41,9 @@
 #' @return a tibble
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -52,21 +54,21 @@
 #'   varskeep = 21
 #' )
 #'
-#' # freqassort ungrouped
+#' # freqassort - without group argument defined
 #' freqassort(
 #'   data = HOT,
 #'   opts = c(Option_1, Option_2, Option_6),
 #'   none = None
 #' )
 #'
-#' # freqassort grouped
+#' # freqassort - with group argument defined
 #' freqassort(
 #'   data = HOT,
 #'   opts = c(Option_1, Option_2, Option_6),
 #'   none = None,
 #'   group = Group
 #' )
-#' }
+#'
 #'
 #' @export
 freqassort <- function(data, group, none, opts) {

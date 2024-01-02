@@ -67,7 +67,9 @@ Observed \tab \tab  Buy \tab No-Buy  \cr
 }
 }
 \examples{
-\dontrun{
+
+library(validateHOT)
+
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
@@ -77,7 +79,7 @@ HOT <- createHOT(
   choice = 20, varskeep = 21
 )
 
-# f1 ungrouped
+# f1 - without group argument defined
 f1(
   data = HOT,
   opts = c(Option_1:None),
@@ -85,7 +87,7 @@ f1(
   none = None
 )
 
-# f1 by group
+# f1 - with group argument defined
 f1(
   data = HOT,
   opts = c(Option_1:None),
@@ -93,7 +95,7 @@ f1(
   none = None,
   group = Group
 )
-}
+
 
 }
 \references{

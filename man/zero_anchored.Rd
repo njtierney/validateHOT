@@ -46,33 +46,34 @@ should be converted for individuals only.
 Input for \code{anchor} has to be variable names.
 }
 \examples{
-\dontrun{
 
-# zero-anchored interval scores for unanchored MaxDiff - without Group defined
+library(validateHOT)
+
+# zero-anchored interval scores for unanchored MaxDiff - without group argument defined
 zero_anchored(
   data = MaxDiff,
   items = c(Option_01:Option_16),
   res = "agg"
 )
-
-# zero-anchored interval scores for unanchored MaxDiff - with Group defined
+\dontrun{
+# zero-anchored interval scores for unanchored MaxDiff - with group defined
 zero_anchored(
   data = MaxDiff,
   group = Group,
   items = c(Option_01:Option_16),
   res = "agg"
 )
+}
 
-
-# zero-anchored interval scores for anchored MaxDiff - without Group defined
+# zero-anchored interval scores for anchored MaxDiff - without group defined
 zero_anchored(
   data = MaxDiff,
   items = c(Option_01:none),
   anchor = none,
   res = "agg"
 )
-
-# zero-anchored interval scores for anchored MaxDiff - with Group defined
+\dontrun{
+# zero-anchored interval scores for anchored MaxDiff - with group defined
 zero_anchored(
   data = MaxDiff,
   group = Group,

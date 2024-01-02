@@ -59,7 +59,9 @@
 #' @return a tibble
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' att_imp(
 #'   data = CBC,
 #'   attrib = list(
@@ -82,7 +84,6 @@
 #'   interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
 #'   res = "agg"
 #' )
-#' }
 #'
 #' @export
 att_imp <- function(data, group = NULL, attrib, coding,

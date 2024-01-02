@@ -70,7 +70,9 @@
 #' }
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -81,7 +83,7 @@
 #'   choice = 20
 #' )
 #'
-#' # specificity ungrouped
+#' # specificity - without group argument defined
 #' specificity(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
@@ -89,7 +91,7 @@
 #'   none = None
 #' )
 #'
-#' # specificity by group
+#' # specificity - with group argument defined
 #' specificity(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
@@ -97,7 +99,6 @@
 #'   none = None,
 #'   group = Group
 #' )
-#' }
 #'
 #' @export
 

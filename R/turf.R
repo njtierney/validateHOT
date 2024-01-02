@@ -71,7 +71,9 @@
 #' @return data frame
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -84,7 +86,7 @@
 #'   choice = 20
 #' )
 #'
-#' # turf no fixed alternatives
+#' # turf no fixed alternatives + no prohibitions
 #' t1 <- turf(
 #'   data = HOT,
 #'   opts = c(Option_1:Option_16),
@@ -95,7 +97,7 @@
 #'
 #' head(t1)
 #'
-#' # turf alternative 4 and 5 fixed
+#' # turf alternative 4 and 5 fixed, no prohibitions
 #' t2 <- turf(
 #'   data = HOT,
 #'   opts = c(Option_1:Option_16),
@@ -119,7 +121,6 @@
 #' )
 #'
 #' head(t3)
-#' }
 #'
 #' @export
 turf <- function(data, opts, none, size, fixed = NULL, prohib = NULL,

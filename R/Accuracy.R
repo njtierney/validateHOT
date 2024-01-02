@@ -75,7 +75,9 @@
 #'
 #'
 #' @examples
-#' \dontrun{
+#'
+#' library(validateHOT)
+#'
 #' HOT <- createHOT(
 #'   data = MaxDiff,
 #'   id = 1,
@@ -86,7 +88,7 @@
 #'   choice = 20
 #' )
 #'
-#' # accuracy ungrouped
+#' # accuracy - without group argument defined
 #' accuracy(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
@@ -94,7 +96,7 @@
 #'   none = None
 #' )
 #'
-#' # accuracy by group
+#' # accuracy - with group argument defined
 #' accuracy(
 #'   data = HOT,
 #'   opts = c(Option_1:None),
@@ -102,7 +104,6 @@
 #'   none = None,
 #'   group = Group
 #' )
-#' }
 #'
 #' @export
 accuracy <- function(data, group, opts, choice, none) {

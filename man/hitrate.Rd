@@ -53,7 +53,9 @@ Input of \code{opts} has to be column names of variables in \code{data}.
 Input of opts \code{choice} has to be column name of actual choice.
 }
 \examples{
-\dontrun{
+
+library(validateHOT)
+
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
@@ -63,20 +65,19 @@ HOT <- createHOT(
   choice = 20,
   varskeep = 21
 )
-# hit rate ungrouped
+# hit rate - without group argument defined
 hitrate(
   data = HOT,
   opts = c(Option_1:None),
   choice = choice
 )
 
-# hit rate grouped
+# hit rate - with group argument defined
 hitrate(
   data = HOT,
   opts = c(Option_1:None),
   choice = choice,
   group = Group
 )
-}
 
 }

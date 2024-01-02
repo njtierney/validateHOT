@@ -76,7 +76,9 @@ frequency calculates the averaged number of alternatives that have a
 higher utility than \code{none}.
 }
 \examples{
-\dontrun{
+
+library(validateHOT)
+
 HOT <- createHOT(
   data = MaxDiff,
   id = 1,
@@ -89,7 +91,7 @@ HOT <- createHOT(
   choice = 20
 )
 
-# turf no fixed alternatives
+# turf no fixed alternatives + no prohibitions
 t1 <- turf(
   data = HOT,
   opts = c(Option_1:Option_16),
@@ -100,7 +102,7 @@ t1 <- turf(
 
 head(t1)
 
-# turf alternative 4 and 5 fixed
+# turf alternative 4 and 5 fixed, no prohibitions
 t2 <- turf(
   data = HOT,
   opts = c(Option_1:Option_16),
@@ -124,7 +126,6 @@ t3 <- turf(
 )
 
 head(t3)
-}
 
 }
 \references{
