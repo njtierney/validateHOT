@@ -1,5 +1,5 @@
 ---
-title: 'validateHOT - Validate your Holdout Task'
+title: 'validateHOT - an R package for holdout task validation and market simulation'
 tags:
   - R
   - MaxDiff
@@ -14,24 +14,24 @@ authors:
   - name: Marcel Lichters
     orcid: 0000-0002-3710-2292
     corresponding: FALSE
-    affiliation: 1, 2    
+    affiliation: 2    
 affiliations:
  - name: Chemnitz University of Technology, Germany
    index: 1
  - name: Otto von Guericke University of Magdeburg, Germany
    index: 2
 citation_author: Schramm & Lichters
-date: 22 October 2023
-year: 2023
+date: 02 January
+year: 2024
 bibliography: paper.bib
 link-citations: true
 output: rticles::joss_article
 journal: JOSS
+header-includes: 
+ - \usepackage{float}
 ---
 
 ```{=tex}
-\setlength{\headheight}{63.55022pt}
-\addtolength{\topmargin}{-0.95425pt}
 \newcommand{\colcod}[1]{\texttt{\color{purple}#1}}
 ```
 
@@ -40,16 +40,27 @@ journal: JOSS
 
 validateHOT is a package that provides functions to both validate a validation/holdout task and run market simulations for results obtained in a (adaptive) choice-based conjoint analysis (hereafter ACBC and CBC, respectively) and maximum difference scaling (hereafter MaxDiff) using, for example, `ChoiceModelR` [@ChoiceModelR] or Sawtooth's Lighthouse Studio.
 
-Preference measurement techniques', such as (A)CBC or MaxDiff, aim is to predict behavior [@green1990]. Hence, it is essential for both academics and practitioners to ensure that the collected data is valid and predicts outside tasks (i.e., the model has external validity) well.[^1] The easiest way to test it is to include so-called validation or holdout tasks [@Orme2015], which are tasks that are fixed (i.e., same across participants) and are usually not used for estimating the part-worth utilities in hierarchical Bayes estimation. Practitioners often do not include them [@yang2018], which is unsatisfactory given the fact that the model is used to estimate market shares which poses the basis for relevant marketing decisions.
+# Statement of need
+
+Preference measurement techniques', such as (A)CBC or MaxDiff, aim is to predict behavior [@green1990]. Hence, it is essential for both academics and practitioners to ensure that the collected data is valid and predicts outside tasks (i.e., the model has external validity) well.[^1] The easiest way for testing validity is by including so-called validation or holdout tasks [@Orme2015], which are tasks that are fixed (i.e., same across participants) and are usually not used for estimating the part-worth utilities in hierarchical Bayes estimation. Practitioners often do not include them [@yang2018], which is unsatisfactory given the fact that the model is used to estimate market shares which poses the basis for relevant marketing decisions.
 
 [^1]: In terms of external validity, we refer to the generalizations to different settings [see, @calder1982, p.240].
 
 validateHOT combines both validation and market simulation in one package and has three key advantages, it (1) helps to opt for the best model, (2) runs relevant market simulations that help to find the right product combinations or assortments, and finally, (3) is an open source tool including functions that are usually implemented in property commercial, and therefore, remain a black-box for researchers and practitioners.
 
-# Statement of need
+# State of the field in R
 
-validateHOT is a practical tool for Sawtooth Software users in industry as well as academia. It provides an open source solution for a) validating a validation/holdout task and ensuring that the model has predictive validity; b) running market simulations (e.g., Total Unduplicated Reach and Frequency, hereafter TURF). Other packages, for example, Metrics [@Metrics] provide functions to run validation metrics such as *mean absolute error*, *root mean squared error*, or the five metrics of the confusion matrix. However, to put the Sawtooth export into the right format, the user needs some data wrangling which could pose a barrier. Moreover, there are also packages that however mainly focus on the analysis of conjoint analysis (e.g., ChoiceModelR, @ChoiceModelR, choicetools, @choicetools, logitR, @logitr, bayesm, @bayesm, etc.). To the best of our knowledge, a package that converts raw utility scores into validation metrics or running a variety of marketing simulations (especially TURF) is missing.
+Other packages provide functions to calculate validation metrics, however, these are not specified for individual raw logit coefficients which are usually the output when running random parameter logit / hierarchical Bayes models. Metrics [@Metrics], for example, provide functions to run validation metrics such as *mean absolute error*, *root mean squared error*, or the five metrics of the confusion matrix. However, to get the output of, for example, Sawtooth Software or ChoiceModelR [@ChoiceModelR] into the right format, the user needs some data wrangling. The package conjoint [@conjoint] provides functions that are most similar to validateHOT's ones. However, no functions for validation are included and moreover, conjoint [@conjoint] mainly focuses on classical conjoint analysis. support.BWS [@support.BWS] only covers best-worst scaling case 1 (also known as Maximum Difference Scaling) and only provides market simulations based on conditional logit rule. logitr [@logitr] provides market simulations tools, however, no validation metrics such as mean hit probability [@voleti2017] or hit rate [@netzer2011]. Lastly, conjoint [@conjoint] also provides functions for both market simulations, A comparison of validateHOT's functions with current R packages is provided in \autoref{comparison}. To the best of our knowledge, a package that converts raw utility scores into validation metrics or running a variety of marketing simulations (especially TURF) is missing.
 
+validateHOT is introduced with data estimated with Lighthouse Studio using effects-coded data for the design matrix, however, can easily be used with data estimated with ChoiceModelR [@ChoiceModelR], bayesm [@bayesm], or STAN [@rstan], if used with similar settings (ChoiceModelR, for example, automatically implements effects-coding).
+
+```{=tex}
+\begin{figure}[h]
+  \includegraphics{figures/FunctionComparison.png}
+  \caption{Comparison of validateHOT's function to existing R packages}
+  \label{comparison}
+\end{figure}
+```
 # Key functions
 
 validateHOT's functions can be categorized into four main areas, see \autoref{tab:table1}. To bring the data into the right format, users can run the \texttt{\color{purple}createHOT()} function, which creates the total utility of each alternative by applying the additive utility model [@rao2014, p. 82]. \colcod{turf()} as well as the four rescaling functions, however, are not dependent on \texttt{\color{purple}createHOT()}, and can be run using the raw logit scores.
@@ -67,7 +78,9 @@ validateHOT's functions can be categorized into four main areas, see \autoref{ta
 
 # Typical workflow
 
-In the following, we provide the workflow for a MaxDiff study (the vignette also provides detailed examples for a CBC as well as an ACBC).
+In the following, we provide the workflow for a MaxDiff study and a CBC study with only part-worth coded attributes (the vignette also provides detailed examples for a CBC including linear-coded attributes as well as an ACBC).
+
+## MaxDiff 
 
 After running the hierarchical Bayes estimation [@allenby1995; @lenk1996], the **raw** utility scores have to be exported and read into an *R* data frame. This data frame has to include the actual choice in the validation/holdout task.
 
@@ -95,7 +108,7 @@ hitrate(
   opts = c(Option_1:None), 
   choice = choice 
 ) %>%
-  round(3)
+  round(2)
 ```
 
 ```
@@ -115,13 +128,14 @@ accuracy(
   opts = c(Option_1:None), 
   choice = choice, 
   none = None 
-)
+) %>% 
+  round(2)
 ```
 
 ```
 ## # A tibble: 3 x 2
 ##   Group accuracy
-##   <int>    <dbl>
+##   <dbl>    <dbl>
 ## 1     1     73.9
 ## 2     2     72  
 ## 3     3     63.6
@@ -135,21 +149,22 @@ marksim(
   data = HOT,
   opts = c(Option_1:None),
   method = "sop"
-)
+) %>% 
+  mutate_if(is.numeric, round, 2)
 ```
 
 ```
 ## # A tibble: 8 x 5
-##   Option      mw    se  lo.ci up.ci
-##   <chr>    <dbl> <dbl>  <dbl> <dbl>
-## 1 Option_1 18.3  4.12  10.2   26.3 
-## 2 Option_2 11.3  2.69   6.05  16.6 
-## 3 Option_3  4.08 1.49   1.16   6.99
-## 4 Option_4 32.5  4.45  23.8   41.2 
-## 5 Option_5  1.93 0.916  0.131  3.72
-## 6 Option_6 10.4  2.68   5.12  15.6 
-## 7 Option_7  5.58 1.75   2.15   9.01
-## 8 None     16.0  3.29   9.53  22.4
+##   Option      mw    se lo.ci up.ci
+##   <chr>    <dbl> <dbl> <dbl> <dbl>
+## 1 Option_1 18.3   4.12 10.2  26.4 
+## 2 Option_2 11.3   2.69  6.05 16.6 
+## 3 Option_3  4.08  1.49  1.16  6.99
+## 4 Option_4 32.5   4.45 23.8  41.2 
+## 5 Option_5  1.93  0.92  0.13  3.72
+## 6 Option_6 10.4   2.68  5.12 15.6 
+## 7 Option_7  5.58  1.75  2.15  9.01
+## 8 None     16.0   3.29  9.53 22.4
 ```
 
 Finally, \texttt{\color{purple}turf()}, a "product line extension model" [@miaoulis1990, p. 29], is a tool to find the perfect assortment that creates the highest reach and is especially powerful for MaxDiff studies [@chrzan2019, p. 108]. To optimize the search for the optimal bundle, we also include the arguments \texttt{\color{purple}fixed}, to define alternatives that have to be part of the assortment, and \texttt{\color{purple}prohib}, to prohibit certain item combinations of being part of the assortment (see the vignette for more details and how to apply \texttt{\color{purple}turf()} with data obtained using a likert scale).
@@ -188,6 +203,71 @@ turf(
 ## Option_09       0       0       0       0       0
 ## Option_10       0       0       0       1       0
 ```
+
+## CBC
+
+Again, we start by creating the validation scenario.
+
+
+```r
+HOT_CBC <- createHOT(
+  data = CBC,
+  id = "ID",
+  none = "none",
+  prod.levels = list(c(4, 9, 19), c(8, 12, 17), c(5, 10, 17)),
+  coding = c(0, 0, 0),
+  method = "CBC",
+  choice = "HOT"
+)
+```
+
+This time we calculate the mean hit probability.
+
+
+```r
+HOT_CBC %>% 
+  mhp(
+  data = ., 
+  opts = c(Option_1:None), 
+  choice = choice 
+) %>% 
+  round(2)
+```
+
+```
+## # A tibble: 1 x 2
+##     MHP    se
+##   <dbl> <dbl>
+## 1  40.6  3.53
+```
+
+Finally, we can also display the attribute importance scores. Therefore, we need to define the attribute levels as well as the coding of the attributes.
+
+
+```r
+att_imp(
+  data = CBC,
+  attrib = list(
+    c(4:8),
+    c(9:13),
+    c(14:20)
+  ),
+  coding = c(rep(0, 3)),
+  res = "agg"
+) %>% 
+  mutate_if(is.numeric, round, 2)
+```
+
+```
+## # A tibble: 3 x 3
+##   Option       mw   std
+##   <chr>     <dbl> <dbl>
+## 1 att_imp_1  35.7 11.3 
+## 2 att_imp_2  27.7 10.0 
+## 3 att_imp_3  36.6  9.32
+```
+
+
 
 # Availability
 
