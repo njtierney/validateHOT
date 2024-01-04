@@ -14,7 +14,7 @@
 The goal of `validateHOT` is to provide a tool to validate the results
 of your validation task (also known as holdout task; short form
 **HOT**), simulating markets with the results of your MaxDiff, CBC, and
-ACBC, and lastly to convert the raw logit scores of your MaxDiff, CBC,
+ACBC, and lastly converting the raw logit scores of your MaxDiff, CBC,
 and ACBC into scores that are easier to communicate. This package is
 especially relevant for the [Sawtooth
 Software](https://sawtoothsoftware.com/) community who would like to
@@ -47,16 +47,17 @@ simulate markets for both (A)CBC and MaxDiff.
 👉🏾 <u>**What you need to provide**</u>: <br> After collecting your data
 and running your initial Hierarchical Bayes models, you can turn to
 `validateHOT` and test how good your model predicts choices in the
-validation/holdout task. Therefore, you only have to read in your raw
-utility scores as well as the actual choice of your validation/holdout
-task. You can use the `merge()` function provided by the *R* base
-package to do so (R Core Team, 2023). Afterward, you can read in your
-data file and enjoy `validateHOT`. We provide a short tutorial in the
-markdown, for a more detailed tutorial, please see the vignette that
-comes along with `validateHOT`.
+validation/holdout task, run market simulations, or convert your data
+into scores which are easier to interpret. To enjoy `validateHOT` you
+only have to read in your raw utility scores. If you plan to validate
+your validation/holdout tasks you also need to provide the actual choice
+of your validation/holdout task. You can use the `merge()` function
+provided by the *R* base package to do so (R Core Team, 2023). We
+provide a short tutorial in the markdown, for a more detailed tutorial,
+please see the vignette that comes along with `validateHOT`.
 
 👈🏾 <u>**What you get**</u>:<br> At the moment, `validateHOT` provides
-functions for 4 key areas:
+functions for 4 key components:
 
 <ul>
 <li>
@@ -75,8 +76,8 @@ converting raw logit utilities in scores that are easier to interpret
 </li>
 </ul>
 
-For all 4 key areas, the `createHOT()` function is essential. This
-function creates the total utilities for each alternative in the
+For the first 3 components, the `createHOT()` function is essential.
+This function creates the total utilities for each alternative in the
 validation/holdout task and also in the simulation method, respectively.
 Rao (2014, p. 82) mentions the additive utility model stating that the
 total utility of a profile or conjoint model is the sum of its attribute
@@ -131,15 +132,15 @@ matrix (e.g., Burger, 2018). For all of the five provided functions, a
 The logic of the implemented confusion matrix is to test, for example,
 whether a buy or no-buy was correctly predicted. Information could be
 used to get a sense of overestimation and underestimation, respectively,
-of product demand. In the table below <code>TP</code> stands for true
-positives, <code>FP</code> for false positives, <code>TN</code> for true
-negatives, and <code>FN</code> for false negatives (Burger, 2018; Kuhn,
-2008). To translate this to the `validateHOT` logic, imagine you have a
-validation/holdout task with five alternatives plus the alternative not
-to buy any of those chosen. `validateHOT` now measures whether or not a
-buy (participant opts for one of the five alternatives) or a no-buy
-(participant opts for the none alternative), respectively, is correctly
-predicted.
+of general product demand. In the table below <code>TP</code> stands for
+true positives, <code>FP</code> for false positives, <code>TN</code> for
+true negatives, and <code>FN</code> for false negatives (Burger, 2018;
+Kuhn, 2008). To translate this to the `validateHOT` logic, imagine you
+have a validation/holdout task with five alternatives plus the
+alternative not to buy any of those alternatives. `validateHOT` now
+measures whether or not a buy (participant opts for one of the five
+alternatives) or a no-buy (participant opts for the none alternative),
+respectively, is correctly predicted.
 
 Please be aware that `validateHOT` applies the following coding of the
 *buy* and *no-buy* alternatives. Rows refer to the observed decisions
@@ -175,7 +176,7 @@ differently by Burger (2018) $\frac{2TP}{2TP + FP + FN}$.
 </ul>
 
 Again, all functions can be extended with the `group` argument to get
-output split by group(s).
+the output split by group(s).
 
 ### Simulation Methods
 
@@ -265,11 +266,9 @@ Orme, 2019, p. 59).
 comparable across participants (Sawtooth Software Inc, 2023, p. 343).
 </li>
 <li>
-
-<code>zero_anchored()</code>  
-Rescales the raw logits of a MaxDiff to zero-centered diffs (Chrzan &
-Orme, 2019, p. 64).
-
+<code>zero_anchored()</code>: Rescales the raw logits of a MaxDiff to
+zero-centered diffs (Chrzan & Orme, 2019, p. 64).
+</li>
 </ul>
 
 ### Data Frames provided by <code>validateHOT</code>
@@ -313,13 +312,11 @@ these students did not have any prior experience (or only sparsely) with
 checking holdout task and we teach this, of course, in *R* 😍. We want
 to put a strong emphasis on open science and providing tools to run the
 analyses and provide the code afterwards is essential. `validateHOT`
-makes this process look easy.
-
-Of course, there are other great packages which are faster in terms of
-running time (i.e., `Metrics` by Hamner & Frasco, 2018), however, these
-packages need some more data wrangling in order to use the appropriate
-functions with the raw utilities, which might be a burden or barrier for
-the one or the other.
+makes this process look easy 🤹‍♀️. Of course, there are other great
+packages which are faster in terms of running time (i.e., `Metrics` by
+Hamner & Frasco, 2018), however, these packages need some more data
+wrangling in order to use the appropriate functions with the raw
+utilities, which might be a burden or barrier for the one or the other.
 
 Moreover, as Yang et al. (2018) report, commercial studies often do not
 use any validation task. Again, the missing experience in *R* could be
@@ -363,10 +360,10 @@ The data frame has a total of 79 participants and 23 columns.
 Now imagine you included a validation/holdout task with three
 alternatives plus a no-buy alternative. We specify the `data` argument
 and as well as the `id`. Since we also have a *no-buy* alternative in
-our validation task, we next specify the `none` argument, otherwise we
-would have left it empty. Afterwards, we define each alternative with
-the argument `prod.levels`. If we look back at the data frame, we can
-see that the first alternative in the holdout task (`c(4, 9, 19)`) is
+our validation task, we specify the `none` argument, otherwise we would
+have left it empty. Afterwards, we define each alternative with the
+argument `prod.levels`. If we look back at the data frame, we can see
+that the first alternative in the holdout task (`c(4, 9, 19)`) is
 composed of the following attribute levels `Att1_Lev1`, `Att2_Lev1`, and
 `Att3_Lev5`.
 
@@ -385,8 +382,7 @@ to the global environment.
 > already know the name of the variable, you can use `which()` and
 > `colnames()`, both functions are provided by the base package (R Core
 > Team, 2023). For example, if you want to find out the column index of
-> `ID`, you could run `which(colnames(CBC) == "ID")` to determine the
-> column index of `ID`.
+> `ID`, you could run `which(colnames(CBC) == "ID")`.
 
 ``` r
 HOT <- createHOT(
@@ -399,6 +395,9 @@ HOT <- createHOT(
   choice = "HOT"
 )
 ```
+
+> In case you just need to create a market scenario, you can also leave
+> the `choice` argument empty.
 
 Let us take a glimpse at the output, which shows the participants’ total
 raw utilities for each of the three alternatives that were included in
@@ -452,9 +451,9 @@ mae(
 
 To cover also one example on how to use the metrics of the confusion
 matrix, we could test whether our model overestimates the purchase
-behavior (our model predicts a *buy* although participant opts for a
+behavior (our model predicts *buy* although participant opts for
 *no-buy*) or underestimates it (i.e., model predicts *no-buy* but
-participant opts for a *buy*). We will test the accuracy of the model by
+participant opts for *buy*). We will test the accuracy of the model by
 running the `accuracy()` function.
 
 ``` r
@@ -510,13 +509,13 @@ difference to the previous example is that the third attribute
 Again, we first define data, namely the `id` as well as the `none`
 alternative. Next, we define the `prod.levels` for each alternative.
 Since we have one linear coded attribute, we have to specify the column
-indexes instead of the column names. For example, for the second
-alternative which is composed of `Att1_Lev5`, `Att2_Lev4`, and `60`
-which is the value that should be interpolated. We tell `createHOT()`
-that this value needs to be interpolated by specifying the `coding`
-argument accordingly. This tells us that the first two attributes
-(`Att1_Lev5`, `Att2_Lev4` in the case of alternative 2) are part-worth
-coded (`0`) while the third attribute is linear-coded (`1`).
+indexes instead of the column names in `prod.levels`. For example, for
+the second alternative which is composed of `Att1_Lev5`, `Att2_Lev4`,
+and `60` which is the value that should be interpolated. We tell
+`createHOT()` that this value needs to be interpolated by specifying the
+`coding` argument accordingly. This tells us that the first two
+attributes (`Att1_Lev5`, `Att2_Lev4` in the case of alternative 2) are
+part-worth coded (`0`) while the third attribute is linear-coded (`1`).
 
 To interpolate the value, we have to provide `createHOT()` the
 `interpolate.levels`. These **need** to be the same levels as provided
@@ -525,14 +524,14 @@ that should be interpolated needs to lie within the lower and upper
 bound of `interpolate.levels`. In our case, we had 7 levels that range
 from 10 to 70.
 
-Next, we define the column index of the linear coded variable (`lin.p`)
-and specify the `coding` we talked about above. Again, we are running a
-*CBC* specified by the `method` argument. This time, we would like to
-keep some of the variables in the data frame, which we specify in
-`varskeep`. We only keep one further variable, however, you can specify
-as many as you want. This could be relevant if you would like to display
-results per group. Finally, we define the actual choice (`choice`) in
-the holdout/validation task and we are all set.
+Next, we define the column index of the linear coded variable (`lin.p`).
+Again, we are running a *CBC* specified by the `method` argument. This
+time, we would like to keep some of the variables in the data frame,
+which we specify by using the `varskeep` argument. We only keep one
+further variable, however, you can specify as many as you want. This
+could be relevant if you would like to display results per group.
+Finally, we define the actual choice (`choice`) in the
+holdout/validation task and we are all set.
 
 ``` r
 CBC <- createHOT(
@@ -598,6 +597,37 @@ mhp(
 #> 1 Group_1  41.7  6.11
 #> 2 Group_2  39.0  5.17
 #> 3 Group_3  47.8  5.00
+```
+
+Lastly, this time we also want to use a rescaling function, namely
+`att_imp()` which basically tells us the importance of each attribute
+included (Orme, 2020). We need the data set with the raw logit
+coefficients (`CBC_lin`). Next, we define the `attrib` argument. Here,
+we need to specify each attribute level for the corresponding level.
+Afterwards, we specify the coding again, and since we have one linear
+coded attribute, we need to define the `interpolate.levels` argument
+again, as we did for the `createHOT()` function above. Finally, we set
+`res` to `agg`, which tells `att_imp()` to display the aggregated
+results (for individuals results set `agg` to `ind`).
+
+``` r
+att_imp(
+  data = CBC_lin,
+  attrib = list(
+    c("Att1_Lev1", "Att1_Lev2", "Att1_Lev3", "Att1_Lev4", "Att1_Lev5"),
+    c("Att2_Lev1", "Att2_Lev2", "Att2_Lev3", "Att2_Lev4", "Att2_Lev5"),
+    c("Att3_Lin")
+  ),
+  coding = c(0, 0, 1),
+  interpolate.levels = list(c(10, 20, 30, 40, 50, 60, 70)),
+  res = "agg"
+)
+#> # A tibble: 3 × 3
+#>   Option       mw   std
+#>   <chr>     <dbl> <dbl>
+#> 1 att_imp_1  36.9  12.4
+#> 2 att_imp_2  31.9  13.4
+#> 3 att_imp_3  31.3  16.4
 ```
 
 For more examples, please see the accompanied vignette.

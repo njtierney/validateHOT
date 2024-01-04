@@ -29,7 +29,7 @@ This vignette should present you ...
     -   Mean absolute error (<code>mae()</code>)
     -   Mean hit probability (<code>mhp()</code>)
     -   Median absolute error (<code>medae()</code>)
-    -   Root-mean-squared error (<code>rmse()</code>)
+    -   Root mean square error (<code>rmse()</code>)
 -   ... how to measure metrics of the confusion matrix
     -   <code>accuracy()</code>
     -   F1-score (<code>f1()</code>)
@@ -70,7 +70,7 @@ library(magrittr)
 ```
 
 
-## `createHOT`: creating validation/holdout task in *R*
+## `createHOT()`: creating validation/holdout task in *R*
 
 At first, we have to create the validation/holdout task, which means that we need to create the utilities for each alternative presented in the validation/holdout task. This is quite easy for a *MaxDiff*, however, for a *CBC* or *ACBC*, we need to add the utilities of each attribute level and might even have to interpolate some values, if they are *linear-coded* or *piecewise-coded*.
 
@@ -78,7 +78,7 @@ At first, we have to create the validation/holdout task, which means that we nee
 
 However, let us start with the `MaxDiff`. We use the data set `MaxDiff` that comes with the package and store the utilities in the data set `HOT`. In this example, we assume that we have a validation task with seven alternatives plus a no-buy alternative (we define the argument by specifying the column index; `none = 19`), so a total of eight alternatives a participant can choose from. As already mentioned, it is a *MaxDiff* study (`method = "MaxDiff"`). Furthermore, we specify the column index of both the `id` (unique identifier in the data set) and `choice` (the actual choice in the validation/holdout task). To specify the seven alternatives in the validation/holdout task, we use the `prod.levels` arguments and specify their column indexes in a `list`. In case we wanted to keep further variables from our original data set, we need to specify those in the `varskeep` argument.
 
-**Please be aware that you could also use the column names instead of the column indexes. However, if you include linear-coded or piecewise-coded variables, you have to specify the column indexes in `prod.leves`!**
+**Please be aware that you could also use the column names instead of the column indexes. However, if you include linear-coded or piecewise-coded variables, you have to specify the column indexes in `prod.levels`!**
 
 ```{r, eval = F}
 HOT <- createHOT(
@@ -91,7 +91,7 @@ HOT <- createHOT(
 )
 ```
 
-In case you have a forced-choice validation/holdout task, do not specify the `none` argument.
+In case you have a forced-choice validation/holdout task, do not specify the `none` argument. Finally, in case you want to create a market scenario and not a validation/holdout task, you do not need to define the `choice` argument.
 
 ### Choice-Based Conjoint
 
@@ -119,11 +119,11 @@ createHOT(
 
 Now, let us imagine that instead of having all attributes coded as part-worth, you also include one (or more) attributes that are linear-coded. So, let us run again a *CBC* (`method = "CBC"`). All settings are the same as shown in the example above, however, this time we change the coding to `coding = c(0, 0, 1)`, which tells `createHOT()` that the first two attributes are part-worth coded, while the last attribute is linear-coded. How will this impact the way we define our products? We can see that when we specify the third attribute for our three alternatives, we insert a value that this alternative should have for the linear-coded attribute In this example, let us assume that the third attribute is weight. The first alternative in our validation/holdout task is assumed to have a weight of 60 (`c(4, 9, 60)`), the second a weight of `40`, and the last alternative a weight of `45`.
 
-`createHOT()` will interpolate these values, therefore, we have to define the values we used for the attributes in the Hierarchical Bayes estimations. 
+`createHOT()` will interpolate these values, therefore, we have to define the values we used for the attributes in the hierarchical Bayes estimations. 
 
 The exact values that have been specified for the *hierarchical Bayes* estimation in Sawtooth or `ChoiceModelR` need to be specified (see information below). You specify these values in `interpolate.levels` in a list. In the example of `CBC_lin`, there are seven levels ranging from 10 to 70. Please make sure to include **all** levels of the linear-coded attribute. Next, we have to specify the column index of the linear-coded attribute in the `lin.p` argument.
 
-Finally, in our example, we would also like to keep some variables that should be attached to the data frame we are creating. We can specify the column index(es) of the variables we would like to keep in `varskeep`.
+Finally, in our example, we would also like to keep some variables that should be attached to the data frame we are creating. We can specify the variables we would like to keep in `varskeep`.
 
 > [**Important**]{.underline}: The value you would like to interpolate (in the example below 60, 40, and 45) need to be within the range you specify in `ìnterpolate.levels`. For example, instead of using `c(10, 20, 30, 40, 50, 60, 70)`, we could also use `c(1, 2, 3, 4, 5, 6, 7)` or even better if we zero-center it to `c(-3, -2, -1, 0, 1, 2, 3)`. In this case we would need to adapt the values to be interpolate as well, so in our case 60 becomes 2, 40 becomes 0, and 45 becomes 0.5 in a zero-centered approach. Usually these steps are done automatically by the software and you provide the attribute levels that were also shwon to the participants.
 
@@ -144,7 +144,7 @@ HOT <- createHOT(
 )
 ```
 
-> [**Important**]{.underline}: Remember, since we have a linear-coded variable included, we **have** to provide the column indexes in `prod.levels`. For the other arguemnts (in the case above `id`, `none`, `lin.p`, `varskeep`, and `choice`) we could still specify the column name.
+> [**Important**]{.underline}: Remember, since we have a linear-coded variable included, we **have** to provide the column indexes in `prod.levels`. For the other arguemnts (in the case above `id`, `none`, `lin.p`, `varskeep`, and `choice`) we could still specify the column names.
 
 ### Adaptive Choice-Based Conjoint (ACBC)
 
@@ -185,11 +185,11 @@ HOT <- createHOT(
 
 #### Piecewise-coded ACBC
 
-So far, we have only looked at examples where at maximum one attribute was not part-worth coded. In the final example, we will have all three types of coding included. Since piece-wise coding is only available for ACBC in Sawtooth Software, we will show another example with an ACBC. The data set is similar to the previous one (six alternatives plus a no-buy alternative). We will use the data frame `ACBC_interpolate`, which is also part of `validateHOT`.
+So far, we have only looked at examples where at maximum one attribute was not part-worth coded. In the final example, we will have all three types of coding included. Since piecewise coding is only available for ACBC in Sawtooth Software, we will show another example with an ACBC. The data set is similar to the previous one (six alternatives plus a no-buy alternative). We will use the data frame `ACBC_interpolate`, which is also part of `validateHOT`.
 
 The `coding` specified below (`c(0, 1, 0, 0, 0, 0, 0, 0, 2)`) already tells us that the second attribute is linear-coded, while the last attribute is piecewise-coded. The rest of the attributes are part-worth coded. 
 
-Again our validation/holdout task has six alternatives plus the no-buy alternative.. For `interpolate.levels`, we have to specify two vectors in the list. The first vector contains the values for the linear-coded attribute (`c(3, 5, 8, 10)`), and the second vector contains the break points you have specified for your piecewise-coded price. In `ACBC_interpolate`, we provide an example where we used seven break points for the price (`c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)`). We specify the column index of the linear-coded attribute in `lin.p`. Next, we specify `piece.p` by inserting the column index of the piecewise-coded attribute. The raw utilities for the seven break points (`c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)`) are stored in the columns 32 to 38. Again, we need to specify the lower and upper break point of the value we would like to interpolate in `piece.p`, and we need to do this for each of the six alternatives in the validation/holdout task. For example, for the first alternative (`15.99`), we see that the lower break point is `12.99` while the upper break point is `17.99`. Therefore, we specify the column index of these two in `piece.p` (`c(36, 37)`). Let us also look at the second product since it represents a scenario you might face in practice. The alternative should have a price of `12.99`. If we look at the break points we can see that one of the break points is also `12.99`. In this case, we could either use the column index of `12.99` as lower or upper position, the results will be identical.
+Again our validation/holdout task has six alternatives plus the no-buy alternative. For `interpolate.levels`, we have to specify two vectors in the list. The first vector contains the values for the linear-coded attribute (`c(3, 5, 8, 10)`), and the second vector contains the break points you have specified for your piecewise-coded price. In `ACBC_interpolate`, we provide an example where we used seven break points for the price (`c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)`). We specify the column index of the linear-coded attribute in `lin.p`. Next, we specify `piece.p` by inserting the column index of the piecewise-coded attribute. The raw utilities for the seven break points (`c(1.99, 6.99, 9.99, 10.99, 12.99, 17.99, 25.99)`) are stored in the columns 32 to 38. Again, we need to specify the lower and upper break point of the value we would like to interpolate in `piece.p`, and we need to do this for each of the six alternatives in the validation/holdout task. For example, for the first alternative (`15.99`), we see that the lower break point is `12.99` while the upper break point is `17.99`. Therefore, we specify the column index of these two in `piece.p` (`c(36, 37)`). Let us also look at the second product since it represents a scenario you might face in practice. The alternative should have a price of `12.99`. If we look at the break points we can see that one of the break points is also `12.99`. In this case, we could either use the column index of `12.99` as lower or upper position, the results will be identical.
 
 ```{r, eval = F}
 HOT <- createHOT(
@@ -226,9 +226,9 @@ First, we focus on metrics that are often reported for validation/holdout tasks 
 -   Mean absolute error (<code>mae()</code>)
 -   Mean hit probability (<code>mhp()</code>)
 -   Median absolute error (<code>medae()</code>)
--   Root-mean-square error (<code>rmse()</code>)
+-   Root mean square error (<code>rmse()</code>)
 
-### `hitrate`
+### `hitrate()`
 
 Once the validation/holdout task is created, the setup is similar for all three methods (i.e., (A)CBC and MaxDiff). We will use the MaxDiff example from above. Moreover, since we also would like to show some functions exemplary split by groups, we will use the `varskeep` argument.
 
@@ -254,7 +254,7 @@ hitrate(
 )
 ```
 
-### `kl`
+### `kl()`
 
 Next, we check the Kullback-Leibler Divergence by running the `kl()` function. Let us first use $log{_2}$ as logarithm base. 
 
@@ -281,7 +281,7 @@ HOT %>%
 
 Due to the asymmetry of the Kullback-Leibler divergence, the output provides both `KL_O_P` which is equivalent to (Observed || Predicted) and `KL_P_O` which is equivalent to (Predicted || Observed).
 
-### `mae`
+### `mae()`
 
 For the mean absolute error, `mae()`, we split the results by the grouping variable `Group`, therefore, we use the `group` argument:
 
@@ -295,7 +295,7 @@ mae(
 ```
 
 
-### `mhp`
+### `mhp()`
 
 We will display the mean hit probability split by the `Group` variable (`group = Group`):
 
@@ -308,7 +308,7 @@ mhp(
 )
 ```
 
-### `medae`
+### `medae()`
 
 Next, we look at the median absolute error:
 
@@ -321,9 +321,9 @@ medae(
 ```
 
 
-### `rmse`
+### `rmse()`
 
-And finally, to end this block, we look at the root-mean-square error.
+And finally, to end this block, we look at the root mean square error.
 
 ```{r}
 rmse(
@@ -336,7 +336,7 @@ rmse(
 
 ## Confusion matrix
 
-Next, we will take a look at the 5 metrics of the confusion matrix. The current logic for the confusion matrix is that `validateHOT` calculates, e.g., whether your model overestimates or underestimates purchase behavior. Therefore, you need to specify a `none` alternative for the five metrics of confusion matrix, namely ...
+Next, we will take a look at the five metrics of the confusion matrix. The current logic for the confusion matrix is that `validateHOT` calculates, for example, whether your model overestimates or underestimates purchase behavior. Therefore, you need to specify a `none` alternative for the five metrics of confusion matrix, namely ...
 
 -   `accuracy()`
 -   `f1()`
@@ -349,7 +349,7 @@ Next, we will take a look at the 5 metrics of the confusion matrix. The current 
 
 The setup is similar to the ones of the validation metrics reported above, the only difference is that you have to specify the column index of the no-buy alternative (`none`).
 
-### `accuracy`
+### `accuracy()`
 
 We begin with the `accuracy()` and we still work with the `HOT` data frame we created above. We specify the eight alternatives (seven alternatives + no-buy alternative) as well as the `none` argument, the column name of the no-buy alternative. 
 
@@ -362,7 +362,7 @@ accuracy(
 )
 ```
 
-### `f1`
+### `f1()`
 
 The code we need to provide to calculate the *F1*-score is exactly the same, however, we use the `f1` function.
 
@@ -375,9 +375,9 @@ f1(
 )
 ```
 
-### `precision`
+### `(precision))`
 
-To display the precision, we use the `precision` function. This time, we want to display the results split by the `Group` variable in `HOT`, therefore, we specify the `group` argument.
+To display the precision, we use the `precision()` function. This time, we want to display the results split by the `Group` variable in `HOT`, therefore, we specify the `group` argument.
 
 ```{r}
 precision(
@@ -389,7 +389,7 @@ precision(
 )
 ```
 
-### `recall`
+### `recall()`
 
 Similar to the validation metrics shown above, we can also implement these functions in `tidyverse` logic. In the following code chunk, we first adjust the `Group` variable to a `factor`. In the last step, we round the results to two decimals.
 
@@ -417,7 +417,7 @@ HOT %>%
 
 
 
-### `specificity`
+### `specificity()`
 
 Finally, the following code runs the `specificity()` function.
 
@@ -440,7 +440,7 @@ Next, let us talk about the simulation metrics. `validateHOT` currently provides
 -   **T**(otal) **U**(nduplicated) **R**(each) and **F**(requency) (`turf()`)
 -   Market simulations of the assortment (`marksim()`)
 
-### `reach`
+### `reach()`
 
 Let us imagine you have a specific assortment, and you want to check how many participants consider purchasing at least one of the products or alternatives of this assortment. 
 
@@ -457,7 +457,7 @@ reach(
 ```
 
 
-### `freqAssort`
+### `freqAssort()`
 
 Next, let us check the `freqAssort()` function, which tells you how many products / alternatives on average are preferred over the no-buy alternative. We will use the same example as we did when introducing the `reach()` function.
 
@@ -471,11 +471,11 @@ freqassort(
 ```
 
 
-### `turf`
+### `turf()`
 
 Now let us imagine that you are unsure about which the *right* bundle is. `turf()` helps you to determine the perfect bundle based on the its reach and frequency (for explanations, please see above). When applying `turf()`, you can decide between applying the *threshold* (`approach = 'thres'`) or *first choice* (approach = 'fc'`) approach. While former considers each alternative as, for example, purchase option if it exceeds a threshold (Chrzan & Orme, 2019, p. 112), the latter only considers the product alternative with the highest utility (Chrzan & Orme, 2019, p. 112).
 
-This function is extremely helpful when running a `MaxDiff` (Chrzan & Orme, 2019), however, we also show a way to use `turf` with rating scales. Let us first assume we ran a MaxDiff study with 16 alternatives and we now want to find out which combination of a total of three alternatives can reach most of the participants, put differently, the combination of three alternatives from which most of the participants buy at least one alternative. We use the `MaxDiff` data set for this example.
+This function is extremely helpful when running a `MaxDiff` (Chrzan & Orme, 2019), however, we also show a way to use `turf()` with rating scales. Let us first assume we ran a MaxDiff study with 16 alternatives and we now want to find out which combination of a total of three alternatives can reach most of the participants, put differently, the combination of three alternatives from which most of the participants buy at least one alternative. We use the `MaxDiff` data set for this example.
 
 In this example, we have 16 different alternatives included as well as outside option (`none`). To use the `turf()` function, we first have to specify the data frame `data = MaxDiff`. Afterwards, we specify the alternatives (`opts`) that should be considered when creating the different assortments as well as the threshold (`none`) that needs to be exceeded. As described above, the final product assortment should include a total of three items (`size = 3`). Finally, we apply the threshold approach (`thres`). We display the first five results using the `head()` function. 
 
@@ -575,9 +575,9 @@ Likert %>%
 ```
 
 
-### `marksim`
+### `marksim()`
 
-Finally, `validateHOT` also provides a function, `marksim` to calculate the assumed market share of a specified assortment. <code>validateHOT</code> currently provides market simulations based on *share of preference rule* or *first choice rule*. To specify which market simulation method to run, you can easily decide by specifying the <code>method</code> argument.
+Finally, `validateHOT` also provides a function, `marksim()` to calculate the assumed market share of a specified assortment. <code>validateHOT</code> currently provides market simulations based on *share of preference rule* or *first choice rule*. To specify which market simulation method to run, you can easily decide by specifying the <code>method</code> argument.
 
 #### Share of Preference
 
@@ -590,7 +590,7 @@ HOT %>%
   )
 ```
 
-#### First Choice rule
+#### First Choice
 
 ```{r}
 HOT %>%
@@ -612,13 +612,13 @@ Finally, we will show how to convert the raw utilities into scores that are easi
 
 We display the aggregated results in the following example (`res = "agg"`), however, if you want to get individual results instead, please specify by setting `res` to `ind`.
 
-### `att_imp`
+### `att_imp()`
 
 Let us again use the examples from above, namely, `CBC`, `CBC_lin`, `ACBC`, and `ACBC_interpolate`.
 
 #### `CBC`
 
-To use `att_imp()`, we first need to specify the `data`. Next, we need to define the attribute levels for each attribute (`attrib`), again, all attribute levels need to be provided. Finally, you specify `coding`, which tells `att_imp` how the attributes were coded (either as part-worth, `0`, or linear, `1`).
+To use `att_imp()`, we first need to specify the `data`. Next, we need to define the attribute levels for each attribute (`attrib`), again, all attribute levels need to be provided. Finally, you specify `coding`, which tells `att_imp()` how the attributes were coded (either as part-worth, `0`, or linear, `1`).
 
 ```{r}
 att_imp(
@@ -635,7 +635,7 @@ att_imp(
 
 #### `CBC_lin`
 
-Next, we assume that one of the attributes was linear-coded (`Att3_Lin`), which we specify in `coding`. Again, as we had to do for `createHOT()` as well, we need to provide the values that we used for model estimation (see above). We again specify those in `interpolate.levels`.
+Next, we assume that one of the attributes was linear-coded (`Att3_Lin`), which we specify in `coding`. Again, as we had to do for `createHOT()` as well, we need to provide the values that we used for model estimation (see above). We again specify those in the argument `interpolate.levels`.
 
 ```{r}
 att_imp(
@@ -653,7 +653,7 @@ att_imp(
 
 #### `ACBC`
 
-Above, we explained how to address a piecewise-coded ACBC in `createHOT()`. As you probably realized there is no `2` in coding. If a variable is piecewise-coded, you treat it as it would be part-worth coded. 
+Above, we explained how to address a piecewise-coded ACBC in `createHOT()`. We again specify a linear-coded price in ACBC as piecewise-coded (see explanation above).
 
 ```{r}
 att_imp(
@@ -669,7 +669,7 @@ att_imp(
     c("Att8_Lev1", "Att8_Lev2"),
     c("Price_2.093", "Price_27.287")
   ),
-  coding = c(rep(0, 9)),
+  coding = c(rep(0, 8), 2),
   res = "agg"
 )
 ```
@@ -704,7 +704,7 @@ att_imp(
 
 
 
-### `prob_scores`
+### `prob_scores()`
 
 Finally, we will introduce `prob_scores()` which calculates the choice probability scores of a (anchored) MaxDiff. Let us first imagine we ran a normal MaxDiff (no anchoring). After specifying the data frame (`data`) as well as the `items`, we have to specify `set.size` which is the number of items that were shown per MaxDiff task. In this example, a participant saw `4` items per task from which s/he had to choose the best and worst item.
 
@@ -729,9 +729,9 @@ prob_scores(
 )
 ```
 
-### `zc_diffs`
+### `zc_diffs()`
 
-The input is almost identical to `att_imp()`, the only difference in case you included a `none` option in your study, you need to specify it here by defining the `none` argument. Moreover, piecewise-coded attributes need to be specified.
+The input is almost identical to `att_imp()`, the only difference in case you included a `none` option in your study, you need to specify it here by defining the `none` argument.
 
 #### CBC
 
@@ -768,8 +768,6 @@ zc_diffs(
 
 #### `ACBC`
 
-Above, we explained how to address a piecewise-coded ACBC in `createHOT()`. As you probably realized there is no `2` in coding. If a variable is piecewise-coded, you treat it as it would be part-worth coded. Different than for \code{createHOT}, linear-coded price in ACBC is coded as '0' in `zc_diffs()`. 
-
 ```{r}
 zc_diffs(
   data = ACBC,
@@ -784,7 +782,7 @@ zc_diffs(
     c("Att8_Lev1", "Att8_Lev2"),
     c("Price_2.093", "Price_27.287")
   ),
-  coding = c(rep(0, 9)),
+  coding = c(rep(0, 8), 2),
   res = "agg",
   none = "none"
 )
@@ -793,7 +791,6 @@ zc_diffs(
 
 #### `ACBC_interpolate`
 
-Finally, in `ACBC_interpolate` we had both one linear-coded and one piecewise-coded attribute. 
 
 ```{r}
 zc_diffs(
@@ -818,7 +815,7 @@ zc_diffs(
 )
 ```
 
-### `zero_anchored`
+### `zero_anchored()`
 
 `zero_anchored()` converts raw utilities of a (anchored) MaxDiff into zero-centered diffs (Chrzan & Orme, 2019, p. 64).
 

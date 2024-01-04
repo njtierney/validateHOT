@@ -292,4 +292,8 @@ att_imp(
 
 validateHOT is available on [Github](https://github.com/JoshSchramm94/validateHOT).
 
+# Acknowledgments
+
+We would like to thank [Sawtooth Software](https://sawtoothsoftware.com/) for their great transparent documentation.
+
 # References
