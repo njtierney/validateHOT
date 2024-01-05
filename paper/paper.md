@@ -113,6 +113,7 @@ HOT <- createHOT(
 
 To get the relevant validation metrics that are reported in conjoint studies, for example, hit rate [e.g., @ding2005], mean hit probability [mhp, @voleti2017], or mean absolute error [mae, @wloemert2014], we provide the data, the alternatives in the validation/holdout task (\texttt{\color{purple}opts}), and the actual choice (\texttt{\color{purple}choice}), which can be implemented using the tidyverse [@tidyverse] logic.
 
+\newpage
 
 ```r
 hitrate(

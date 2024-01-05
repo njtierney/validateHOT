@@ -26,7 +26,7 @@ turf(
 \item{fixed}{An optional vector to determine alternatives that have to be
 included in the assortment.}
 
-\item{prohib}{An optional vector to determine prohibitions, i.e.,
+\item{prohib}{An optional list with vectors to determine prohibitions, i.e.,
 alternatives that are not allowed to be together in one assortment.}
 
 \item{approach}{A character whether to run First Choice approach ('fc') or
@@ -47,9 +47,9 @@ validation/holdout task.
 \code{fixed} has to be a vector of variables that are fixed in the
 assortment, i.e., they have to be part of the assortment.
 
-\code{prohib} has to be a vector of variables that are prohibited in the
-assortment, i.e., alternatives that are not allowed to be together in one
-assortment.
+\code{prohib} has to be a list of vectors of variables that are prohibited
+in the assortment, i.e., alternatives that are not allowed to be together in
+one assortment.
 
 \code{approach} character defining whether first
 choice \code{approach = 'fc'} or threshold \code{approach = 'thres'}.
