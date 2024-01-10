@@ -100,8 +100,9 @@ predicted participants’ choices as well as the number of observations.
 between the actual choice distribution and the predicted choice
 distribution (Ding et al., 2011; Drost, 2018). Output provides both
 divergence between predicted from observed and observed from predicted
-due to the asymmetry of the Kullback-Leibler divergence. `validateHOT`
-currently provides two logarithm bases: and . The default is set to .
+due to the asymmetry of the Kullback-Leibler divergence.
+<code>validateHOT</code> currently provides two logarithm bases: $log$
+and $log_2$. The default is set to $log$.
 </li>
 <li>
 <code>mae()</code>: calculates the mean absolute error, i.e., deviation

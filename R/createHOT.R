@@ -406,6 +406,10 @@ createHOT <- function(data, id, none = NULL,
     base::stop("Error: Please specify 'lin.p'!")
   }
 
+  if (base::any(coding == 1| coding == 2) & base::missing(interpolate.levels)) {
+    base::stop("Error: 'interpolate.levels' is missing!")
+  }
+
   # test whether coding indicated piecewise coded variable, however,
   # not specified
   if (base::any(coding == 2) & base::is.null(piece.p)) {
