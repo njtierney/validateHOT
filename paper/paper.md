@@ -37,18 +37,13 @@ header-includes:
 \addtolength{\topmargin}{-0.95425pt}
 \newcommand{\colcod}[1]{\texttt{\color{purple}#1}}
 ```
-
-
-
-
-
 # Summary
 
 validateHOT is an R package that provides functions to both validate a validation/holdout task and run market simulations for results obtained in a (adaptive) choice-based conjoint analysis (hereafter ACBC and CBC, respectively) and maximum difference scaling (hereafter MaxDiff) using, for example, ChoiceModelR [@ChoiceModelR] or Sawtooth's Lighthouse Studio.
 
 # Statement of need
 
-Preference measurement techniques' (e.g., (A)CBC or MaxDiff) aim is to predict behavior [@green1990]. Hence, it is essential for both academics and practitioners to ensure that the collected data is valid and predicts outside tasks (i.e., the model has external validity) well.[^1] The easiest way for testing validity is by including so-called validation or holdout tasks [e.g., @rao2014; @Orme2015], which are tasks that are fixed (i.e., same across participants) and are usually not used for estimating the part-worth utilities in hierarchical Bayes estimation. Practitioners often do not include them [@yang2018], which is unsatisfactory given the fact that the model is used to estimate market shares which poses the basis for relevant marketing decisions.
+Preference measurement techniques' (e.g., (A)CBC or MaxDiff) aim is to predict behavior [@green1990]. Hence, it is essential for both academics and practitioners to ensure that the collected data is valid and predicts outside tasks (i.e., the model has external validity) well.[^1] The easiest way for testing validity is by including so-called validation or holdout tasks [e.g., @rao2014; @Orme2015], which are tasks that are fixed (i.e., same across participants) and are usually not used for estimating the part-worth utilities in hierarchical Bayes estimation (see, e.g., @sablotny-wackershauser2024. Practitioners often do not include them [@yang2018], which is unsatisfactory given the fact that the model is used to estimate market shares which poses the basis for relevant marketing decisions.
 
 [^1]: In terms of external validity, we refer to the generalizations to different settings [see, @calder1982, p.240].
 
@@ -65,9 +60,7 @@ Other packages provide functions to calculate validation metrics, however, these
   \label{comparison}
 \end{figure}
 ```
-
 validateHOT is introduced with data estimated with Lighthouse Studio using effects-coding for creating the design matrix. It, however, can easily be used with data estimated with ChoiceModelR [@ChoiceModelR], bayesm [@bayesm], or STAN [@rstan], if used with similar settings (ChoiceModelR, for example, automatically implements effects-coding).
-
 
 # Key functions
 
@@ -96,8 +89,7 @@ After running the hierarchical Bayes estimation [@allenby1995; @lenk1996], the *
 
 Assuming you included a validation/holdout task with a total of 7 alternatives plus the no-buy alternative (\texttt{\color{purple}none}). To create this validation task in *R*, we use the \texttt{\color{purple}createHOT()} function.
 
-
-```r
+``` r
 HOT <- createHOT(
   data = MaxDiff, 
   id = "ID", 
@@ -115,7 +107,7 @@ To get the relevant validation metrics that are reported in conjoint studies, fo
 
 \newpage
 
-```r
+``` r
 hitrate(
   data = HOT, 
   opts = c(Option_1:None), 
@@ -124,7 +116,7 @@ hitrate(
   round(2)
 ```
 
-```
+```         
 ## # A tibble: 1 x 5
 ##      HR    se chance   cor     n
 ##   <dbl> <dbl>  <dbl> <dbl> <dbl>
@@ -133,8 +125,7 @@ hitrate(
 
 The underlying logic of the confusion matrix is that the user has to provide a no-buy alternative (\texttt{\color{purple}none}). validateHOT calculates how often a buy or no-buy was correctly predicted, therefore, it is testing whether the model correctly predicts general demand (here by applying \texttt{\color{purple}accuracy()}).
 
-
-```r
+``` r
 accuracy(
   data = HOT, 
   group = Group, 
@@ -145,7 +136,7 @@ accuracy(
   round(2)
 ```
 
-```
+```         
 ## # A tibble: 3 x 2
 ##   Group accuracy
 ##   <dbl>    <dbl>
@@ -158,8 +149,7 @@ accuracy(
 
 Lastly, we introduce two functions for market simulations, namely \texttt{\color{purple}marksim()} and \texttt{\color{purple}turf()}. In the following example, the market share is calculated according to the multinomial logit model [@McFadden1974].
 
-
-```r
+``` r
 marksim(
   data = HOT,
   opts = c(Option_1:None),
@@ -168,7 +158,7 @@ marksim(
   mutate_if(is.numeric, round, 2)
 ```
 
-```
+```         
 ## # A tibble: 8 x 5
 ##   Option      mw    se lo.ci up.ci
 ##   <chr>    <dbl> <dbl> <dbl> <dbl>
@@ -186,8 +176,7 @@ Next, \texttt{\color{purple}turf()}, a "product line extension model" [@miaoulis
 
 For the following example, we assume that the user conducted an anchored MaxDiff analysis with 10 items (\texttt{\color{purple}opts}) and now wants to find the best assortment with a size of 3. As a threshold (\texttt{\color{purple}none}), the user uses the anchor (no-buy alternative).
 
-
-```r
+``` r
 turf(
   data = MaxDiff, 
   opts = c(Option_01:Option_10),
@@ -203,7 +192,7 @@ turf(
   rename_all(., ~ paste0("Combo ", c(1:5)))
 ```
 
-```
+```         
 ##           Combo 1 Combo 2 Combo 3 Combo 4 Combo 5
 ## reach       82.86   81.43   81.43   81.43   80.00
 ## freq         1.46    1.57    1.43    1.41    1.44
@@ -223,11 +212,9 @@ turf(
 
 ### Creating Holdout Task / Market Scenario
 
-The setup is almost the same, only the arguments \texttt{\color{purple}prod.levels}, \texttt{\color{purple}coding}, and \texttt{\color{purple}method} are different or new, respectively.
-\newpage
+The setup is almost the same, only the arguments \texttt{\color{purple}prod.levels}, \texttt{\color{purple}coding}, and \texttt{\color{purple}method} are different or new, respectively. \newpage
 
-
-```r
+``` r
 HOT_CBC <- createHOT(
   data = CBC,
   id = "ID",
@@ -243,8 +230,7 @@ HOT_CBC <- createHOT(
 
 This time we calculate the mean hit probability (i.e., MHP).
 
-
-```r
+``` r
 HOT_CBC %>% 
   mhp(
   data = ., 
@@ -254,7 +240,7 @@ HOT_CBC %>%
   round(2)
 ```
 
-```
+```         
 ## # A tibble: 1 x 2
 ##     MHP    se
 ##   <dbl> <dbl>
@@ -265,8 +251,7 @@ HOT_CBC %>%
 
 Finally, we can also display the attributes importance scores. Therefore, we need to define the attribute levels as well as the coding of the attributes.
 
-
-```r
+``` r
 att_imp(
   data = CBC,
   attrib = list(
@@ -280,7 +265,7 @@ att_imp(
   mutate_if(is.numeric, round, 2)
 ```
 
-```
+```         
 ## # A tibble: 3 x 3
 ##   Option       mw   std
 ##   <chr>     <dbl> <dbl>
