@@ -12,21 +12,20 @@
 <!-- badges: end -->
 
 The goal of `validateHOT` is to provide a tool to validate the results
-of your validation task (also known as holdout task; short form
-**HOT**), simulating markets with the results of your MaxDiff, CBC, and
-ACBC, and lastly converting the raw logit scores of your MaxDiff, CBC,
-and ACBC into scores that are easier to communicate. This package is
-especially relevant for the [Sawtooth
-Software](https://sawtoothsoftware.com/) community who would like to
-report their analysis in *R* for open science purposes. However, it also
-works perfectly with the package `ChoiceModelR`(Sermas, 2022). This
-package is extremely useful for practitioners, who would like to run the
-analyses in an open source software. The ultimate goal of these
-preference measurement techniques is to predict future behavior (Green &
-Srinivasan, 1990). Therefore, it is essential for both academics and
-practitioners to ensure that the collected data is valid and can also
-predict outside tasks that were not included in the estimation of the
-utility scores.
+of a validation task (also known as holdout task; short form **HOT**),
+simulating markets with the results of your MaxDiff, CBC, and ACBC, and
+lastly converting the raw logit scores of your MaxDiff, CBC, and ACBC
+into scores that are easier to communicate. This package is especially
+relevant for the [Sawtooth Software](https://sawtoothsoftware.com/)
+community who would like to report their analysis in *R* for open
+science purposes. However, it also works perfectly with the package
+`ChoiceModelR`(Sermas, 2022). This package is extremely useful for
+practitioners, who would like to run the analyses in an open source
+software. The ultimate goal of these preference measurement techniques
+is to predict future behavior (Green & Srinivasan, 1990). Therefore, it
+is essential for both academics and practitioners to ensure that the
+collected data is valid and can also predict outside tasks that were not
+included in the estimation of the utility scores.
 
 Although commercial studies often do not include a validation/holdout
 task (Yang et al., 2018), it is highly recommended to do so (Orme, 2015;

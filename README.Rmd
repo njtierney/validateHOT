@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 The goal of `validateHOT` is to provide a tool to validate the results
-of your validation task (also known as holdout task; short form
+of a validation task (also known as holdout task; short form
 **HOT**), simulating markets with the results of your MaxDiff, CBC, and
 ACBC, and lastly converting the raw logit scores of your MaxDiff, CBC,
 and ACBC into scores that are easier to communicate. This package is
