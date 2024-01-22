@@ -15,7 +15,7 @@ to get \code{medae} by group(s).}
 \item{opts}{Column names of the alternatives included in the
 validation/holdout task.}
 
-\item{choice}{Column name of the actual choice.}
+\item{choice}{Column name of the actual choice in the validation/holdout task.}
 }
 \value{
 a tibble
@@ -36,11 +36,11 @@ function.
 \code{group} optional grouping variable, if results should be displayed by
 different groups. Has to be column name of variables in \code{data}.
 
-\code{opts} is needed to specify the different alternatives in the
+\code{opts} is required to specify the different alternatives in the
 validation/holdout task. Input of \code{opts} has to be column names
 of variables in \code{data}.
 
-\code{choice} to specify column of actual choice.
+\code{choice} to specify column of actual choice in the validation/holdout task.
 Input of opts \code{choice} has to be column name of actual choice.
 }
 \examples{
@@ -71,6 +71,5 @@ medae(
   choice = choice,
   group = Group
 )
-
 
 }

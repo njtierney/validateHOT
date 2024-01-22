@@ -1,40 +1,42 @@
 #' @title  Function to create total utilities for validation task alternatives / market scenario
 #'
-#' @description Function used to create utilities for validation task.
+#' @description Function used to create utilities for validation/holdout task or
+#' for the alternatives in a market scenario.
 #'
 #' @param data A data frame with all relevant variables.
 #' @param id A vector of unique identifier in \code{data}.
 #' @param none An optional vector to specify \code{none}
 #' alternative in \code{data}.
 #' @param prod.levels A list to define the attribute levels of the
-#' alternatives (\code{prod}). If include linear-coded or piecewise-coded
-#' attributes are included, column indexes are needed for the input.
-#' @param interpolate.levels A list of the levels of the variables that should
+#' alternatives (\code{prod}). If linear-coded or piecewise-coded
+#' attributes are included, column indexes are required for the input.
+#' @param interpolate.levels A list of the levels of the attribute that should
 #' be interpolated. These have to be the same as specified in model estimation
-#' (e.g., if you center attribute levels before estimation, insert the centered levels).
+#' (e.g., if you scale or center attribute levels before estimation, insert the same levels).
 #' Please make sure to provide the whole list. Only has to be specified for the
-#' variables that are coded as '1' (linear) or '2' (piecewise).
+#' attributes that are coded as '1' (linear) or '2' (piecewise).
 #' @param piece.p A list of the lower level and the upper
 #' level that should be used for interpolating.
 #' @param lin.p A vector to specify linear coded variables.
-#' @param coding A vector of the coding of each attribute, '0' = part-worth
+#' @param coding A vector to define attributes coding, '0' = part-worth
 #' coding,'1' = linear coding, '2' = piecewise coding; please make sure to code
-#' linear price of ACBC as piecewise since you have two values to interpolate.
+#' linear price of ACBC as piecewise since there are usually two values to interpolate.
 #' @param method A character to specify the \code{method} of your study.
-#' \code{method} has to be one of the following three: "MaxDiff", "CBC", or "ACBC".
+#' \code{method} has to be one of the following: "MaxDiff", "CBC", or "ACBC".
 #' @param varskeep A vector specifying variables that should be kept
 #' in the data frame.
 #' @param choice Actual choice in the holdout/validation task. Leave empty for
-#' specifying market scenario.
+#' specifying market scenario (warning will be displayed, however).
 #'
 #' @details
-#' In order to test validation metrics of a holdout/validation task, the
-#' holdout/validation task first has to be created.
-#' This is done by the function \code{createHOT}.
-#' Make sure to upload the raw utilities of your study (either from Sawtooth Software
+#' To test the validation metrics of a holdout/validation task or to run a
+#' market scenario, the scenario first has to be created, by summing up
+#' the alternatives part-worth utilities.
+#' This is done with the \code{createHOT} function.
+#' Make sure you upload the raw utilities of your study (either from Sawtooth Software
 #' or ChoiceModelR, Sermas, 2022).
-#' Afterwards, the function will create the utilities based on the additive
-#' utility model (Rao, 2014, p. 82). If working with alternative specific-designs,
+#' The function then creates the alternatives' utility based on the additive
+#' utility model (Rao, 2014, p. 82). If you are working with alternative specific-designs,
 #' insert \code{NA} if attribute is not specified.
 #'
 #' \code{data} has to be a data frame with raw scores of the attribute
@@ -43,7 +45,7 @@
 #' \code{id} has to be the column index or column name of the id (unique for each participant)
 #' in data frame.
 #'
-#' \code{none} has to be specified in case a \code{none} alternative is
+#' \code{none} is required in case a \code{none} alternative is
 #' included in holdout/validation task, specify
 #' column index or column name of \code{none} alternative, otherwise leave it empty.
 #'
@@ -51,35 +53,35 @@
 #' \code{prod.levels} specifies the attribute levels for each alternative.
 #' Input for \code{prod.levels} has to be a list. In case
 #' \code{method = "MaxDiff"}, list should only contain column indexes or
-#' column names of the alternatives in the holdout/validation task.
-#' In case values for one attribute are interpolated (assuming linear or
+#' column names of the alternatives in the holdout/validation task or market scenario.
+#' If values for one attribute are interpolated (assuming linear or
 #' piecewise coding), the value to be interpolated has to be specified (numeric
-#' input). In addition, \code{lin.p} and/or \code{piece.p}, \code{interpolate.levels}
+#' input). In addition, \code{lin.p} and/or \code{piece.p}, \code{interpolate.levels},
 #' as well as \code{coding} have to be specified.
 #'
-#' \code{interpolate.levels} has to be specified in case interpolating is used
+#' \code{interpolate.levels} is required in case interpolating is used
 #' (only if variables are coded as linear or piecewise).
-#' If scaled or centered values were used for hierarchical bayes (HB)
-#' estimation, these have to be specified in this case.
-#' All values have to be specified. For example, if one linear coded attribute
-#' had 5 levels, all 5 levels have to be inserted. In case for linear coded
+#' If scaled or centered values were used for hierarchical Bayes
+#' estimation, the exact same levels are required (all of them).
+#' For example, if one linear coded attribute
+#' had 5 levels, all 5 levels are required. In case for linear coded
 #' price for \code{method = "ACBC"}, specify both lower bound and upper
 #' bound and code as piecewise in \code{coding}.
-#' For piecewise coded price, specify each breakpoint.
+#' For piecewise-coded price, specify each breakpoint.
 #' Input for \code{interpolate.levels} has to be a list.
 #'
-#' \code{piece.p} has to be specified in case a variable is coded as
-#' piecewise (see coding). Positions of both lower and upper bound have to
-#' be specified. In case interpolated values (see
+#' \code{piece.p} is required in case a variable is coded as
+#' piecewise (see coding). Positions of both lower and upper bound are required.
+#' In case interpolated values (see
 #' \code{prod.levels}) is equal to a lower or upper bound, this can be specified
 #' either as lower or upper bound. Input for \code{piece.p} has to be a list.
 #'
-#' \code{lin.p} has to be specified in case a variable is coded as linear
+#' \code{lin.p} is required in case a variable is coded as linear
 #' (see coding). Since for linear coding (except for price
 #' in \code{method = "ACBC"}) only one coefficient is provided in the output,
-#' just this column index or column name has to be specified.
+#' just this column index or column name is required.
 #'
-#' \code{coding} has to be specified for if \code{method = "CBC"}
+#' \code{coding} is required if \code{method = "CBC"}
 #' or \code{method = "ACBC"}. Use \code{0} for part-worth
 #' coding, \code{1} for linear coding, and \code{2} for piecewise coding.
 #' In case \code{method = "ACBC"} and linear price function is used, this
@@ -90,14 +92,14 @@
 #' \code{method} specifies the preference measurement method. Can be set to
 #' \code{"MaxDiff"}, \code{"CBC"}, or \code{"ACBC"}.
 #'
-#' \code{varskeep} has to be specified in case other variables should be kept
+#' \code{varskeep} is required in case other variables should be kept
 #' in the data frame (for example, a grouping variable). Input
 #' for \code{varskeep} has to be a vector with the column index(es) or names of the
 #' variable(s) that should be kept.
 #'
 #' \code{choice} specifies the column index or column name of the actual choice
 #' in the holdout/validation task. If only a market scenario is specified,
-#' leave \code{choice} empty.
+#' leave \code{choice} empty, however, a warning will be displayed in this case.
 #'
 #' @return a data frame
 #' @importFrom stats approx
@@ -117,8 +119,6 @@
 #' }
 #'
 #' @examples
-#'
-#'
 #' \dontrun{
 #'
 #' library(validateHOT)
@@ -406,7 +406,7 @@ createHOT <- function(data, id, none = NULL,
     base::stop("Error: Please specify 'lin.p'!")
   }
 
-  if (base::any(coding == 1| coding == 2) & base::missing(interpolate.levels)) {
+  if (base::any(coding == 1 | coding == 2) & base::missing(interpolate.levels)) {
     base::stop("Error: 'interpolate.levels' is missing!")
   }
 
@@ -606,8 +606,8 @@ createHOT <- function(data, id, none = NULL,
   # store the final choice
   if (!base::is.null(choice)) {
     vars <- c(
-    (data %>% dplyr::select(tidyselect::all_of(id)) %>% base::colnames(.)),
-    (data %>% dplyr::select(tidyselect::all_of(choice)) %>% base::colnames(.))
+      (data %>% dplyr::select(tidyselect::all_of(id)) %>% base::colnames(.)),
+      (data %>% dplyr::select(tidyselect::all_of(choice)) %>% base::colnames(.))
     )
     final_choice <- data[, vars]
     # rename variables for merging purposes

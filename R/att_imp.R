@@ -1,7 +1,8 @@
 #' Function to calculate attributes' importance score of (A)CBCs
 #'
 #' @param data A data frame with all relevant variables.
-#' @param group Optional column name(s) to specify grouping variable(s).
+#' @param group Optional column name(s) to specify grouping variable(s) to get
+#' \code{att_imp} by group(s).
 #' @param attrib A list that specifies the attribute levels for each attribute.
 #' @param coding A vector of the coding of each attribute, '0' = part-worth
 #' coding, '1' = linear coding, or '2' = piecewise coding.
@@ -17,8 +18,8 @@
 #' \code{att_imp} converts raw utilities of a CBC or an ACBC to relative importance
 #' scores (see, Orme, 2020, p. 80, for more information).
 #'
-#' \code{data} has to be a data frame with the attributes. Attribute levels need
-#' to be the raw utilities.
+#' \code{data} has to be a data frame with all attributes and the corresponding levels.
+#' Attribute levels need to be the raw utilities of hierarchical Bayes estimation.
 #'
 #' \code{group} optional grouping variable, if results should be displayed by
 #' different groups. Has to be column name of variables in \code{data}.
@@ -27,13 +28,13 @@
 #' Input for \code{attrib} has to be a list. Needs to specify the column names or
 #' column indexes of the attribute levels.
 #'
-#' \code{coding} has to be specified to indicate the attribute coding. \code{0}
+#' \code{coding} is required to indicate the attribute coding. \code{0}
 #' to indicated part-worth coding, \code{1} for linear coding, or \code{2} for
 #' piecewise coding.
 #'
-#' \code{interpolate.levels} has to be specified for linear coded variables.
-#' If scaled or centered values were used for hierarchical bayes (HB)
-#' estimation, these have to be specified in this case.
+#' \code{interpolate.levels} is required for linear coded variables.
+#' If scaled or centered values were used for hierarchical Bayes
+#' estimation, these need to be defined in \code{att_imp}.
 #' All values have to be specified. For example, if one linear coded attribute
 #' has 5 levels, all 5 levels have to be inserted.
 #'
@@ -42,11 +43,10 @@
 #' should be converted for individuals only.
 #'
 #'
-#'
 #' @seealso {
 #' \code{\link[=prob_scores]{prob_scores}} for probability scores for MaxDiff
 #' \code{\link[=zero_anchored]{zero_anchored}} for zero-anchored interval scores for MaxDiff
-#' \code{\link[=zc_diffs]{zc_diffs}} for zero-center diff scores for (A)CBC
+#' \code{\link[=zc_diffs]{zc_diffs}} for zero-centered diff scores for (A)CBC
 #' }
 #'
 #' @references {
@@ -229,7 +229,6 @@ att_imp <- function(data, group = NULL, attrib, coding,
 
   helper <- 1
   for (i in 1:att) {
-
     data[[base::paste0("att_imp_", i)]] <- 0
 
     vars <- attrib[[i]]
@@ -256,11 +255,11 @@ att_imp <- function(data, group = NULL, attrib, coding,
       dplyr::mutate(dplyr::across(tidyselect::all_of(new), ~ .x / base::rowSums(data[new]))) %>%
       dplyr::group_by(dplyr::pick({{ group }})) %>%
       dplyr::summarise(dplyr::across(tidyselect::all_of(new), c(mw = base::mean, std = stats::sd),
-        .names = "{.col}...{.fn}"
+        .names = "{.col}....{.fn}"
       )) %>%
       tidyr::pivot_longer(.,
-        cols = tidyselect::ends_with(c(".mw", ".std")),
-        names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
+        cols = tidyselect::ends_with(c("....mw", "....std")),
+        names_to = c("Option", ".value"), names_sep = "\\.\\.\\.\\."
       ) %>%
       dplyr::mutate_at(dplyr::vars(mw, std), ~ .x * 100))
   }

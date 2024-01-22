@@ -13,41 +13,42 @@ marksim(data, group, opts, method = c("sop", "fc"))
 to get \code{marksim} by group(s).}
 
 \item{opts}{Column names of the alternatives included in the
-validation/holdout task.}
+validation/holdout task or market scenario.}
 
 \item{method}{Name of the market simulation method that should be conducted.
-Either needs to be \code{method = "sop"} to run share of preference
+Set either to \code{method = "sop"} to run share of preference
 as method or \code{method = "fc"} to run first choice rule. Default
-set to \code{"sop"}.}
+is \code{"sop"}.}
 }
 \value{
 a tibble
 }
 \description{
-\code{marksim} runs market simulations with options in a validation/holdout task.
+\code{marksim} runs market simulations with options in a validation/holdout task
+or a market scenario.
 }
 \details{
 \code{marksim} provides the expected aggregated market shares of each
-alternative in the validation/holdout task as well as its standard error
-and the lower and upper confidence interval which is calculated according
+alternative specified as well as its standard error,
+and the lower and upper confidence interval. Latter is calculated according
 to the following formula \eqn{mean +/- 1.96 x \frac{sd}{\sqrt(n)}}
 (Orme, 2020, p. 94). \code{method} can either be set to \code{method = "sop"}
 to run share of preference rule or to \code{method = "fc"} to run
 first choice rule to simulate market shares.
 
 \code{data} has to be a data frame including the alternatives shown in
-the validation/holdout task. Can be created using the \code{createHOT()}
-function.
+the validation/holdout task or market scenario. Scenario can be created
+using the \code{createHOT()} function.
 
 \code{group} optional grouping variable, if results should be displayed by
 different groups. Has to be column name of variables in \code{data}.
 
-\code{opts} is needed to specify the different alternatives in the simulation
+\code{opts} is required to specify the different alternatives in the simulation
 task. Input of \code{opts} has to be column names of variables in \code{data}.
 
 \code{method} can either be set to \code{method = "sop"} to run share of preference
 as method or \code{method = "fc"} to run first choice rule. Default is
-set to \code{method = "sop"}.
+\code{method = "sop"}.
 }
 \examples{
 

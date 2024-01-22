@@ -1,7 +1,7 @@
 #' ACBC data set with part-worth coded attributes, linear-coded attribute and piecewise-coded price
 #'
 #' A data set with raw scores export for an adaptive choice-based conjoint
-#' including a linear-coded variable as well as price piecewise-coded.
+#' including a linear-coded attribute as well as piecewise-coded price.
 #'
 #'
 #' \itemize{

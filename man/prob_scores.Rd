@@ -55,10 +55,11 @@ Input for \code{items} has to be variable names.
 shown in one task). Input needs to be a whole number.
 
 \code{res} specifies whether results should be aggregated across all participants
-or across \code{group} (\code{res} needs to be set to \code{agg}) or if it scores
-should be converted for individuals only
+or across \code{group} (\code{res} needs to be set to \code{agg}) or if scores
+should be converted for individuals only.
 
-\code{anchor} only needs to be specified if anchored MaxDiff is applied. Input
+\code{anchor} only needs to be specified if anchored MaxDiff is applied.
+Input for \code{anchor} has to be variable names.
 }
 \examples{
 
@@ -116,6 +117,6 @@ Guide to Best-Worst Scaling} Provo, UT: Sawtooth Software.
 {
 \code{\link[=zero_anchored]{zero_anchored}} for zero-anchored interval scores for MaxDiff
 \code{\link[=att_imp]{att_imp}} for attribute importance scores for (A)CBC
-\code{\link[=zc_diffs]{zc_diffs}} for zero-center diff scores for (A)CBC
+\code{\link[=zc_diffs]{zc_diffs}} for zero-centered diff scores for (A)CBC
 }
 }

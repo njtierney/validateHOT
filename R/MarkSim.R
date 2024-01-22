@@ -1,17 +1,41 @@
 #' Function to run market simulations for validation task / market scenario
 #'
 #' @description
-#' \code{marksim} runs market simulations with options in a validation/holdout task.
+#' \code{marksim} runs market simulations with options in a validation/holdout task
+#' or a market scenario.
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s)
 #' to get \code{marksim} by group(s).
 #' @param opts Column names of the alternatives included in the
-#' validation/holdout task.
+#' validation/holdout task or market scenario.
 #' @param method Name of the market simulation method that should be conducted.
-#' Either needs to be \code{method = "sop"} to run share of preference
+#' Set either to \code{method = "sop"} to run share of preference
 #' as method or \code{method = "fc"} to run first choice rule. Default
-#' set to \code{"sop"}.
+#' is \code{"sop"}.
+#'
+#' @details
+#' \code{marksim} provides the expected aggregated market shares of each
+#' alternative specified as well as its standard error,
+#' and the lower and upper confidence interval. Latter is calculated according
+#' to the following formula \eqn{mean +/- 1.96 x \frac{sd}{\sqrt(n)}}
+#' (Orme, 2020, p. 94). \code{method} can either be set to \code{method = "sop"}
+#' to run share of preference rule or to \code{method = "fc"} to run
+#' first choice rule to simulate market shares.
+#'
+#' \code{data} has to be a data frame including the alternatives shown in
+#' the validation/holdout task or market scenario. Scenario can be created
+#' using the \code{createHOT()} function.
+#'
+#' \code{group} optional grouping variable, if results should be displayed by
+#' different groups. Has to be column name of variables in \code{data}.
+#'
+#' \code{opts} is required to specify the different alternatives in the simulation
+#' task. Input of \code{opts} has to be column names of variables in \code{data}.
+#'
+#' \code{method} can either be set to \code{method = "sop"} to run share of preference
+#' as method or \code{method = "fc"} to run first choice rule. Default is
+#' \code{method = "sop"}.
 #'
 #' @return a tibble
 #' @importFrom dplyr select pick mutate across ungroup group_by summarise count
@@ -19,29 +43,6 @@
 #' @importFrom stats sd
 #' @importFrom tibble as_tibble
 #' @importFrom fastDummies dummy_cols
-#'
-#' @details
-#' \code{marksim} provides the expected aggregated market shares of each
-#' alternative in the validation/holdout task as well as its standard error
-#' and the lower and upper confidence interval which is calculated according
-#' to the following formula \eqn{mean +/- 1.96 x \frac{sd}{\sqrt(n)}}
-#' (Orme, 2020, p. 94). \code{method} can either be set to \code{method = "sop"}
-#' to run share of preference rule or to \code{method = "fc"} to run
-#' first choice rule to simulate market shares.
-#'
-#' \code{data} has to be a data frame including the alternatives shown in
-#' the validation/holdout task. Can be created using the \code{createHOT()}
-#' function.
-#'
-#' \code{group} optional grouping variable, if results should be displayed by
-#' different groups. Has to be column name of variables in \code{data}.
-#'
-#' \code{opts} is needed to specify the different alternatives in the simulation
-#' task. Input of \code{opts} has to be column names of variables in \code{data}.
-#'
-#' \code{method} can either be set to \code{method = "sop"} to run share of preference
-#' as method or \code{method = "fc"} to run first choice rule. Default is
-#' set to \code{method = "sop"}.
 #'
 #' @references {
 #'
@@ -163,11 +164,11 @@ marksim <- function(data, group, opts,
       # calculate mean and sd
       dplyr::summarise(dplyr::across({{ opts }},
         c(mw = base::mean, std = stats::sd),
-        .names = "{.col}...{.fn}"
+        .names = "{.col}....{.fn}"
       )) %>%
       tidyr::pivot_longer(.,
-        cols = tidyselect::ends_with(c("...mw", "...std")),
-        names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
+        cols = tidyselect::ends_with(c("....mw", "....std")),
+        names_to = c("Option", ".value"), names_sep = "\\.\\.\\.\\."
       ) %>% # change to longer format
       base::merge(
         x = .,
@@ -208,11 +209,11 @@ marksim <- function(data, group, opts,
       )) %>%
       dplyr::summarise(dplyr::across({{ opts }},
         c(mw = base::mean, std = stats::sd),
-        .names = "{.col}...{.fn}"
+        .names = "{.col}....{.fn}"
       )) %>%
       tidyr::pivot_longer(.,
-        cols = tidyselect::ends_with(c("...mw", "...std")),
-        names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
+        cols = tidyselect::ends_with(c("....mw", "....std")),
+        names_to = c("Option", ".value"), names_sep = "\\.\\.\\.\\."
       ) %>% # change to longer format
       base::merge(
         x = .,

@@ -12,7 +12,7 @@ data(CBC_lin)
 }
 \description{
 A data set with raw scores export for an CBC including a linear-coded
-variable.
+attribute.
 }
 \details{
 \itemize{

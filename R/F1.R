@@ -10,18 +10,18 @@
 #' to get \code{f1} by group(s).
 #' @param opts Column names of the alternatives included in the
 #' validation/holdout task.
-#' @param choice Column name of the actual choice.
+#' @param choice Column name of the actual choice in the validation/holdout task.
 #' @param none Column name of none alternative.
 #'
 #' @details
-#' The current logic of \code{f1} is to determine whether a binary coded is
-#' correctly predicted by the model. To use the function a \code{"none"}
-#' alternative has to be included in the validation/holdout task.
-#' One potential usage is, for example, whether a buy or a no-buy condition
-#' was predicted correctly. For example, you have three alternatives plus
-#' a \code{none} alternative and you want to check whether a buy or no-buy was
-#' correctly predicted. This function can be helpful when you test, for example,
-#' if your model significantly overestimates or underestimates, for example,
+#' The current logic of \code{f1} is to determine whether a binary coded choice
+#' is correctly predicted by the model. To use the function, the validation/holdout task
+#' must include a \code{none} alternative.
+#' One possible application is, for example, whether a buy or a no-buy choice
+#' has been correctly predicted. For example, suppose you have three alternatives plus
+#' a \code{none} alternative and want to check whether a buy or no-buy was
+#' correctly predicted. This function can be useful if you, for example,
+#' test whether your model significantly overestimates or underestimates
 #' a purchase likelihood.
 #'
 #'
@@ -30,15 +30,16 @@
 #' function.
 #'
 #' \code{group} optional grouping variable, if results should be displayed by
-#' different conditions. Has to be column name of variables in \code{data}.
+#' different groups Has to be column name of variables in \code{data}.
 #'
-#' \code{opts} is needed to specify the different alternatives in the
+#' \code{opts} is required to specify the different alternatives in the
 #' validation/holdout task (also includes the \code{none} alternative).
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
-#' \code{choice} to specify column name of actual choice.
+#' \code{choice} to specify column of actual choice in the validation/holdout task.
+#' Input of \code{choice} has to be column name of actual choice.
 #'
-#' \code{none} to specify column name of the \code{none} alternative in the
+#' \code{none} is required to specify column name of the \code{none} alternative in the
 #' validation/holdout task.
 #'
 #' Please be aware about the following 2x2 table regarding coding of buy and
@@ -100,7 +101,6 @@
 #'   none = None,
 #'   group = Group
 #' )
-#'
 #'
 #' @export
 

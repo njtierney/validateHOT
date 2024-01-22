@@ -8,17 +8,17 @@
 #' to get \code{hitrate} by group(s).
 #' @param opts Column names of the alternatives included in the
 #' validation/holdout task.
-#' @param choice Column name of the actual choice.
+#' @param choice Column name of the actual choice in the validation/holdout task.
 #'
 #' @details
 #' \code{hitrate} measures number of times a participant's choice was correctly
 #' predicted by the model.
-#' Output contains the following 4 metrics:
+#' Output contains the following 5 metrics:
 #' \itemize{
 #' \item \code{HR} hit rate (number of correctly predicted
 #' choices) in percentages
 #' \item \code{se} standard error in percentages
-#' \item \code{chance} chance level of correctly predicted choices by simply
+#' \item \code{chance} chance level of correctly predicted choices by just
 #' guessing
 #' \item \code{cor} absolute number of correctly predicted choices
 #' \item \code{n} total number of choices
@@ -31,11 +31,11 @@
 #' \code{group} optional grouping variable, if results should be displayed by
 #' different groups. Has to be column name of variables in \code{data}.
 #'
-#' \code{opts} is needed to specify the different alternatives in the
+#' \code{opts} is required to specify the different alternatives in the
 #' validation/holdout task.
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
-#' \code{choice} to specify column of actual choice.
+#' \code{choice} to specify column of actual choice in the validation/holdout task.
 #' Input of opts \code{choice} has to be column name of actual choice.
 #'
 #' @return a tibble

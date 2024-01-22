@@ -15,13 +15,13 @@ to get \code{kl} by group(s).}
 \item{opts}{Column names of the alternatives included in the
 validation/holdout task.}
 
-\item{choice}{Column name of the actual choice.}
+\item{choice}{Column name of the actual choice in the validation/holdout task.}
 
 \item{epsilon}{A vector of noise that should be added to 0 values, per
-default set to 1e-05.}
+default set to 1e-05 (see Drost, 2018).}
 
-\item{base}{A character string to define the logarithm base, currently choice
-between \code{log} (default) and \code{log2}.}
+\item{base}{A character string to define the logarithm base, currently two are provided,
+namely \code{log} (default) and \code{log2}.}
 }
 \value{
 a tibble
@@ -31,13 +31,12 @@ Function to measure the Kullback-Leibler Divergence of a
 validation/holdout task.
 }
 \details{
-Kullback-Leibler-Divergence which measures the divergence between the actual
-choice distribution and the predicted
-choice distribution (Ding et al., 2011; Drost, 2018). Currently only provides
-the deviation measured based on \eqn{log} and \eqn{log{_2}}
-algorithm. \eqn{log} set as default.
+Kullback-Leibler-Divergence measures the divergence between the actual
+choice distribution and the predicted choice distribution (Ding et al., 2011;
+Drost, 2018). Currently only provides the deviation measured based on \eqn{log}
+and \eqn{log{_2}} algorithm. \eqn{log} set as default.
 
-Due to the asymmetry of the Kullback-Leibler divergence, output provides both
+Due to Kullback-Leibler divergence's asymmetry, the output provides both
 \code{"KL_O_P"} which is equivalent to (Observed || Predicted) and
 \code{"KL_P_O"} which is equivalent to (Predicted || Observed).
 
@@ -48,16 +47,16 @@ function.
 \code{group} optional grouping variable, if results should be displayed
 by different groups. Has to be column name of variables in \code{data}.
 
-\code{opts} is needed to specify the different alternatives in the
+\code{opts} is required to specify the different alternatives in the
 validation/holdout task (also includes the \code{none} alternative).
 Input of \code{opts} has to be column names of variables in \code{data}.
 
-\code{choice} to specify column of actual choice.
+\code{choice} to specify column of actual choice in the validation/holdout task.
 Input of opts \code{choice} has to be column name of actual choice.
 
 \code{epsilon} has to be a numeric input in case of 0 in the numerator or
 denominator. 0 then will be replaced by \code{epsilon}. Default value
-is \code{epsilon = 1e-5}, however, can be adopted (Drost, 2018).
+is \code{epsilon = 1e-5}, however, can be adopted (see also Drost, 2018).
 
 \code{base} has to be a character string, deciding which logarithm base
 you want to apply to calculate Kullback-Leibler. You can choose

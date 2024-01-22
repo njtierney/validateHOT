@@ -27,7 +27,7 @@ a purchase option) is reached with a specific product bundle assortment.
 }
 \details{
 \code{reach} calculates the the percentage of consumers that are
-reached with the product assortment specified. The current
+reached with a particular product assortment. The current
 logic of \code{reach} is that the utility of an alternative has to
 exceed a threshold. In the case of \code{reach} this threshold is referred
 to the \code{none} argument in \code{data}, however, could also be, e.g., a current
@@ -44,8 +44,8 @@ by different groups. Has to be column name of variables in \code{data}.
 product assortment that should be considered.
 Input of \code{opts} has to be column names of variables in \code{data}.
 
-\code{none} to specify column name of the \code{none} alternative in the
-validation/holdout task.
+\code{none} to specify column name of the \code{none} alternative (i.e.,
+threshold variable).
 }
 \examples{
 
