@@ -1,18 +1,21 @@
 Type: Package
 Package: validateHOT
-Title: validateHOT - An R Package to Validate Holdout Tasks
+Title: validateHOT - An R Package to validate holdout tasks and run market simulations 
 Version: 1.0.0
 Authors@R: c(person("Joshua", "Schramm", email = "schramm94@gmail.com", role = c("aut", "cre"),
     comment = c(ORCID = "0000-0001-5602-4632")),
     person("Marcel", "Lichers", role = "ctb",
     comment = c(ORCID = "0000-0002-3710-2292"))
     )
-Description: validateHOT is a package that validates validation/holdout
-    tasks (HOTs) in (adaptive) Conjoint analysis as well as MaxDiff. You
-    define the validation/holdout task and afterwards, choose different
-    validation metrics. validateHOT is a user-friendly tool to help you
-    test the predictive validity of your data. validateHOT currently only
-    works for hierarichal bayes raw data estimated with Sawtooth Software.
+Description: validateHOT is a package with three main objectives, (1) validates 
+    validation/holdout tasks (HOTs) in (adaptive) Conjoint analysis as well as
+    MaxDiff, (2) perform market simulations, and (3) convert raw utilities into 
+    scores that are easier to interpret and report.
+    validateHOT is a user-friendly tool to help you test the predictive validity
+    of your data and run relevant marketing simulations with utilities obtained
+    through a Hierarchical Bayes estimation (or mixed logit). 
+    validateHOT works best with data obtained through Hierarchical Bayesian 
+    estimation with Sawtooth Software or ChoiceModelR.
 License: GPL (>= 3)
 URL: https://github.com/JoshSchramm94/validateHOT
 BugReports: https://github.com/JoshSchramm94/validateHOT/issues
