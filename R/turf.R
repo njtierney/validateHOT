@@ -1,4 +1,5 @@
 #' Function to run Total Unduplicated Reach and Frequency analysis
+#'
 #' @description
 #' T(otal) U(nduplicated) R(each) and F(requency) is
 #' a "product line extension model" (Miaoulis et al., 1990, p. 29). For each
@@ -8,22 +9,23 @@
 #' frequency calculates the averaged number of alternatives that have a
 #' higher utility than \code{none}.
 #'
-#'
 #' @param data A data frame with all relevant variables.
 #' @param opts Column names of the alternatives included in the assortment.
 #' @param none Column name of none / threshold alternative.
 #' @param size A numeric vector to determine size of the assortment.
-#' @param fixed An optional vector to determine alternatives that have to be
+#' @param fixed An optional vector to determine alternatives/item that have to be
 #' included in the assortment.
 #' @param prohib An optional list with vectors to determine prohibitions, i.e.,
-#' alternatives that are not allowed to be together in one assortment.
+#' alternatives/items that are not allowed to be together in one assortment.
 #' @param approach A character whether to run First Choice approach ('fc') or
 #' Threshold approach ('thres').
+#'
+#' @details
 #'
 #' \code{data} has to be a data frame including the alternatives that should be
 #' tested.
 #'
-#' \code{opts} is needed to specify the different alternatives in the
+#' \code{opts} is required to specify the different alternatives in the
 #' product assortment that should be considered.
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
@@ -40,10 +42,10 @@
 #' one assortment.
 #'
 #' \code{approach} character defining whether first
-#' choice \code{approach = 'fc'} or threshold \code{approach = 'thres'}.
+#' choice \code{approach = 'fc'} or threshold \code{approach = 'thres'} should be applied for running \code{turf()}.
 #' If \code{approach = 'fc'}, participants are considered being reached, if
 #' their alternative with the highest utility is included in the assortment
-#' and larger than the threshold's utility (Chrzan & Orme, 2019, p. 111).
+#' and this alternative's utilitiy is larger than the threshold's utility (Chrzan & Orme, 2019, p. 111).
 #' On the contrary, if \code{approach = 'thres'}, participants are considered
 #' being reached, if utility of one product is higher than the one of
 #' the \code{none} alternative (Chrzan & Orme, 2019, p. 112).

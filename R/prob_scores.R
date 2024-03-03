@@ -33,10 +33,11 @@
 #' shown in one task). Input needs to be a whole number.
 #'
 #' \code{res} specifies whether results should be aggregated across all participants
-#' or across \code{group} (\code{res} needs to be set to \code{agg}) or if it scores
-#' should be converted for individuals only
+#' or across \code{group} (\code{res} needs to be set to \code{agg}) or if scores
+#' should be converted for individuals only.
 #'
-#' \code{anchor} only needs to be specified if anchored MaxDiff is applied. Input
+#' \code{anchor} only needs to be specified if anchored MaxDiff is applied.
+#' Input for \code{anchor} has to be variable names.
 #'
 #' @importFrom dplyr select across pick group_by ungroup rowwise
 #' @importFrom magrittr "%>%"
@@ -46,7 +47,7 @@
 #' @seealso {
 #' \code{\link[=zero_anchored]{zero_anchored}} for zero-anchored interval scores for MaxDiff
 #' \code{\link[=att_imp]{att_imp}} for attribute importance scores for (A)CBC
-#' \code{\link[=zc_diffs]{zc_diffs}} for zero-center diff scores for (A)CBC
+#' \code{\link[=zc_diffs]{zc_diffs}} for zero-centered diff scores for (A)CBC
 #' }
 #'
 #' @references {
@@ -184,11 +185,11 @@ prob_scores <- function(data, group = NULL, items, set.size,
         dplyr::group_by(dplyr::pick({{ group }})) %>%
         dplyr::summarise(dplyr::across({{ items }},
           c(mw = base::mean, std = stats::sd),
-          .names = "{.col}...{.fn}"
+          .names = "{.col}....{.fn}"
         )) %>%
         tidyr::pivot_longer(.,
-          cols = tidyselect::ends_with(c(".mw", ".std")),
-          names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
+          cols = tidyselect::ends_with(c("....mw", "....std")),
+          names_to = c("Option", ".value"), names_sep = "\\.\\.\\.\\."
         ))
     }
 
@@ -211,11 +212,11 @@ prob_scores <- function(data, group = NULL, items, set.size,
           dplyr::group_by(dplyr::pick({{ group }})) %>%
           dplyr::summarise(dplyr::across({{ items }},
             c(mw = base::mean, std = stats::sd),
-            .names = "{.col}...{.fn}"
+            .names = "{.col}....{.fn}"
           )) %>%
           tidyr::pivot_longer(.,
-            cols = tidyselect::ends_with(c(".mw", ".std")),
-            names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
+            cols = tidyselect::ends_with(c("....mw", "....std")),
+            names_to = c("Option", ".value"), names_sep = "\\.\\.\\.\\."
           )
       )
     }

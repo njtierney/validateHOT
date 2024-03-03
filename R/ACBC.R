@@ -1,6 +1,7 @@
 #' ACBC data set with part-worth coded attributes and linear-coded price
 #'
-#' A data set with raw scores export for an adaptive choice-based conjoint.
+#' A data set with raw scores export for an adaptive choice-based conjoint and
+#' linear-coded price.
 #'
 #'
 #' \itemize{

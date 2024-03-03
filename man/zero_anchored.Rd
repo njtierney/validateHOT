@@ -43,7 +43,7 @@ or across \code{group} (\code{res} needs to be set to \code{agg}) or if scores
 should be converted for individuals only.
 
 \code{anchor} only needs to be specified if anchored MaxDiff is applied.
-Input for \code{anchor} has to be variable names.
+Input for \code{anchor} has to be variable name.
 }
 \examples{
 
@@ -96,6 +96,6 @@ Guide to Best-Worst Scaling} Provo, UT: Sawtooth Software.
 {
 \code{\link[=att_imp]{att_imp}} for attribute importance scores for (A)CBC
 \code{\link[=prob_scores]{prob_scores}} for probability scores for MaxDiff
-\code{\link[=zc_diffs]{zc_diffs}} for zero-center diff scores for (A)CBC
+\code{\link[=zc_diffs]{zc_diffs}} for zero-centered diff scores for (A)CBC
 }
 }

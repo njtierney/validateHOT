@@ -1,7 +1,7 @@
 #' CBC data set with part-worth coded attributes and linear-coded attribute
 #'
 #' A data set with raw scores export for an CBC including a linear-coded
-#' variable.
+#' attribute.
 #'
 #'
 #' \itemize{

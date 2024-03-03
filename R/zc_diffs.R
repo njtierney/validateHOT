@@ -7,10 +7,9 @@
 #' coding, '1' = linear coding, or '2' = piecewise coding.
 #' @param interpolate.levels A list of the attribute levels that should
 #' be interpolated. These have to be the same as specified in model estimation
-#' (e.g., if you center attribute levels before estimation, insert the centered levels).
+#' (e.g., if you scale or center attribute levels before estimation, insert these levels).
 #' Please make sure to provide the whole list. Only has to be specified for the
-#' variables that are coded as '1' (linear). If linear coding was applied for price in
-#' an ACBC, make sure to code it as '0' (part-worth) in \code{coding}.
+#' variables that are coded as '1' (linear).
 #' @param res A vector indicating whether individual zero-centered diffs (\code{ind}) or
 #' aggregated (\code{agg}) zero-centered diffs should be returned.
 #' @param none A vector whether \code{none} option was included.
@@ -30,12 +29,12 @@
 #' Input for \code{attrib} has to be a list. Needs to specify the column names or
 #' column indexes of the attribute levels.
 #'
-#' \code{coding} has to be specified to indicate the attribute coding. \code{0}
+#' \code{coding} indicates the attribute coding. \code{0}
 #' to indicated part-worth coding, \code{1} for linear coding, or \code{2} for
 #' piecewise coding.
 #'
-#' \code{interpolate.levels} has to be specified for linear-coded variables.
-#' If scaled or centered values were used for Hierarchical Bayes (HB)
+#' \code{interpolate.levels} is required for linear-coded variables.
+#' If scaled or centered values were used for Hierarchical Bayes
 #' estimation, these have to be specified in this case.
 #' All values have to be specified. For example, if one linear-coded attribute
 #' has 5 levels, all 5 levels have to be inserted.
@@ -132,7 +131,6 @@
 #'   res = "agg"
 #' )
 #' }
-#'
 #'
 #' @export
 zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NULL,
@@ -306,8 +304,6 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
   helper <- 1
 
   for (i in 1:att) {
-
-
     data[[base::paste0("range_att_", i)]] <- 0
 
     vars <- attrib[[i]]
@@ -339,11 +335,11 @@ zc_diffs <- function(data, group = NULL, attrib, coding, interpolate.levels = NU
       dplyr::mutate(dplyr::across(tidyselect::all_of(attrib_all), ~ .x * factor)) %>%
       dplyr::group_by(dplyr::pick({{ group }})) %>%
       dplyr::summarise(dplyr::across(tidyselect::all_of(attrib_all), c(mw = base::mean, std = stats::sd),
-        .names = "{.col}...{.fn}"
+        .names = "{.col}....{.fn}"
       )) %>%
       tidyr::pivot_longer(.,
-        cols = tidyselect::ends_with(c(".mw", ".std")),
-        names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
+        cols = tidyselect::ends_with(c("....mw", "....std")),
+        names_to = c("Option", ".value"), names_sep = "\\.\\.\\.\\."
       ))
   }
 

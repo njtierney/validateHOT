@@ -27,7 +27,7 @@
 #' should be converted for individuals only.
 #'
 #' \code{anchor} only needs to be specified if anchored MaxDiff is applied.
-#' Input for \code{anchor} has to be variable names.
+#' Input for \code{anchor} has to be variable name.
 #'
 #' @importFrom dplyr select mutate_at vars summarise_at group_by_at
 #' @importFrom magrittr "%>%"
@@ -42,7 +42,7 @@
 #' @seealso {
 #' \code{\link[=att_imp]{att_imp}} for attribute importance scores for (A)CBC
 #' \code{\link[=prob_scores]{prob_scores}} for probability scores for MaxDiff
-#' \code{\link[=zc_diffs]{zc_diffs}} for zero-center diff scores for (A)CBC
+#' \code{\link[=zc_diffs]{zc_diffs}} for zero-centered diff scores for (A)CBC
 #' }
 #'
 #' @references {
@@ -195,11 +195,11 @@ zero_anchored <- function(data, group = NULL, items,
     if (base::missing(group)) {
       return(data %>%
         dplyr::summarise(dplyr::across(tidyselect::all_of(var_items), c(mw = base::mean, std = stats::sd),
-          .names = "{.col}...{.fn}"
+          .names = "{.col}....{.fn}"
         )) %>%
         tidyr::pivot_longer(.,
-          cols = tidyselect::ends_with(c(".mw", ".std")),
-          names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
+          cols = tidyselect::ends_with(c("....mw", "....std")),
+          names_to = c("Option", ".value"), names_sep = "\\.\\.\\.\\."
         ))
     }
 
@@ -207,11 +207,11 @@ zero_anchored <- function(data, group = NULL, items,
       return(data %>%
         dplyr::group_by(dplyr::pick({{ group }})) %>%
         dplyr::summarise(dplyr::across(tidyselect::all_of(var_items), c(mw = base::mean, std = stats::sd),
-          .names = "{.col}...{.fn}"
+          .names = "{.col}....{.fn}"
         )) %>%
         tidyr::pivot_longer(.,
-          cols = tidyselect::ends_with(c(".mw", ".std")),
-          names_to = c("Option", ".value"), names_sep = "\\.\\.\\."
+          cols = tidyselect::ends_with(c("....mw", "....std")),
+          names_to = c("Option", ".value"), names_sep = "\\.\\.\\.\\."
         ))
     }
   }

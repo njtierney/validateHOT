@@ -16,7 +16,8 @@ att_imp(
 \arguments{
 \item{data}{A data frame with all relevant variables.}
 
-\item{group}{Optional column name(s) to specify grouping variable(s).}
+\item{group}{Optional column name(s) to specify grouping variable(s) to get
+\code{att_imp} by group(s).}
 
 \item{attrib}{A list that specifies the attribute levels for each attribute.}
 
@@ -42,8 +43,8 @@ Function to calculate attributes' importance score of (A)CBCs
 \code{att_imp} converts raw utilities of a CBC or an ACBC to relative importance
 scores (see, Orme, 2020, p. 80, for more information).
 
-\code{data} has to be a data frame with the attributes. Attribute levels need
-to be the raw utilities.
+\code{data} has to be a data frame with all attributes and the corresponding levels.
+Attribute levels need to be the raw utilities of hierarchical Bayes estimation.
 
 \code{group} optional grouping variable, if results should be displayed by
 different groups. Has to be column name of variables in \code{data}.
@@ -52,13 +53,13 @@ different groups. Has to be column name of variables in \code{data}.
 Input for \code{attrib} has to be a list. Needs to specify the column names or
 column indexes of the attribute levels.
 
-\code{coding} has to be specified to indicate the attribute coding. \code{0}
+\code{coding} is required to indicate the attribute coding. \code{0}
 to indicated part-worth coding, \code{1} for linear coding, or \code{2} for
 piecewise coding.
 
-\code{interpolate.levels} has to be specified for linear coded variables.
-If scaled or centered values were used for hierarchical bayes (HB)
-estimation, these have to be specified in this case.
+\code{interpolate.levels} is required for linear coded variables.
+If scaled or centered values were used for hierarchical Bayes
+estimation, these need to be defined in \code{att_imp}.
 All values have to be specified. For example, if one linear coded attribute
 has 5 levels, all 5 levels have to be inserted.
 
@@ -106,6 +107,6 @@ Orme, B. K. (2020). \emph{Getting Started with Conjoint Analysis: Strategies for
 {
 \code{\link[=prob_scores]{prob_scores}} for probability scores for MaxDiff
 \code{\link[=zero_anchored]{zero_anchored}} for zero-anchored interval scores for MaxDiff
-\code{\link[=zc_diffs]{zc_diffs}} for zero-center diff scores for (A)CBC
+\code{\link[=zc_diffs]{zc_diffs}} for zero-centered diff scores for (A)CBC
 }
 }

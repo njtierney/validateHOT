@@ -1,9 +1,8 @@
 #' Function to calculate mean absolute error of validation/holdout task
 #'
 #' @description \code{mae} measures the mean absolute error of a
-#' validation/holdout task. Calculates the averaged absolute error, i.e.,
-#' deviation between predicted and stated share of alternatives in the
-#' validation/holdout task.
+#' validation/holdout task, i.e., aggregated deviation between predicted and
+#' stated share of alternatives in the validation/holdout task.
 #'
 #'
 #' @param data A data frame with all relevant variables.
@@ -11,7 +10,7 @@
 #' to get \code{mae} by group(s).
 #' @param opts Column names of the alternatives included in the
 #' validation/holdout task.
-#' @param choice Column name of the actual choice.
+#' @param choice Column name of the actual choice in the validation/holdout task.
 #'
 #' @details
 #' Mean absolute error (MAE) calculates the deviation between predicted and
@@ -25,11 +24,11 @@
 #' \code{group} optional grouping variable, if results should be displayed
 #' by different groups. Has to be column name of variables in \code{data}.
 #'
-#' \code{opts} is needed to specify the different alternatives in the
+#' \code{opts} is required to specify the different alternatives in the
 #' validation/holdout task.
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
-#' \code{choice} to specify column of actual choice.
+#' \code{choice} to specify column of actual choice in the validation/holdout task.
 #' Input of opts \code{choice} has to be column name of actual choice.
 #'
 #' @return a tibble
@@ -67,7 +66,6 @@
 #'   choice = choice,
 #'   group = Group
 #' )
-#'
 #'
 #' @export
 

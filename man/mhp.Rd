@@ -2,7 +2,7 @@
 % Please edit documentation in R/MHP.R
 \name{mhp}
 \alias{mhp}
-\title{Function to calculate Mean Hit Probability (MHP) of validation task}
+\title{Function to calculate Mean Hit Probability (MHP) of validation/holdout task}
 \usage{
 mhp(data, group, opts, choice)
 }
@@ -15,15 +15,14 @@ to get \code{mhp} by group(s).}
 \item{opts}{Column names of the alternatives included in the
 validation/holdout task.}
 
-\item{choice}{Column name of the actual choice.}
+\item{choice}{Column name of the actual choice in the validation/holdout task.}
 }
 \value{
 a tibble
 }
 \description{
 \code{mhp} measures the mean hit probability of a validation/holdout
-task. Calculates the hit/choice probability of the actual choice
-in the validation/holdout task.
+task.
 }
 \details{
 Mean hit probability (MHP) measures the averaged hit probability of
@@ -36,15 +35,15 @@ function.
 \code{group} optional grouping variable, if results should be displayed by
 different groups. Has to be column name of variables in \code{data}.
 
-\code{opts} is needed to specify the different alternatives in the
+\code{opts} is required to specify the different alternatives in the
 validation/holdout task.
 Input of \code{opts} has to be column names of variables in \code{data}.
 
-\code{choice} to specify column of actual choice.
+\code{choice} to specify column of actual choice in the validation/holdout task.
 Input of opts \code{choice} has to be column name of actual choice.
 
 Output will display both mean hit probability and its corresponding standard
-error.
+error (both in percentage).
 }
 \examples{
 
@@ -74,6 +73,5 @@ mhp(
   choice = choice,
   group = Group
 )
-
 
 }

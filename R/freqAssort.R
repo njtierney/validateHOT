@@ -3,10 +3,7 @@
 #' @description
 #' Frequency function of T(otal) U(nduplicated) R(each) and F(requency)
 #' analysis to measure the average time a consumer
-#' is reached with a specific product bundle assortment. \code{freqassort}
-#' calculates the frequency based on the 'threshold' approach, meaning
-#' each alternative that exceeds utility of \code{none} alternative is
-#' considered as, for example, purchase option.
+#' is reached with a particular product bundle assortment.
 #'
 #' @param data A data frame with all relevant variables.
 #' @param group Optional column name(s) to specify grouping variable(s)
@@ -16,22 +13,25 @@
 #'
 #' @details
 #' Frequency calculates the average times a consumer would be reached with the
-#' product assortment you are testing. The current logic of \code{freqassort}
+#' tested product assortment. The current logic of \code{freqassort}
 #' is that the utility of an alternative has to exceed a threshold. In the case
 #' of \code{freqassort} this threshold is referred to the \code{none} argument
 #' in \code{data}.
+#' The frequency is calculated based on the 'threshold' approach, i.e.,
+#' each alternative that exceeds utility of \code{none} alternative is
+#' considered as, for example, purchase option.
 #'
 #' \code{data} has to be a data frame including the alternatives that should
 #' be tested.
 #'
 #' \code{group} optional grouping variable, if results should be displayed
-#' by different conditions. Has to be column name of variables in \code{data}.
+#' by different groups. Has to be column name of variables in \code{data}.
 #'
 #' \code{opts} defines product assortment that should be considered.
 #' Input of \code{opts} has to be column names of variables in \code{data}.
 #'
-#' \code{none} to specify column name of the \code{none} alternative in the
-#' validation/holdout task.
+#' \code{none} to specify column name of the \code{none} alternative (i.e.,
+#' threshold variable).
 #'
 #'
 #' @importFrom dplyr select mutate across rowwise c_across pick summarise
@@ -68,7 +68,6 @@
 #'   none = None,
 #'   group = Group
 #' )
-#'
 #'
 #' @export
 freqassort <- function(data, group, none, opts) {
