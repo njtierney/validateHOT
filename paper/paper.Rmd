@@ -10,18 +10,16 @@ authors:
   - name: Joshua Benjamin Schramm
     orcid: 0000-0001-5602-4632
     corresponding: True
-    affiliation: 1, 2
+    affiliation: 1
   - name: Marcel Lichters
     orcid: 0000-0002-3710-2292
     corresponding: FALSE
-    affiliation: 2    
+    affiliation: 1    
 affiliations:
- - name: Chemnitz University of Technology, Germany
-   index: 1
  - name: Otto von Guericke University of Magdeburg, Germany
-   index: 2
+   index: 1
 citation_author: Schramm & Lichters
-date: 02 January
+date: 04 March
 year: 2024
 bibliography: paper.bib
 link-citations: true
@@ -46,13 +44,13 @@ validateHOT is an R package that provides functions to both validate a validatio
 
 # Statement of need
 
-Preference measurement techniques' (e.g., (A)CBC or MaxDiff) aim is to predict behavior [@green1990]. Hence, it is essential to ensure that the collected data is valid and predicts outside tasks (i.e., the model has external validity) well. The easiest way for testing validity is by including validation tasks [e.g., @rao2014; @Orme2015], which are fixed tasks (i.e., same across participants) and not used for estimating the part-worth utilities (raw logit utilities) in hierarchical Bayes (HB) estimation. Despite their importance, practitioners don't always include them [@yang2018]. This is unsatisfactory given the fact that the model is used to estimate market shares which poses the basis for relevant marketing decisions.
+Preference measurement techniques' (e.g., (A)CBC or MaxDiff) aim is to predict behavior [@green1990]. Hence, it is essential to ensure that the collected data is valid and predicts outside tasks (i.e., the model has external validity) well. The easiest way for testing validity is by including validation tasks [e.g., @Orme2015], which are fixed tasks (i.e., same across participants) and not used for estimating the part-worth utilities (raw logit utilities) in hierarchical Bayes (HB) estimation. Despite their importance, practitioners don't always include them [@yang2018]. This is unsatisfactory given the fact that the model is used to estimate market shares which poses the basis for relevant marketing decisions.
 
 validateHOT combines both validation and market simulation in one package and has three key advantages, it (1) helps opting for the best model and (2) runs relevant market simulations that help finding the right product combinations or assortments, and (3) is an open source tool which helps especially researchers reporting accompanied scripts for their research papers.
 
 # State of the field in R
 
-Other packages provide functions to calculate validation metrics, however, these are not always specified for individual part-worth utilities. Metrics [@Metrics], for example, provide functions to run validation metrics such as *mean absolute error*, *root mean squared error*, or the five metrics of the confusion matrix. However, to get the output of, for example, Sawtooth Software or ChoiceModelR [@ChoiceModelR] into the right format, the user needs some data wrangling. The package conjoint [@conjoint] provides functions that are most similar to validateHOT's ones, but no validation functions are included and the package focuses on classical conjoint analysis, thus it is limited when applying more common conjoint methods. support.BWS [@support.BWS] only covers best-worst scaling case 1 (i.e., MaxDiff). logitr [@logitr] provides market simulations tools, however, no validation metrics such as mean hit probability [@voleti2017] or hit rate [@netzer2011]. \autoref{comparison} shows a comparison of validateHOT's functions with current R packages. To the best of our knowledge, a package that converts raw utility scores into validation metrics or running a variety of marketing simulations (especially TURF) is missing.
+Other packages provide functions to calculate validation metrics, however, these are not always specified for individual part-worth utilities. Metrics [@Metrics], for example, provide functions to run validation metrics such as *mean absolute error*, *root mean squared error*, or the five metrics of the confusion matrix. However, to get the output of, for example, Sawtooth Software or ChoiceModelR [@ChoiceModelR] into the right format, the user needs some data wrangling. The package conjoint [@conjoint] provides functions that are most similar to validateHOT's ones, but no validation functions are included and the package focuses on classical conjoint analysis, thus it is limited when applying more common conjoint methods. logitr [@logitr] provides market simulations tools, however, no validation metrics such as mean hit probability or hit rate. \autoref{comparison} shows a comparison of validateHOT's functions with current R packages. To the best of our knowledge, a package that converts raw utility scores into validation metrics or running a variety of marketing simulations (especially TURF) is missing.
 
 ```{=tex}
 \begin{figure}[h]
@@ -66,7 +64,7 @@ validateHOT is introduced with data estimated with Lighthouse Studio using effec
 
 # Key functions
 
-validateHOT's functions can be categorized into four main components, see \autoref{tab:table1}. To bring the data into the right format for some functions, the \texttt{\color{purple}createHOT()} function can be applied, which creates each alternatives' total utility by applying the additive utility model [@rao2014, p. 82].
+validateHOT's functions can be categorized into four main components, see \autoref{tab:table1}. To bring the data into the right format for some functions, the \texttt{\color{purple}createHOT()} function can be applied, which creates each alternatives' total utility by applying the additive utility model.
 
 
 | Validation metrics | Confusion matrix | Market simulations | Rescaling scores |
@@ -88,7 +86,7 @@ We provide the workflow for a MaxDiff study and a CBC study with only part-worth
 
 ### Creating Holdout Task / Market Scenario
 
-After running the HB estimation [@allenby1995; @lenk1996], the **raw** utility scores have to be exported and read into an *R* data frame. 
+After running the HB estimation [@allenby1995], the **raw** utility scores have to be exported and read into an *R* data frame. 
 Assuming you included a validation task with seven alternatives plus the no-buy alternative (\texttt{\color{purple}none}). To create this validation task in *R*, we use the \texttt{\color{purple}createHOT()} function.
 
 ```{r}
@@ -105,7 +103,7 @@ HOT <- createHOT(
 
 ### Validating Holdout Task
 
-To get the relevant validation metrics that are reported in conjoint studies, for example, hit rate [e.g., @ding2005] or mean hit probability [mhp, @voleti2017], we provide the data, the alternatives in the validation task (\texttt{\color{purple}opts}), and the actual choice (\texttt{\color{purple}choice}). The function can be implemented using the tidyverse [@tidyverse] logic.
+To get the relevant validation metrics that are reported in conjoint studies, for example, hit rate or mean hit probability, we provide the data, the alternatives in the validation task (\texttt{\color{purple}opts}), and the actual choice (\texttt{\color{purple}choice}). The function can be implemented using the tidyverse [@tidyverse] logic.
 
 
 ```{r}

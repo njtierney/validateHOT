@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.3.3)  3 MAR 2024 20:25
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.3.3)  4 MAR 2024 16:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -924,31 +924,31 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 (./paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 284.
-LaTeX Font Info:    ... okay on input line 284.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 284.
-LaTeX Font Info:    ... okay on input line 284.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 284.
-LaTeX Font Info:    ... okay on input line 284.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 284.
-LaTeX Font Info:    ... okay on input line 284.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 284.
-LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 284.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 283.
+LaTeX Font Info:    ... okay on input line 283.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 283.
+LaTeX Font Info:    ... okay on input line 283.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 283.
+LaTeX Font Info:    ... okay on input line 283.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 283.
+LaTeX Font Info:    ... okay on input line 283.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 283.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 283.
 (c:/Users/risy79sy/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 284.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 284.
-LaTeX Font Info:    ... okay on input line 284.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 284.
-LaTeX Font Info:    ... okay on input line 284.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 284.
-LaTeX Font Info:    ... okay on input line 284.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 284.
-LaTeX Font Info:    ... okay on input line 284.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 284.
-LaTeX Font Info:    ... okay on input line 284.
-Package hyperref Info: Link coloring ON on input line 284.
+LaTeX Font Info:    ... okay on input line 283.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 283.
+LaTeX Font Info:    ... okay on input line 283.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 283.
+LaTeX Font Info:    ... okay on input line 283.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 283.
+LaTeX Font Info:    ... okay on input line 283.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 283.
+LaTeX Font Info:    ... okay on input line 283.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 283.
+LaTeX Font Info:    ... okay on input line 283.
+Package hyperref Info: Link coloring ON on input line 283.
 (./paper.out) (./paper.out)
 \@outlinefile=\write6
 \openout6 = `paper.out'.
@@ -974,8 +974,8 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'paper.bbl' not found.
 No file paper.bbl.
-Package biblatex Info: Reference section=0 on input line 284.
-Package biblatex Info: Reference segment=0 on input line 284.
+Package biblatex Info: Reference section=0 on input line 283.
+Package biblatex Info: Reference segment=0 on input line 283.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1010,12 +1010,12 @@ Package biblatex Info: Reference segment=0 on input line 284.
 * \@reversemargintrue
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \microtypecontext on input line 284.
-Package microtype Info: Applying patch `item' on input line 284.
-Package microtype Info: Applying patch `toc' on input line 284.
-Package microtype Info: Applying patch `eqnum' on input line 284.
-Package microtype Info: Applying patch `footnote' on input line 284.
-Package microtype Info: Applying patch `verbatim' on input line 284.
+LaTeX Info: Redefining \microtypecontext on input line 283.
+Package microtype Info: Applying patch `item' on input line 283.
+Package microtype Info: Applying patch `toc' on input line 283.
+Package microtype Info: Applying patch `eqnum' on input line 283.
+Package microtype Info: Applying patch `footnote' on input line 283.
+Package microtype Info: Applying patch `verbatim' on input line 283.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1031,26 +1031,31 @@ Package microtype Info: Loading generic protrusion settings for font family
 (c:/Users/risy79sy/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 285.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 284.
 (c:/Users/risy79sy/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (c:/Users/risy79sy/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 285.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 284.
 (c:/Users/risy79sy/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (c:/Users/risy79sy/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 
-Package hyperref Warning: Suppressing link with empty target on input line 311.
+Package hyperref Warning: Suppressing link with empty target on input line 310.
 
 
-Package hyperref Warning: Suppressing link with empty target on input line 311.
+Package hyperref Warning: Suppressing link with empty target on input line 310.
 
 
-Package hyperref Warning: Suppressing link with empty target on input line 311.
+Package hyperref Warning: Suppressing link with empty target on input line 310.
+
+File: figures/FunctionComparison.png Graphic file (type bmp)
+<figures/FunctionComparison.png>
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 File: C:/Users/risy79sy/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/risy79sy/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
@@ -1062,12 +1067,10 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 376.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 385.
 [1
 
 ]
-File: figures/FunctionComparison.png Graphic file (type bmp)
-<figures/FunctionComparison.png>
 File: C:/Users/risy79sy/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/risy79sy/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1079,7 +1082,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 
 [2]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 466.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 460.
 File: C:/Users/risy79sy/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/risy79sy/AppData/Local/R/win-library/4.3/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1100,7 +1103,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 678--682
+Underfull \hbox (badness 10000) in paragraph at lines 665--669
 [][][] [] [][][][][][][][][][][][] [] [] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][] [] [][][] [] [][][] [] [][][][][][][][][][][][][][] [] [][] []
  []
 
@@ -1141,6 +1144,6 @@ Here is how much of TeX's memory you used:
  58598 multiletter control sequences out of 15000+600000
  564941 words of font info for 84 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 84i,13n,87p,1194b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,12n,87p,1194b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on paper.pdf (6 pages).
