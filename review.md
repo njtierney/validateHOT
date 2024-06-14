@@ -337,7 +337,7 @@ check_if_missing(data, {{ opts }}, "opts")
 check_if_missing(data, {{ choice }}, "choice")
 ```
 
-UP TO
+This check on choices here could be better expressed as error checking functions, so this:
 
 ```r
   ## check for str
@@ -349,6 +349,135 @@ UP TO
     stop("Error: 'choice' has to be numeric!")
   }
 ```
+
+Would be:
+
+```r
+check_if_cols_numeric(data, choice)
+```
+
+A very similar check is done above for whether "opts" is numeric - so this could be a function that is used across a few different parts of the package.
+
+See https://github.com/r-lib/rlang/blob/main/R/standalone-types-check.R for some possible existing helper functions. These checkers can be inserted into code with https://usethis.r-lib.org/reference/use_standalone.html
+
+
+You do not need to use `return` in your code, as a function will return the last thing that is performed. You are welcome to use it, but I believe that the data frame that gets computed inside return should happen as a separate step that is asigned into a variable. This makes the code easier to debug, as otherwise you need to step into the `return` code, which is actually a bit tricky.
+
+So instead of:
+
+```r
+  return(data %>%
+    dplyr::mutate(
+      # store column index with highest utility
+      pred = base::max.col(dplyr::pick({{ opts }})),
+      buy = base::ifelse({{ choice }} != base::match(
+        data %>% dplyr::select(., {{ none }}) %>% colnames(),
+        data %>% dplyr::select(., {{ opts }}) %>% colnames()
+      ), 1, 2), # dichotomies actual choice (1 = prod, 2 = none)
+      pred = base::ifelse(pred != base::match(
+        data %>% dplyr::select(., {{ none }}) %>% colnames(),
+        data %>% dplyr::select(., {{ opts }}) %>% colnames()
+      ), 1, 2) # dichotomies pred choice (1 = prod, 2 = none)
+    ) %>%
+    dplyr::group_by(pick({{ group }})) %>% # potential grouping variable
+    dplyr::summarise(
+      accuracy = 100 * base::mean(buy == pred) # calculate accuracy
+    ))
+```
+
+I suggest
+
+```r
+accuracy_data <- data %>%
+    dplyr::mutate(
+      # store column index with highest utility
+      pred = base::max.col(dplyr::pick({{ opts }})),
+      buy = base::ifelse({{ choice }} != base::match(
+        data %>% dplyr::select(., {{ none }}) %>% colnames(),
+        data %>% dplyr::select(., {{ opts }}) %>% colnames()
+      ), 1, 2), # dichotomies actual choice (1 = prod, 2 = none)
+      pred = base::ifelse(pred != base::match(
+        data %>% dplyr::select(., {{ none }}) %>% colnames(),
+        data %>% dplyr::select(., {{ opts }}) %>% colnames()
+      ), 1, 2) # dichotomies pred choice (1 = prod, 2 = none)
+    ) %>%
+    dplyr::group_by(pick({{ group }})) %>% # potential grouping variable
+    dplyr::summarise(
+      accuracy = 100 * base::mean(buy == pred) # calculate accuracy
+    )
+  return(accuracy_data)
+```
+
+I also think that you should convert this code:
+
+```r
+ base::ifelse({{ choice }} != base::match(
+        data %>% dplyr::select(., {{ none }}) %>% colnames(),
+        data %>% dplyr::select(., {{ opts }}) %>% colnames()
+      ), 1, 2), # dichotomies actual choice (1 = prod, 2 = none)
+```
+
+Into a function since you use it twice. For example:
+
+
+```r
+colnames_match <- function(data, set_one, set_two){
+  names_none <- dplyr::select(data, {{ set_one }}) |> names()
+  names_opts <- dplyr::select(data, {{ set_two }}) |> names()
+  match(names_none, names_opts)
+}
+
+dichotimise_choice <- function(data, test){
+  ifelse(
+    test = test
+    # dichotomies actual choice (1 = prod, 2 = none)
+    yes = 1, 
+    no = 2 
+}
+
+...
+
+mutate(
+... = dichotimise_choice({{ choice }} != colnames_match(none, opts))
+... = dichotimise_choice(colnames_match(none, opts))
+)
+
+```
+
+
+
+## an nvars helper function
+
+There is a lot of this pattern in the code:
+
+```r
+if (base::length(data %>% dplyr::select(., {{ opts }})) == 1) {
+# error message
+}
+```
+
+As mentioned above, there are places where `missing()` would be a more precise function to use.
+
+But if you do need to determine how many columns there are, then I believe a function like `n_vars`, defined as below would be helpful:
+
+```r
+n_vars <- function(data, cols){
+  data |> 
+    dplyr::select( {{ cols }} ) |> 
+    ncol()
+}
+```
+
+It could then be used like so:
+
+```r
+n_cols_none <- n_vars(data, {{none}})
+if (n_cols_none > 1){
+# error message
+}
+```
+
+
 
 
 ## using `base::fn`
